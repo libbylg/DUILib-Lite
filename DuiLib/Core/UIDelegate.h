@@ -1,7 +1,6 @@
 #ifndef __UIDELEGATE_H__
 #define __UIDELEGATE_H__
 
-#include "UILIB.h"
 #include "Utils/Utils.h"
 
 namespace DuiLib

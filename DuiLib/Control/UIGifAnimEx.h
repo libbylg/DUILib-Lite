@@ -5,7 +5,7 @@
 ** 解决多个gif控件在gdi+环境下占用CPU过高的问题，本类采用ximage替代
 ** 注意：使用的时候在预编译头文件中包含UIlib.h前先定义宏USE_XIMAGE_EFFECT
 ** #define USE_XIMAGE_EFFECT
-** #include "UILIB.h"
+** 
 */
 #ifdef USE_XIMAGE_EFFECT
 namespace DuiLib

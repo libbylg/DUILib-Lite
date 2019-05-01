@@ -1,4 +1,4 @@
-#include "UILIB.h"
+
 #pragma comment( lib, "ws2_32.lib" )
 
 DWORD GetLocalIpAddress()   

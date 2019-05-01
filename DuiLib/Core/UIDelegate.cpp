@@ -1,4 +1,3 @@
-#include "UILIB.h"
 #include "Core/UIDelegate.h"
 
 namespace DuiLib

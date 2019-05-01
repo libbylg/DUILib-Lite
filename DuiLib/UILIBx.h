@@ -1,3 +1,8 @@
+//
+//  UILIB.h和UILIB.cpp是UILib库最第顶层的文件，它用来屏蔽所有OS和编译期的差异，对UILib库的其他文件提供统一的系统接口界面
+//
+//  如果你试图在文件中包含 UILib.h 头文件，那么实际你可能真正想包含的一定是 UIUtils 或者 UIDefine.h。
+//
 #ifndef UILIB
 #define UILIB
 
@@ -54,8 +59,17 @@
 #include <olectl.h>
 #ifdef _DEBUG
 #include <shlwapi.h>
+#endif
+
+
+#pragma comment( lib, "comctl32.lib" )
+#pragma comment( lib, "GdiPlus.lib" )
+#pragma comment( lib, "Imm32.lib" )
+#pragma comment( lib, "winmm.lib" )
+#ifdef _DEBUG
 #pragma comment(lib, "shlwapi.lib")
 #endif
+
 
 #include <stddef.h>
 #include <tchar.h>
@@ -70,16 +84,37 @@
 #include <vector>
 
 
+// Remove pointless warning messages
+#if defined(_MSC_VER)
+    #pragma warning (disable : 4511) // copy operator could not be generated
+    #pragma warning (disable : 4512) // assignment operator could not be generated
+    #pragma warning (disable : 4702) // unreachable code (bugs in Microsoft's STL)
+    #pragma warning (disable : 4786) // identifier was truncated
+    #pragma warning (disable : 4996) // function or variable may be unsafe (deprecated)
+    #pragma warning (disable : 4458) // “nativeCap”的声明隐藏了类成员
+    //#define _CRT_SECURE_NO_WARNINGS  // eliminate deprecation warnings for VS2005
+    //#define _CRT_SECURE_NO_DEPRECATE
+#endif
+
+#if defined(__BORLANDC__)
+    #pragma option -w-8027		     // function not expanded inline
+#endif
 
 #ifdef __GNUC__
-// 怎么都没找到min，max的头文件-_-
-#ifndef min
-#define min(a,b) (((a) < (b)) ? (a) : (b))
+    // 怎么都没找到min，max的头文件-_-
+    #ifndef min
+    #define min(a,b) (((a) < (b)) ? (a) : (b))
+    #endif
+    #ifndef max
+    #define max(a,b) (((a) > (b)) ? (a) : (b))
+    #endif
 #endif
-#ifndef max
-#define max(a,b) (((a) > (b)) ? (a) : (b))
+
+// Required for VS 2008 (fails on XP and Win2000 without this fix)
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT _WIN32_WINNT_WINXP//0x0501
 #endif
-#endif
+
 
 #ifndef __FILET__
 #define __DUILIB_STR2WSTR(str)	L##str
@@ -93,28 +128,6 @@
 #endif
 #endif
 
-
-// Remove pointless warning messages
-#ifdef _MSC_VER
-#pragma warning (disable : 4511) // copy operator could not be generated
-#pragma warning (disable : 4512) // assignment operator could not be generated
-#pragma warning (disable : 4702) // unreachable code (bugs in Microsoft's STL)
-#pragma warning (disable : 4786) // identifier was truncated
-#pragma warning (disable : 4996) // function or variable may be unsafe (deprecated)
-#pragma warning (disable : 4458) // “nativeCap”的声明隐藏了类成员
-#ifndef _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS // eliminate deprecation warnings for VS2005
-#endif
-#define _CRT_SECURE_NO_DEPRECATE
-#endif // _MSC_VER
-#ifdef __BORLANDC__
-#pragma option -w-8027		   // function not expanded inline
-#endif
-
-// Required for VS 2008 (fails on XP and Win2000 without this fix)
-#ifndef _WIN32_WINNT
-#define _WIN32_WINNT _WIN32_WINNT_WINXP//0x0501
-#endif
 
 //#define USE_XIMAGE_EFFECT //使用ximage的gif控件CGifAnimExUI开关，提升性能,默认不使用
 
@@ -130,10 +143,7 @@
 #endif
 
 
-#pragma comment( lib, "comctl32.lib" )
-#pragma comment( lib, "GdiPlus.lib" )
-#pragma comment( lib, "Imm32.lib" )
-#pragma comment( lib, "winmm.lib" )
+
 
 /// 定义了一个适用于C语言的编译期断言宏，用于对编译环境进行一些基本的检查
 ///@{

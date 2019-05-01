@@ -1,4 +1,3 @@
-#include "UILIB.h"
 #include "Utils/TrayIcon.h"
 
 #include "Core/UIManager.h"

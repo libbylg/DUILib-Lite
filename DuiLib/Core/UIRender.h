@@ -1,7 +1,6 @@
 #ifndef __UIRENDER_H__
 #define __UIRENDER_H__
 
-#include "UILIB.h"
 #include "Core/UIDefine.h"
 #include "Utils/Utils.h"
 

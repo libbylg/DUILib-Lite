@@ -1,6 +1,6 @@
-#include "UILIB.h"
-#include "DPI.h"
-#include "VersionHelpers.h"
+#include "Utils/DPI.h"
+#include "Utils/VersionHelpers.h"
+
 namespace DuiLib
 {
     //96 DPI = 100% scaling

@@ -7,8 +7,6 @@ Author: Leon Finker  1/2001
 **************************************************************************/
 // IDataObjectImpl.cpp: implementation of the CIDataObjectImpl class.
 //////////////////////////////////////////////////////////////////////
-
-#include "UILIB.h"
 #include "Core/UIDragDropImpl.h"
 
 

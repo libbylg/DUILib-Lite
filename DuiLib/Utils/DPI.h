@@ -1,6 +1,8 @@
 #ifndef __DPI_H__
 #define __DPI_H__
 
+#include "Utils/Utils.h"
+
 #ifndef DPI_ENUMS_DECLARED
 
 typedef enum PROCESS_DPI_AWARENESS

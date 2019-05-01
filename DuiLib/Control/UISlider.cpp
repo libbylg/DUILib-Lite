@@ -1,4 +1,4 @@
-#include "UILIB.h"
+
 #include "UISlider.h"
 
 namespace DuiLib

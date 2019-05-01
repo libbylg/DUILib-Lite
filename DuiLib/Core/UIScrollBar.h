@@ -1,7 +1,6 @@
 #ifndef __UISCROLLBAR_H__
 #define __UISCROLLBAR_H__
 
-#include "UILIB.h"
 #include "Utils/Utils.h"
 #include "Core/UIDefine.h"
 #include "Core/UIControl.h"

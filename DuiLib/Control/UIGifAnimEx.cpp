@@ -1,4 +1,4 @@
-#include "UILIB.h"
+
 #ifdef USE_XIMAGE_EFFECT
 #include "UIGifAnimEx.h"
 #include "../../3rd/CxImage/ximage.h"
