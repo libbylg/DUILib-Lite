@@ -1,7 +1,9 @@
 #ifndef __UIBUTTON_H__
 #define __UIBUTTON_H__
 
-#pragma once
+#include "UILIB.h"
+#include "Core/UIDefine.h"
+#include "Control/UILabel.h"
 
 namespace DuiLib
 {

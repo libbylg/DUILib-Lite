@@ -45,11 +45,12 @@
 #include <richedit.h>
 #include <comdef.h>
 #include <gdiplus.h>
-#include <ShellAPI.h>
+#include <shellapi.h>
 #include <zmouse.h>
 #include <shlobj.h>
-#include <OAIdl.h>
+#include <oaidl.h>
 #include <atlbase.h>
+#include <atlconv.h>
 #include <olectl.h>
 #ifdef _DEBUG
 #include <shlwapi.h>

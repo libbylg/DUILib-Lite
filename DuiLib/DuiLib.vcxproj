@@ -383,6 +383,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>UILIB.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -934,11 +935,13 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Control\UIButton.cpp" />
+    <ClCompile Include="Control\UILabel.cpp" />
     <ClCompile Include="Core\UIScrollBar.cpp" />
     <ClCompile Include="Core\UIResourceManager.cpp" />
     <ClCompile Include="UILIB.cpp" />
     <ClCompile Include="Utils\DPI.cpp" />
-    <ClCompile Include="Core\DragDropImpl.cpp" />
+    <ClCompile Include="Core\UIDragDropImpl.cpp" />
     <ClCompile Include="Core\UIShadow.cpp" />
     <ClCompile Include="Utils\unzip.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -961,12 +964,15 @@
     <ClCompile Include="Core\UIRender.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Control\UIButton.h" />
+    <ClInclude Include="Control\UILabel.h" />
+    <ClInclude Include="Core\UIControl.h" />
     <ClInclude Include="Core\UIScrollBar.h" />
     <ClInclude Include="Core\UIResourceManager.h" />
     <ClInclude Include="UILIB.h" />
     <ClInclude Include="Utils\downloadmgr.h" />
     <ClInclude Include="Utils\DPI.h" />
-    <ClInclude Include="Core\DragDropImpl.h" />
+    <ClInclude Include="Core\UIDragDropImpl.h" />
     <ClInclude Include="Utils\FlashEventHandler.h" />
     <ClInclude Include="Utils\observer_impl_base.h" />
     <ClInclude Include="Utils\stb_image.h" />
@@ -978,7 +984,6 @@
     <ClInclude Include="Utils\WebBrowserEventHandler.h" />
     <ClInclude Include="Core\UIWindow.h" />
     <ClInclude Include="Core\UIContainer.h" />
-    <ClInclude Include="Core\UIControl.h" />
     <ClInclude Include="Core\UIDefine.h" />
     <ClInclude Include="Core\UIManager.h" />
     <ClInclude Include="Core\UIMarkup.h" />

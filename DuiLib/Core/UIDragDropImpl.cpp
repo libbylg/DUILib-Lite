@@ -9,7 +9,7 @@ Author: Leon Finker  1/2001
 //////////////////////////////////////////////////////////////////////
 
 #include "UILIB.h"
-#include "Core/DragDropImpl.h"
+#include "Core/UIDragDropImpl.h"
 
 
 

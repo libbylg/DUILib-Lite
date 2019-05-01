@@ -1,7 +1,11 @@
 #ifndef __UILABEL_H__
 #define __UILABEL_H__
 
-#pragma once
+
+#include "Core/UIDefine.h"
+#include "Core/UIControl.h"
+
+
 
 namespace DuiLib
 {

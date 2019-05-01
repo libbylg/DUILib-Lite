@@ -1,7 +1,9 @@
+#include "Control/UILabel.h"
+#include "Core/UIDefine.h"
 #include "UILIB.h"
-#include "UILabel.h"
 
-#include <atlconv.h>
+
+
 namespace DuiLib
 {
 	IMPLEMENT_DUICONTROL(CLabelUI)

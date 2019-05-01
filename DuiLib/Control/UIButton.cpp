@@ -1,5 +1,5 @@
-#include "UILIB.h"
-#include "UIButton.h"
+#include "Control/UIButton.h"
+#include "Core/UIDefine.h"
 
 namespace DuiLib
 {

@@ -2,9 +2,9 @@
 #define __UIMANAGER_H__
 
 #include "Utils/Utils.h"
-//#include "Core/DragDropImpl.h"
 #include "Utils/DPI.h"
 
+#include "Core/UIDragDropImpl.h"
 #include "Core/UIDefine.h"
 #include "Core/UIShadow.h"
 
