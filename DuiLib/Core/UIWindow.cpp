@@ -1,4 +1,3 @@
-#include "Core/UIDefine.h"
 #include "Core/UIWindow.h"
 #include "Core/UIManager.h"
 #include "Core/UIControl.h"
@@ -6,7 +5,7 @@
 #include "Utils/Utils.h"
 
 
-namespace DuiLib
+namespace DUILIB
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -143,13 +142,13 @@ namespace DuiLib
         const DUI_MSGMAP_ENTRY* lpEntry = NULL;
         const DUI_MSGMAP* pMessageMap = NULL;
 
-#ifndef UILIB_STATIC
+#ifndef DUILIB_STATIC
         for (pMessageMap = GetMessageMap(); pMessageMap != NULL; pMessageMap = (*pMessageMap->pfnGetBaseMap)())
 #else
         for (pMessageMap = GetMessageMap(); pMessageMap != NULL; pMessageMap = pMessageMap->pBaseMap)
 #endif
         {
-#ifndef UILIB_STATIC
+#ifndef DUILIB_STATIC
             ASSERT(pMessageMap != (*pMessageMap->pfnGetBaseMap)());
 #else
             ASSERT(pMessageMap != pMessageMap->pBaseMap);
@@ -488,4 +487,4 @@ namespace DuiLib
     {
     }
 
-} // namespace DuiLib
+} // namespace DUILIB

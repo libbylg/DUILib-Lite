@@ -1,7 +1,7 @@
 
 #include "UIOption.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(COptionUI)
 	COptionUI::COptionUI() : m_bSelected(FALSE) ,m_iSelectedFont(-1), m_dwSelectedTextColor(0), m_dwSelectedBkColor(0), m_nSelectedStateCount(0)

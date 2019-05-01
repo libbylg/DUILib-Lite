@@ -1,7 +1,7 @@
 
 #include "UIVerticalLayout.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CVerticalLayoutUI)
 	CVerticalLayoutUI::CVerticalLayoutUI() : m_iSepHeight(0), m_uButtonState(0), m_bImmMode(FALSE)

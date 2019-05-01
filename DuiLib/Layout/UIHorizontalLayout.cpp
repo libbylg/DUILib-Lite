@@ -1,7 +1,7 @@
 
 #include "UIHorizontalLayout.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CHorizontalLayoutUI)
 	CHorizontalLayoutUI::CHorizontalLayoutUI() : m_iSepWidth(0), m_uButtonState(0), m_bImmMode(FALSE)

@@ -1,7 +1,7 @@
 
 #include "UIComboBox.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CComboBoxUI)
 

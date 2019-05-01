@@ -1,38 +1,41 @@
 //
-//  UILIB.h和UILIB.cpp是UILib库最第顶层的文件，它用来屏蔽所有OS和编译期的差异，对UILib库的其他文件提供统一的系统接口界面
+//  DUILIB.h和UILIB.cpp是UILib库最第顶层的文件，它用来屏蔽所有OS和编译期的差异，对UILib库的其他文件提供统一的系统接口界面
 //
 //  如果你试图在文件中包含 UILib.h 头文件，那么实际你可能真正想包含的一定是 UIUtils 或者 UIDefine.h。
 //
-#ifndef UILIB
-#define UILIB
+#ifndef __DUILIB_H__
+#define __DUILIB_H__
 
 
-#ifdef UILIB_STATI
-    #define UILIB_API 
+#ifdef DUILIB_STATIC
+    #define DUILIB_API 
 #else
-    #if defined(UILIB_EXPORTS)
+    #if defined(DUILIB_EXPORTS)
     #	if defined(_MSC_VER)
     #		define DUILIB_API __declspec(dllexport)
     #	else
-    #		define UILIB_API 
+    #		define DUILIB_API 
     #	endif
     #else
     #	if defined(_MSC_VER)
-    #		define UILIB_API __declspec(dllimport)
+    #		define DUILIB_API __declspec(dllimport)
     #	else
-    #		define UILIB_API 
+    #		define DUILIB_API 
     #	endif
     #endif
 #endif
 
 
-#define UILIB_COMDAT __declspec(selectany)
+#define DUILIB_COMDAT __declspec(selectany)
+
 
 #pragma warning(disable:4505)
 #pragma warning(disable:4251)
 #pragma warning(disable:4189)
 #pragma warning(disable:4121)
 #pragma warning(disable:4100)
+
+
 
 #if defined _M_IX86
 #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -49,7 +52,9 @@
 #include <commctrl.h>
 #include <richedit.h>
 #include <comdef.h>
+#pragma warning(disable:4458)
 #include <gdiplus.h>
+#pragma warning(default:4458)
 #include <shellapi.h>
 #include <zmouse.h>
 #include <shlobj.h>
@@ -159,6 +164,6 @@
 
 
 
-#endif//UILIB
+#endif//__DUILIB_H__
 
 

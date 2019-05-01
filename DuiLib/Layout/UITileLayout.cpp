@@ -1,7 +1,7 @@
 
 #include "UITileLayout.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CTileLayoutUI)
 	CTileLayoutUI::CTileLayoutUI() : m_nColumns(1)

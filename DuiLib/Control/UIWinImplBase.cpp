@@ -3,10 +3,10 @@
 #include "Core/UIDefine.h"
 #include "Core/UIControl.h"
 #include "Core/UIWindow.h"
-#include "UIlib.h"
+#include "DUILIB.h"
 
 
-namespace DuiLib
+namespace DUILIB
 {
 	//////////////////////////////////////////////////////////////////////////
 	//

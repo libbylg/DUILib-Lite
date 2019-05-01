@@ -3,9 +3,9 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API CGifAnimUI : public CControlUI
+	class DUILIB_API CGifAnimUI : public CControlUI
 	{
 		enum
 		{ 

@@ -3,7 +3,7 @@
 
 #include "Utils/Utils.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
     class DUILIB_API CShadowUI
@@ -103,6 +103,8 @@ namespace DuiLib
         CDuiString	m_sShadowImage;
         RECT		m_rcShadowCorner;
     };
+
+
 
 }
 

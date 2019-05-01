@@ -5,7 +5,7 @@
 #include "../Utils/downloadmgr.h"
 #include <mshtml.h>
 
-namespace DuiLib
+namespace DUILIB
 {
 	////////////////////////////////////////////////////////////////////////
 	//

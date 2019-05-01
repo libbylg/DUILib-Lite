@@ -6,12 +6,12 @@
 
 #include <map>
 
-namespace DuiLib 
+namespace DUILIB 
 {
 	typedef CControlUI* (*CreateClass)();
 	typedef std::map<CDuiString, CreateClass> MAP_DUI_CTRATECLASS;
 
-	class UILIB_API CControlFactoryUI
+	class DUILIB_API CControlFactoryUI
 	{
 	public:
 		CControlUI* CreateControl(CDuiString strClassName);

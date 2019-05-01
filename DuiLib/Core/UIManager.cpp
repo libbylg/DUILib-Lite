@@ -8,7 +8,7 @@
 #include "Utils/unzip.h"
 
 
-namespace DuiLib
+namespace DUILIB
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ namespace DuiLib
     CDuiString CManagerUI::m_pStrResourceZipPwd;  //Garfield 20160325 ´øÃÜÂëzip°ü½âÃÜ
     HANDLE CManagerUI::m_hResourceZip = NULL;
     BOOL CManagerUI::m_bCachedResourceZip = true;
-    int CManagerUI::m_nResType = UILIB_FILE;
+    int CManagerUI::m_nResType = DUILIB_FILE;
     TResInfo CManagerUI::m_SharedResInfo;
     HINSTANCE CManagerUI::m_hInstance = NULL;
     BOOL CManagerUI::m_bUseHSL = false;
@@ -450,7 +450,7 @@ namespace DuiLib
 
     BOOL CManagerUI::LoadPlugin(LPCTSTR pstrModuleName)
     {
-        ASSERT(!::IsBadStringPtr(pstrModuleName, -1) || (pstrModuleName == NULL));
+        ASSERT(!::IsBadStringPtr(pstrModuleName, (UINT_PTR)(-1)) || (pstrModuleName == NULL));
         if (pstrModuleName == NULL) return false;
         HMODULE hModule = ::LoadLibrary(pstrModuleName);
         if (hModule != NULL) {
@@ -1968,7 +1968,7 @@ namespace DuiLib
         }
     }
 
-    CDPI* DuiLib::CManagerUI::GetDPIObj()
+    CDPI* DUILIB::CManagerUI::GetDPIObj()
     {
         if (m_pDPI == NULL) {
             m_pDPI = new CDPI;
@@ -1976,7 +1976,7 @@ namespace DuiLib
         return m_pDPI;
     }
 
-    void DuiLib::CManagerUI::SetDPI(int iDPI)
+    void DUILIB::CManagerUI::SetDPI(int iDPI)
     {
         int scale1 = GetDPIObj()->GetScale();
         GetDPIObj()->SetScale(iDPI);
@@ -1996,7 +1996,7 @@ namespace DuiLib
         ::PostMessage(GetPaintWindow(), UIMSG_SET_DPI, 0, 0);
     }
 
-    void DuiLib::CManagerUI::SetAllDPI(int iDPI)
+    void DUILIB::CManagerUI::SetAllDPI(int iDPI)
     {
         for (int i = 0; i < m_aPreMessages.GetSize(); i++) {
             CManagerUI* pManager = static_cast<CManagerUI*>(m_aPreMessages[i]);
@@ -2004,7 +2004,7 @@ namespace DuiLib
         }
     }
 
-    void DuiLib::CManagerUI::ResetDPIAssets()
+    void DUILIB::CManagerUI::ResetDPIAssets()
     {
         RemoveAllDrawInfos();
         RemoveAllImages();;
@@ -2029,7 +2029,7 @@ namespace DuiLib
         }
     }
 
-    void DuiLib::CManagerUI::RebuildFont(TFontInfo * pFontInfo)
+    void DUILIB::CManagerUI::RebuildFont(TFontInfo * pFontInfo)
     {
         ::DeleteObject(pFontInfo->hFont);
         LOGFONT lf = {0};
@@ -3884,4 +3884,4 @@ namespace DuiLib
         }
         return true; //let base free the medium
     }
-} // namespace DuiLib
+} // namespace DUILIB

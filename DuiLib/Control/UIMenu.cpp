@@ -2,7 +2,7 @@
 
 #include "UIMenu.h"
 
-namespace DuiLib {
+namespace DUILIB {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -1238,4 +1238,4 @@ namespace DuiLib {
 		}
 		return NULL;
 	}
-} // namespace DuiLib
+} // namespace DUILIB

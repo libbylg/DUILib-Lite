@@ -1,7 +1,7 @@
 
 #include "UIRing.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CRingUI)
 

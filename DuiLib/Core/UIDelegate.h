@@ -3,7 +3,7 @@
 
 #include "Utils/Utils.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
     class DUILIB_API CDelegateBase
@@ -90,6 +90,6 @@ namespace DuiLib
         CStdPtrArray m_aDelegates;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIDELEGATE_H__

@@ -5,7 +5,7 @@
 
 #include "../Utils/observer_impl_base.h"
 
-namespace DuiLib {
+namespace DUILIB {
 
 struct ContextMenuParam
 {
@@ -76,7 +76,7 @@ public:
 /////////////////////////////////////////////////
 
 class MenuReceiverImpl;
-class UILIB_API MenuObserverImpl : public MenuMenuObserverImplBase
+class DUILIB_API MenuObserverImpl : public MenuMenuObserverImplBase
 {
 	friend class Iterator;
 public:
@@ -195,7 +195,7 @@ protected:
 };
 
 ////////////////////////////////////////////////////
-class UILIB_API MenuReceiverImpl : public MenuMenuReceiverImplBase
+class DUILIB_API MenuReceiverImpl : public MenuMenuReceiverImplBase
 {
 public:
 	MenuReceiverImpl()
@@ -241,7 +241,7 @@ protected:
 
 class CListUI;
 class CMenuWnd;
-class UILIB_API CMenuUI : public CListUI
+class DUILIB_API CMenuUI : public CListUI
 {
 	DECLARE_DUICONTROL(CMenuUI)
 public:
@@ -270,7 +270,7 @@ public:
 //
 
 class CMenuElementUI;
-class UILIB_API CMenuWnd : public CWindowWnd, public MenuReceiverImpl, public INotifyUI, public IDialogBuilderCallback
+class DUILIB_API CMenuWnd : public CWindowWnd, public MenuReceiverImpl, public INotifyUI, public IDialogBuilderCallback
 {
 public:
 	static MenuObserverImpl& GetGlobalContextMenuObserver()
@@ -334,7 +334,7 @@ public:
 };
 
 class CListContainerElementUI;
-class UILIB_API CMenuElementUI : public CListContainerElementUI
+class DUILIB_API CMenuElementUI : public CListContainerElementUI
 {
 	DECLARE_DUICONTROL(CMenuElementUI)
 	friend CMenuWnd;
@@ -387,6 +387,6 @@ protected:
 	BOOL		m_bShowExplandIcon;
 };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIMENU_H__

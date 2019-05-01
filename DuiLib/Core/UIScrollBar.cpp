@@ -4,7 +4,7 @@
 #include "Core/UIContainer.h"
 #include "Core/UIManager.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     IMPLEMENT_DUICONTROL(CScrollBarUI)
 

@@ -1,7 +1,7 @@
 #ifndef __UILIST_H__
 #define __UILIST_H__
 
-namespace DuiLib {
+namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
@@ -102,7 +102,7 @@ namespace DuiLib {
 	class CListHeaderUI;
 	class CEditUI;
 	class CComboBoxUI;
-	class UILIB_API CListUI : public CVerticalLayoutUI, public IListUI
+	class DUILIB_API CListUI : public CVerticalLayoutUI, public IListUI
 	{
 		DECLARE_DUICONTROL(CListUI)
 
@@ -253,7 +253,7 @@ namespace DuiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class UILIB_API CListBodyUI : public CVerticalLayoutUI
+	class DUILIB_API CListBodyUI : public CVerticalLayoutUI
 	{
 	public:
 		CListBodyUI(CListUI* pOwner);
@@ -276,7 +276,7 @@ namespace DuiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class UILIB_API CListHeaderUI : public CHorizontalLayoutUI
+	class DUILIB_API CListHeaderUI : public CHorizontalLayoutUI
 	{
 		DECLARE_DUICONTROL(CListHeaderUI)
 	public:
@@ -300,7 +300,7 @@ namespace DuiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class UILIB_API CListHeaderItemUI : public CContainerUI
+	class DUILIB_API CListHeaderItemUI : public CContainerUI
 	{
 		DECLARE_DUICONTROL(CListHeaderItemUI)
 
@@ -370,7 +370,7 @@ namespace DuiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class UILIB_API CListElementUI : public CControlUI, public IListItemUI
+	class DUILIB_API CListElementUI : public CControlUI, public IListItemUI
 	{
 	public:
 		CListElementUI();
@@ -413,7 +413,7 @@ namespace DuiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class UILIB_API CListLabelElementUI : public CListElementUI
+	class DUILIB_API CListLabelElementUI : public CListElementUI
 	{
 		DECLARE_DUICONTROL(CListLabelElementUI)
 	public:
@@ -433,7 +433,7 @@ namespace DuiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class UILIB_API CListTextElementUI : public CListLabelElementUI
+	class DUILIB_API CListTextElementUI : public CListLabelElementUI
 	{
 		DECLARE_DUICONTROL(CListTextElementUI)
 	public:
@@ -468,7 +468,7 @@ namespace DuiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class UILIB_API CListContainerElementUI : public CHorizontalLayoutUI, public IListItemUI
+	class DUILIB_API CListContainerElementUI : public CHorizontalLayoutUI, public IListItemUI
 	{
 		DECLARE_DUICONTROL(CListContainerElementUI)
 	public:
@@ -511,6 +511,6 @@ namespace DuiLib {
 		IListOwnerUI* m_pOwner;
 	};
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UILIST_H__

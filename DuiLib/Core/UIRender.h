@@ -7,7 +7,7 @@
 #ifdef USE_XIMAGE_EFFECT
 class CxImage;
 #endif
-namespace DuiLib
+namespace DUILIB
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -108,6 +108,6 @@ namespace DuiLib
         static void CheckAlphaColor(DWORD& dwColor);
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIRENDER_H__

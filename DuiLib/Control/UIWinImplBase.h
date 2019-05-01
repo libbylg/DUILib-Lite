@@ -7,9 +7,9 @@
 #include "Core/UIResourceManager.h"
 
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API WindowImplBase
+	class DUILIB_API WindowImplBase
 		: public CWindowWnd
 		, public CNotifyPump
 		, public INotifyUI

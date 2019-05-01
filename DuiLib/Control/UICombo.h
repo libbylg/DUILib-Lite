@@ -3,13 +3,13 @@
 
 #pragma once
 
-namespace DuiLib {
+namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
 	class CComboWnd;
 
-	class UILIB_API CComboUI : public CContainerUI, public IListOwnerUI
+	class DUILIB_API CComboUI : public CContainerUI, public IListOwnerUI
 	{
 		DECLARE_DUICONTROL(CComboUI)
 		friend class CComboWnd;
@@ -148,6 +148,6 @@ namespace DuiLib {
 		TListInfoUI m_ListInfo;
 	};
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UICOMBO_H__

@@ -3,9 +3,9 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API COptionUI : public CButtonUI
+	class DUILIB_API COptionUI : public CButtonUI
 	{
 		DECLARE_DUICONTROL(COptionUI)
 	public:
@@ -76,7 +76,7 @@ namespace DuiLib
 		CDuiString m_sSelectedStateImage;
 	};
 
-	class UILIB_API CCheckBoxUI : public COptionUI
+	class DUILIB_API CCheckBoxUI : public COptionUI
 	{
 		DECLARE_DUICONTROL(CCheckBoxUI)
 	public:
@@ -98,6 +98,6 @@ namespace DuiLib
 	protected:
 		BOOL m_bAutoCheck; 
 	};
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIOPTION_H__

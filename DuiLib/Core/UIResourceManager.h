@@ -4,7 +4,7 @@
 #include "Utils/Utils.h"
 #include "Core/UIMarkup.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     // 控件文字查询接口
     class DUILIB_API IQueryControlTextUI
@@ -55,6 +55,6 @@ namespace DuiLib
         CStdStringPtrMap m_mTextHashMap;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIRESOURCEMANAGER_H__

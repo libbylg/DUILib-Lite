@@ -1,7 +1,7 @@
 //#include "Control/UIButton.h"
 //#include "Core/UIDefine.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CButtonUI)
 

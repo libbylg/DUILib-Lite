@@ -3,7 +3,7 @@
 #include "Core/UIRender.h"
 
 
-namespace DuiLib
+namespace DUILIB
 {
 
     const TCHAR* strWndClassName = _T("PerryShadowWnd");
@@ -672,4 +672,4 @@ namespace DuiLib
         pShadow->ShowShadow(m_bIsShowShadow);
         return true;
     }
-} //namespace DuiLib
+} //namespace DUILIB

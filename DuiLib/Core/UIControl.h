@@ -4,15 +4,15 @@
 #include "Core/UIDefine.h"
 #include "Core/UIDelegate.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
 
-    class CManagerUI;
-    class CControlUI;
+    class DUILIB_API CManagerUI;
+    class DUILIB_API CControlUI;
 
 
     typedef struct DUILIB_API TPercentInfo
@@ -306,6 +306,6 @@ public:\
         CStdStringPtrMap m_mCustomAttrHash;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UICONTROL_H__

@@ -1,7 +1,7 @@
 #include "Utils/DPI.h"
 #include "Utils/VersionHelpers.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     //96 DPI = 100% scaling
     //120 DPI = 125% scaling
@@ -109,7 +109,7 @@ namespace DuiLib
         return bRet;
     }
 
-    UINT DuiLib::CDPI::GetDPI()
+    UINT DUILIB::CDPI::GetDPI()
     {
         if (m_Awareness == PROCESS_DPI_UNAWARE) {
             return 96;

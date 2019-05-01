@@ -1,7 +1,7 @@
 
 #include "UIRollText.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CRollTextUI)
 

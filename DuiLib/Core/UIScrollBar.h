@@ -5,7 +5,7 @@
 #include "Core/UIDefine.h"
 #include "Core/UIControl.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     class CContainerUI;
 

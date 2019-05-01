@@ -1,7 +1,7 @@
 
 #include <math.h>
 
-namespace DuiLib {
+namespace DUILIB {
 #define HSLMAX   255	/* H,L, and S vary over 0-HSLMAX */
 #define RGBMAX   255    /* R,G, and B vary over 0-RGBMAX */
 #define HSLUNDEFINED (HSLMAX*2/3)

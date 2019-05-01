@@ -1,9 +1,10 @@
 #ifndef _UIDEFINE_H_
 #define _UIDEFINE_H_
 
-#include "UILIB.h"
+#include "DUILIB.h"
+#include "Utils/Utils.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 #define MAX_FONT_ID		30000
 #define CARET_TIMERID	0x1999
@@ -112,7 +113,7 @@ namespace DuiLib
     struct DUI_MSGMAP_ENTRY;
     struct DUI_MSGMAP
     {
-#ifndef UILIB_STATIC
+#ifndef DUILIB_STATIC
         const DUI_MSGMAP* (PASCAL* pfnGetBaseMap)();
 #else
         const DUI_MSGMAP* pBaseMap;
@@ -130,7 +131,7 @@ namespace DuiLib
     };
 
     //定义
-#ifndef UILIB_STATIC
+#ifndef DUILIB_STATIC
 #define DUI_DECLARE_MESSAGE_MAP()                                         \
 private:                                                                  \
 	static const DUI_MSGMAP_ENTRY _messageEntries[];                      \
@@ -151,31 +152,31 @@ protected:                                                                \
 
 
     //基类声明开始
-#ifndef UILIB_STATIC
+#ifndef DUILIB_STATIC
 #define DUI_BASE_BEGIN_MESSAGE_MAP(theClass)                              \
 	const DUI_MSGMAP* PASCAL theClass::_GetBaseMessageMap()               \
 	{ return NULL; }                                                  \
 	const DUI_MSGMAP* theClass::GetMessageMap() const                     \
 	{ return &theClass::messageMap; }                                 \
-	UILIB_COMDAT const DUI_MSGMAP theClass::messageMap =                  \
+	DUILIB_COMDAT const DUI_MSGMAP theClass::messageMap =                  \
 	{  &theClass::_GetBaseMessageMap, &theClass::_messageEntries[0] };\
-	UILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] =     \
+	DUILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] =     \
 	{                                                                     \
 
 #else
 #define DUI_BASE_BEGIN_MESSAGE_MAP(theClass)                              \
 	const DUI_MSGMAP* theClass::GetMessageMap() const                     \
 	{ return &theClass::messageMap; }                                 \
-	UILIB_COMDAT const DUI_MSGMAP theClass::messageMap =                  \
+	DUILIB_COMDAT const DUI_MSGMAP theClass::messageMap =                  \
 	{  NULL, &theClass::_messageEntries[0] };                         \
-	UILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] =     \
+	DUILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] =     \
 	{                                                                     \
 
 #endif
 
 
     //子类声明开始
-#ifndef UILIB_STATIC
+#ifndef DUILIB_STATIC
 #define DUI_BEGIN_MESSAGE_MAP(theClass, baseClass)                        \
 	const DUI_MSGMAP* PASCAL theClass::_GetBaseMessageMap()               \
 	{ return &baseClass::messageMap; }                                \
@@ -201,7 +202,7 @@ protected:                                                                \
     //声明结束
 #define DUI_END_MESSAGE_MAP()                                             \
 	{ _T(""), _T(""), DuiSig_end, (DUI_PMSG)0 }                           \
-	};                                                                        \
+	};                                                                    \
 
 
     //定义消息类型--执行函数宏
@@ -304,7 +305,7 @@ protected:                                                                \
     ///
     //////////////END控件名称宏定义//////////////////////////////////////////////////
 
-    }// namespace DuiLib
+    }// namespace DUILIB
 
 
 #endif//_UIDEFINE_H_

@@ -1,7 +1,7 @@
 
 #include "UIGroupBox.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CGroupBoxUI)
 

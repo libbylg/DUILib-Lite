@@ -2,10 +2,10 @@
 #define UI_PALLET_H
 #pragma once
 
-namespace DuiLib {
+namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
-	class UILIB_API CColorPaletteUI : public CControlUI
+	class DUILIB_API CColorPaletteUI : public CControlUI
 	{
 		DECLARE_DUICONTROL(CColorPaletteUI)
 	public:

@@ -6,7 +6,7 @@
 #define TRACE
 #endif
 
-namespace DuiLib
+namespace DUILIB
 {
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -604,4 +604,4 @@ namespace DuiLib
         return false; // Always return 'false'
     }
 
-} // namespace DuiLib
+} // namespace DUILIB

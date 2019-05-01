@@ -8,11 +8,11 @@
 ** 
 */
 #ifdef USE_XIMAGE_EFFECT
-namespace DuiLib
+namespace DUILIB
 {
 	class CLabelUI;
 
-	class UILIB_API CGifAnimExUI : public CLabelUI
+	class DUILIB_API CGifAnimExUI : public CLabelUI
 	{
 		DECLARE_DUICONTROL(CGifAnimExUI)
 	public:

@@ -1,6 +1,6 @@
 
 
-namespace DuiLib {
+namespace DUILIB {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -1249,4 +1249,4 @@ namespace DuiLib {
 		m_sModuleName = pstrText;
 	}
 
-} // namespace DuiLib
+} // namespace DUILIB

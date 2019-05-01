@@ -3,7 +3,7 @@
 #include "Utils/Utils.h"
 #include "Utils/Utils.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
     CResourceManagerUI::CResourceManagerUI(void)
@@ -226,4 +226,4 @@ namespace DuiLib
     }
 
 
-} // namespace DuiLib
+} // namespace DUILIB

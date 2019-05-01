@@ -3,11 +3,11 @@
 
 #pragma once
 
-namespace DuiLib {
+namespace DUILIB {
 
 	class CTxtWinHost;
 
-	class UILIB_API CRichEditUI : public CContainerUI, public IMessageFilterUI
+	class DUILIB_API CRichEditUI : public CContainerUI, public IMessageFilterUI
 	{
 		DECLARE_DUICONTROL(CRichEditUI)
 	public:
@@ -190,6 +190,6 @@ namespace DuiLib {
 		UINT m_uTipValueAlign;
 	};
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIRICHEDIT_H__

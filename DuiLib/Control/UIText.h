@@ -3,9 +3,9 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API CTextUI : public CLabelUI
+	class DUILIB_API CTextUI : public CLabelUI
 	{
 		DECLARE_DUICONTROL(CTextUI)
 	public:
@@ -31,6 +31,6 @@ namespace DuiLib
 		int m_nHoverLink;
 	};
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif //__UITEXT_H__

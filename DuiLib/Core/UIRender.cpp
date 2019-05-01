@@ -24,7 +24,7 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////
-namespace DuiLib
+namespace DUILIB
 {
     static int g_iFontID = MAX_FONT_ID;
 
@@ -830,7 +830,7 @@ namespace DuiLib
             MakeFitIconDest(rc, pDrawInfo->szIcon, pDrawInfo->sIconAlign, rcDest);
         }
 
-        BOOL bRet = DuiLib::DrawImage(hDC, pManager, rc, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest, \
+        BOOL bRet = DUILIB::DrawImage(hDC, pManager, rc, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest, \
             pDrawInfo->rcSource, pDrawInfo->rcCorner, pDrawInfo->dwMask, pDrawInfo->uFade, pDrawInfo->bHole, pDrawInfo->bTiledX, pDrawInfo->bTiledY);
 
         return true;
@@ -1354,7 +1354,7 @@ namespace DuiLib
             rcDest.bottom = rcItem.top + pDrawInfo->rcDest.bottom;
             if (rcDest.bottom > rcItem.bottom) rcDest.bottom = rcItem.bottom;
         }
-        BOOL bRet = DuiLib::DrawImage(hDC, pManager, rcItem, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest, \
+        BOOL bRet = DUILIB::DrawImage(hDC, pManager, rcItem, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest, \
             pDrawInfo->rcSource, pDrawInfo->rcCorner, pDrawInfo->dwMask, pDrawInfo->uFade, pDrawInfo->bHole, pDrawInfo->bTiledX, pDrawInfo->bTiledY, instance);
 
         return bRet;
@@ -2510,4 +2510,4 @@ namespace DuiLib
         }
     }
 
-} // namespace DuiLib
+} // namespace DUILIB

@@ -3,7 +3,7 @@
 #include "UIGifAnimEx.h"
 #include "../../3rd/CxImage/ximage.h"
 //
-namespace DuiLib
+namespace DUILIB
 {
 	#define GIFANIMUIEX_EVENT_TIEM_ID	100
 	IMPLEMENT_DUICONTROL(CGifAnimExUI)

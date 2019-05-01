@@ -3,7 +3,7 @@
 #include "Core/UIRender.h"
 #include "Core/UIManager.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     IMPLEMENT_DUICONTROL(CControlUI)
 
@@ -816,7 +816,9 @@ namespace DuiLib
             if (GetCursor()) {
                 ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(GetCursor())));
             } else {
+                #pragma warning(disable:4302)   //warning C4302: “类型强制转换”: 从“LPWSTR”到“WORD”截断
                 ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW)));
+                #pragma warning(default:4302)
             }
             return;
         }
@@ -1359,4 +1361,4 @@ namespace DuiLib
         Invalidate();
     }
 
-} // namespace DuiLib
+} // namespace DUILIB

@@ -1,13 +1,13 @@
 #ifndef __UITILELAYOUT_H__
 #define __UITILELAYOUT_H__
 
-#pragma once
+#include "Core/UIDefine.h"
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API CTileLayoutUI : public CContainerUI
+	class DUILIB_API CTileLayoutUI : public CContainerUI
 	{
-		DECLARE_DUICONTROL(CTileLayoutUI)
+		DECL DUILIBICONTROL(CTileLayoutUI)
 	public:
 		CTileLayoutUI();
 

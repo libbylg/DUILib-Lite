@@ -3,9 +3,9 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API CChildLayoutUI : public CContainerUI
+	class DUILIB_API CChildLayoutUI : public CContainerUI
 	{
 		DECLARE_DUICONTROL(CChildLayoutUI)
 	public:
@@ -21,5 +21,5 @@ namespace DuiLib
 	private:
 		CDuiString m_pstrXMLFile;
 	};
-} // namespace DuiLib
+} // namespace DUILIB
 #endif // __UICHILDLAYOUT_H__

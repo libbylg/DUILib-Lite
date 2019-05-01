@@ -2,7 +2,7 @@
 
 #include "Core/UIManager.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     CTrayIcon::CTrayIcon(void)
     {
@@ -60,7 +60,7 @@ namespace DuiLib
         return SetTooltipText(mbuf);
     }
 
-    DuiLib::CDuiString CTrayIcon::GetTooltipText() const
+    DUILIB::CDuiString CTrayIcon::GetTooltipText() const
     {
         return m_trayData.szTip;
     }

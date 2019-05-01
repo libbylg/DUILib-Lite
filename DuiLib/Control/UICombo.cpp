@@ -1,6 +1,6 @@
 
 
-namespace DuiLib {
+namespace DUILIB {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -1241,4 +1241,4 @@ namespace DuiLib {
 		}
 	}
 
-} // namespace DuiLib
+} // namespace DUILIB

@@ -11,7 +11,7 @@ Author: Leon Finker  1/2001
 
 
 
-namespace DuiLib
+namespace DUILIB
 {
     //////////////////////////////////////////////////////////////////////
     // CIDataObject Class

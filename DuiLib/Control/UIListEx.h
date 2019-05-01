@@ -6,7 +6,7 @@
 #include "Layout/UIVerticalLayout.h"
 #include "Layout/UIHorizontalLayout.h"
 
-namespace DuiLib {
+namespace DUILIB {
 
 	class IListComboCallbackUI
 	{
@@ -17,7 +17,7 @@ namespace DuiLib {
 	class CEditUI;
 	class CComboBoxUI;
 
-	class UILIB_API CListExUI : public CListUI, public INotifyUI
+	class DUILIB_API CListExUI : public CListUI, public INotifyUI
 	{
 		DECLARE_DUICONTROL(CListExUI)
 
@@ -72,7 +72,7 @@ namespace DuiLib {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
-	class UILIB_API CListContainerHeaderItemUI : public CHorizontalLayoutUI
+	class DUILIB_API CListContainerHeaderItemUI : public CHorizontalLayoutUI
 	{
 		DECLARE_DUICONTROL(CListContainerHeaderItemUI)
 
@@ -207,7 +207,7 @@ namespace DuiLib {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
-	class UILIB_API CListTextExtElementUI : public CListLabelElementUI
+	class DUILIB_API CListTextExtElementUI : public CListLabelElementUI
 	{
 		DECLARE_DUICONTROL(CListTextExtElementUI)
 
@@ -305,6 +305,6 @@ namespace DuiLib {
 		BOOL GetColumItemColor(int nColum, DWORD& iBKColor);
 
 	};
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UILISTEX_H__

@@ -3,12 +3,12 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
 	/// 扩展下拉列表框
 	/// 增加arrowimage属性,一张图片平均分成5份,Normal/Hot/Pushed/Focused/Disabled(必须有source属性)
 	/// <Default name="ComboBox" value="arrowimage=&quot;file='sys_combo_btn.png' source='0,0,16,16'&quot; "/>
-	class UILIB_API CComboBoxUI : public CComboUI
+	class DUILIB_API CComboBoxUI : public CComboUI
 	{
 		DECLARE_DUICONTROL(CComboBoxUI)
 	public:

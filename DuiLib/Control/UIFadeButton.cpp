@@ -1,7 +1,7 @@
 
 #include "UIFadeButton.h"
 
-namespace DuiLib {
+namespace DUILIB {
 	IMPLEMENT_DUICONTROL(CFadeButtonUI)
 
 	CFadeButtonUI::CFadeButtonUI() : CUIAnimation( &(*this) ), m_bMouseHove( FALSE ), m_bMouseLeave( FALSE )
@@ -147,4 +147,4 @@ namespace DuiLib {
 		Invalidate();
 	}
 
-} // namespace DuiLib
+} // namespace DUILIB

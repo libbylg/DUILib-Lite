@@ -1,7 +1,7 @@
 
 #include "UIListEx.h"
 
-namespace DuiLib {
+namespace DUILIB {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -1573,5 +1573,5 @@ Label_ForeImage:
 		return TRUE;
 	}
 
-} // namespace DuiLib
+} // namespace DUILIB
 

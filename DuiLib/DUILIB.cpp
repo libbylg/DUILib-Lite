@@ -47,6 +47,7 @@
 //
 
 
+#include "DUILIB.h"
 
 
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD  dwReason, LPVOID /*lpReserved*/)

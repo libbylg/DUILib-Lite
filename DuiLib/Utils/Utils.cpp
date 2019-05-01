@@ -1,7 +1,7 @@
 
 #include "Utils.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -364,7 +364,7 @@ namespace DuiLib
 
     CDuiString::CDuiString(LPCTSTR lpsz, int nLen) : m_pstr(m_szBuffer)
     {
-        ASSERT(!::IsBadStringPtr(lpsz, -1) || lpsz == NULL);
+        ASSERT(!::IsBadStringPtr(lpsz, (UINT_PTR)(nLen)) || lpsz == NULL);
         m_szBuffer[0] = '\0';
         Assign(lpsz, nLen);
     }
@@ -464,7 +464,7 @@ namespace DuiLib
     const CDuiString& CDuiString::operator=(LPCTSTR lpStr)
     {
         if (lpStr) {
-            ASSERT(!::IsBadStringPtr(lpStr, -1));
+            ASSERT(!::IsBadStringPtr(lpStr,(UINT_PTR)(-1)));
             Assign(lpStr);
         } else {
             Empty();
@@ -477,7 +477,7 @@ namespace DuiLib
     const CDuiString& CDuiString::operator=(LPCSTR lpStr)
     {
         if (lpStr) {
-            ASSERT(!::IsBadStringPtrA(lpStr, -1));
+            ASSERT(!::IsBadStringPtrA(lpStr, (UINT_PTR)(-1)));
             int cchStr = (int)strlen(lpStr) + 1;
             LPWSTR pwstr = (LPWSTR)_alloca(cchStr);
             if (pwstr != NULL) ::MultiByteToWideChar(::GetACP(), 0, lpStr, -1, pwstr, cchStr);
@@ -491,7 +491,7 @@ namespace DuiLib
     const CDuiString& CDuiString::operator+=(LPCSTR lpStr)
     {
         if (lpStr) {
-            ASSERT(!::IsBadStringPtrA(lpStr, -1));
+            ASSERT(!::IsBadStringPtrA(lpStr, (UINT_PTR)(-1)));
             int cchStr = (int)strlen(lpStr) + 1;
             LPWSTR pwstr = (LPWSTR)_alloca(cchStr);
             if (pwstr != NULL) ::MultiByteToWideChar(::GetACP(), 0, lpStr, -1, pwstr, cchStr);
@@ -551,7 +551,7 @@ namespace DuiLib
     CDuiString CDuiString::operator+(LPCTSTR lpStr) const
     {
         if (lpStr) {
-            ASSERT(!::IsBadStringPtr(lpStr, -1));
+            ASSERT(!::IsBadStringPtr(lpStr, (UINT_PTR)(-1)));
             CDuiString sTemp = *this;
             sTemp.Append(lpStr);
             return sTemp;
@@ -569,7 +569,7 @@ namespace DuiLib
     const CDuiString& CDuiString::operator+=(LPCTSTR lpStr)
     {
         if (lpStr) {
-            ASSERT(!::IsBadStringPtr(lpStr, -1));
+            ASSERT(!::IsBadStringPtr(lpStr, (UINT_PTR)(-1)));
             Append(lpStr);
         }
 
@@ -652,7 +652,7 @@ namespace DuiLib
 
     int CDuiString::Find(LPCTSTR pstrSub, int iPos /*= 0*/) const
     {
-        ASSERT(!::IsBadStringPtr(pstrSub, -1));
+        ASSERT(!::IsBadStringPtr(pstrSub, UINT_PTR(-1)));
         ASSERT(iPos >= 0 && iPos <= GetLength());
         if (iPos != 0 && (iPos < 0 || iPos > GetLength())) return -1;
         LPCTSTR p = _tcsstr(m_pstr + iPos, pstrSub);
@@ -1212,4 +1212,4 @@ namespace DuiLib
     //{
     //	return m_imageInfo;
     //}
-} // namespace DuiLib
+} // namespace DUILIB

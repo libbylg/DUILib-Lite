@@ -1,7 +1,7 @@
 
 #include "UIAnimationTabLayout.h"
 
-namespace DuiLib {
+namespace DUILIB {
 	IMPLEMENT_DUICONTROL(CAnimationTabLayoutUI)
 
 	CAnimationTabLayoutUI::CAnimationTabLayoutUI() : 
@@ -140,4 +140,4 @@ namespace DuiLib {
 		if( _tcsicmp(pstrName, _T("animation_direction")) == 0 && _tcsicmp( pstrValue, _T("vertical")) == 0 ) m_bIsVerticalDirection = true; // pstrValue = "vertical" or "horizontal"
 		return CTabLayoutUI::SetAttribute(pstrName, pstrValue);
 	}
-} // namespace DuiLib
+} // namespace DUILIB

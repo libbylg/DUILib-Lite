@@ -5,7 +5,7 @@
 #include "Utils/Utils.h"
 
 
-namespace DuiLib
+namespace DUILIB
 {
     class DUILIB_API CTrayIcon
     {

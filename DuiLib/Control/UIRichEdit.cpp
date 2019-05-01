@@ -8,7 +8,7 @@
 // These constants are for backward compatibility. They are the 
 // sizes used for initialization and reset in RichEdit 1.0
 
-namespace DuiLib {
+namespace DUILIB {
 
 #define ID_RICH_UNDO			101
 #define ID_RICH_CUT				102
@@ -2737,4 +2737,4 @@ err:
 		return lResult;
 	}
 
-} // namespace DuiLib
+} // namespace DUILIB

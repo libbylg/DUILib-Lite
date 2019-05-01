@@ -3,10 +3,10 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
 
-	class UILIB_API CGroupBoxUI : public CVerticalLayoutUI
+	class DUILIB_API CGroupBoxUI : public CVerticalLayoutUI
 	{
 		DECLARE_DUICONTROL(CGroupBoxUI)
 	public:

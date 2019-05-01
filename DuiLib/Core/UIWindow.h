@@ -1,10 +1,10 @@
-#ifndef __UIBASE_H__
-#define __UIBASE_H__
+#ifndef __UIWindow_H__
+#define __UIWindow_H__
 
 #include "Core/UIDefine.h"
 #include "Utils/Utils.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -112,6 +112,6 @@ namespace DuiLib
         BOOL m_bSubclassed;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
-#endif // __UIBASE_H__
+#endif // __UIWindow_H__

@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
 	#define ROLLTEXT_LEFT		0
 	#define ROLLTEXT_RIGHT		1
@@ -16,7 +16,7 @@ namespace DuiLib
 	#define ROLLTEXT_ROLL_END			21
 	#define ROLLTEXT_ROLL_END_SPAN		1000*6U
 
-	class UILIB_API CRollTextUI : public CLabelUI
+	class DUILIB_API CRollTextUI : public CLabelUI
 	{
 		DECLARE_DUICONTROL(CRollTextUI)
 	public:
@@ -45,6 +45,6 @@ namespace DuiLib
 		int m_nText_W_H;
 	};
 
-}	// namespace DuiLib
+}	// namespace DUILIB
 
 #endif // __UITEXTSCROLLH__

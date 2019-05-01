@@ -5,12 +5,12 @@
 
 //给该控件添加一个属性dtstyle
 
-namespace DuiLib
+namespace DUILIB
 {
 	class CIPAddressWnd;
 
 	/// 时间选择控件
-	class UILIB_API CIPAddressUI : public CLabelUI
+	class DUILIB_API CIPAddressUI : public CLabelUI
 	{
 		DECLARE_DUICONTROL(CIPAddressUI)
 

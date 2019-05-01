@@ -1,9 +1,9 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
-#include "UILIB.h"
+#include "DUILIB.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -336,7 +336,7 @@ namespace DuiLib
     ////
     //struct TImageInfo;
     //class CPaintManagerUI;
-    //class UILIB_API CImageString
+    //class DUILIB_API CImageString
     //{
     //public:
     //	CImageString();
@@ -377,6 +377,6 @@ namespace DuiLib
     //	BOOL	m_bTiledX;
     //	BOOL	m_bTiledY;
     //};
-}// namespace DuiLib
+}// namespace DUILIB
 
 #endif // __UTILS_H__

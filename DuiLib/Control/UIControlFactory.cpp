@@ -4,7 +4,7 @@
 #include "Core/UIControl.h"
 #include "Core/UIContainer.h"
 
-namespace DuiLib 
+namespace DUILIB 
 {
 	CControlFactoryUI::CControlFactoryUI()
 	{

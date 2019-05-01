@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace DuiLib {
+namespace DUILIB {
 
 	class IDialogBuilderCallback
 	{
@@ -12,7 +12,7 @@ namespace DuiLib {
 	};
 
 
-	class UILIB_API CDialogBuilder
+	class DUILIB_API CDialogBuilder
 	{
 	public:
 		CDialogBuilder();
@@ -35,6 +35,6 @@ namespace DuiLib {
     	HINSTANCE m_instance;
 	};
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIDLGBUILDER_H__

@@ -1,7 +1,7 @@
 
 #include "UIEdit.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	class CEditWnd : public CWindowWnd
 	{

@@ -6,14 +6,14 @@ using namespace std;
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
 	class CTreeViewUI;
 	class CCheckBoxUI;
 	class CLabelUI;
 	class COptionUI;
 
-	class UILIB_API CTreeNodeUI : public CListContainerElementUI
+	class DUILIB_API CTreeNodeUI : public CListContainerElementUI
 	{
 		DECLARE_DUICONTROL(CTreeNodeUI)
 	public:
@@ -96,7 +96,7 @@ namespace DuiLib
 		CStdPtrArray			mTreeNodes;
 	};
 
-	class UILIB_API CTreeViewUI : public CListUI,public INotifyUI
+	class DUILIB_API CTreeViewUI : public CListUI,public INotifyUI
 	{
 		DECLARE_DUICONTROL(CTreeViewUI)
 	public:

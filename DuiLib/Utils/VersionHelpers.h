@@ -2,7 +2,7 @@
 #define _VERSIONHELPERS_H_INCLUDED_
 #include <specstrings.h>
 
-namespace DuiLib
+namespace DUILIB
 {
 #define _WIN32_WINNT_NT4                    0x0400
 #define _WIN32_WINNT_WIN2K                  0x0500

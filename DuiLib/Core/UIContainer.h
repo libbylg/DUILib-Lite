@@ -3,7 +3,7 @@
 
 #include "Core/UIControl.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -135,6 +135,6 @@ namespace DuiLib
         CDuiString	m_sHorizontalScrollBarStyle;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UICONTAINER_H__

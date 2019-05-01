@@ -1,9 +1,9 @@
 #ifndef __UIANIMATIONTABLAYOUT_H__
 #define __UIANIMATIONTABLAYOUT_H__
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API CAnimationTabLayoutUI : public CTabLayoutUI, public CUIAnimation
+	class DUILIB_API CAnimationTabLayoutUI : public CTabLayoutUI, public CUIAnimation
 	{
 		DECLARE_DUICONTROL(CAnimationTabLayoutUI)
 	public:

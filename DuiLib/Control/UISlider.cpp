@@ -1,7 +1,7 @@
 
 #include "UISlider.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CSliderUI)
 		CSliderUI::CSliderUI() : m_uButtonState(0), m_nStep(1),m_bSendMove(FALSE)

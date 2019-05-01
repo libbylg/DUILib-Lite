@@ -3,9 +3,9 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API CSliderUI : public CProgressUI
+	class DUILIB_API CSliderUI : public CProgressUI
 	{
 		DECLARE_DUICONTROL(CSliderUI)
 	public:

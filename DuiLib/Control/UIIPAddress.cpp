@@ -18,7 +18,7 @@ DWORD GetLocalIpAddress()
 	return dwIP;
 }
 
-namespace DuiLib
+namespace DUILIB
 {
 	//CDateTimeUI::m_nDTUpdateFlag
 #define IP_NONE   0

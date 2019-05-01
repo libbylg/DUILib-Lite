@@ -9,7 +9,9 @@ Author: Leon Finker  1/2001
 #ifndef __DRAGDROPIMPL_H__
 #define __DRAGDROPIMPL_H__
 
-namespace DuiLib
+#include "Utils/Utils.h"
+
+namespace DUILIB
 {
     typedef std::vector<FORMATETC> FormatEtcArray;
     typedef std::vector<FORMATETC*> PFormatEtcArray;

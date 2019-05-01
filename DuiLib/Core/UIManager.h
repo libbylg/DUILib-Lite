@@ -9,7 +9,7 @@
 #include "Core/UIShadow.h"
 #include "Core/UIRender.h"
 
-namespace DuiLib
+namespace DUILIB
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -24,12 +24,12 @@ namespace DuiLib
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
-    enum UILIB_RESTYPE
+    enum DUILIB_RESTYPE
     {
-        UILIB_FILE = 1,		// 来自磁盘文件
-        UILIB_ZIP,			// 来自磁盘zip压缩包
-        UILIB_RESOURCE,		// 来自资源
-        UILIB_ZIPRESOURCE,	// 来自资源的zip压缩包
+        DUILIB_FILE = 1,		// 来自磁盘文件
+        DUILIB_ZIP,			// 来自磁盘zip压缩包
+        DUILIB_RESOURCE,		// 来自资源
+        DUILIB_ZIPRESOURCE,	// 来自资源的zip压缩包
     };
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -536,6 +536,6 @@ namespace DuiLib
         static CStdPtrArray m_aPlugins;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIMANAGER_H__

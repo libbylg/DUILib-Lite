@@ -1,7 +1,7 @@
 
 #include "UIProgress.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CProgressUI)
 

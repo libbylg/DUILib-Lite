@@ -1,7 +1,7 @@
 
 #include "UIText.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CTextUI)
 

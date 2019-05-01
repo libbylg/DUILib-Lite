@@ -3,9 +3,9 @@
 
 #pragma once
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API CTabLayoutUI : public CContainerUI
+	class DUILIB_API CTabLayoutUI : public CContainerUI
 	{
 		DECLARE_DUICONTROL(CTabLayoutUI)
 	public:

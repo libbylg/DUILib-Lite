@@ -1,6 +1,6 @@
 
 #include "UIHotKey.h"
-namespace DuiLib{
+namespace DUILIB{
 	CHotKeyWnd::CHotKeyWnd(void) : m_pOwner(NULL), m_hBkBrush(NULL), m_bInit(FALSE)
 	{
 	}

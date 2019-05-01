@@ -2,7 +2,7 @@
 #include "UITreeView.h"
 
 #pragma warning( disable: 4251 )
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CTreeNodeUI)
 
@@ -304,7 +304,7 @@ namespace DuiLib
 
 	//************************************
 	// 函数名称: GetItemText
-	// 返回类型: DuiLib::CDuiString
+	// 返回类型: DUILIB::CDuiString
 	// 函数说明: 
 	//************************************
 	CDuiString CTreeNodeUI::GetItemText()
@@ -501,7 +501,7 @@ namespace DuiLib
 
 	//************************************
 	// 函数名称: GetTreeNodes
-	// 返回类型: DuiLib::CStdPtrArray
+	// 返回类型: DUILIB::CStdPtrArray
 	// 函数说明: 
 	//************************************
 	CStdPtrArray CTreeNodeUI::GetTreeNodes()

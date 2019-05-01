@@ -3,7 +3,7 @@
 
 #include "Core/UIDefine.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
     enum
@@ -115,6 +115,6 @@ namespace DuiLib
         CMarkup* m_pOwner;
     };
 
-} // namespace DuiLib
+} // namespace DUILIB
 
 #endif // __UIMARKUP_H__

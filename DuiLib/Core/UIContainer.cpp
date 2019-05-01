@@ -4,7 +4,7 @@
 #include "Core/UIRender.h"
 #include "Core/UIScrollBar.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -1035,7 +1035,7 @@ namespace DuiLib
         } else return FALSE;
     }
 
-    DuiLib::CDuiString CContainerUI::GetSubControlText(LPCTSTR pstrSubControlName)
+    DUILIB::CDuiString CContainerUI::GetSubControlText(LPCTSTR pstrSubControlName)
     {
         CControlUI* pSubControl = NULL;
         pSubControl = this->FindSubControl(pstrSubControlName);
@@ -1076,4 +1076,4 @@ namespace DuiLib
         return pSubControl;
     }
 
-} // namespace DuiLib
+} // namespace DUILIB

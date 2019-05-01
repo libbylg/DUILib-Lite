@@ -1,7 +1,7 @@
 
 #include "UIChildLayout.h"
 
-namespace DuiLib
+namespace DUILIB
 {
 	IMPLEMENT_DUICONTROL(CChildLayoutUI)
 
@@ -35,12 +35,12 @@ namespace DuiLib
 			CContainerUI::SetAttribute(pstrName,pstrValue);
 	}
 
-	void CChildLayoutUI::SetChildLayoutXML( DuiLib::CDuiString pXML )
+	void CChildLayoutUI::SetChildLayoutXML( DUILIB::CDuiString pXML )
 	{
 		m_pstrXMLFile=pXML;
 	}
 
-	DuiLib::CDuiString CChildLayoutUI::GetChildLayoutXML()
+	DUILIB::CDuiString CChildLayoutUI::GetChildLayoutXML()
 	{
 		return m_pstrXMLFile;
 	}
@@ -55,4 +55,4 @@ namespace DuiLib
 	{
 		return _T("ChildLayoutUI");
 	}
-} // namespace DuiLib
+} // namespace DUILIB

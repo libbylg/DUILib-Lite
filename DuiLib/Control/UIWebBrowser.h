@@ -7,9 +7,9 @@
 #include "Utils/WebBrowserEventHandler.h"
 #include <ExDisp.h>
 
-namespace DuiLib
+namespace DUILIB
 {
-	class UILIB_API CWebBrowserUI
+	class DUILIB_API CWebBrowserUI
 		: public CActiveXUI
 		, public IDocHostUIHandler
 		, public IServiceProvider
@@ -170,5 +170,5 @@ namespace DuiLib
 		// Duilib消息分发给WebBrowser
 		virtual LRESULT TranslateAccelerator( MSG *pMsg );
 	};
-} // namespace DuiLib
+} // namespace DUILIB
 #endif // __UIWEBBROWSER_H__
