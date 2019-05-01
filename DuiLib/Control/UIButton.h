@@ -2,8 +2,7 @@
 #define __UIBUTTON_H__
 
 #include "UILIB.h"
-#include "Core/UIDefine.h"
-#include "Control/UILabel.h"
+//#include "Control/UILabel.h"
 
 namespace DuiLib
 {

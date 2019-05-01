@@ -2,9 +2,8 @@
 #define __UICONTROL_H__
 
 #include "UILIB.h"
-#include "Core/UIDelegate.h"
 #include "Core/UIDefine.h"
-#include "Core/UIManager.h"
+#include "Core/UIDelegate.h"
 
 namespace DuiLib
 {
@@ -12,9 +11,51 @@ namespace DuiLib
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class CPaintManagerUI;
+
+    class CManagerUI;
+    class CControlUI;
+
+
+    typedef struct DUILIB_API TPercentInfo
+    {
+        double left;
+        double top;
+        double right;
+        double bottom;
+    } TPercentInfo;
+
+    // Structure for notifications from the system
+    // to the control implementation.
+    typedef struct DUILIB_API TEventUI
+    {
+        int Type;
+        CControlUI* pSender;
+        DWORD dwTimestamp;
+        POINT ptMouse;
+        TCHAR chKey;
+        WORD wKeyState;
+        WPARAM wParam;
+        LPARAM lParam;
+    } TEventUI;
+
+    class CNotifyPump;
+
+    union DuiMessageMapFunctions
+    {
+        DUI_PMSG pfn;   // generic member function pointer
+        LRESULT(CNotifyPump::* pfn_Notify_lwl)(WPARAM, LPARAM);
+        void (CNotifyPump::* pfn_Notify_vn)(TNotifyUI&);
+    };
 
     typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, LPVOID);
+
+#define DECLARE_DUICONTROL(class_name)\
+public:\
+	static CControlUI* CreateControl();
+
+#define IMPLEMENT_DUICONTROL(class_name)\
+	CControlUI* class_name::CreateControl()\
+	{ return new class_name; }
 
     class DUILIB_API CControlUI
     {
@@ -31,8 +72,8 @@ namespace DuiLib
         virtual UINT GetControlFlags() const;
 
         virtual BOOL Activate();
-        virtual CPaintManagerUI* GetManager() const;
-        virtual void SetManager(CPaintManagerUI* pManager, CControlUI* pParent, BOOL bInit = true);
+        virtual CManagerUI* GetManager() const;
+        virtual void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = true);
         virtual CControlUI* GetParent() const;
         void setInstance(HINSTANCE instance = NULL) { m_instance = instance; };
 
@@ -211,7 +252,7 @@ namespace DuiLib
         CEventSource OnNotify;
 
     protected:
-        CPaintManagerUI* m_pManager;
+        CManagerUI* m_pManager;
         CControlUI* m_pParent;
         CDuiString m_sVirtualWnd;
         CDuiString m_sName;

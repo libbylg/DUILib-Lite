@@ -3,11 +3,13 @@
 
 #include "UILIB.h"
 #include "Utils/Utils.h"
-#include "Core/UIContainer.h"
 #include "Core/UIDefine.h"
+#include "Core/UIControl.h"
 
 namespace DuiLib
 {
+    class CContainerUI;
+
     class DUILIB_API CScrollBarUI : public CControlUI
     {
         DECLARE_DUICONTROL(CScrollBarUI)
@@ -150,3 +152,4 @@ namespace DuiLib
 }
 
 #endif // __UISCROLLBAR_H__
+

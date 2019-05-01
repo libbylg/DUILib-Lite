@@ -62,13 +62,13 @@ namespace DuiLib
         return true;
     }
 
-    void CShadowUI::Create(CPaintManagerUI * pPaintManager)
+    void CShadowUI::Create(CManagerUI * pPaintManager)
     {
         if (!m_bIsShowShadow)
             return;
 
         // Already initialized
-        _ASSERT(CPaintManagerUI::GetInstance() != INVALID_HANDLE_VALUE);
+        _ASSERT(CManagerUI::GetInstance() != INVALID_HANDLE_VALUE);
         _ASSERT(pPaintManager != NULL);
         m_pManager = pPaintManager;
         HWND hParentWnd = m_pManager->GetPaintWindow();
@@ -83,7 +83,7 @@ namespace DuiLib
         LONG styleValue = lParentStyle & WS_CAPTION;
         m_hWnd = CreateWindowEx(WS_EX_LAYERED | WS_EX_TRANSPARENT, strWndClassName, NULL,
             /*WS_VISIBLE | */styleValue | WS_POPUPWINDOW,
-            CW_USEDEFAULT, 0, 0, 0, hParentWnd, NULL, CPaintManagerUI::GetInstance(), NULL);
+            CW_USEDEFAULT, 0, 0, 0, hParentWnd, NULL, CManagerUI::GetInstance(), NULL);
 
         if (!(WS_VISIBLE & lParentStyle))	// Parent invisible
             m_Status = SS_ENABLED;

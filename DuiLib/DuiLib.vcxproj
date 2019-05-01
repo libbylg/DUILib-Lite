@@ -935,8 +935,6 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Control\UIButton.cpp" />
-    <ClCompile Include="Control\UILabel.cpp" />
     <ClCompile Include="Core\UIScrollBar.cpp" />
     <ClCompile Include="Core\UIResourceManager.cpp" />
     <ClCompile Include="UILIB.cpp" />
@@ -964,8 +962,6 @@
     <ClCompile Include="Core\UIRender.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Control\UIButton.h" />
-    <ClInclude Include="Control\UILabel.h" />
     <ClInclude Include="Core\UIControl.h" />
     <ClInclude Include="Core\UIScrollBar.h" />
     <ClInclude Include="Core\UIResourceManager.h" />

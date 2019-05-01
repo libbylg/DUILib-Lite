@@ -1,5 +1,5 @@
-#include "Control/UIButton.h"
-#include "Core/UIDefine.h"
+//#include "Control/UIButton.h"
+//#include "Core/UIDefine.h"
 
 namespace DuiLib
 {
@@ -497,7 +497,7 @@ namespace DuiLib
 		if(!m_sStateImage.IsEmpty() && m_nStateCount > 0)
 		{
 			TDrawInfo info;
-			info.Parse(m_sStateImage, _T(""), m_pManager);
+			info.Parse(m_sStateImage, _T(""), m_pManager->GetDPIObj());
 			const TImageInfo* pImage = m_pManager->GetImageEx(info.sImageName, info.sResType, info.dwMask, info.bHSL);
 			if(m_sNormalImage.IsEmpty() && pImage != NULL)
 			{

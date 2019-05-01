@@ -27,7 +27,7 @@ namespace DuiLib
 
 #ifdef _DEBUG
 #ifndef DUITRACE
-#define DUITRACE DUI__Trace
+#define DUITRACE    DUI__Trace
 #endif
 #define DUITRACEMSG DUI__TraceMsg
 #else
@@ -37,11 +37,25 @@ namespace DuiLib
 #define DUITRACEMSG _T("")
 #endif
 
-    void DUILIB_API DUI__Trace(LPCTSTR pstrFormat, ...);
+    void    DUILIB_API DUI__Trace(LPCTSTR pstrFormat, ...);
     LPCTSTR DUILIB_API DUI__TraceMsg(UINT uMsg);
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
+    
+    class CControlUI;
+    
+    // Structure for notifications to the outside world
+    typedef struct TNotifyUI
+    {
+        CDuiString sType;
+        CDuiString sVirtualWnd;
+        CControlUI* pSender;
+        DWORD dwTimestamp;
+        POINT ptMouse;
+        WPARAM wParam;
+        LPARAM lParam;
+    }TNotifyUI;
 
     class DUILIB_API CNotifyPump
     {

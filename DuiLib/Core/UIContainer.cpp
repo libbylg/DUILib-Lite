@@ -1,10 +1,7 @@
-#include "UILIB.h"
 #include "Core/UIContainer.h"
-#include "Core/UIDefine.h"
 #include "Core/UIWindow.h"
 #include "Core/UIManager.h"
 #include "Core/UIRender.h"
-
 #include "Core/UIScrollBar.h"
 
 namespace DuiLib
@@ -739,7 +736,7 @@ namespace DuiLib
         else CControlUI::SetAttribute(pstrName, pstrValue);
     }
 
-    void CContainerUI::SetManager(CPaintManagerUI * pManager, CControlUI * pParent, BOOL bInit)
+    void CContainerUI::SetManager(CManagerUI * pManager, CControlUI * pParent, BOOL bInit)
     {
         for (int it = 0; it < m_items.GetSize(); it++) {
             static_cast<CControlUI*>(m_items[it])->SetManager(pManager, this, bInit);

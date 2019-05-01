@@ -27,15 +27,15 @@ namespace DuiLib
                 if (!m_xml.LoadFromFile(xml.m_lpstr)) return NULL;
             }
         } else {
-            HRSRC hResource = ::FindResource(CPaintManagerUI::GetResourceDll(), xml.m_lpstr, type);
+            HRSRC hResource = ::FindResource(CManagerUI::GetResourceDll(), xml.m_lpstr, type);
             if (hResource == NULL) return NULL;
-            HGLOBAL hGlobal = ::LoadResource(CPaintManagerUI::GetResourceDll(), hResource);
+            HGLOBAL hGlobal = ::LoadResource(CManagerUI::GetResourceDll(), hResource);
             if (hGlobal == NULL) {
                 FreeResource(hResource);
                 return NULL;
             }
 
-            if (!m_xml.LoadFromMem((BYTE*)::LockResource(hGlobal), ::SizeofResource(CPaintManagerUI::GetResourceDll(), hResource))) {
+            if (!m_xml.LoadFromMem((BYTE*)::LockResource(hGlobal), ::SizeofResource(CManagerUI::GetResourceDll(), hResource))) {
                 return NULL;
             }
             ::FreeResource(hResource);

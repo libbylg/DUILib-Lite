@@ -80,12 +80,6 @@
     <ClCompile Include="Core\UIDragDropImpl.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Control\UIButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Control\UILabel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\downloadmgr.h">
@@ -150,12 +144,6 @@
     </ClInclude>
     <ClInclude Include="Core\UIDragDropImpl.h">
       <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Control\UIButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Control\UILabel.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\UIControl.h">
       <Filter>Header Files</Filter>

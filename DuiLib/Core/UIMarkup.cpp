@@ -317,8 +317,8 @@ namespace DuiLib
     BOOL CMarkup::LoadFromFile(LPCTSTR pstrFilename, int encoding)
     {
         Release();
-        CDuiString sFile = CPaintManagerUI::GetResourcePath();
-        if (CPaintManagerUI::GetResourceZip().IsEmpty()) {
+        CDuiString sFile = CManagerUI::GetResourcePath();
+        if (CManagerUI::GetResourceZip().IsEmpty()) {
             sFile += pstrFilename;
             HANDLE hFile = ::CreateFile(sFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
             if (hFile == INVALID_HANDLE_VALUE) return _Failed(_T("Error opening file"));
@@ -343,11 +343,11 @@ namespace DuiLib
 
             return ret;
         } else {
-            sFile += CPaintManagerUI::GetResourceZip();
+            sFile += CManagerUI::GetResourceZip();
             HZIP hz = NULL;
-            if (CPaintManagerUI::IsCachedResourceZip()) hz = (HZIP)CPaintManagerUI::GetResourceZipHandle();
+            if (CManagerUI::IsCachedResourceZip()) hz = (HZIP)CManagerUI::GetResourceZipHandle();
             else {
-                CDuiString sFilePwd = CPaintManagerUI::GetResourceZipPwd();
+                CDuiString sFilePwd = CManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
                 char* pwd = w2a((wchar_t*)sFilePwd.GetData());
                 hz = OpenZip(sFile.GetData(), pwd);
@@ -369,10 +369,10 @@ namespace DuiLib
             int res = UnzipItem(hz, i, pByte, dwSize);
             if (res != 0x00000000 && res != 0x00000600) {
                 delete[] pByte;
-                if (!CPaintManagerUI::IsCachedResourceZip()) CloseZip(hz);
+                if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
                 return _Failed(_T("Could not unzip file"));
             }
-            if (!CPaintManagerUI::IsCachedResourceZip()) CloseZip(hz);
+            if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
             BOOL ret = LoadFromMem(pByte, dwSize, encoding);
             delete[] pByte;
             pByte = NULL;

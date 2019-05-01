@@ -44,27 +44,8 @@ namespace DuiLib
     // 核心控件
     class CControlUI;
 
-    // Structure for notifications to the outside world
-    typedef struct TNotifyUI
-    {
-        CDuiString sType;
-        CDuiString sVirtualWnd;
-        CControlUI* pSender;
-        DWORD dwTimestamp;
-        POINT ptMouse;
-        WPARAM wParam;
-        LPARAM lParam;
-    }TNotifyUI;
 
-    class CNotifyPump;
-    typedef void (CNotifyPump::* DUI_PMSG)(TNotifyUI& msg);  //指针类型
 
-    union DuiMessageMapFunctions
-    {
-        DUI_PMSG pfn;   // generic member function pointer
-        LRESULT(CNotifyPump::* pfn_Notify_lwl)(WPARAM, LPARAM);
-        void (CNotifyPump::* pfn_Notify_vn)(TNotifyUI&);
-    };
 
     //定义所有消息类型
     //////////////////////////////////////////////////////////////////////////
@@ -122,6 +103,11 @@ namespace DuiLib
 #define DUI_MSGTYPE_LISTPAGECHANGED			(_T("listpagechanged"))
 
     //////////////////////////////////////////////////////////////////////////
+    
+    class CNotifyPump;
+    struct TNotifyUI;
+    typedef void (CNotifyPump::* DUI_PMSG)(TNotifyUI& msg);  //指针类型
+
 
     struct DUI_MSGMAP_ENTRY;
     struct DUI_MSGMAP
@@ -211,9 +197,6 @@ protected:                                                                \
 
 #endif
 
-#define DECLARE_DUICONTROL(class_name)\
-public:\
-	static CControlUI* CreateControl();
 
     //声明结束
 #define DUI_END_MESSAGE_MAP()                                             \
@@ -257,9 +240,7 @@ public:\
 #define DUI_ON_TIMER()                                                    \
 	{ DUI_MSGTYPE_TIMER, _T(""), DuiSig_vn,(DUI_PMSG)&OnTimer },          \
 
-#define IMPLEMENT_DUICONTROL(class_name)\
-	CControlUI* class_name::CreateControl()\
-	{ return new class_name; }
+
     ///
     //////////////END消息映射宏定义////////////////////////////////////////////////////
 

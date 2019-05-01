@@ -1,9 +1,7 @@
-#include "UILIB.h"
 #include "Core/UIControl.h"
-#include "Core/UIDefine.h"
 #include "Core/UIResourceManager.h"
-#include "Core/UIWindow.h"
 #include "Core/UIRender.h"
+#include "Core/UIManager.h"
 
 namespace DuiLib
 {
@@ -94,12 +92,12 @@ namespace DuiLib
         return true;
     }
 
-    CPaintManagerUI* CControlUI::GetManager() const
+    CManagerUI* CControlUI::GetManager() const
     {
         return m_pManager;
     }
 
-    void CControlUI::SetManager(CPaintManagerUI * pManager, CControlUI * pParent, BOOL bInit)
+    void CControlUI::SetManager(CManagerUI * pManager, CControlUI * pParent, BOOL bInit)
     {
         m_pManager = pManager;
         m_pParent = pParent;
@@ -792,7 +790,7 @@ namespace DuiLib
     {
         if (!m_bColorHSL) return dwColor;
         short H, S, L;
-        CPaintManagerUI::GetHSL(&H, &S, &L);
+        CManagerUI::GetHSL(&H, &S, &L);
         return CRenderEngine::AdjustColor(dwColor, H, S, L);
     }
 

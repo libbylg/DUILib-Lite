@@ -1,9 +1,10 @@
 #ifndef __UILABEL_H__
 #define __UILABEL_H__
 
-
-#include "Core/UIDefine.h"
-#include "Core/UIControl.h"
+#include "UILIB.h"
+//#include "Utils/Utils.h"
+//#include "Core/UIDefine.h"
+////#include "Core/UIControl.h"
 
 
 

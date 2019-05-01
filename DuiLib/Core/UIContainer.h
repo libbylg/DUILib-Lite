@@ -1,7 +1,6 @@
 #ifndef __UICONTAINER_H__
 #define __UICONTAINER_H__
 
-#include "Core/UIDefine.h"
 #include "Core/UIControl.h"
 
 namespace DuiLib
@@ -80,7 +79,7 @@ namespace DuiLib
 
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
-        void SetManager(CPaintManagerUI* pManager, CControlUI* pParent, BOOL bInit = true);
+        void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = true);
         CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
 
         BOOL SetSubControlText(LPCTSTR pstrSubControlName, LPCTSTR pstrText);

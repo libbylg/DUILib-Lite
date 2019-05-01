@@ -10,7 +10,7 @@ namespace DuiLib
     class DUILIB_API CShadowUI
     {
     public:
-        friend class CPaintManagerUI;
+        friend class CManagerUI;
 
         CShadowUI(void);
         virtual ~CShadowUI(void);
@@ -38,7 +38,7 @@ namespace DuiLib
         BOOL CopyShadow(CShadowUI* pShadow);
 
         //	创建阴影窗体，由CPaintManagerUI自动调用,除非自己要单独创建阴影
-        void Create(CPaintManagerUI* pPaintManager);
+        void Create(CManagerUI* pPaintManager);
     protected:
 
         //	初始化并注册阴影类
@@ -75,7 +75,7 @@ namespace DuiLib
 
         static BOOL s_bHasInit;
 
-        CPaintManagerUI* m_pManager;		// 父窗体的CPaintManagerUI，用来获取素材资源和父窗体句柄
+        CManagerUI* m_pManager;		// 父窗体的CPaintManagerUI，用来获取素材资源和父窗体句柄
         HWND			 m_hWnd;			// 阴影窗体的句柄
         LONG_PTR		 m_OriParentProc;	// 子类化父窗体
         BYTE			 m_Status;

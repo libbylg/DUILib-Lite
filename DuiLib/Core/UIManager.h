@@ -7,6 +7,7 @@
 #include "Core/UIDragDropImpl.h"
 #include "Core/UIDefine.h"
 #include "Core/UIShadow.h"
+#include "Core/UIRender.h"
 
 namespace DuiLib
 {
@@ -17,9 +18,9 @@ namespace DuiLib
     class CRichEditUI;
     class CIDropTarget;
     class CShadowUI;
-    class CPaintManagerUI;
+    class CManagerUI;
     class CDPI;
-
+    struct TDrawInfo;
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -133,36 +134,7 @@ namespace DuiLib
 
     };
 
-    typedef struct DUILIB_API TDrawInfo
-    {
-        TDrawInfo();
-        void Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CPaintManagerUI* pManager);
-        void Clear();
 
-        CDuiString sDrawString;
-        CDuiString sDrawModify;
-        CDuiString sImageName;
-        CDuiString sResType;
-        RECT rcDest;
-        RECT rcSource;
-        RECT rcCorner;
-        DWORD dwMask;
-        BYTE uFade;
-        BOOL bHole;
-        BOOL bTiledX;
-        BOOL bTiledY;
-        BOOL bHSL;
-        SIZE szIcon;
-        CDuiString sIconAlign;
-    } TDrawInfo;
-
-    typedef struct DUILIB_API TPercentInfo
-    {
-        double left;
-        double top;
-        double right;
-        double bottom;
-    } TPercentInfo;
 
     struct DUILIB_API TResInfo
     {
@@ -179,19 +151,7 @@ namespace DuiLib
         CStdStringPtrMap m_DrawInfoHash;
     };
 
-    // Structure for notifications from the system
-    // to the control implementation.
-    typedef struct DUILIB_API TEventUI
-    {
-        int Type;
-        CControlUI* pSender;
-        DWORD dwTimestamp;
-        POINT ptMouse;
-        TCHAR chKey;
-        WORD wKeyState;
-        WPARAM wParam;
-        LPARAM lParam;
-    } TEventUI;
+
 
     // Drag&Drop control
     const TCHAR* const CF_MOVECONTROL = _T("CF_MOVECONTROL");
@@ -226,11 +186,11 @@ namespace DuiLib
     //
     typedef CControlUI* (*LPCREATECONTROL)(LPCTSTR pstrType);
 
-    class DUILIB_API CPaintManagerUI : public CIDropTarget
+    class DUILIB_API CManagerUI : public CIDropTarget
     {
     public:
-        CPaintManagerUI();
-        ~CPaintManagerUI();
+        CManagerUI();
+        ~CManagerUI();
 
     public:
         void Init(HWND hWnd, LPCTSTR pstrName = NULL);
@@ -304,7 +264,7 @@ namespace DuiLib
         static BOOL GetHSL(short* H, short* S, short* L);
         static void SetHSL(BOOL bUseHSL, short H, short S, short L); // H:0~360, S:0~200, L:0~200 
         static void ReloadSkin();
-        static CPaintManagerUI* GetPaintManager(LPCTSTR pstrName);
+        static CManagerUI* GetPaintManager(LPCTSTR pstrName);
         static CStdPtrArray* GetPaintManagers();
         static BOOL LoadPlugin(LPCTSTR pstrModuleName);
         static CStdPtrArray* GetPlugins();

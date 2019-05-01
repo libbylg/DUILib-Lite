@@ -244,7 +244,7 @@ namespace DuiLib
     {
         if (GetSuperClassName() != NULL && !RegisterSuperclass()) return NULL;
         if (GetSuperClassName() == NULL && !RegisterWindowClass()) return NULL;
-        m_hWnd = ::CreateWindowEx(dwExStyle, GetWindowClassName(), pstrName, dwStyle, x, y, cx, cy, hwndParent, hMenu, CPaintManagerUI::GetInstance(), this);
+        m_hWnd = ::CreateWindowEx(dwExStyle, GetWindowClassName(), pstrName, dwStyle, x, y, cx, cy, hwndParent, hMenu, CManagerUI::GetInstance(), this);
         ASSERT(m_hWnd != NULL);
         return m_hWnd;
     }
@@ -292,7 +292,7 @@ namespace DuiLib
                 ::EnableWindow(hWndParent, TRUE);
                 ::SetFocus(hWndParent);
             }
-            if (!CPaintManagerUI::TranslateMessage(&msg)) {
+            if (!CManagerUI::TranslateMessage(&msg)) {
                 ::TranslateMessage(&msg);
                 ::DispatchMessage(&msg);
             }
@@ -353,13 +353,13 @@ namespace DuiLib
 
     void CWindowUI::SetIcon(UINT nRes)
     {
-        HICON hIcon = (HICON)::LoadImage(CPaintManagerUI::GetInstance(), MAKEINTRESOURCE(nRes), IMAGE_ICON,
+        HICON hIcon = (HICON)::LoadImage(CManagerUI::GetInstance(), MAKEINTRESOURCE(nRes), IMAGE_ICON,
             (::GetSystemMetrics(SM_CXICON) + 15) & ~15, (::GetSystemMetrics(SM_CYICON) + 15) & ~15,	// 防止高DPI下图标模糊
             LR_DEFAULTCOLOR);
         ASSERT(hIcon);
         ::SendMessage(m_hWnd, WM_SETICON, (WPARAM)TRUE, (LPARAM)hIcon);
 
-        hIcon = (HICON)::LoadImage(CPaintManagerUI::GetInstance(), MAKEINTRESOURCE(nRes), IMAGE_ICON,
+        hIcon = (HICON)::LoadImage(CManagerUI::GetInstance(), MAKEINTRESOURCE(nRes), IMAGE_ICON,
             (::GetSystemMetrics(SM_CXICON) + 15) & ~15, (::GetSystemMetrics(SM_CYICON) + 15) & ~15,	// 防止高DPI下图标模糊
             LR_DEFAULTCOLOR);
         ASSERT(hIcon);
@@ -374,7 +374,7 @@ namespace DuiLib
         wc.cbWndExtra = 0;
         wc.hIcon = NULL;
         wc.lpfnWndProc = CWindowUI::__WndProc;
-        wc.hInstance = CPaintManagerUI::GetInstance();
+        wc.hInstance = CManagerUI::GetInstance();
         wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
         wc.hbrBackground = NULL;
         wc.lpszMenuName = NULL;
@@ -391,14 +391,14 @@ namespace DuiLib
         WNDCLASSEX wc = {0};
         wc.cbSize = sizeof(WNDCLASSEX);
         if (!::GetClassInfoEx(NULL, GetSuperClassName(), &wc)) {
-            if (!::GetClassInfoEx(CPaintManagerUI::GetInstance(), GetSuperClassName(), &wc)) {
+            if (!::GetClassInfoEx(CManagerUI::GetInstance(), GetSuperClassName(), &wc)) {
                 ASSERT(!"Unable to locate window class");
                 return NULL;
             }
         }
         m_OldWndProc = wc.lpfnWndProc;
         wc.lpfnWndProc = CWindowUI::__ControlProc;
-        wc.hInstance = CPaintManagerUI::GetInstance();
+        wc.hInstance = CManagerUI::GetInstance();
         wc.lpszClassName = GetWindowClassName();
         ATOM ret = ::RegisterClassEx(&wc);
         ASSERT(ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);

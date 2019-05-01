@@ -1,7 +1,8 @@
-#include "UILIB.h"
 #include "Core/UIScrollBar.h"
 #include "Core/UIDefine.h"
 #include "Core/UIRender.h"
+#include "Core/UIContainer.h"
+#include "Core/UIManager.h"
 
 namespace DuiLib
 {
