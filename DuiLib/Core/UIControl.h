@@ -14,6 +14,11 @@ namespace DUILIB
     class DUILIB_API CManagerUI;
     class DUILIB_API CControlUI;
 
+    // Flags for CControlUI::GetControlFlags()
+    #define UIFLAG_TABSTOP       0x00000001
+    #define UIFLAG_SETCURSOR     0x00000002
+    #define UIFLAG_WANTRETURN    0x00000004
+
 
     typedef struct DUILIB_API TPercentInfo
     {

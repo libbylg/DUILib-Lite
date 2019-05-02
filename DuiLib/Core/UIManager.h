@@ -81,10 +81,6 @@ namespace DUILIB
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    // Flags for CControlUI::GetControlFlags()
-#define UIFLAG_TABSTOP       0x00000001
-#define UIFLAG_SETCURSOR     0x00000002
-#define UIFLAG_WANTRETURN    0x00000004
 
     // Flags for FindControl()
 #define UIFIND_ALL           0x00000000

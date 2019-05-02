@@ -1,14 +1,13 @@
-#include "Core/UILabel.h"
-#include "Core/UIDefine.h"
+#include "Control/UILabel.h"
 #include "Core/UIRender.h"
 #include "Core/UIContainer.h"
 #include "Core/UIManager.h"
 
 namespace DUILIB
 {
-    IMPLEMENT_DUICONTROL(CLabelUI)
+    IMPLEMENT_DUICONTROL(CLabelUI);
 
-        CLabelUI::CLabelUI() : m_uTextStyle(DT_VCENTER | DT_SINGLELINE), m_dwTextColor(0),
+    CLabelUI::CLabelUI() : m_uTextStyle(DT_VCENTER | DT_SINGLELINE), m_dwTextColor(0),
         m_dwDisabledTextColor(0),
         m_iFont(-1),
         m_bShowHtml(FALSE),
