@@ -1,10 +1,10 @@
-#ifndef __UICONTROL_H__
-#define __UICONTROL_H__
+#ifndef __UICONTROL__H__
+#define __UICONTROL__H__
 
 #include "Core/UIDefine.h"
 #include "Core/UIDelegate.h"
 
-namespace DUILIB
+namespace DUI
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ namespace DUILIB
 
     class CNotifyPumpUI;
 
-    union DuiMessageMapFunctions
+    union TMSGMAPFUNC_UI
     {
         PMSG_UI pfn;   // generic member function pointer
         LRESULT(CNotifyPumpUI::* pfn_Notify_lwl)(WPARAM, LPARAM);
@@ -53,17 +53,17 @@ namespace DUILIB
 
     typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, LPVOID);
 
-#define DECLARE_CONTROL_UI(class_name)\
+#define UI_DECLARE_CONTROL(class_name)\
 public:\
 	static CControlUI* CreateControl();
 
-#define IMPLEMENT_CONTROL_UI(class_name)\
+#define UI_IMPLEMENT_CONTROL(class_name)\
 	CControlUI* class_name::CreateControl()\
 	{ return new class_name; }
 
     class DUILIB_API CControlUI
     {
-        DECLARE_CONTROL_UI(CControlUI)
+        UI_DECLARE_CONTROL(CControlUI)
     public:
         CControlUI();
         virtual ~CControlUI();
@@ -311,6 +311,6 @@ public:\
         CStdStringPtrMap m_mCustomAttrHash;
     };
 
-} // namespace DUILIB
+} // namespace DUI
 
-#endif // __UICONTROL_H__
+#endif // __UICONTROL__H__

@@ -3,7 +3,7 @@
 
 #include "Core/UIControl.h"
 
-namespace DUILIB
+namespace DUI
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -29,7 +29,7 @@ namespace DUILIB
 
     class DUILIB_API CContainerUI : public CControlUI, public IContainerUI
     {
-        DECLARE_CONTROL_UI(CContainerUI)
+        UI_DECLARE_CONTROL(CContainerUI)
 
     public:
         CContainerUI();
@@ -135,6 +135,6 @@ namespace DUILIB
         CStringUI	m_sHorizontalScrollBarStyle;
     };
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UICONTAINER_H__

@@ -2,11 +2,11 @@
 
 #include "UIMenu.h"
 
-namespace DUILIB {
+namespace DUI {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
-	IMPLEMENT_DUICONTROL(CMenuUI)
+	UI_IMPLEMENT_CONTROL(CMenuUI)
 
 		CMenuUI::CMenuUI():
 		m_pWindow(NULL)
@@ -618,7 +618,7 @@ namespace DUILIB {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
-	IMPLEMENT_DUICONTROL(CMenuElementUI)
+	UI_IMPLEMENT_CONTROL(CMenuElementUI)
 
 	CMenuElementUI::CMenuElementUI():
 	m_pWindow(NULL),
@@ -1238,4 +1238,4 @@ namespace DUILIB {
 		}
 		return NULL;
 	}
-} // namespace DUILIB
+} // namespace DUI

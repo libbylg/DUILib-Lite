@@ -2,7 +2,7 @@
 #include "UITreeView.h"
 
 #pragma warning( disable: 4251 )
-namespace DUILIB
+namespace DUI
 {
 	IMPLEMENT_CONTROL_UI(CTreeNodeUI)
 
@@ -105,7 +105,7 @@ namespace DUILIB
 		CListContainerElementUI::DoEvent(event);
 		if( event.Type == UIEVENT_DBLCLICK ) {
 			if( IsEnabled() ) {
-				m_pManager->SendNotify(this, UIMSGTYPE_TREEITEMDBCLICK);
+				m_pManager->SendNotify(this, UIMSG_TREEITEMDBCLICK);
 				Invalidate();
 			}
 			return;
@@ -934,7 +934,7 @@ namespace DUILIB
 	BOOL CTreeViewUI::OnCheckBoxChanged( void* param )
 	{
 		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
-		if(pMsg->sType == UIMSGTYPE_SELECTCHANGED)
+		if(pMsg->sType == UIMSG_SELECTCHANGED)
 		{
 			CCheckBoxUI* pCheckBox = (CCheckBoxUI*)pMsg->pSender;
 			CTreeNodeUI* pItem = (CTreeNodeUI*)pCheckBox->GetParent()->GetParent();
@@ -953,7 +953,7 @@ namespace DUILIB
 	BOOL CTreeViewUI::OnFolderChanged( void* param )
 	{
 		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
-		if(pMsg->sType == UIMSGTYPE_SELECTCHANGED) {
+		if(pMsg->sType == UIMSG_SELECTCHANGED) {
 			CCheckBoxUI* pFolder = (CCheckBoxUI*)pMsg->pSender;
 			CTreeNodeUI* pItem = (CTreeNodeUI*)pFolder->GetParent()->GetParent();
 			pItem->SetVisibleTag(!pFolder->GetCheck());
@@ -972,7 +972,7 @@ namespace DUILIB
 	BOOL CTreeViewUI::OnDBClickItem( void* param )
 	{
 		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
-		if(_tcsicmp(pMsg->sType, UIMSGTYPE_TREEITEMDBCLICK) == 0) {
+		if(_tcsicmp(pMsg->sType, UIMSG_TREEITEMDBCLICK) == 0) {
 			CTreeNodeUI* pItem		= static_cast<CTreeNodeUI*>(pMsg->pSender);
 			CCheckBoxUI* pFolder	= pItem->GetFolderButton();
 			pFolder->Selected(!pFolder->IsSelected());

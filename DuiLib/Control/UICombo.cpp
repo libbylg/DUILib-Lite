@@ -1,6 +1,6 @@
 
 
-namespace DUILIB {
+namespace DUI {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -42,7 +42,7 @@ namespace DUILIB {
 			CDuiString sName = msg.pSender->GetName();
 			CControlUI* pCtrl = msg.pSender;
 			while(pCtrl != NULL) {
-				IListItemUI* pListItem = (IListItemUI*)pCtrl->GetInterface(DUI_CTR_LISTITEM);
+				IListItemUI* pListItem = (IListItemUI*)pCtrl->GetInterface(UICONTROL_LISTITEM);
 				if(pListItem != NULL ) {
 					break;
 				}
@@ -118,11 +118,11 @@ namespace DUILIB {
 	{
 		CControlUI* pControl = m_pm.FindControl(ptMouse);
 		if(pControl != NULL) {
-			LPVOID pInterface = pControl->GetInterface(DUI_CTR_SCROLLBAR);
+			LPVOID pInterface = pControl->GetInterface(UICONTROL_SCROLLBAR);
 			if(pInterface) return FALSE;
 
 			while(pControl != NULL) {
-				IListItemUI* pListItem = (IListItemUI*)pControl->GetInterface(DUI_CTR_LISTITEM);
+				IListItemUI* pListItem = (IListItemUI*)pControl->GetInterface(UICONTROL_LISTITEM);
 				if(pListItem != NULL ) {
 					return true;
 				}
@@ -266,7 +266,7 @@ namespace DUILIB {
 	}
 #endif
 	////////////////////////////////////////////////////////
-	IMPLEMENT_DUICONTROL(CComboUI)
+	UI_IMPLEMENT_CONTROL(CComboUI)
 
 	CComboUI::CComboUI() : m_uTextStyle(DT_VCENTER | DT_SINGLELINE)
 		, m_dwTextColor(0)
@@ -308,7 +308,7 @@ namespace DUILIB {
 
 	LPVOID CComboUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_COMBO) == 0 ) return static_cast<CComboUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_COMBO) == 0 ) return static_cast<CComboUI*>(this);
 		if( _tcsicmp(pstrName, _T("IListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
 		return CContainerUI::GetInterface(pstrName);
 	}
@@ -358,7 +358,7 @@ namespace DUILIB {
 		m_iCurSel = iIndex;
 		if( m_pWindow != NULL || bTakeFocus ) pControl->SetFocus();
 		pListItem->Select(true);
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_ITEMSELECT, m_iCurSel, iOldSel);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSG_ITEMSELECT, m_iCurSel, iOldSel);
 		Invalidate();
 
 		return true;
@@ -582,12 +582,12 @@ namespace DUILIB {
 	BOOL CComboUI::Activate()
 	{
 		if( !CControlUI::Activate() ) return FALSE;
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_PREDROPDOWN);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSG_PREDROPDOWN);
 		if( m_pWindow ) return true;
 		m_pWindow = new CComboWnd();
 		ASSERT(m_pWindow);
 		m_pWindow->Init(this);
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_DROPDOWN);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSG_DROPDOWN);
 		Invalidate();
 		return true;
 	}
@@ -1241,4 +1241,4 @@ namespace DUILIB {
 		}
 	}
 
-} // namespace DUILIB
+} // namespace DUI

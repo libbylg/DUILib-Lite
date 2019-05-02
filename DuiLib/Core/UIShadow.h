@@ -3,7 +3,7 @@
 
 #include "Utils/Utils.h"
 
-namespace DUILIB
+namespace DUI
 {
 
     class DUILIB_API CShadowUI

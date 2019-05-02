@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace DUILIB {
+namespace DUI {
 
 	class IDialogBuilderCallback
 	{
@@ -35,6 +35,6 @@ namespace DUILIB {
     	HINSTANCE m_instance;
 	};
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIDLGBUILDER_H__

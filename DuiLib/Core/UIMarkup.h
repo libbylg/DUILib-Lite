@@ -3,14 +3,14 @@
 
 #include "Core/UIDefine.h"
 
-namespace DUILIB
+namespace DUI
 {
 
-    enum
+    enum XMLFILE_ENCODING_TYPE_UI
     {
-        XMLFILE_ENCODING_UTF8 = 0,
-        XMLFILE_ENCODING_UNICODE = 1,
-        XMLFILE_ENCODING_ASNI = 2,
+        UIXMLFILE_ENCODING_UTF8 = 0,
+        UIXMLFILE_ENCODING_UNICODE = 1,
+        UIXMLFILE_ENCODING_ASNI = 2,
     };
 
     class CMarkupUI;
@@ -25,8 +25,8 @@ namespace DUILIB
         ~CMarkupUI();
 
         BOOL Load(LPCTSTR pstrXML);
-        BOOL LoadFromMem(BYTE* pByte, DWORD dwSize, int encoding = XMLFILE_ENCODING_UTF8);
-        BOOL LoadFromFile(LPCTSTR pstrFilename, int encoding = XMLFILE_ENCODING_UTF8);
+        BOOL LoadFromMem(BYTE* pByte, DWORD dwSize, int encoding = UIXMLFILE_ENCODING_UTF8);
+        BOOL LoadFromFile(LPCTSTR pstrFilename, int encoding = UIXMLFILE_ENCODING_UTF8);
         void Release();
         BOOL IsValid() const;
 
@@ -115,6 +115,6 @@ namespace DUILIB
         CMarkupUI* m_pOwner;
     };
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIMARKUP_H__

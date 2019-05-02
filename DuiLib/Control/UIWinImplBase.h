@@ -7,7 +7,7 @@
 #include "Core/UIResourceManager.h"
 
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API WindowImplBase
 		: public CWindowWnd
@@ -27,7 +27,7 @@ namespace DUILIB
 		virtual void OnFinalMessage( HWND hWnd );
 		virtual void Notify(TNotifyUI& msg);
 
-		DUI_DECLARE_MESSAGE_MAP()
+		UI_DECLARE_MESSAGE_MAP()
 		virtual void OnClick(TNotifyUI& msg);
 		virtual BOOL IsInStaticControl(CControlUI *pControl);
 

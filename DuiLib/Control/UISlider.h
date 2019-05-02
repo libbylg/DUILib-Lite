@@ -3,11 +3,11 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CSliderUI : public CProgressUI
 	{
-		DECLARE_DUICONTROL(CSliderUI)
+		UI_DECLARE_CONTROL(CSliderUI)
 	public:
 		CSliderUI();
 

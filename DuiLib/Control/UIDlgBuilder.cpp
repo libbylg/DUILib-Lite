@@ -1,6 +1,6 @@
 
 
-namespace DUILIB {
+namespace DUI {
 
 	CDialogBuilder::CDialogBuilder() : m_pCallback(NULL), m_pstrtype(NULL)
 	{
@@ -507,4 +507,4 @@ namespace DUILIB {
 		return pReturn;
 	}
 
-} // namespace DUILIB
+} // namespace DUI

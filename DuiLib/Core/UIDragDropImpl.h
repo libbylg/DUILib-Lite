@@ -11,7 +11,7 @@ Author: Leon Finker  1/2001
 
 #include "Utils/Utils.h"
 
-namespace DUILIB
+namespace DUI
 {
     typedef std::vector<FORMATETC> FormatEtcArray;
     typedef std::vector<FORMATETC*> PFormatEtcArray;

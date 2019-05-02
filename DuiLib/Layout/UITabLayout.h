@@ -1,13 +1,13 @@
 #ifndef __UITABLAYOUT_H__
 #define __UITABLAYOUT_H__
 
-#pragma once
+#include "Core/UIContainer.h"
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CTabLayoutUI : public CContainerUI
 	{
-		DECLARE_DUICONTROL(CTabLayoutUI)
+		UI_DECLARE_CONTROL(CTabLayoutUI)
 	public:
 		CTabLayoutUI();
 

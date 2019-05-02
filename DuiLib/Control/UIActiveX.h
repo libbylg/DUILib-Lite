@@ -6,7 +6,7 @@
 struct IOleObject;
 
 
-namespace DUILIB {
+namespace DUI {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
@@ -27,7 +27,7 @@ namespace DUILIB {
 
 	class DUILIB_API CActiveXUI : public CControlUI, public IMessageFilterUI
 	{
-		DECLARE_DUICONTROL(CActiveXUI)
+		UI_DECLARE_CONTROL(CActiveXUI)
 
 		friend class CActiveXCtrl;
 	public:
@@ -76,6 +76,6 @@ namespace DUILIB {
 		HWND m_hwndHost;
 	};
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIACTIVEX_H__

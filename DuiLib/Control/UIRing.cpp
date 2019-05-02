@@ -1,9 +1,9 @@
 
 #include "UIRing.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CRingUI)
+	UI_IMPLEMENT_CONTROL(CRingUI)
 
 	CRingUI::CRingUI() : m_fCurAngle(0.0f), m_pBkimage(NULL)
 	{

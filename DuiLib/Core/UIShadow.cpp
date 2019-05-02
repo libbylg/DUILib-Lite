@@ -3,7 +3,7 @@
 #include "Core/UIRender.h"
 
 
-namespace DUILIB
+namespace DUI
 {
 
     const TCHAR* strWndClassName = _T("PerryShadowWnd");
@@ -304,7 +304,7 @@ namespace DUILIB
             rcBmpPart.right = data->nX;
             rcBmpPart.bottom = data->nY;
             RECT corner = m_rcShadowCorner;
-            CRenderEngine::DrawImage(hMemDC, data->hBitmap, rcPaint, rcPaint, rcBmpPart, corner, data->bAlpha, 0xFF, true, false, false);
+            CRenderUI::DrawImage(hMemDC, data->hBitmap, rcPaint, rcPaint, rcBmpPart, corner, data->bAlpha, 0xFF, true, false, false);
         } else {
             ZeroMemory(pvBits, bmi.bmiHeader.biSizeImage);
             MakeShadow((UINT32*)pvBits, hParent, &WndRect);
@@ -672,4 +672,4 @@ namespace DUILIB
         pShadow->ShowShadow(m_bIsShowShadow);
         return true;
     }
-} //namespace DUILIB
+} //namespace DUI

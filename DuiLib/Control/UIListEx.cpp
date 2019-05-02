@@ -1,12 +1,12 @@
 
 #include "UIListEx.h"
 
-namespace DUILIB {
+namespace DUI {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListExUI)
+	UI_IMPLEMENT_CONTROL(CListExUI)
 
 	CListExUI::CListExUI() : m_pEditUI(NULL), m_pComboBoxUI(NULL), m_bAddMessageFilter(FALSE),m_nRow(-1),m_nColum(-1),m_pXCallback(NULL)
 	{
@@ -127,7 +127,7 @@ namespace DUILIB {
 				}
 			}
 		}
-		else if (_tcsicmp(msg.sType, UIMSGTYPE_LISTITEMCHECKED) == 0)
+		else if (_tcsicmp(msg.sType, UIMSG_LISTITEMCHECKED) == 0)
 		{
 			for (int i = 0; i < GetCount(); ++i) {
 				CControlUI* p = GetItemAt(i);
@@ -143,11 +143,11 @@ namespace DUILIB {
 		//±à¼­¿ò¡¢×éºÏ¿ò
 		if (_tcsicmp(strName, _T("ListEx_Edit")) == 0 && m_pEditUI && m_nRow >= 0 && m_nColum >= 0)
 		{
-			if(_tcsicmp(msg.sType, UIMSGTYPE_SETFOCUS) == 0)
+			if(_tcsicmp(msg.sType, UIMSG_SETFOCUS) == 0)
 			{
 
 			}
-			else if(_tcsicmp(msg.sType, UIMSGTYPE_KILLFOCUS) == 0)
+			else if(_tcsicmp(msg.sType, UIMSG_KILLFOCUS) == 0)
 			{
 				CDuiString sText = m_pEditUI->GetText();
 				CListTextExtElementUI* pRowCtrl = (CListTextExtElementUI*)GetItemAt(m_nRow);
@@ -171,14 +171,14 @@ namespace DUILIB {
 			iCurSel = msg.wParam;
 			iOldSel = msg.lParam;
 
-			if(_tcsicmp(msg.sType, UIMSGTYPE_SETFOCUS) == 0)
+			if(_tcsicmp(msg.sType, UIMSG_SETFOCUS) == 0)
 			{
 
 			}
-			else if(_tcsicmp(msg.sType, UIMSGTYPE_KILLFOCUS) == 0)
+			else if(_tcsicmp(msg.sType, UIMSG_KILLFOCUS) == 0)
 			{
 			}
-			else if(_tcsicmp(msg.sType, UIMSGTYPE_LISTITEMSELECT) == 0 && iOldSel >= 0)
+			else if(_tcsicmp(msg.sType, UIMSG_LISTITEMSELECT) == 0 && iOldSel >= 0)
 			{
 				CListTextExtElementUI* pRowCtrl = (CListTextExtElementUI*)GetItemAt(m_nRow);
 				if (pRowCtrl)
@@ -364,7 +364,7 @@ namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListContainerHeaderItemUI)
+	UI_IMPLEMENT_CONTROL(CListContainerHeaderItemUI)
 
 	CListContainerHeaderItemUI::CListContainerHeaderItemUI() : m_bDragable(TRUE), m_uButtonState(0), m_iSepWidth(4),
 		m_uTextStyle(DT_VCENTER | DT_CENTER | DT_SINGLELINE), m_dwTextColor(0), m_iFont(-1), m_bShowHtml(FALSE),
@@ -645,7 +645,7 @@ namespace DUILIB {
 						CContainerUI* pOwner = (CContainerUI*)m_pParent;
 						if (pOwner)
 						{
-							m_pManager->SendNotify(this, UIMSGTYPE_LISTHEADITEMCHECKED, pOwner->GetItemIndex(this), m_bChecked);
+							m_pManager->SendNotify(this, UIMSG_LISTHEADITEMCHECKED, pOwner->GetItemIndex(this), m_bChecked);
 						}
 
 					}
@@ -696,7 +696,7 @@ namespace DUILIB {
 			}
 			else {
 				m_uButtonState |= UISTATE_PUSHED;
-				m_pManager->SendNotify(this, UIMSGTYPE_LISTHEADERCLICK);
+				m_pManager->SendNotify(this, UIMSG_LISTHEADERCLICK);
 				Invalidate();
 			}
 			return;
@@ -1049,7 +1049,7 @@ Label_ForeImage:
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListTextExtElementUI)
+	UI_IMPLEMENT_CONTROL(CListTextExtElementUI)
 
 	CListTextExtElementUI::CListTextExtElementUI() : 
 	m_nLinks(0), m_nHoverLink(-1), m_pOwner(NULL),m_uCheckBoxState(0),m_bChecked(FALSE)
@@ -1142,7 +1142,7 @@ Label_ForeImage:
 		if( event.Type == UIEVENT_BUTTONUP && IsEnabled() ) {
 			for( int i = 0; i < m_nLinks; i++ ) {
 				if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) {
-					m_pManager->SendNotify(this, UIMSGTYPE_LINK, i);
+					m_pManager->SendNotify(this, UIMSG_LINK, i);
 					return;
 				}
 			}
@@ -1219,7 +1219,7 @@ Label_ForeImage:
 							SetCheck(!GetCheck());
 							if (m_pManager)
 							{
-								m_pManager->SendNotify(this, UIMSGTYPE_LISTITEMCHECKED, MAKEWPARAM(GetIndex(), 0), m_bChecked);
+								m_pManager->SendNotify(this, UIMSG_LISTITEMCHECKED, MAKEWPARAM(GetIndex(), 0), m_bChecked);
 							}
 						}
 						m_uCheckBoxState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
@@ -1573,5 +1573,5 @@ Label_ForeImage:
 		return TRUE;
 	}
 
-} // namespace DUILIB
+} // namespace DUI
 

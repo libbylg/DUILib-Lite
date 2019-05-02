@@ -1,9 +1,9 @@
 
 #include "UISlider.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CSliderUI)
+	UI_IMPLEMENT_CONTROL(CSliderUI)
 		CSliderUI::CSliderUI() : m_uButtonState(0), m_nStep(1),m_bSendMove(FALSE)
 	{
 		m_uTextStyle = DT_SINGLELINE | DT_CENTER;
@@ -23,7 +23,7 @@ namespace DUILIB
 
 	LPVOID CSliderUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_SLIDER) == 0 ) return static_cast<CSliderUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_SLIDER) == 0 ) return static_cast<CSliderUI*>(this);
 		return CProgressUI::GetInterface(pstrName);
 	}
 
@@ -162,7 +162,7 @@ namespace DUILIB
 				}
 				if(nValue >= m_nMin && nValue <= m_nMax) {
 					m_nValue =nValue;
-					m_pManager->SendNotify(this, UIMSGTYPE_VALUECHANGED);
+					m_pManager->SendNotify(this, UIMSG_VALUECHANGED);
 					Invalidate();
 				}
 				UpdateText();
@@ -179,11 +179,11 @@ namespace DUILIB
 				switch( LOWORD(event.wParam) ) {
 				case SB_LINEUP:
 					SetValue(GetValue() + GetChangeStep());
-					m_pManager->SendNotify(this, UIMSGTYPE_VALUECHANGED);
+					m_pManager->SendNotify(this, UIMSG_VALUECHANGED);
 					return;
 				case SB_LINEDOWN:
 					SetValue(GetValue() - GetChangeStep());
-					m_pManager->SendNotify(this, UIMSGTYPE_VALUECHANGED);
+					m_pManager->SendNotify(this, UIMSG_VALUECHANGED);
 					return;
 				}
 			}
@@ -202,7 +202,7 @@ namespace DUILIB
 				}
 				if (m_bSendMove) {
 					UpdateText();
-					m_pManager->SendNotify(this, UIMSGTYPE_VALUECHANGED_MOVE);
+					m_pManager->SendNotify(this, UIMSG_VALUECHANGED_MOVE);
 				}
 				Invalidate();
 			}

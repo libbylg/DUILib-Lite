@@ -1,7 +1,7 @@
 #include "Utils/DPI.h"
 #include "Utils/VersionHelpers.h"
 
-namespace DUILIB
+namespace DUI
 {
     //96 DPI = 100% scaling
     //120 DPI = 125% scaling

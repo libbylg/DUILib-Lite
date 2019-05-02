@@ -945,6 +945,7 @@
     <ClCompile Include="Core\UIResourceManager.cpp" />
     <ClCompile Include="Core\UIScrollBar.cpp" />
     <ClCompile Include="DUILIB.cpp" />
+    <ClCompile Include="Layout\UITabLayout.cpp" />
     <ClCompile Include="Utils\DPI.cpp" />
     <ClCompile Include="Core\UIDragDropImpl.cpp" />
     <ClCompile Include="Core\UIShadow.cpp" />
@@ -977,6 +978,7 @@
     <ClInclude Include="Core\UIScrollBar.h" />
     <ClInclude Include="Core\CResourceManagerUI.h" />
     <ClInclude Include="DUILib.h" />
+    <ClInclude Include="Layout\UITabLayout.h" />
     <ClInclude Include="Utils\downloadmgr.h" />
     <ClInclude Include="Utils\DPI.h" />
     <ClInclude Include="Core\UIDragDropImpl.h" />

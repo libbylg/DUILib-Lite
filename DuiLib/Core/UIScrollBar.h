@@ -5,13 +5,13 @@
 #include "Core/UIDefine.h"
 #include "Core/UIControl.h"
 
-namespace DUILIB
+namespace DUI
 {
     class CContainerUI;
 
     class DUILIB_API CScrollBarUI : public CControlUI
     {
-        DECLARE_CONTROL_UI(CScrollBarUI)
+        UI_DECLARE_CONTROL(CScrollBarUI)
     public:
         CScrollBarUI();
 

@@ -1,9 +1,9 @@
 
 #include "UIRollText.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CRollTextUI)
+	UI_IMPLEMENT_CONTROL(CRollTextUI)
 
 	CRollTextUI::CRollTextUI(void)
 	{
@@ -76,7 +76,7 @@ namespace DUILIB
 		if (event.Type == UIEVENT_TIMER && event.wParam == ROLLTEXT_ROLL_END)
 		{
 			m_pManager->KillTimer(this, ROLLTEXT_ROLL_END);
-			m_pManager->SendNotify(this, UIMSGTYPE_TEXTROLLEND);
+			m_pManager->SendNotify(this, UIMSG_TEXTROLLEND);
 		}
 		else if( event.Type == UIEVENT_TIMER && event.wParam == ROLLTEXT_TIMERID ) 
 		{

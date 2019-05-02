@@ -4,9 +4,9 @@
 #include "Core/UIContainer.h"
 #include "Core/UIManager.h"
 
-namespace DUILIB
+namespace DUI
 {
-    IMPLEMENT_CONTROL_UI(CScrollBarUI)
+    UI_IMPLEMENT_CONTROL(CScrollBarUI)
 
         CScrollBarUI::CScrollBarUI() : m_bHorizontal(false), m_nRange(0), m_nScrollPos(0), m_nLineSize(8),
         m_pOwner(NULL), m_nLastScrollPos(0), m_nLastScrollOffset(0), m_nScrollRepeatDelay(0), m_uButton1State(0), \
@@ -26,7 +26,7 @@ namespace DUILIB
 
     LPVOID CScrollBarUI::GetInterface(LPCTSTR pstrName)
     {
-        if (_tcsicmp(pstrName, DUI_CTR_SCROLLBAR) == 0) return static_cast<CScrollBarUI*>(this);
+        if (_tcsicmp(pstrName, UICONTROL_SCROLLBAR) == 0) return static_cast<CScrollBarUI*>(this);
         return CControlUI::GetInterface(pstrName);
     }
 
@@ -578,7 +578,7 @@ namespace DUILIB
                     }
                 }
             }
-            if (m_pManager != NULL) m_pManager->SendNotify(this, UIMSGTYPE_SCROLL);
+            if (m_pManager != NULL) m_pManager->SendNotify(this, UIMSG_SCROLL);
             return;
         }
         if (event.Type == UIEVENT_BUTTONUP) {
@@ -680,7 +680,7 @@ namespace DUILIB
                     }
                 }
             }
-            if (m_pManager != NULL) m_pManager->SendNotify(this, UIMSGTYPE_SCROLL);
+            if (m_pManager != NULL) m_pManager->SendNotify(this, UIMSG_SCROLL);
             return;
         }
         if (event.Type == UIEVENT_MOUSEENTER) {
@@ -807,7 +807,7 @@ namespace DUILIB
 
         DWORD dwBorderColor = 0xFF85E4FF;
         int nBorderSize = 2;
-        CRenderEngine::DrawRect(hDC, m_rcButton1, nBorderSize, dwBorderColor);
+        CRenderUI::DrawRect(hDC, m_rcButton1, nBorderSize, dwBorderColor);
     }
 
     void CScrollBarUI::PaintButton2(HDC hDC)
@@ -843,7 +843,7 @@ namespace DUILIB
 
         DWORD dwBorderColor = 0xFF85E4FF;
         int nBorderSize = 2;
-        CRenderEngine::DrawRect(hDC, m_rcButton2, nBorderSize, dwBorderColor);
+        CRenderUI::DrawRect(hDC, m_rcButton2, nBorderSize, dwBorderColor);
     }
 
     void CScrollBarUI::PaintThumb(HDC hDC)
@@ -878,7 +878,7 @@ namespace DUILIB
 
         DWORD dwBorderColor = 0xFF85E4FF;
         int nBorderSize = 2;
-        CRenderEngine::DrawRect(hDC, m_rcThumb, nBorderSize, dwBorderColor);
+        CRenderUI::DrawRect(hDC, m_rcThumb, nBorderSize, dwBorderColor);
     }
 
     void CScrollBarUI::PaintRail(HDC hDC)

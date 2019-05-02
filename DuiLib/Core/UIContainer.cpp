@@ -4,13 +4,13 @@
 #include "Core/UIRender.h"
 #include "Core/UIScrollBar.h"
 
-namespace DUILIB
+namespace DUI
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
     //
-    IMPLEMENT_CONTROL_UI(CContainerUI)
+    UI_IMPLEMENT_CONTROL(CContainerUI)
 
         CContainerUI::CContainerUI()
         : m_iChildPadding(0),
@@ -48,7 +48,7 @@ namespace DUILIB
     LPVOID CContainerUI::GetInterface(LPCTSTR pstrName)
     {
         if (_tcsicmp(pstrName, _T("IContainer")) == 0) return static_cast<IContainerUI*>(this);
-        else if (_tcsicmp(pstrName, DUI_CTR_CONTAINER) == 0) return static_cast<CContainerUI*>(this);
+        else if (_tcsicmp(pstrName, UICONTROL_CONTAINER) == 0) return static_cast<CContainerUI*>(this);
         return CControlUI::GetInterface(pstrName);
     }
 
@@ -407,7 +407,7 @@ namespace DUILIB
             // 发送滚动消息
             if (m_pManager != NULL && bMsg) {
                 int nPage = (m_pVerticalScrollBar->GetScrollPos() + m_pVerticalScrollBar->GetLineSize()) / m_pVerticalScrollBar->GetLineSize();
-                m_pManager->SendNotify(this, UIMSGTYPE_SCROLL, (WPARAM)nPage);
+                m_pManager->SendNotify(this, UIMSG_SCROLL, (WPARAM)nPage);
             }
         }
     }
@@ -1076,4 +1076,4 @@ namespace DUILIB
         return pSubControl;
     }
 
-} // namespace DUILIB
+} // namespace DUI

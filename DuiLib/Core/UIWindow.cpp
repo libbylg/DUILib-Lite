@@ -5,14 +5,14 @@
 #include "Utils/Utils.h"
 
 
-namespace DUILIB
+namespace DUI
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
     //
 
-    void DUILIB_API DUI__Trace(LPCTSTR pstrFormat, ...)
+    void DUILIB_API UI__Trace(LPCTSTR pstrFormat, ...)
     {
 #ifdef _DEBUG
         TCHAR szBuffer[2048] = {0};
@@ -28,7 +28,7 @@ namespace DUILIB
 #endif
     }
 
-    LPCTSTR DUI__TraceMsg(UINT uMsg)
+    LPCTSTR UI__TraceMsg(UINT uMsg)
     {
 #define MSGDEF(x) if(uMsg==x) return _T(#x)
         MSGDEF(WM_SETCURSOR);
@@ -97,7 +97,7 @@ namespace DUILIB
     //////////////////////////////////////////////////////////////////////////
     //
     UILIB_BASE_BEGIN_MESSAGE_MAP(CNotifyPumpUI)
-        DUI_END_MESSAGE_MAP()
+        UI_END_MESSAGE_MAP()
 
         static const TMSGMAPENTRY_UI* DuiFindMessageEntry(const TMSGMAPENTRY_UI * lpEntry, TNOTIFY_UI & msg)
     {
@@ -160,7 +160,7 @@ namespace DUILIB
         return false;
 
     LDispatch:
-        union DuiMessageMapFunctions mmf;
+        union TMSGMAPFUNC_UI mmf;
         mmf.pfn = lpEntry->pfn;
 
         BOOL bRet = false;
@@ -487,4 +487,4 @@ namespace DUILIB
     {
     }
 
-} // namespace DUILIB
+} // namespace DUI

@@ -1,7 +1,7 @@
 
 #include "Utils.h"
 
-namespace DUILIB
+namespace DUI
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -1212,4 +1212,4 @@ namespace DUILIB
     //{
     //	return m_imageInfo;
     //}
-} // namespace DUILIB
+} // namespace DUI

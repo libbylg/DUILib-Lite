@@ -5,13 +5,13 @@
 
 //给该控件添加一个属性dtstyle
 
-namespace DUILIB
+namespace DUI
 {
 	
     /// IP输入控件
     class DUILIB_API CIPAddressExUI : public CEditUI
     {
-		DECLARE_DUICONTROL(CIPAddressExUI)
+		UI_DECLARE_CONTROL(CIPAddressExUI)
     public:
         CIPAddressExUI();
         LPCTSTR GetClass() const;

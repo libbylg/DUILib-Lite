@@ -8,7 +8,7 @@
 // These constants are for backward compatibility. They are the 
 // sizes used for initialization and reset in RichEdit 1.0
 
-namespace DUILIB {
+namespace DUI {
 
 #define ID_RICH_UNDO			101
 #define ID_RICH_CUT				102
@@ -1080,7 +1080,7 @@ err:
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CRichEditUI)
+	UI_IMPLEMENT_CONTROL(CRichEditUI)
 		CRichEditUI::CRichEditUI() : m_pTwh(NULL), m_bVScrollBarFixing(FALSE), m_bWantTab(true), m_bWantReturn(true), 
 		m_bWantCtrlReturn(true), m_bTransparent(true), m_bRich(true), m_bReadOnly(FALSE), m_bWordWrap(FALSE), m_dwTextColor(0), m_iFont(-1), 
 		m_iLimitText(cInitTextMax), m_lTwhStyle(ES_MULTILINE), m_bDrawCaret(true), m_bInited(FALSE), m_chLeadByte(0),m_uButtonState(0),
@@ -1104,12 +1104,12 @@ err:
 
 	LPCTSTR CRichEditUI::GetClass() const
 	{
-		return DUI_CTR_RICHEDIT;
+		return UICONTROL_RICHEDIT;
 	}
 
 	LPVOID CRichEditUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcscmp(pstrName, DUI_CTR_RICHEDIT) == 0 ) return static_cast<CRichEditUI*>(this);
+		if( _tcscmp(pstrName, UICONTROL_RICHEDIT) == 0 ) return static_cast<CRichEditUI*>(this);
 		return CContainerUI::GetInterface(pstrName);
 	}
 
@@ -1781,7 +1781,7 @@ err:
 		if( m_pTwh ) {
 			if( msg == WM_KEYDOWN && TCHAR(wparam) == VK_RETURN ) {
 				if( !m_bWantReturn || (::GetKeyState(VK_CONTROL) < 0 && !m_bWantCtrlReturn) ) {
-					if( m_pManager != NULL ) m_pManager->SendNotify((CControlUI*)this, UIMSGTYPE_RETURN);
+					if( m_pManager != NULL ) m_pManager->SendNotify((CControlUI*)this, UIMSG_RETURN);
 					return S_OK;
 				}
 			}
@@ -1816,7 +1816,7 @@ err:
 		{ 
 		case EN_CHANGE:
 			{
-				GetManager()->SendNotify(this, UIMSGTYPE_TEXTCHANGED);
+				GetManager()->SendNotify(this, UIMSG_TEXTCHANGED);
 				break;
 			}
 		case EN_DROPFILES:   
@@ -2737,4 +2737,4 @@ err:
 		return lResult;
 	}
 
-} // namespace DUILIB
+} // namespace DUI

@@ -1,9 +1,9 @@
 
 #include "UIText.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CTextUI)
+	UI_IMPLEMENT_CONTROL(CTextUI)
 
 	CTextUI::CTextUI() : m_nLinks(0), m_nHoverLink(-1)
 	{
@@ -24,7 +24,7 @@ namespace DUILIB
 
 	LPVOID CTextUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_TEXT) == 0 ) return static_cast<CTextUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_TEXT) == 0 ) return static_cast<CTextUI*>(this);
 		return CLabelUI::GetInterface(pstrName);
 	}
 
@@ -67,7 +67,7 @@ namespace DUILIB
 		if( event.Type == UIEVENT_BUTTONUP && IsEnabled() ) {
 			for( int i = 0; i < m_nLinks; i++ ) {
 				if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) {
-					m_pManager->SendNotify(this, UIMSGTYPE_LINK, i);
+					m_pManager->SendNotify(this, UIMSG_LINK, i);
 					return;
 				}
 			}

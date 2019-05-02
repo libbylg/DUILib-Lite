@@ -3,11 +3,11 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CTextUI : public CLabelUI
 	{
-		DECLARE_DUICONTROL(CTextUI)
+		UI_DECLARE_CONTROL(CTextUI)
 	public:
 		CTextUI();
 		~CTextUI();
@@ -31,6 +31,6 @@ namespace DUILIB
 		int m_nHoverLink;
 	};
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif //__UITEXT_H__

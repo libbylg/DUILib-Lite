@@ -1,7 +1,7 @@
 
 #include "UIDateTime.h"
 
-namespace DUILIB
+namespace DUI
 {
 	//CDateTimeUI::m_nDTUpdateFlag
 #define DT_NONE   0
@@ -156,7 +156,7 @@ namespace DUILIB
 	}
 	//////////////////////////////////////////////////////////////////////////
 	//
-	IMPLEMENT_DUICONTROL(CDateTimeUI)
+	UI_IMPLEMENT_CONTROL(CDateTimeUI)
 
 	CDateTimeUI::CDateTimeUI()
 	{
@@ -175,7 +175,7 @@ namespace DUILIB
 
 	LPVOID CDateTimeUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcscmp(pstrName, DUI_CTR_DATETIME) == 0 ) return static_cast<CDateTimeUI*>(this);
+		if( _tcscmp(pstrName, UICONTROL_DATETIME) == 0 ) return static_cast<CDateTimeUI*>(this);
 		return CLabelUI::GetInterface(pstrName);
 	}
 

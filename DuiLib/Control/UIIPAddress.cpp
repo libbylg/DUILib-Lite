@@ -18,7 +18,7 @@ DWORD GetLocalIpAddress()
 	return dwIP;
 }
 
-namespace DUILIB
+namespace DUI
 {
 	//CDateTimeUI::m_nDTUpdateFlag
 #define IP_NONE   0
@@ -165,7 +165,7 @@ namespace DUILIB
 
 	//////////////////////////////////////////////////////////////////////////
 	//
-	IMPLEMENT_DUICONTROL(CIPAddressUI)
+	UI_IMPLEMENT_CONTROL(CIPAddressUI)
 
 		CIPAddressUI::CIPAddressUI()
 	{
@@ -184,7 +184,7 @@ namespace DUILIB
 
 	LPVOID CIPAddressUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcscmp(pstrName, DUI_CTR_IPADDRESS) == 0 ) return static_cast<CIPAddressUI*>(this);
+		if( _tcscmp(pstrName, UICONTROL_IPADDRESS) == 0 ) return static_cast<CIPAddressUI*>(this);
 		return CLabelUI::GetInterface(pstrName);
 	}
 

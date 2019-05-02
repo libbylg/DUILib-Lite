@@ -1,6 +1,6 @@
 
 #include "UIHotKey.h"
-namespace DUILIB{
+namespace DUI{
 	CHotKeyWnd::CHotKeyWnd(void) : m_pOwner(NULL), m_hBkBrush(NULL), m_bInit(FALSE)
 	{
 	}
@@ -233,7 +233,7 @@ namespace DUILIB{
 
 
 	//////////////////////////////////////////////////////////////////////////
-	IMPLEMENT_DUICONTROL(CHotKeyUI)
+	UI_IMPLEMENT_CONTROL(CHotKeyUI)
 
 	CHotKeyUI::CHotKeyUI() : m_pWindow(NULL), m_wVirtualKeyCode(0), m_wModifiers(0), m_uButtonState(0), m_dwHotKeybkColor(0xFFFFFFFF)
 	{

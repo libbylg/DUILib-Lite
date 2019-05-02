@@ -1,11 +1,11 @@
 
 
-namespace DUILIB {
+namespace DUI {
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListUI)
+	UI_IMPLEMENT_CONTROL(CListUI)
 
 	CListUI::CListUI() : m_pCallback(NULL), m_bScrollSelect(FALSE), m_iCurSel(-1), m_iExpandedItem(-1), m_bMultiSel(FALSE)
 	{
@@ -50,7 +50,7 @@ namespace DUILIB {
 
 	LPVOID CListUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_LIST) == 0 ) return static_cast<CListUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_LIST) == 0 ) return static_cast<CListUI*>(this);
 		if( _tcsicmp(pstrName, _T("IList")) == 0 ) return static_cast<IListUI*>(this);
 		if( _tcsicmp(pstrName, _T("IListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
 		return CVerticalLayoutUI::GetInterface(pstrName);
@@ -452,7 +452,7 @@ namespace DUILIB {
 		EnsureVisible(iIndex);
 		if( bTakeFocus ) pControl->SetFocus();
 		if( m_pManager != NULL && iLastSel != m_iCurSel) {
-			m_pManager->SendNotify(this, UIMSGTYPE_ITEMSELECT, iIndex);
+			m_pManager->SendNotify(this, UIMSG_ITEMSELECT, iIndex);
 		}
 
 		return true;
@@ -475,7 +475,7 @@ namespace DUILIB {
 		EnsureVisible(iIndex);
 		if( bTakeFocus ) pControl->SetFocus();
 		if( m_pManager != NULL ) {
-			m_pManager->SendNotify(this, UIMSGTYPE_ITEMSELECT, iIndex);
+			m_pManager->SendNotify(this, UIMSG_ITEMSELECT, iIndex);
 		}
 		return true;
 	}
@@ -1399,7 +1399,7 @@ namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListHeaderUI)
+	UI_IMPLEMENT_CONTROL(CListHeaderUI)
 
 	CListHeaderUI::CListHeaderUI():
 	m_bIsScaleHeader(FALSE)
@@ -1413,7 +1413,7 @@ namespace DUILIB {
 
 	LPVOID CListHeaderUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_LISTHEADER) == 0 ) return this;
+		if( _tcsicmp(pstrName, UICONTROL_LISTHEADER) == 0 ) return this;
 		return CHorizontalLayoutUI::GetInterface(pstrName);
 	}
 
@@ -1564,7 +1564,7 @@ namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListHeaderItemUI)
+	UI_IMPLEMENT_CONTROL(CListHeaderItemUI)
 
 		CListHeaderItemUI::CListHeaderItemUI() : m_bDragable(true), m_uButtonState(0), m_iSepWidth(4),
 		m_uTextStyle(DT_VCENTER | DT_CENTER | DT_SINGLELINE), m_dwTextColor(0), m_iFont(-1), m_bShowHtml(FALSE),m_nScale(0)
@@ -1581,7 +1581,7 @@ namespace DUILIB {
 
 	LPVOID CListHeaderItemUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_LISTHEADERITEM) == 0 ) return this;
+		if( _tcsicmp(pstrName, UICONTROL_LISTHEADERITEM) == 0 ) return this;
 		return CContainerUI::GetInterface(pstrName);
 	}
 
@@ -1820,7 +1820,7 @@ namespace DUILIB {
 			}
 			else {
 				m_uButtonState |= UISTATE_PUSHED;
-				m_pManager->SendNotify(this, UIMSGTYPE_HEADERCLICK);
+				m_pManager->SendNotify(this, UIMSG_HEADERCLICK);
 				Invalidate();
 			}
 			return;
@@ -1980,8 +1980,8 @@ namespace DUILIB {
 
 	LPVOID CListElementUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_LISTITEM) == 0 ) return static_cast<IListItemUI*>(this);
-		if( _tcsicmp(pstrName, DUI_CTR_LISTELEMENT) == 0 ) return static_cast<CListElementUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_LISTITEM) == 0 ) return static_cast<IListItemUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_LISTELEMENT) == 0 ) return static_cast<CListElementUI*>(this);
 		return CControlUI::GetInterface(pstrName);
 	}
 
@@ -2074,7 +2074,7 @@ namespace DUILIB {
 	BOOL CListElementUI::Activate()
 	{
 		if( !CControlUI::Activate() ) return FALSE;
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_ITEMACTIVATE);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSG_ITEMACTIVATE);
 		return true;
 	}
 
@@ -2222,7 +2222,7 @@ namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListLabelElementUI)
+	UI_IMPLEMENT_CONTROL(CListLabelElementUI)
 
 		CListLabelElementUI::CListLabelElementUI()
 	{
@@ -2235,7 +2235,7 @@ namespace DUILIB {
 
 	LPVOID CListLabelElementUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_LISTLABELELEMENT) == 0 ) return static_cast<CListLabelElementUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_LISTLABELELEMENT) == 0 ) return static_cast<CListLabelElementUI*>(this);
 		return CListElementUI::GetInterface(pstrName);
 	}
 
@@ -2277,7 +2277,7 @@ namespace DUILIB {
 		if( event.Type == UIEVENT_BUTTONUP ) 
 		{
 			if( IsEnabled() ){
-				m_pManager->SendNotify(this, UIMSGTYPE_ITEMCLICK);
+				m_pManager->SendNotify(this, UIMSG_ITEMCLICK);
 			}
 			return;
 		}
@@ -2377,7 +2377,7 @@ namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListTextElementUI)
+	UI_IMPLEMENT_CONTROL(CListTextElementUI)
 
 	CListTextElementUI::CListTextElementUI() : m_nLinks(0), m_nHoverLink(-1), m_pOwner(NULL)
 	{
@@ -2401,7 +2401,7 @@ namespace DUILIB {
 
 	LPVOID CListTextElementUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_LISTTEXTELEMENT) == 0 ) return static_cast<CListTextElementUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_LISTTEXTELEMENT) == 0 ) return static_cast<CListTextElementUI*>(this);
 		return CListLabelElementUI::GetInterface(pstrName);
 	}
 
@@ -2470,7 +2470,7 @@ namespace DUILIB {
 		if( event.Type == UIEVENT_BUTTONUP && IsEnabled() ) {
 			for( int i = 0; i < m_nLinks; i++ ) {
 				if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) {
-					m_pManager->SendNotify(this, UIMSGTYPE_LINK, i);
+					m_pManager->SendNotify(this, UIMSG_LINK, i);
 					return;
 				}
 			}
@@ -2562,7 +2562,7 @@ namespace DUILIB {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CListContainerElementUI)
+	UI_IMPLEMENT_CONTROL(CListContainerElementUI)
 
 	CListContainerElementUI::CListContainerElementUI() : 
 		m_iIndex(-1),
@@ -2584,8 +2584,8 @@ namespace DUILIB {
 
 	LPVOID CListContainerElementUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_LISTITEM) == 0 ) return static_cast<IListItemUI*>(this);
-		if( _tcsicmp(pstrName, DUI_CTR_LISTCONTAINERELEMENT) == 0 ) return static_cast<CListContainerElementUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_LISTITEM) == 0 ) return static_cast<IListItemUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_LISTCONTAINERELEMENT) == 0 ) return static_cast<CListContainerElementUI*>(this);
 		return CContainerUI::GetInterface(pstrName);
 	}
 
@@ -2678,7 +2678,7 @@ namespace DUILIB {
 	BOOL CListContainerElementUI::Activate()
 	{
 		if( !CContainerUI::Activate() ) return FALSE;
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_ITEMACTIVATE);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSG_ITEMACTIVATE);
 		return true;
 	}
 
@@ -2772,7 +2772,7 @@ namespace DUILIB {
 		if( event.Type == UIEVENT_BUTTONUP ) 
 		{
 			if( IsEnabled() ){
-				m_pManager->SendNotify(this, UIMSGTYPE_ITEMCLICK);
+				m_pManager->SendNotify(this, UIMSG_ITEMCLICK);
 			}
 			return;
 		}
@@ -2798,14 +2798,14 @@ namespace DUILIB {
 		}
 		if( event.Type == UIEVENT_TIMER )
 		{
-			m_pManager->SendNotify(this, UIMSGTYPE_TIMER, event.wParam, event.lParam);
+			m_pManager->SendNotify(this, UIMSG_TIMER, event.wParam, event.lParam);
 			return;
 		}
 
 		if( event.Type == UIEVENT_CONTEXTMENU )
 		{
 			if( IsContextMenuUsed() ) {
-				m_pManager->SendNotify(this, UIMSGTYPE_MENU, event.wParam, event.lParam);
+				m_pManager->SendNotify(this, UIMSG_MENU, event.wParam, event.lParam);
 				return;
 			}
 		}
@@ -2950,4 +2950,4 @@ namespace DUILIB {
 			}
 		}
 	}
-} // namespace DUILIB
+} // namespace DUI

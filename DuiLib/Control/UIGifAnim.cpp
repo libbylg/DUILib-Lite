@@ -2,9 +2,9 @@
 #include "UIGifAnim.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CGifAnimUI)
+	UI_IMPLEMENT_CONTROL(CGifAnimUI)
 
 	CGifAnimUI::CGifAnimUI(void)
 	{
@@ -33,7 +33,7 @@ namespace DUILIB
 
 	LPVOID CGifAnimUI::GetInterface( LPCTSTR pstrName )
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_GIFANIM) == 0 ) return static_cast<CGifAnimUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_GIFANIM) == 0 ) return static_cast<CGifAnimUI*>(this);
 		return CControlUI::GetInterface(pstrName);
 	}
 

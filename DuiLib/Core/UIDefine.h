@@ -4,7 +4,7 @@
 #include "DUILIB.h"
 #include "Utils/Utils.h"
 
-namespace DUILIB
+namespace DUI
 {
 
 
@@ -53,57 +53,57 @@ namespace DUILIB
 
 
     //定义所有消息类型
-#define UIMSGTYPE_MENU                  (_T("menu"))
-#define UIMSGTYPE_LINK                  (_T("link"))
+#define UIMSG_MENU                  (_T("menu"))
+#define UIMSG_LINK                  (_T("link"))
 
-#define UIMSGTYPE_TIMER                 (_T("timer"))
-#define UIMSGTYPE_CLICK                 (_T("click"))
-#define UIMSGTYPE_DBCLICK               (_T("dbclick"))
+#define UIMSG_TIMER                 (_T("timer"))
+#define UIMSG_CLICK                 (_T("click"))
+#define UIMSG_DBCLICK               (_T("dbclick"))
 
-#define UIMSGTYPE_RETURN                (_T("return"))
-#define UIMSGTYPE_SCROLL                (_T("scroll"))
+#define UIMSG_RETURN                (_T("return"))
+#define UIMSG_SCROLL                (_T("scroll"))
 
-#define UIMSGTYPE_PREDROPDOWN           (_T("predropdown"))
-#define UIMSGTYPE_DROPDOWN              (_T("dropdown"))
-#define UIMSGTYPE_SETFOCUS              (_T("setfocus"))
+#define UIMSG_PREDROPDOWN           (_T("predropdown"))
+#define UIMSG_DROPDOWN              (_T("dropdown"))
+#define UIMSG_SETFOCUS              (_T("setfocus"))
 
-#define UIMSGTYPE_KILLFOCUS             (_T("killfocus"))
-#define UIMSGTYPE_ITEMCLICK             (_T("itemclick"))
-#define UIMSGTYPE_ITEMRCLICK            (_T("itemrclick"))
-#define UIMSGTYPE_TABSELECT             (_T("tabselect"))
+#define UIMSG_KILLFOCUS             (_T("killfocus"))
+#define UIMSG_ITEMCLICK             (_T("itemclick"))
+#define UIMSG_ITEMRCLICK            (_T("itemrclick"))
+#define UIMSG_TABSELECT             (_T("tabselect"))
 
-#define UIMSGTYPE_ITEMSELECT            (_T("itemselect"))
-#define UIMSGTYPE_ITEMEXPAND            (_T("itemexpand"))
-#define UIMSGTYPE_WINDOWINIT            (_T("windowinit"))
-#define UIMSGTYPE_WINDOWSIZE            (_T("windowsize"))
-#define UIMSGTYPE_BUTTONDOWN            (_T("buttondown"))
-#define UIMSGTYPE_MOUSEENTER            (_T("mouseenter"))
-#define UIMSGTYPE_MOUSELEAVE            (_T("mouseleave"))
+#define UIMSG_ITEMSELECT            (_T("itemselect"))
+#define UIMSG_ITEMEXPAND            (_T("itemexpand"))
+#define UIMSG_WINDOWINIT            (_T("windowinit"))
+#define UIMSG_WINDOWSIZE            (_T("windowsize"))
+#define UIMSG_BUTTONDOWN            (_T("buttondown"))
+#define UIMSG_MOUSEENTER            (_T("mouseenter"))
+#define UIMSG_MOUSELEAVE            (_T("mouseleave"))
 
-#define UIMSGTYPE_TEXTCHANGED            (_T("textchanged"))
-#define UIMSGTYPE_HEADERCLICK            (_T("headerclick"))
-#define UIMSGTYPE_ITEMDBCLICK            (_T("itemdbclick"))
-#define UIMSGTYPE_SHOWACTIVEX            (_T("showactivex"))
+#define UIMSG_TEXTCHANGED            (_T("textchanged"))
+#define UIMSG_HEADERCLICK            (_T("headerclick"))
+#define UIMSG_ITEMDBCLICK            (_T("itemdbclick"))
+#define UIMSG_SHOWACTIVEX            (_T("showactivex"))
 
-#define UIMSGTYPE_ITEMCOLLAPSE          (_T("itemcollapse"))
-#define UIMSGTYPE_ITEMACTIVATE          (_T("itemactivate"))
-#define UIMSGTYPE_VALUECHANGED          (_T("valuechanged"))
-#define UIMSGTYPE_VALUECHANGED_MOVE     (_T("movevaluechanged"))
+#define UIMSG_ITEMCOLLAPSE          (_T("itemcollapse"))
+#define UIMSG_ITEMACTIVATE          (_T("itemactivate"))
+#define UIMSG_VALUECHANGED          (_T("valuechanged"))
+#define UIMSG_VALUECHANGED_MOVE     (_T("movevaluechanged"))
 
-#define UIMSGTYPE_SELECTCHANGED         (_T("selectchanged"))
-#define UIMSGTYPE_UNSELECTED            (_T("unselected"))
+#define UIMSG_SELECTCHANGED         (_T("selectchanged"))
+#define UIMSG_UNSELECTED            (_T("unselected"))
 
-#define UIMSGTYPE_TREEITEMDBCLICK       (_T("treeitemdbclick"))
-#define UIMSGTYPE_CHECKCLICK            (_T("checkclick"))
-#define UIMSGTYPE_TEXTROLLEND           (_T("textrollend"))
-#define UIMSGTYPE_COLORCHANGED          (_T("colorchanged"))
+#define UIMSG_TREEITEMDBCLICK       (_T("treeitemdbclick"))
+#define UIMSG_CHECKCLICK            (_T("checkclick"))
+#define UIMSG_TEXTROLLEND           (_T("textrollend"))
+#define UIMSG_COLORCHANGED          (_T("colorchanged"))
 
-#define UIMSGTYPE_LISTITEMSELECT        (_T("listitemselect"))
-#define UIMSGTYPE_LISTITEMCHECKED       (_T("listitemchecked"))
-#define UIMSGTYPE_COMBOITEMSELECT       (_T("comboitemselect"))
-#define UIMSGTYPE_LISTHEADERCLICK       (_T("listheaderclick"))
-#define UIMSGTYPE_LISTHEADITEMCHECKED   (_T("listheaditemchecked"))
-#define UIMSGTYPE_LISTPAGECHANGED       (_T("listpagechanged"))
+#define UIMSG_LISTITEMSELECT        (_T("listitemselect"))
+#define UIMSG_LISTITEMCHECKED       (_T("listitemchecked"))
+#define UIMSG_COMBOITEMSELECT       (_T("comboitemselect"))
+#define UIMSG_LISTHEADERCLICK       (_T("listheaderclick"))
+#define UIMSG_LISTHEADITEMCHECKED   (_T("listheaditemchecked"))
+#define UIMSG_LISTPAGECHANGED       (_T("listpagechanged"))
 
     //////////////////////////////////////////////////////////////////////////
     
@@ -118,7 +118,7 @@ namespace DUILIB
 #ifndef DUILIB_STATIC
         const TMSGMAP_UI* (PASCAL* pfnGetBaseMap)();
 #else
-        const DUI_MSGMAP* pBaseMap;
+        const TMSGMAP_UI* pBaseMap;
 #endif
         const TMSGMAPENTRY_UI* lpEntries;
     };
@@ -134,7 +134,7 @@ namespace DUILIB
 
     //定义
 #ifndef DUILIB_STATIC
-#define DUI_DECLARE_MESSAGE_MAP()                                           \
+#define UI_DECLARE_MESSAGE_MAP()                                            \
 private:                                                                    \
 	static const TMSGMAPENTRY_UI _messageEntries[];                         \
 protected:                                                                  \
@@ -143,19 +143,19 @@ protected:                                                                  \
 	virtual const TMSGMAP_UI* GetMessageMap() const;                        \
 
 #else
-#define DUI_DECLARE_MESSAGE_MAP()                                           \
+#define UI_DECLARE_MESSAGE_MAP()                                            \
 private:                                                                    \
-	static const DUI_MSGMAP_ENTRY _messageEntries[];                        \
+	static const TMSGMAPENTRY_UI _messageEntries[];                         \
 protected:                                                                  \
-	static  const DUI_MSGMAP messageMap;				                    \
-	virtual const DUI_MSGMAP* GetMessageMap() const;                        \
+	static  const TMSGMAP_UI    messageMap;				                    \
+	virtual const TMSGMAP_UI*   GetMessageMap() const;                      \
 
 #endif
 
 
     //基类声明开始
 #ifndef DUILIB_STATIC
-#define DUI_BASE_BEGIN_MESSAGE_MAP(theClass)                                \
+#define UI_BASE_BEGIN_MESSAGE_MAP(theClass)                                 \
 	const TMSGMAP_UI* PASCAL theClass::_GetBaseMessageMap()                 \
 	{ return NULL; }                                                        \
 	const TMSGMAP_UI* theClass::GetMessageMap() const                       \
@@ -166,12 +166,12 @@ protected:                                                                  \
 	{                                                                       \
 
 #else
-#define DUI_BASE_BEGIN_MESSAGE_MAP(theClass)                                \
-	const DUI_MSGMAP* theClass::GetMessageMap() const                       \
+#define UI_BASE_BEGIN_MESSAGE_MAP(theClass)                                 \
+	const TMSGMAP_UI* theClass::GetMessageMap() const                       \
 	{ return &theClass::messageMap; }                                       \
-	DUILIB_COMDAT const DUI_MSGMAP theClass::messageMap =                   \
+	DUILIB_COMDAT const TMSGMAP_UI theClass::messageMap =                   \
 	{  NULL, &theClass::_messageEntries[0] };                               \
-	DUILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] =      \
+	DUILIB_COMDAT const TMSGMAPENTRY_UI theClass::_messageEntries[] =       \
 	{                                                                       \
 
 #endif
@@ -179,7 +179,7 @@ protected:                                                                  \
 
     //子类声明开始
 #ifndef DUILIB_STATIC
-#define DUI_BEGIN_MESSAGE_MAP(theClass, baseClass)                          \
+#define UI_BEGIN_MESSAGE_MAP(theClass, baseClass)                           \
 	const TMSGMAP_UI* PASCAL theClass::_GetBaseMessageMap()                 \
 	{ return &baseClass::messageMap; }                                      \
 	const TMSGMAP_UI* theClass::GetMessageMap() const                       \
@@ -190,58 +190,58 @@ protected:                                                                  \
 	{                                                                       \
 
 #else
-#define DUI_BEGIN_MESSAGE_MAP(theClass, baseClass)                          \
-	const DUI_MSGMAP* theClass::GetMessageMap() const                       \
+#define UI_BEGIN_MESSAGE_MAP(theClass, baseClass)                           \
+	const TMSGMAP_UI* theClass::GetMessageMap() const                       \
 	{ return &theClass::messageMap; }                                       \
-	UILIB_COMDAT const DUI_MSGMAP theClass::messageMap =                    \
+	UILIB_COMDAT const TMSGMAP_UI theClass::messageMap =                    \
 	{ &baseClass::messageMap, &theClass::_messageEntries[0] };              \
-	UILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] =       \
+	UILIB_COMDAT const TMSGMAPENTRY_UI theClass::_messageEntries[] =       \
 	{                                                                       \
 
 #endif
 
 
     //声明结束
-#define DUI_END_MESSAGE_MAP()                                               \
+#define UI_END_MESSAGE_MAP()                                                \
 	{ _T(""), _T(""), UISIG_end, (PMSG_UI)0 }                               \
 	};                                                                      \
 
 
     //定义消息类型--执行函数宏
-#define DUI_ON_MSGTYPE(msgtype, memberFxn)                                  \
+#define UI_ON_MSGTYPE(msgtype, memberFxn)                                   \
 	{ msgtype, _T(""), UISIG_vn, (PMSG_UI)&memberFxn},                      \
 
 
     //定义消息类型--控件名称--执行函数宏
-#define DUI_ON_MSGTYPE_CTRNAME(msgtype,ctrname,memberFxn)                   \
+#define UI_ON_MSGTYPE_CTRNAME(msgtype,ctrname,memberFxn)                    \
 	{ msgtype, ctrname, UISIG_vn, (PMSG_UI)&memberFxn },                    \
 
 
     //定义click消息的控件名称--执行函数宏
-#define DUI_ON_CLICK_CTRNAME(ctrname,memberFxn)                             \
-	{ UIMSGTYPE_CLICK, ctrname, UISIG_vn, (PMSG_UI)&memberFxn },            \
+#define UI_ON_CLICK_CTRNAME(ctrname,memberFxn)                              \
+	{ UIMSG_CLICK, ctrname, UISIG_vn, (PMSG_UI)&memberFxn },            \
 
 
     //定义selectchanged消息的控件名称--执行函数宏
-#define DUI_ON_SELECTCHANGED_CTRNAME(ctrname,memberFxn)                     \
-	{ UIMSGTYPE_SELECTCHANGED,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },       \
+#define UI_ON_SELECTCHANGED_CTRNAME(ctrname,memberFxn)                      \
+	{ UIMSG_SELECTCHANGED,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },       \
 
 
     //定义killfocus消息的控件名称--执行函数宏
-#define DUI_ON_KILLFOCUS_CTRNAME(ctrname,memberFxn)                         \
-	{ UIMSGTYPE_KILLFOCUS,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },           \
+#define UI_ON_KILLFOCUS_CTRNAME(ctrname,memberFxn)                          \
+	{ UIMSG_KILLFOCUS,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },           \
 
 
     //定义menu消息的控件名称--执行函数宏
-#define DUI_ON_MENU_CTRNAME(ctrname,memberFxn)                              \
-	{ UIMSGTYPE_MENU,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },                \
+#define UI_ON_MENU_CTRNAME(ctrname,memberFxn)                               \
+	{ UIMSG_MENU,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },                \
 
 
     //定义与控件名称无关的消息宏
 
     //定义timer消息--执行函数宏
-#define DUI_ON_TIMER()                                                      \
-	{ UIMSGTYPE_TIMER, _T(""), UISIG_vn,(PMSG_UI)&OnTimer },                \
+#define UI_ON_TIMER()                                                       \
+	{ UIMSG_TIMER, _T(""), UISIG_vn,(PMSG_UI)&OnTimer },                \
 
 
     ///
@@ -251,63 +251,63 @@ protected:                                                                  \
     //////////////BEGIN控件名称宏定义//////////////////////////////////////////////////
     ///
 
-#define  DUI_CTR_EDIT                            (_T("Edit"))
-#define  DUI_CTR_LIST                            (_T("List"))
-#define  DUI_CTR_TEXT                            (_T("Text"))
+#define  UICONTROL_EDIT                            (_T("Edit"))
+#define  UICONTROL_LIST                            (_T("List"))
+#define  UICONTROL_TEXT                            (_T("Text"))
 
-#define  DUI_CTR_COMBO                           (_T("Combo"))
-#define  DUI_CTR_LABEL                           (_T("Label"))
-#define  DUI_CTR_FLASH							 (_T("Flash"))
+#define  UICONTROL_COMBO                           (_T("Combo"))
+#define  UICONTROL_LABEL                           (_T("Label"))
+#define  UICONTROL_FLASH							 (_T("Flash"))
 
-#define  DUI_CTR_BUTTON                          (_T("Button"))
-#define  DUI_CTR_OPTION                          (_T("Option"))
-#define  DUI_CTR_SLIDER                          (_T("Slider"))
+#define  UICONTROL_BUTTON                          (_T("Button"))
+#define  UICONTROL_OPTION                          (_T("Option"))
+#define  UICONTROL_SLIDER                          (_T("Slider"))
 
-#define  DUI_CTR_CONTROL                         (_T("Control"))
-#define  DUI_CTR_ACTIVEX                         (_T("ActiveX"))
-#define  DUI_CTR_GIFANIM                         (_T("GifAnim"))
+#define  UICONTROL_CONTROL                         (_T("Control"))
+#define  UICONTROL_ACTIVEX                         (_T("ActiveX"))
+#define  UICONTROL_GIFANIM                         (_T("GifAnim"))
 
-#define  DUI_CTR_LISTITEM                        (_T("ListItem"))
-#define  DUI_CTR_PROGRESS                        (_T("Progress"))
-#define  DUI_CTR_RICHEDIT                        (_T("RichEdit"))
-#define  DUI_CTR_CHECKBOX                        (_T("CheckBox"))
-#define  DUI_CTR_COMBOBOX                        (_T("ComboBox"))
-#define  DUI_CTR_DATETIME                        (_T("DateTime"))
-#define  DUI_CTR_TREEVIEW                        (_T("TreeView"))
-#define  DUI_CTR_TREENODE                        (_T("TreeNode"))
+#define  UICONTROL_LISTITEM                        (_T("ListItem"))
+#define  UICONTROL_PROGRESS                        (_T("Progress"))
+#define  UICONTROL_RICHEDIT                        (_T("RichEdit"))
+#define  UICONTROL_CHECKBOX                        (_T("CheckBox"))
+#define  UICONTROL_COMBOBOX                        (_T("ComboBox"))
+#define  UICONTROL_DATETIME                        (_T("DateTime"))
+#define  UICONTROL_TREEVIEW                        (_T("TreeView"))
+#define  UICONTROL_TREENODE                        (_T("TreeNode"))
 
-#define  DUI_CTR_CONTAINER                       (_T("Container"))
-#define  DUI_CTR_TABLAYOUT                       (_T("TabLayout"))
-#define  DUI_CTR_SCROLLBAR                       (_T("ScrollBar"))
-#define  DUI_CTR_IPADDRESS                       (_T("IPAddress"))
+#define  UICONTROL_CONTAINER                       (_T("Container"))
+#define  UICONTROL_TABLAYOUT                       (_T("TabLayout"))
+#define  UICONTROL_SCROLLBAR                       (_T("ScrollBar"))
+#define  UICONTROL_IPADDRESS                       (_T("IPAddress"))
 
-#define  DUI_CTR_LISTHEADER                      (_T("ListHeader"))
-#define  DUI_CTR_LISTFOOTER                      (_T("ListFooter"))
-#define  DUI_CTR_TILELAYOUT                      (_T("TileLayout"))
-#define  DUI_CTR_WEBBROWSER                      (_T("WebBrowser"))
+#define  UICONTROL_LISTHEADER                      (_T("ListHeader"))
+#define  UICONTROL_LISTFOOTER                      (_T("ListFooter"))
+#define  UICONTROL_TILELAYOUT                      (_T("TileLayout"))
+#define  UICONTROL_WEBBROWSER                      (_T("WebBrowser"))
 
-#define  DUI_CTR_CHILDLAYOUT                     (_T("ChildLayout"))
-#define  DUI_CTR_LISTELEMENT                     (_T("ListElement"))
+#define  UICONTROL_CHILDLAYOUT                     (_T("ChildLayout"))
+#define  UICONTROL_LISTELEMENT                     (_T("ListElement"))
 
-#define  DUI_CTR_VERTICALLAYOUT                  (_T("VerticalLayout"))
-#define  DUI_CTR_LISTHEADERITEM                  (_T("ListHeaderItem"))
+#define  UICONTROL_VERTICALLAYOUT                  (_T("VerticalLayout"))
+#define  UICONTROL_LISTHEADERITEM                  (_T("ListHeaderItem"))
 
-#define  DUI_CTR_LISTTEXTELEMENT                 (_T("ListTextElement"))
+#define  UICONTROL_LISTTEXTELEMENT                 (_T("ListTextElement"))
 
-#define  DUI_CTR_HORIZONTALLAYOUT                (_T("HorizontalLayout"))
-#define  DUI_CTR_LISTLABELELEMENT                (_T("ListLabelElement"))
+#define  UICONTROL_HORIZONTALLAYOUT                (_T("HorizontalLayout"))
+#define  UICONTROL_LISTLABELELEMENT                (_T("ListLabelElement"))
 
-#define  DUI_CTR_ANIMATIONTABLAYOUT				 (_T("AnimationTabLayout"))
+#define  UICONTROL_ANIMATIONTABLAYOUT				 (_T("AnimationTabLayout"))
 
-#define  DUI_CTR_LISTCONTAINERELEMENT            (_T("ListContainerElement"))
+#define  UICONTROL_LISTCONTAINERELEMENT            (_T("ListContainerElement"))
 
-#define  DUI_CTR_TEXTSCROLL						 (_T("TextScroll"))
+#define  UICONTROL_TEXTSCROLL						 (_T("TextScroll"))
 
-#define  DUI_CTR_COLORPALETTE					 (_T("ColorPalette"))
+#define  UICONTROL_COLORPALETTE					 (_T("ColorPalette"))
     ///
     //////////////END控件名称宏定义//////////////////////////////////////////////////
 
-    }// namespace DUILIB
+    }// namespace DUI
 
 
 #endif//_UIDEFINE_H_

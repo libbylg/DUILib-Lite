@@ -8,7 +8,7 @@
 #include "Utils/unzip.h"
 
 
-namespace DUILIB
+namespace DUI
 {
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -684,7 +684,7 @@ namespace DUILIB
     {
         m_diLayered.sDrawString = pstrImage;
         RECT rcNull = {0};
-        CRenderEngine::DrawImageInfo(NULL, this, rcNull, rcNull, &m_diLayered);
+        CRenderUI::DrawImageInfo(NULL, this, rcNull, rcNull, &m_diLayered);
         m_bLayeredChanged = true;
         Invalidate();
     }
@@ -883,7 +883,7 @@ namespace DUILIB
                 if (m_pRoot == NULL) {
                     PAINTSTRUCT ps = {0};
                     ::BeginPaint(m_hWndPaint, &ps);
-                    CRenderEngine::DrawColor(m_hDcPaint, ps.rcPaint, 0xFF000000);
+                    CRenderUI::DrawColor(m_hDcPaint, ps.rcPaint, 0xFF000000);
                     ::EndPaint(m_hWndPaint, &ps);
                     return true;
                 }
@@ -960,7 +960,7 @@ namespace DUILIB
                         // to submit swipes/animations.
                         if (m_bFirstLayout) {
                             m_bFirstLayout = false;
-                            SendNotify(m_pRoot, UIMSGTYPE_WINDOWINIT, 0, 0, false);
+                            SendNotify(m_pRoot, UIMSG_WINDOWINIT, 0, 0, false);
                             if (m_bLayered && m_bLayeredChanged) {
                                 Invalidate();
                                 SetPainting(false);
@@ -998,7 +998,7 @@ namespace DUILIB
                 // Prepare offscreen bitmap
                 if (m_bOffscreenPaint && m_hbmpOffscreen == NULL) {
                     m_hDcOffscreen = ::CreateCompatibleDC(m_hDcPaint);
-                    m_hbmpOffscreen = CRenderEngine::CreateARGB32Bitmap(m_hDcPaint, dwWidth, dwHeight, (LPBYTE*)& m_pOffscreenBits);
+                    m_hbmpOffscreen = CRenderUI::CreateARGB32Bitmap(m_hDcPaint, dwWidth, dwHeight, (LPBYTE*)& m_pOffscreenBits);
                     ASSERT(m_hDcOffscreen);
                     ASSERT(m_hbmpOffscreen);
                 }
@@ -1034,7 +1034,7 @@ namespace DUILIB
 
                             COLORREF* pChildBitmapBits = NULL;
                             HDC hChildMemDC = ::CreateCompatibleDC(m_hDcOffscreen);
-                            HBITMAP hChildBitmap = CRenderEngine::CreateARGB32Bitmap(hChildMemDC, rcChildWnd.right - rcChildWnd.left, rcChildWnd.bottom - rcChildWnd.top, (BYTE * *)& pChildBitmapBits);
+                            HBITMAP hChildBitmap = CRenderUI::CreateARGB32Bitmap(hChildMemDC, rcChildWnd.right - rcChildWnd.left, rcChildWnd.bottom - rcChildWnd.top, (BYTE * *)& pChildBitmapBits);
                             ::ZeroMemory(pChildBitmapBits, (rcChildWnd.right - rcChildWnd.left) * (rcChildWnd.bottom - rcChildWnd.top) * 4);
                             HBITMAP hOldChildBitmap = (HBITMAP) ::SelectObject(hChildMemDC, hChildBitmap);
                             ::SendMessage(hChildWnd, WM_PRINT, (WPARAM)hChildMemDC, (LPARAM)(PRF_CHECKVISIBLE | PRF_CHILDREN | PRF_CLIENT | PRF_OWNED));
@@ -1081,17 +1081,17 @@ namespace DUILIB
                             if (!m_diLayered.sDrawString.IsEmpty()) {
                                 if (m_hbmpBackground == NULL) {
                                     m_hDcBackground = ::CreateCompatibleDC(m_hDcPaint);
-                                    m_hbmpBackground = CRenderEngine::CreateARGB32Bitmap(m_hDcPaint, dwWidtht, dwHeightt, (BYTE * *)& m_pBackgroundBits);
+                                    m_hbmpBackground = CRenderUI::CreateARGB32Bitmap(m_hDcPaint, dwWidtht, dwHeightt, (BYTE * *)& m_pBackgroundBits);
                                     ::ZeroMemory(m_pBackgroundBits, dwWidtht * dwHeightt * 4);
                                     ::SelectObject(m_hDcBackground, m_hbmpBackground);
                                     CRenderClipUI clip;
                                     CRenderClipUI::GenerateClip(m_hDcBackground, rcLayeredClient, clip);
-                                    CRenderEngine::DrawImageInfo(m_hDcBackground, this, rcLayeredClient, rcLayeredClient, &m_diLayered);
+                                    CRenderUI::DrawImageInfo(m_hDcBackground, this, rcLayeredClient, rcLayeredClient, &m_diLayered);
                                 } else if (m_bLayeredChanged) {
                                     ::ZeroMemory(m_pBackgroundBits, dwWidtht * dwHeightt * 4);
                                     CRenderClipUI clip;
                                     CRenderClipUI::GenerateClip(m_hDcBackground, rcLayeredClient, clip);
-                                    CRenderEngine::DrawImageInfo(m_hDcBackground, this, rcLayeredClient, rcLayeredClient, &m_diLayered);
+                                    CRenderUI::DrawImageInfo(m_hDcBackground, this, rcLayeredClient, rcLayeredClient, &m_diLayered);
                                 }
                                 for (LONG y = rcClient.bottom - rcPaint.bottom; y < rcClient.bottom - rcPaint.top; ++y) {
                                     for (LONG x = rcPaint.left; x < rcPaint.right; ++x) {
@@ -1151,7 +1151,7 @@ namespace DUILIB
 
                 // 发送窗口大小改变消息
                 if (bNeedSizeMsg) {
-                    this->SendNotify(m_pRoot, UIMSGTYPE_WINDOWSIZE, 0, 0, true);
+                    this->SendNotify(m_pRoot, UIMSG_WINDOWSIZE, 0, 0, true);
                 }
                 return true;
             }
@@ -1429,7 +1429,7 @@ namespace DUILIB
                         ::DeleteObject(m_hDragBitmap);
                         m_hDragBitmap = NULL;
                     }
-                    m_hDragBitmap = CRenderEngine::GenerateBitmap(this, pControl, pControl->GetPos());
+                    m_hDragBitmap = CRenderUI::GenerateBitmap(this, pControl, pControl->GetPos());
                 }
 
                 // 开启捕获
@@ -1889,7 +1889,7 @@ namespace DUILIB
                 try {
                     ::DispatchMessage(&msg);
                 } catch (...) {
-                    DUITRACE(_T("EXCEPTION: %s(%d)\n"), __FILET__, __LINE__);
+                    UITRACE(_T("EXCEPTION: %s(%d)\n"), __FILET__, __LINE__);
 #ifdef _DEBUG
                     throw "CPaintManagerUI::MessageLoop";
 #endif
@@ -1912,7 +1912,7 @@ namespace DUILIB
             if (LPCTSTR key = m_SharedResInfo.m_ImageHash.GetAt(i)) {
                 data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(key, false));
                 if (data) {
-                    CRenderEngine::FreeImage(data);
+                    CRenderUI::FreeImage(data);
                     data = NULL;
                 }
             }
@@ -2070,7 +2070,7 @@ namespace DUILIB
             event.pSender = pControl;
             event.dwTimestamp = ::GetTickCount();
             m_pFocus->Event(event);
-            SendNotify(m_pFocus, UIMSGTYPE_KILLFOCUS);
+            SendNotify(m_pFocus, UIMSG_KILLFOCUS);
             m_pFocus = NULL;
         }
         if (pControl == NULL) return;
@@ -2085,7 +2085,7 @@ namespace DUILIB
             event.pSender = pControl;
             event.dwTimestamp = ::GetTickCount();
             m_pFocus->Event(event);
-            SendNotify(m_pFocus, UIMSGTYPE_SETFOCUS);
+            SendNotify(m_pFocus, UIMSG_SETFOCUS);
         }
     }
 
@@ -2099,7 +2099,7 @@ namespace DUILIB
             event.pSender = pControl;
             event.dwTimestamp = ::GetTickCount();
             m_pFocus->Event(event);
-            SendNotify(m_pFocus, UIMSGTYPE_KILLFOCUS);
+            SendNotify(m_pFocus, UIMSG_KILLFOCUS);
             m_pFocus = NULL;
         }
         FINDTABINFO info = {0};
@@ -2993,10 +2993,10 @@ namespace DUILIB
             if (isdigit(*bitmap)) {
                 LPTSTR pstr = NULL;
                 int iIndex = _tcstol(bitmap, &pstr, 10);
-                data = CRenderEngine::LoadImage(iIndex, type, mask, instance);
+                data = CRenderUI::LoadImage(iIndex, type, mask, instance);
             }
         } else {
-            data = CRenderEngine::LoadImage(bitmap, NULL, mask, instance);
+            data = CRenderUI::LoadImage(bitmap, NULL, mask, instance);
         }
 
         if (data == NULL) {
@@ -3009,28 +3009,28 @@ namespace DUILIB
             data->pSrcBits = new BYTE[data->nX * data->nY * 4];
             ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
         } else data->pSrcBits = NULL;
-        if (m_bUseHSL) CRenderEngine::AdjustImage(true, data, m_H, m_S, m_L);
+        if (m_bUseHSL) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
         if (data) {
             if (bShared || m_bForceUseSharedRes) {
                 TIMAGEINFO_UI* pOldImageInfo = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(bitmap));
                 if (pOldImageInfo) {
-                    CRenderEngine::FreeImage(pOldImageInfo);
+                    CRenderUI::FreeImage(pOldImageInfo);
                     m_SharedResInfo.m_ImageHash.Remove(bitmap);
                 }
 
                 if (!m_SharedResInfo.m_ImageHash.Insert(bitmap, data)) {
-                    CRenderEngine::FreeImage(data);
+                    CRenderUI::FreeImage(data);
                     data = NULL;
                 }
             } else {
                 TIMAGEINFO_UI* pOldImageInfo = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(bitmap));
                 if (pOldImageInfo) {
-                    CRenderEngine::FreeImage(pOldImageInfo);
+                    CRenderUI::FreeImage(pOldImageInfo);
                     m_ResInfo.m_ImageHash.Remove(bitmap);
                 }
 
                 if (!m_ResInfo.m_ImageHash.Insert(bitmap, data)) {
-                    CRenderEngine::FreeImage(data);
+                    CRenderUI::FreeImage(data);
                     data = NULL;
                 }
             }
@@ -3059,12 +3059,12 @@ namespace DUILIB
 
         if (bShared || m_bForceUseSharedRes) {
             if (!m_SharedResInfo.m_ImageHash.Insert(bitmap, data)) {
-                CRenderEngine::FreeImage(data);
+                CRenderUI::FreeImage(data);
                 data = NULL;
             }
         } else {
             if (!m_ResInfo.m_ImageHash.Insert(bitmap, data)) {
-                CRenderEngine::FreeImage(data);
+                CRenderUI::FreeImage(data);
                 data = NULL;
             }
         }
@@ -3078,13 +3078,13 @@ namespace DUILIB
         if (bShared) {
             data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(bitmap));
             if (data) {
-                CRenderEngine::FreeImage(data);
+                CRenderUI::FreeImage(data);
                 m_SharedResInfo.m_ImageHash.Remove(bitmap);
             }
         } else {
             data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(bitmap));
             if (data) {
-                CRenderEngine::FreeImage(data);
+                CRenderUI::FreeImage(data);
                 m_ResInfo.m_ImageHash.Remove(bitmap);
             }
         }
@@ -3098,7 +3098,7 @@ namespace DUILIB
                 if (LPCTSTR key = m_SharedResInfo.m_ImageHash.GetAt(i)) {
                     data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(key, false));
                     if (data) {
-                        CRenderEngine::FreeImage(data);
+                        CRenderUI::FreeImage(data);
                     }
                 }
             }
@@ -3109,7 +3109,7 @@ namespace DUILIB
                 if (LPCTSTR key = m_ResInfo.m_ImageHash.GetAt(i)) {
                     data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(key, false));
                     if (data) {
-                        CRenderEngine::FreeImage(data);
+                        CRenderUI::FreeImage(data);
                     }
                 }
             }
@@ -3124,7 +3124,7 @@ namespace DUILIB
             if (LPCTSTR key = m_SharedResInfo.m_ImageHash.GetAt(i)) {
                 data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(key));
                 if (data && data->bUseHSL) {
-                    CRenderEngine::AdjustImage(m_bUseHSL, data, m_H, m_S, m_L);
+                    CRenderUI::AdjustImage(m_bUseHSL, data, m_H, m_S, m_L);
                 }
             }
         }
@@ -3137,7 +3137,7 @@ namespace DUILIB
             if (LPCTSTR key = m_ResInfo.m_ImageHash.GetAt(i)) {
                 data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(key));
                 if (data && data->bUseHSL) {
-                    CRenderEngine::AdjustImage(m_bUseHSL, data, m_H, m_S, m_L);
+                    CRenderUI::AdjustImage(m_bUseHSL, data, m_H, m_S, m_L);
                 }
             }
         }
@@ -3163,14 +3163,14 @@ namespace DUILIB
                         if (isdigit(*bitmap)) {
                             LPTSTR pstr = NULL;
                             int iIndex = _tcstol(bitmap, &pstr, 10);
-                            pNewData = CRenderEngine::LoadImage(iIndex, data->sResType.GetData(), data->dwMask);
+                            pNewData = CRenderUI::LoadImage(iIndex, data->sResType.GetData(), data->dwMask);
                         }
                     } else {
-                        pNewData = CRenderEngine::LoadImage(bitmap, NULL, data->dwMask);
+                        pNewData = CRenderUI::LoadImage(bitmap, NULL, data->dwMask);
                     }
                     if (pNewData == NULL) continue;
 
-                    CRenderEngine::FreeImage(data, false);
+                    CRenderUI::FreeImage(data, false);
                     data->hBitmap = pNewData->hBitmap;
                     data->pBits = pNewData->pBits;
                     data->nX = pNewData->nX;
@@ -3181,7 +3181,7 @@ namespace DUILIB
                         data->pSrcBits = new BYTE[data->nX * data->nY * 4];
                         ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
                     } else data->pSrcBits = NULL;
-                    if (m_bUseHSL) CRenderEngine::AdjustImage(true, data, m_H, m_S, m_L);
+                    if (m_bUseHSL) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
 
                     delete pNewData;
                 }
@@ -3203,13 +3203,13 @@ namespace DUILIB
                         if (isdigit(*bitmap)) {
                             LPTSTR pstr = NULL;
                             int iIndex = _tcstol(bitmap, &pstr, 10);
-                            pNewData = CRenderEngine::LoadImage(iIndex, data->sResType.GetData(), data->dwMask);
+                            pNewData = CRenderUI::LoadImage(iIndex, data->sResType.GetData(), data->dwMask);
                         }
                     } else {
-                        pNewData = CRenderEngine::LoadImage(bitmap, NULL, data->dwMask);
+                        pNewData = CRenderUI::LoadImage(bitmap, NULL, data->dwMask);
                     }
 
-                    CRenderEngine::FreeImage(data, false);
+                    CRenderUI::FreeImage(data, false);
                     if (pNewData == NULL) {
                         m_ResInfo.m_ImageHash.Remove(bitmap);
                         continue;
@@ -3224,7 +3224,7 @@ namespace DUILIB
                         data->pSrcBits = new BYTE[data->nX * data->nY * 4];
                         ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
                     } else data->pSrcBits = NULL;
-                    if (m_bUseHSL) CRenderEngine::AdjustImage(true, data, m_H, m_S, m_L);
+                    if (m_bUseHSL) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
 
                     delete pNewData;
                 }
@@ -3234,14 +3234,14 @@ namespace DUILIB
         if (m_pRoot) m_pRoot->Invalidate();
     }
 
-    const TDRAWINFO* CManagerUI::GetDrawInfo(LPCTSTR pStrImage, LPCTSTR pStrModify)
+    const TDRAWINFO_UI* CManagerUI::GetDrawInfo(LPCTSTR pStrImage, LPCTSTR pStrModify)
     {
         CStringUI sStrImage = pStrImage;
         CStringUI sStrModify = pStrModify;
         CStringUI sKey = sStrImage + sStrModify;
-        TDRAWINFO* pDrawInfo = static_cast<TDRAWINFO*>(m_ResInfo.m_DrawInfoHash.Find(sKey));
+        TDRAWINFO_UI* pDrawInfo = static_cast<TDRAWINFO_UI*>(m_ResInfo.m_DrawInfoHash.Find(sKey));
         if (pDrawInfo == NULL && !sKey.IsEmpty()) {
-            pDrawInfo = new TDRAWINFO();
+            pDrawInfo = new TDRAWINFO_UI();
             pDrawInfo->Parse(pStrImage, pStrModify, this->GetDPIObj());
             m_ResInfo.m_DrawInfoHash.Insert(sKey, pDrawInfo);
         }
@@ -3253,7 +3253,7 @@ namespace DUILIB
         CStringUI sStrImage = pStrImage;
         CStringUI sStrModify = pStrModify;
         CStringUI sKey = sStrImage + sStrModify;
-        TDRAWINFO* pDrawInfo = static_cast<TDRAWINFO*>(m_ResInfo.m_DrawInfoHash.Find(sKey));
+        TDRAWINFO_UI* pDrawInfo = static_cast<TDRAWINFO_UI*>(m_ResInfo.m_DrawInfoHash.Find(sKey));
         if (pDrawInfo != NULL) {
             m_ResInfo.m_DrawInfoHash.Remove(sKey);
             delete pDrawInfo;
@@ -3263,11 +3263,11 @@ namespace DUILIB
 
     void CManagerUI::RemoveAllDrawInfos()
     {
-        TDRAWINFO* pDrawInfo = NULL;
+        TDRAWINFO_UI* pDrawInfo = NULL;
         for (int i = 0; i < m_ResInfo.m_DrawInfoHash.GetSize(); i++) {
             LPCTSTR key = m_ResInfo.m_DrawInfoHash.GetAt(i);
             if (key != NULL) {
-                pDrawInfo = static_cast<TDRAWINFO*>(m_ResInfo.m_DrawInfoHash.Find(key, false));
+                pDrawInfo = static_cast<TDRAWINFO_UI*>(m_ResInfo.m_DrawInfoHash.Find(key, false));
                 if (pDrawInfo) {
                     delete pDrawInfo;
                     pDrawInfo = NULL;
@@ -3884,4 +3884,4 @@ namespace DUILIB
         }
         return true; //let base free the medium
     }
-} // namespace DUILIB
+} // namespace DUI

@@ -4,7 +4,7 @@
 #include "Core/UIDefine.h"
 #include "Utils/Utils.h"
 
-namespace DUILIB
+namespace DUI
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -26,19 +26,19 @@ namespace DUILIB
 
 
 #ifdef _DEBUG
-#ifndef DUITRACE
-#define DUITRACE    DUI__Trace
-#endif
-#define DUITRACEMSG DUI__TraceMsg
+    #ifndef UITRACE
+    #define UITRACE    UI__Trace
+    #endif
+    #define UITRACEMSG UI__TraceMsg
 #else
-#ifndef DUITRACE
-#define DUITRACE
-#endif
-#define DUITRACEMSG _T("")
+    #ifndef UITRACE
+    #define UITRACE
+    #endif
+    #define UITRACEMSG _T("")
 #endif
 
-    void    DUILIB_API DUI__Trace(LPCTSTR pstrFormat, ...);
-    LPCTSTR DUILIB_API DUI__TraceMsg(UINT uMsg);
+    void    DUILIB_API UI__Trace(LPCTSTR pstrFormat, ...);
+    LPCTSTR DUILIB_API UI__TraceMsg(UINT uMsg);
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -64,7 +64,7 @@ namespace DUILIB
         BOOL RemoveVirtualWnd(CStringUI strName);
         void NotifyPump(TNOTIFY_UI& msg);
         BOOL LoopDispatch(TNOTIFY_UI& msg);
-        DUI_DECLARE_MESSAGE_MAP()
+        UI_DECLARE_MESSAGE_MAP()
     private:
         CStdStringPtrMap m_VirtualWndMap;
     };
@@ -112,6 +112,6 @@ namespace DUILIB
         BOOL m_bSubclassed;
     };
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIWindow_H__

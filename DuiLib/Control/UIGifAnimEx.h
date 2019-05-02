@@ -14,7 +14,7 @@ namespace DUILIB
 
 	class DUILIB_API CGifAnimExUI : public CLabelUI
 	{
-		DECLARE_DUICONTROL(CGifAnimExUI)
+		UI_DECLARE_CONTROL(CGifAnimExUI)
 	public:
 		CGifAnimExUI(void);
 		~CGifAnimExUI(void);

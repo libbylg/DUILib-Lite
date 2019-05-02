@@ -6,9 +6,9 @@
 #define DISPID_FLASHEVENT_FSCOMMAND	 ( 0x0096 )
 #define DISPID_FLASHEVENT_ONPROGRESS	( 0x07A6 )
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CFlashUI)
+	UI_IMPLEMENT_CONTROL(CFlashUI)
 
 	CFlashUI::CFlashUI(void)
 		: m_dwRef(0)
@@ -38,12 +38,12 @@ namespace DUILIB
 
 	LPCTSTR CFlashUI::GetClass() const
 	{
-		return DUI_CTR_FLASH;
+		return UICONTROL_FLASH;
 	}
 
 	LPVOID CFlashUI::GetInterface( LPCTSTR pstrName )
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_FLASH) == 0 ) return static_cast<CFlashUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_FLASH) == 0 ) return static_cast<CFlashUI*>(this);
 		return CActiveXUI::GetInterface(pstrName);
 	}
 

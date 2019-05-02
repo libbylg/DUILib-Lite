@@ -4,11 +4,11 @@
 #include "UIAnimation.h"
 #pragma once
 
-namespace DUILIB {
+namespace DUI {
 
 	class DUILIB_API CFadeButtonUI : public CButtonUI, public CUIAnimation
 	{
-		DECLARE_DUICONTROL(CFadeButtonUI)
+		UI_DECLARE_CONTROL(CFadeButtonUI)
 	public:
 		CFadeButtonUI();
 		virtual ~CFadeButtonUI();
@@ -40,6 +40,6 @@ namespace DUILIB {
 		};
 	};
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIFADEBUTTON_H__

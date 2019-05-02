@@ -1,9 +1,9 @@
 
 #include "UIOption.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(COptionUI)
+	UI_IMPLEMENT_CONTROL(COptionUI)
 	COptionUI::COptionUI() : m_bSelected(FALSE) ,m_iSelectedFont(-1), m_dwSelectedTextColor(0), m_dwSelectedBkColor(0), m_nSelectedStateCount(0)
 	{
 	}
@@ -20,7 +20,7 @@ namespace DUILIB
 
 	LPVOID COptionUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_OPTION) == 0 ) return static_cast<COptionUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_OPTION) == 0 ) return static_cast<COptionUI*>(this);
 		return CButtonUI::GetInterface(pstrName);
 	}
 
@@ -83,13 +83,13 @@ namespace DUILIB
 						}
 					}
 					if(bMsg) {
-						m_pManager->SendNotify(this, UIMSGTYPE_SELECTCHANGED);
+						m_pManager->SendNotify(this, UIMSG_SELECTCHANGED);
 					}
 				}
 			}
 			else {
 				if(bMsg) {
-					m_pManager->SendNotify(this, UIMSGTYPE_SELECTCHANGED);
+					m_pManager->SendNotify(this, UIMSG_SELECTCHANGED);
 				}
 			}
 		}
@@ -364,7 +364,7 @@ namespace DUILIB
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	IMPLEMENT_DUICONTROL(CCheckBoxUI)
+	UI_IMPLEMENT_CONTROL(CCheckBoxUI)
 
 	CCheckBoxUI::CCheckBoxUI() : m_bAutoCheck(FALSE)
 	{
@@ -377,7 +377,7 @@ namespace DUILIB
 	}
 	LPVOID CCheckBoxUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_CHECKBOX) == 0 ) return static_cast<CCheckBoxUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_CHECKBOX) == 0 ) return static_cast<CCheckBoxUI*>(this);
 		return COptionUI::GetInterface(pstrName);
 	}
 
@@ -414,7 +414,7 @@ namespace DUILIB
 		if( m_bAutoCheck && (event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK)) {
 			if( ::PtInRect(&m_rcItem, event.ptMouse) && IsEnabled() ) {
 				SetCheck(!GetCheck()); 
-				m_pManager->SendNotify(this, UIMSGTYPE_CHECKCLICK, 0, 0);
+				m_pManager->SendNotify(this, UIMSG_CHECKCLICK, 0, 0);
 				Invalidate();
 			}
 			return;
@@ -441,13 +441,13 @@ namespace DUILIB
 						}
 					}
 					if(bMsg) {
-						m_pManager->SendNotify(this, UIMSGTYPE_SELECTCHANGED, m_bSelected, 0);
+						m_pManager->SendNotify(this, UIMSG_SELECTCHANGED, m_bSelected, 0);
 					}
 				}
 			}
 			else {
 				if(bMsg) {
-					m_pManager->SendNotify(this, UIMSGTYPE_SELECTCHANGED, m_bSelected, 0);
+					m_pManager->SendNotify(this, UIMSG_SELECTCHANGED, m_bSelected, 0);
 				}
 			}
 		}

@@ -1,8 +1,10 @@
 #include "Control/UIButton.h"
+#include "Core/UIManager.h"
 
-namespace DUILIB
+
+namespace DUI
 {
-    IMPLEMENT_CONTROL_UI(CButtonUI);
+    UI_IMPLEMENT_CONTROL(CButtonUI);
 
     CButtonUI::CButtonUI()
         : m_uButtonState(0)
@@ -28,7 +30,7 @@ namespace DUILIB
 
     LPVOID CButtonUI::GetInterface(LPCTSTR pstrName)
     {
-        if (_tcsicmp(pstrName, DUI_CTR_BUTTON) == 0) return static_cast<CButtonUI*>(this);
+        if (_tcsicmp(pstrName, UICONTROL_BUTTON) == 0) return static_cast<CButtonUI*>(this);
         return CLabelUI::GetInterface(pstrName);
     }
 
@@ -84,7 +86,7 @@ namespace DUILIB
         }
         if (event.Type == UIEVENT_CONTEXTMENU) {
             if (IsContextMenuUsed()) {
-                m_pManager->SendNotify(this, UIMSGTYPE_MENU, event.wParam, event.lParam);
+                m_pManager->SendNotify(this, UIMSG_MENU, event.wParam, event.lParam);
             }
             return;
         }
@@ -107,7 +109,7 @@ namespace DUILIB
     {
         if (!CControlUI::Activate()) return FALSE;
         if (m_pManager != NULL) {
-            m_pManager->SendNotify(this, UIMSGTYPE_CLICK);
+            m_pManager->SendNotify(this, UIMSG_CLICK);
             BindTriggerTabSel();
         }
         return true;
@@ -437,10 +439,10 @@ namespace DUILIB
             iFont = GetFocusedFont();
 
         if (m_bShowHtml)
-            CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, sText, clrColor, \
+            CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, clrColor, \
                 NULL, NULL, nLinks, iFont, m_uTextStyle);
         else
-            CRenderEngine::DrawText(hDC, m_pManager, rc, sText, clrColor, \
+            CRenderUI::DrawText(hDC, m_pManager, rc, sText, clrColor, \
                 iFont, m_uTextStyle);
     }
 
@@ -448,17 +450,17 @@ namespace DUILIB
     {
         if ((m_uButtonState & UISTATE_DISABLED) != 0) {
             if (m_dwDisabledBkColor != 0) {
-                CRenderEngine::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwDisabledBkColor));
+                CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwDisabledBkColor));
                 return;
             }
         } else if ((m_uButtonState & UISTATE_PUSHED) != 0) {
             if (m_dwPushedBkColor != 0) {
-                CRenderEngine::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwPushedBkColor));
+                CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwPushedBkColor));
                 return;
             }
         } else if ((m_uButtonState & UISTATE_HOT) != 0) {
             if (m_dwHotBkColor != 0) {
-                CRenderEngine::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwHotBkColor));
+                CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwHotBkColor));
                 return;
             }
         }
@@ -469,7 +471,7 @@ namespace DUILIB
     void CButtonUI::PaintStatusImage(HDC hDC)
     {
         if (!m_sStateImage.IsEmpty() && m_nStateCount > 0) {
-            TDRAWINFO info;
+            TDRAWINFO_UI info;
             info.Parse(m_sStateImage, _T(""), m_pManager->GetDPIObj());
             const TIMAGEINFO_UI* pImage = m_pManager->GetImageEx(info.sImageName, info.sResType, info.dwMask, info.bHSL);
             if (m_sNormalImage.IsEmpty() && pImage != NULL) {

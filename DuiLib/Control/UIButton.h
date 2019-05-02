@@ -3,11 +3,11 @@
 
 #include "Control/UILabel.h"
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CButtonUI : public CLabelUI
 	{
-		DECLARE_CONTROL_UI(CButtonUI)
+		UI_DECLARE_CONTROL(CButtonUI)
 
 	public:
 		CButtonUI();
@@ -99,6 +99,6 @@ namespace DUILIB
 		CStringUI	m_sBindTabLayoutName;
 	};
 
-}	// namespace DUILIB
+}	// namespace DUI
 
 #endif // __UIBUTTON_H__

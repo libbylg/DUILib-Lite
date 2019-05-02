@@ -3,14 +3,14 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	/// 扩展下拉列表框
 	/// 增加arrowimage属性,一张图片平均分成5份,Normal/Hot/Pushed/Focused/Disabled(必须有source属性)
 	/// <Default name="ComboBox" value="arrowimage=&quot;file='sys_combo_btn.png' source='0,0,16,16'&quot; "/>
 	class DUILIB_API CComboBoxUI : public CComboUI
 	{
-		DECLARE_DUICONTROL(CComboBoxUI)
+		UI_DECLARE_CONTROL(CComboBoxUI)
 	public:
 		CComboBoxUI();
 		LPCTSTR GetClass() const;

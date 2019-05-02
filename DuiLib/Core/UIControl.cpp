@@ -3,9 +3,9 @@
 #include "Core/UIRender.h"
 #include "Core/UIManager.h"
 
-namespace DUILIB
+namespace DUI
 {
-    IMPLEMENT_CONTROL_UI(CControlUI)
+    UI_IMPLEMENT_CONTROL(CControlUI)
 
         CControlUI::CControlUI()
         :m_pManager(NULL),
@@ -71,7 +71,7 @@ namespace DUILIB
 
     LPVOID CControlUI::GetInterface(LPCTSTR pstrName)
     {
-        if (_tcsicmp(pstrName, DUI_CTR_CONTROL) == 0) return this;
+        if (_tcsicmp(pstrName, UICONTROL_CONTROL) == 0) return this;
         return NULL;
     }
 
@@ -336,7 +336,7 @@ namespace DUILIB
 
     BOOL CControlUI::DrawImage(HDC hDC, LPCTSTR pStrImage, LPCTSTR pStrModify)
     {
-        return CRenderEngine::DrawImageString(hDC, m_pManager, m_rcItem, m_rcPaint, pStrImage, pStrModify, m_instance);
+        return CRenderUI::DrawImageString(hDC, m_pManager, m_rcItem, m_rcPaint, pStrImage, pStrModify, m_instance);
     }
 
     const RECT& CControlUI::GetPos() const
@@ -791,7 +791,7 @@ namespace DUILIB
         if (!m_bColorHSL) return dwColor;
         short H, S, L;
         CManagerUI::GetHSL(&H, &S, &L);
-        return CRenderEngine::AdjustColor(dwColor, H, S, L);
+        return CRenderUI::AdjustColor(dwColor, H, S, L);
     }
 
     void CControlUI::Init()
@@ -834,12 +834,12 @@ namespace DUILIB
             return;
         }
         if (event.Type == UIEVENT_TIMER) {
-            m_pManager->SendNotify(this, UIMSGTYPE_TIMER, event.wParam, event.lParam);
+            m_pManager->SendNotify(this, UIMSG_TIMER, event.wParam, event.lParam);
             return;
         }
         if (event.Type == UIEVENT_CONTEXTMENU) {
             if (IsContextMenuUsed()) {
-                m_pManager->SendNotify(this, UIMSGTYPE_MENU, event.wParam, event.lParam);
+                m_pManager->SendNotify(this, UIMSG_MENU, event.wParam, event.lParam);
                 return;
             }
         }
@@ -1201,15 +1201,15 @@ namespace DUILIB
                 if (m_dwBackColor3 != 0) {
                     RECT rc = m_rcItem;
                     rc.bottom = (rc.bottom + rc.top) / 2;
-                    CRenderEngine::DrawGradient(hDC, rc, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), bVer, 8);
+                    CRenderUI::DrawGradient(hDC, rc, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), bVer, 8);
                     rc.top = rc.bottom;
                     rc.bottom = m_rcItem.bottom;
-                    CRenderEngine::DrawGradient(hDC, rc, GetAdjustColor(m_dwBackColor2), GetAdjustColor(m_dwBackColor3), bVer, 8);
+                    CRenderUI::DrawGradient(hDC, rc, GetAdjustColor(m_dwBackColor2), GetAdjustColor(m_dwBackColor3), bVer, 8);
                 } else {
-                    CRenderEngine::DrawGradient(hDC, m_rcItem, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), bVer, 16);
+                    CRenderUI::DrawGradient(hDC, m_rcItem, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), bVer, 16);
                 }
-            } else if (m_dwBackColor >= 0xFF000000) CRenderEngine::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwBackColor));
-            else CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwBackColor));
+            } else if (m_dwBackColor >= 0xFF000000) CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwBackColor));
+            else CRenderUI::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwBackColor));
         }
     }
 
@@ -1226,7 +1226,7 @@ namespace DUILIB
 
     void CControlUI::PaintForeColor(HDC hDC)
     {
-        CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwForeColor));
+        CRenderUI::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwForeColor));
     }
 
     void CControlUI::PaintForeImage(HDC hDC)
@@ -1259,39 +1259,39 @@ namespace DUILIB
             //»­Ô²½Ç±ß¿ò
             if (nBorderSize > 0 && (cxyBorderRound.cx > 0 || cxyBorderRound.cy > 0)) {
                 if (IsFocused() && m_dwFocusBorderColor != 0)
-                    CRenderEngine::DrawRoundRect(hDC, m_rcItem, nBorderSize, cxyBorderRound.cx, cxyBorderRound.cy, GetAdjustColor(m_dwFocusBorderColor), m_nBorderStyle);
+                    CRenderUI::DrawRoundRect(hDC, m_rcItem, nBorderSize, cxyBorderRound.cx, cxyBorderRound.cy, GetAdjustColor(m_dwFocusBorderColor), m_nBorderStyle);
                 else
-                    CRenderEngine::DrawRoundRect(hDC, m_rcItem, nBorderSize, cxyBorderRound.cx, cxyBorderRound.cy, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
+                    CRenderUI::DrawRoundRect(hDC, m_rcItem, nBorderSize, cxyBorderRound.cx, cxyBorderRound.cy, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
             } else {
                 if (IsFocused() && m_dwFocusBorderColor != 0 && nBorderSize > 0) {
-                    CRenderEngine::DrawRect(hDC, m_rcItem, nBorderSize, GetAdjustColor(m_dwFocusBorderColor), m_nBorderStyle);
+                    CRenderUI::DrawRect(hDC, m_rcItem, nBorderSize, GetAdjustColor(m_dwFocusBorderColor), m_nBorderStyle);
                 } else if (rcBorderSize.left > 0 || rcBorderSize.top > 0 || rcBorderSize.right > 0 || rcBorderSize.bottom > 0) {
                     RECT rcBorder;
 
                     if (rcBorderSize.left > 0) {
                         rcBorder = m_rcItem;
                         rcBorder.right = rcBorder.left;
-                        CRenderEngine::DrawLine(hDC, rcBorder, rcBorderSize.left, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
+                        CRenderUI::DrawLine(hDC, rcBorder, rcBorderSize.left, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
                     }
                     if (rcBorderSize.top > 0) {
                         rcBorder = m_rcItem;
                         rcBorder.bottom = rcBorder.top;
-                        CRenderEngine::DrawLine(hDC, rcBorder, rcBorderSize.top, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
+                        CRenderUI::DrawLine(hDC, rcBorder, rcBorderSize.top, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
                     }
                     if (rcBorderSize.right > 0) {
                         rcBorder = m_rcItem;
                         rcBorder.right -= 1;
                         rcBorder.left = rcBorder.right;
-                        CRenderEngine::DrawLine(hDC, rcBorder, rcBorderSize.right, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
+                        CRenderUI::DrawLine(hDC, rcBorder, rcBorderSize.right, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
                     }
                     if (rcBorderSize.bottom > 0) {
                         rcBorder = m_rcItem;
                         rcBorder.bottom -= 1;
                         rcBorder.top = rcBorder.bottom;
-                        CRenderEngine::DrawLine(hDC, rcBorder, rcBorderSize.bottom, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
+                        CRenderUI::DrawLine(hDC, rcBorder, rcBorderSize.bottom, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
                     }
                 } else if (nBorderSize > 0) {
-                    CRenderEngine::DrawRect(hDC, m_rcItem, nBorderSize, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
+                    CRenderUI::DrawRect(hDC, m_rcItem, nBorderSize, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
                 }
             }
         }
@@ -1361,4 +1361,4 @@ namespace DUILIB
         Invalidate();
     }
 
-} // namespace DUILIB
+} // namespace DUI

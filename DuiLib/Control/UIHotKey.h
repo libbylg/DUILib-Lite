@@ -2,7 +2,7 @@
 #define __UIHOTKEY_H__
 #pragma once
 
-namespace DUILIB{
+namespace DUI{
 	class CHotKeyUI;
 
 	class DUILIB_API CHotKeyWnd : public CWindowWnd
@@ -34,7 +34,7 @@ namespace DUILIB{
 
 	class DUILIB_API CHotKeyUI : public CLabelUI
 	{
-		DECLARE_DUICONTROL(CHotKeyUI)
+		UI_DECLARE_CONTROL(CHotKeyUI)
 		friend CHotKeyWnd;
 	public:
 		CHotKeyUI();

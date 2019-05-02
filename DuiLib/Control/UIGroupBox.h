@@ -3,12 +3,12 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 
 	class DUILIB_API CGroupBoxUI : public CVerticalLayoutUI
 	{
-		DECLARE_DUICONTROL(CGroupBoxUI)
+		UI_DECLARE_CONTROL(CGroupBoxUI)
 	public:
 		CGroupBoxUI();
 		~CGroupBoxUI();

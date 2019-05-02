@@ -6,13 +6,13 @@
 #include "DUILIB.h"
 
 
-namespace DUILIB
+namespace DUI
 {
 	//////////////////////////////////////////////////////////////////////////
 	//
-	DUI_BEGIN_MESSAGE_MAP(WindowImplBase, CNotifyPumpUI)
-		DUI_ON_MSGTYPE(UIMSGTYPE_CLICK,OnClick)
-	DUI_END_MESSAGE_MAP()
+	UI_BEGIN_MESSAGE_MAP(WindowImplBase, CNotifyPumpUI)
+		UI_ON_MSGTYPE(UIMSG_CLICK,OnClick)
+	UI_END_MESSAGE_MAP()
 
 	void WindowImplBase::OnFinalMessage( HWND hWnd )
 	{

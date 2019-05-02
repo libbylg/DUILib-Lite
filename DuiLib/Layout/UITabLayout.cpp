@@ -1,9 +1,9 @@
+#include "Layout/UITabLayout.h"
+#include "Core/UIManager.h"
 
-#include "UITabLayout.h"
-
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CTabLayoutUI)
+	UI_IMPLEMENT_CONTROL(CTabLayoutUI)
 	CTabLayoutUI::CTabLayoutUI() : m_iCurSel(-1)
 	{
 	}
@@ -15,7 +15,7 @@ namespace DUILIB
 
 	LPVOID CTabLayoutUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_TABLAYOUT) == 0 ) return static_cast<CTabLayoutUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_TABLAYOUT) == 0 ) return static_cast<CTabLayoutUI*>(this);
 		return CContainerUI::GetInterface(pstrName);
 	}
 
@@ -116,7 +116,7 @@ namespace DUILIB
 
 		if( m_pManager != NULL ) {
 			m_pManager->SetNextTabControl();
-			m_pManager->SendNotify(this, UIMSGTYPE_TABSELECT, m_iCurSel, iOldSel);
+			m_pManager->SendNotify(this, UIMSG_TABSELECT, m_iCurSel, iOldSel);
 		}
 		return true;
 	}

@@ -9,7 +9,7 @@
 #include "Core/UIShadow.h"
 #include "Core/UIRender.h"
 
-namespace DUILIB
+namespace DUI
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -20,7 +20,7 @@ namespace DUILIB
     class CShadowUI;
     class CManagerUI;
     class CDPI;
-    struct TDRAWINFO;
+    struct TDRAWINFO_UI;
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -304,7 +304,7 @@ namespace DUILIB
         static void ReloadSharedImages();
         void ReloadImages();
 
-        const TDRAWINFO* GetDrawInfo(LPCTSTR pStrImage, LPCTSTR pStrModify);
+        const TDRAWINFO_UI* GetDrawInfo(LPCTSTR pStrImage, LPCTSTR pStrModify);
         void RemoveDrawInfo(LPCTSTR pStrImage, LPCTSTR pStrModify);
         void RemoveAllDrawInfos();
 
@@ -470,7 +470,7 @@ namespace DUILIB
         RECT m_rcLayeredInset;
         BOOL m_bLayeredChanged;
         RECT m_rcLayeredUpdate;
-        TDRAWINFO m_diLayered;
+        TDRAWINFO_UI m_diLayered;
 
         BOOL m_bMouseTracking;
         BOOL m_bMouseCapture;
@@ -532,6 +532,6 @@ namespace DUILIB
         static CStdPtrArray m_aPlugins;
     };
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIMANAGER_H__

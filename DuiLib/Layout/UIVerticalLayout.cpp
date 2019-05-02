@@ -1,9 +1,9 @@
 
 #include "UIVerticalLayout.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CVerticalLayoutUI)
+	UI_IMPLEMENT_CONTROL(CVerticalLayoutUI)
 	CVerticalLayoutUI::CVerticalLayoutUI() : m_iSepHeight(0), m_uButtonState(0), m_bImmMode(FALSE)
 	{
 		ptLastMouse.x = ptLastMouse.y = 0;
@@ -17,7 +17,7 @@ namespace DUILIB
 
 	LPVOID CVerticalLayoutUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_VERTICALLAYOUT) == 0 ) return static_cast<CVerticalLayoutUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_VERTICALLAYOUT) == 0 ) return static_cast<CVerticalLayoutUI*>(this);
 		return CContainerUI::GetInterface(pstrName);
 	}
 

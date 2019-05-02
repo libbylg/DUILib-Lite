@@ -1,7 +1,7 @@
 
 #include "UIEdit.h"
 
-namespace DUILIB
+namespace DUI
 {
 	class CEditWnd : public CWindowWnd
 	{
@@ -168,7 +168,7 @@ namespace DUILIB
 			}
 		}
 		else if( uMsg == WM_KEYDOWN && TCHAR(wParam) == VK_RETURN ){
-			m_pOwner->GetManager()->SendNotify(m_pOwner, UIMSGTYPE_RETURN);
+			m_pOwner->GetManager()->SendNotify(m_pOwner, UIMSG_RETURN);
 		}
 		else if( uMsg == WM_KEYDOWN && TCHAR(wParam) == VK_TAB ){
 			if (m_pOwner->GetManager()->IsLayered()) {
@@ -256,7 +256,7 @@ namespace DUILIB
 		if( pstr == NULL ) return 0;
 		::GetWindowText(m_hWnd, pstr, cchLen);
 		m_pOwner->m_sText = pstr;
-		m_pOwner->GetManager()->SendNotify(m_pOwner, UIMSGTYPE_TEXTCHANGED);
+		m_pOwner->GetManager()->SendNotify(m_pOwner, UIMSG_TEXTCHANGED);
 		if( m_pOwner->GetManager()->IsLayered() ) m_pOwner->Invalidate();
 		return 0;
 	}
@@ -265,7 +265,7 @@ namespace DUILIB
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CEditUI)
+	UI_IMPLEMENT_CONTROL(CEditUI)
 
 	CEditUI::CEditUI() : m_pWindow(NULL), m_uMaxChar(255), m_bReadOnly(FALSE), 
 		m_bPasswordMode(FALSE), m_cPasswordChar(_T('*')), m_bAutoSelAll(FALSE), m_uButtonState(0), 
@@ -282,7 +282,7 @@ namespace DUILIB
 
 	LPVOID CEditUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_EDIT) == 0 ) return static_cast<CEditUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_EDIT) == 0 ) return static_cast<CEditUI*>(this);
 		return CLabelUI::GetInterface(pstrName);
 	}
 

@@ -1,9 +1,9 @@
 
 #include "UITileLayout.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CTileLayoutUI)
+	UI_IMPLEMENT_CONTROL(CTileLayoutUI)
 	CTileLayoutUI::CTileLayoutUI() : m_nColumns(1)
 	{
 		m_szItem.cx = m_szItem.cy = 0;
@@ -16,7 +16,7 @@ namespace DUILIB
 
 	LPVOID CTileLayoutUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_TILELAYOUT) == 0 ) return static_cast<CTileLayoutUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_TILELAYOUT) == 0 ) return static_cast<CTileLayoutUI*>(this);
 		return CContainerUI::GetInterface(pstrName);
 	}
 

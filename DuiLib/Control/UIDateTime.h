@@ -3,14 +3,14 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class CDateTimeWnd;
 
 	/// 时间选择控件
 	class DUILIB_API CDateTimeUI : public CLabelUI
 	{
-		DECLARE_DUICONTROL(CDateTimeUI)
+		UI_DECLARE_CONTROL(CDateTimeUI)
 		friend class CDateTimeWnd;
 	public:
 		CDateTimeUI();

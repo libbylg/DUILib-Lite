@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class CRingUI : public CLabelUI
 	{
@@ -11,7 +11,7 @@ namespace DUILIB
 		{ 
 			RING_TIMERID = 100,
 		};
-		DECLARE_DUICONTROL(CRingUI)
+		UI_DECLARE_CONTROL(CRingUI)
 	public:
 		CRingUI();
 		~CRingUI();

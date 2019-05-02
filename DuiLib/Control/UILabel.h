@@ -3,11 +3,11 @@
 
 #include "Core/UIControl.h"
 
-namespace DUILIB
+namespace DUI
 {
     class DUILIB_API CLabelUI : public CControlUI
     {
-        DECLARE_CONTROL_UI(CLabelUI)
+        UI_DECLARE_CONTROL(CLabelUI)
     public:
         CLabelUI();
         ~CLabelUI();

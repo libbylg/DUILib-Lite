@@ -4,7 +4,7 @@
 #include "UIButton.h"
 #pragma once
 
-namespace DUILIB {
+namespace DUI {
 
 	class DUILIB_API IUIAnimation
 	{
@@ -78,6 +78,6 @@ namespace DUILIB {
 		Imp * m_pImp;
 	};
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIANIMATION_H__

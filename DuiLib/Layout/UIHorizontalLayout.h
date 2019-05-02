@@ -3,11 +3,11 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CHorizontalLayoutUI : public CContainerUI
 	{
-		DECLARE_DUICONTROL(CHorizontalLayoutUI)
+		UI_DECLARE_CONTROL(CHorizontalLayoutUI)
 	public:
 		CHorizontalLayoutUI();
 

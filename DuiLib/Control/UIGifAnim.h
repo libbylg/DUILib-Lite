@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CGifAnimUI : public CControlUI
 	{
@@ -11,7 +11,7 @@ namespace DUILIB
 		{ 
 			EVENT_TIEM_ID = 100,
 		};
-		DECLARE_DUICONTROL(CGifAnimUI)
+		UI_DECLARE_CONTROL(CGifAnimUI)
 	public:
 		CGifAnimUI(void);
 		~CGifAnimUI(void);

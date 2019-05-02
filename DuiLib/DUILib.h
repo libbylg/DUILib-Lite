@@ -153,12 +153,12 @@
 /// 定义了一个适用于C语言的编译期断言宏，用于对编译环境进行一些基本的检查
 ///@{
 #if     defined(__cplusplus)
-#define DUI_STATIC_ASSERT(expr,message)     static_assert(expr,message)
+#define UI_STATIC_ASSERT(expr,message)     static_assert(expr,message)
 #else
 #if   defined(_MSC_VER)
-#define DUI_STATIC_ASSERT(expr,message)     typedef char __SMQ_STATIC_ASSERT[(expr)?1:-1]
+#define UI_STATIC_ASSERT(expr,message)     typedef char __SMQ_STATIC_ASSERT[(expr)?1:-1]
 #else
-#define DUI_STATIC_ASSERT(expr,message)     _Static_assert(expr,message)
+#define UI_STATIC_ASSERT(expr,message)     _Static_assert(expr,message)
 #endif
 #endif
 

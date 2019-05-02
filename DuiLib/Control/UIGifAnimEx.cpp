@@ -3,10 +3,10 @@
 #include "UIGifAnimEx.h"
 #include "../../3rd/CxImage/ximage.h"
 //
-namespace DUILIB
+namespace DUI
 {
 	#define GIFANIMUIEX_EVENT_TIEM_ID	100
-	IMPLEMENT_DUICONTROL(CGifAnimExUI)
+	UI_IMPLEMENT_CONTROL(CGifAnimExUI)
 	struct CGifAnimExUI::Imp
 	{
 		BOOL				m_bRealStop			;//Õ‚≤øÕ£÷π¡À

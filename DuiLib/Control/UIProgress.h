@@ -3,11 +3,11 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CProgressUI : public CLabelUI
 	{
-		DECLARE_DUICONTROL(CProgressUI)
+		UI_DECLARE_CONTROL(CProgressUI)
 	public:
 		CProgressUI();
 
@@ -42,6 +42,6 @@ namespace DUILIB
 		CDuiString m_sForeImageModify;
 	};
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIPROGRESS_H__

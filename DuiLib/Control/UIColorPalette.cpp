@@ -1,7 +1,7 @@
 
 #include <math.h>
 
-namespace DUILIB {
+namespace DUI {
 #define HSLMAX   255	/* H,L, and S vary over 0-HSLMAX */
 #define RGBMAX   255    /* R,G, and B vary over 0-RGBMAX */
 #define HSLUNDEFINED (HSLMAX*2/3)
@@ -111,7 +111,7 @@ namespace DUILIB {
 	///////////////////////////////////////////////////////////////////////
 	//
 	//
-	IMPLEMENT_DUICONTROL(CColorPaletteUI)
+	UI_IMPLEMENT_CONTROL(CColorPaletteUI)
 
 	CColorPaletteUI::CColorPaletteUI()
 		: m_uButtonState(0)
@@ -164,7 +164,7 @@ namespace DUILIB {
 
 	LPVOID CColorPaletteUI::GetInterface(LPCTSTR pstrName)
 	{
-		if (_tcscmp(pstrName, DUI_CTR_COLORPALETTE) == 0) return static_cast<CColorPaletteUI*>(this);
+		if (_tcscmp(pstrName, UICONTROL_COLORPALETTE) == 0) return static_cast<CColorPaletteUI*>(this);
 		return CControlUI::GetInterface(pstrName);
 	}
 
@@ -282,7 +282,7 @@ namespace DUILIB {
 			if ((m_uButtonState | UISTATE_PUSHED) && (IsEnabled()))
 			{
 				color = GetSelectColor();
-				m_pManager->SendNotify(this, UIMSGTYPE_COLORCHANGED, color, 0);
+				m_pManager->SendNotify(this, UIMSG_COLORCHANGED, color, 0);
 			}
 
 			m_uButtonState &= ~UISTATE_PUSHED;

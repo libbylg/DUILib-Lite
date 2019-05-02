@@ -3,11 +3,11 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API COptionUI : public CButtonUI
 	{
-		DECLARE_DUICONTROL(COptionUI)
+		UI_DECLARE_CONTROL(COptionUI)
 	public:
 		COptionUI();
 		~COptionUI();
@@ -78,7 +78,7 @@ namespace DUILIB
 
 	class DUILIB_API CCheckBoxUI : public COptionUI
 	{
-		DECLARE_DUICONTROL(CCheckBoxUI)
+		UI_DECLARE_CONTROL(CCheckBoxUI)
 	public:
 		CCheckBoxUI();
 
@@ -98,6 +98,6 @@ namespace DUILIB
 	protected:
 		BOOL m_bAutoCheck; 
 	};
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIOPTION_H__

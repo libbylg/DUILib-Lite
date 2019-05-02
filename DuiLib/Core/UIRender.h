@@ -7,7 +7,7 @@
 #ifdef USE_XIMAGE_EFFECT
 class CxImage;
 #endif
-namespace DUILIB
+namespace DUI
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -31,9 +31,9 @@ namespace DUILIB
     };
 
     class CDPI;
-    typedef struct DUILIB_API TDRAWINFO
+    typedef struct DUILIB_API TDRAWINFO_UI
     {
-        TDRAWINFO();
+        TDRAWINFO_UI();
         void Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CDPI* pDPI);
         void Clear();
 
@@ -52,13 +52,13 @@ namespace DUILIB
         BOOL bHSL;
         SIZE szIcon;
         CStringUI sIconAlign;
-    } TDRAWINFO;
+    } TDRAWINFO_UI;
 
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CRenderEngine
+    class DUILIB_API CRenderUI
     {
     public:
         static DWORD AdjustColor(DWORD dwColor, short H, short S, short L);
@@ -86,7 +86,7 @@ namespace DUILIB
             const RECT& rcBmpPart, const RECT& rcCorners, BOOL bAlpha, BYTE uFade = 255,
             BOOL hole = false, BOOL xtiled = false, BOOL ytiled = false);
 
-        static BOOL DrawImageInfo(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, const TDRAWINFO* pDrawInfo, HINSTANCE instance = NULL);
+        static BOOL DrawImageInfo(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, const TDRAWINFO_UI* pDrawInfo, HINSTANCE instance = NULL);
         static BOOL DrawImageString(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, HINSTANCE instance = NULL);
 
         static void DrawColor(HDC hDC, const RECT& rc, DWORD color);
@@ -108,6 +108,6 @@ namespace DUILIB
         static void CheckAlphaColor(DWORD& dwColor);
     };
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIRENDER_H__

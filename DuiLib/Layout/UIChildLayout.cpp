@@ -1,9 +1,9 @@
 
 #include "UIChildLayout.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CChildLayoutUI)
+	UI_IMPLEMENT_CONTROL(CChildLayoutUI)
 
 	CChildLayoutUI::CChildLayoutUI()
 	{
@@ -47,7 +47,7 @@ namespace DUILIB
 
 	LPVOID CChildLayoutUI::GetInterface( LPCTSTR pstrName )
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_CHILDLAYOUT) == 0 ) return static_cast<CChildLayoutUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_CHILDLAYOUT) == 0 ) return static_cast<CChildLayoutUI*>(this);
 		return CControlUI::GetInterface(pstrName);
 	}
 
@@ -55,4 +55,4 @@ namespace DUILIB
 	{
 		return _T("ChildLayoutUI");
 	}
-} // namespace DUILIB
+} // namespace DUI

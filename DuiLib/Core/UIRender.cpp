@@ -24,7 +24,7 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////
-namespace DUILIB
+namespace DUI
 {
     static int g_iFontID = UIFONTID_MAX;
 
@@ -32,12 +32,12 @@ namespace DUILIB
     //
     //
 
-    TDRAWINFO::TDRAWINFO()
+    TDRAWINFO_UI::TDRAWINFO_UI()
     {
         Clear();
     }
 
-    void TDRAWINFO::Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CDPI* pDPI)
+    void TDRAWINFO_UI::Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CDPI* pDPI)
     {
         // 1、aaa.jpg
         // 2、file='aaa.jpg' res='' restype='0' dest='0,0,0,0' source='0,0,0,0' corner='0,0,0,0' 
@@ -127,7 +127,7 @@ namespace DUILIB
             sImageName.Replace(_T("."), sScale);
         }
     }
-    void TDRAWINFO::Clear()
+    void TDRAWINFO_UI::Clear()
     {
         sDrawString.Empty();
         sDrawModify.Empty();
@@ -382,12 +382,12 @@ namespace DUILIB
         if (!::IntersectRect(&rcTemp, &rcItem, &rc)) return true;
         if (!::IntersectRect(&rcTemp, &rcItem, &rcPaint)) return true;
 
-        CRenderEngine::DrawImage(hDC, data->hBitmap, rcItem, rcPaint, rcBmpPart, rcCorner, pManager->IsLayered()?true:data->bAlpha, bFade, bHole, bTiledX, bTiledY);
+        CRenderUI::DrawImage(hDC, data->hBitmap, rcItem, rcPaint, rcBmpPart, rcCorner, pManager->IsLayered()?true:data->bAlpha, bFade, bHole, bTiledX, bTiledY);
 
         return true;
     }
 
-    DWORD CRenderEngine::AdjustColor(DWORD dwColor, short H, short S, short L)
+    DWORD CRenderUI::AdjustColor(DWORD dwColor, short H, short S, short L)
     {
         if (H == 180 && S == 100 && L == 100) return dwColor;
         float fH, fS, fL;
@@ -402,7 +402,7 @@ namespace DUILIB
         return dwColor;
     }
 
-    TIMAGEINFO_UI * CRenderEngine::LoadImage(TSTRID_UI bitmap, LPCTSTR type, DWORD mask, HINSTANCE instance)
+    TIMAGEINFO_UI * CRenderUI::LoadImage(TSTRID_UI bitmap, LPCTSTR type, DWORD mask, HINSTANCE instance)
     {
         LPBYTE pData = NULL;
         DWORD dwSize = 0;
@@ -668,7 +668,7 @@ namespace DUILIB
         }
         return dwSize;
     }
-    CxImage* CRenderEngine::LoadGifImageX(STRINGorID bitmap, LPCTSTR type, DWORD mask)
+    CxImage* CRenderUI::LoadGifImageX(STRINGorID bitmap, LPCTSTR type, DWORD mask)
     {
         //write by wangji
         LPBYTE pData = NULL;
@@ -689,9 +689,9 @@ namespace DUILIB
     }
 #endif//USE_XIMAGE_EFFECT
 
-    Gdiplus::Image* CRenderEngine::GdiplusLoadImage(LPCTSTR pstrPath1)
+    Gdiplus::Image* CRenderUI::GdiplusLoadImage(LPCTSTR pstrPath1)
     {
-        TDRAWINFO drawInfo;
+        TDRAWINFO_UI drawInfo;
         drawInfo.Parse(pstrPath1, NULL, NULL);
         CStringUI sImageName = drawInfo.sImageName;
 
@@ -781,7 +781,7 @@ namespace DUILIB
         return pImage;
     }
 
-    Gdiplus::Image* CRenderEngine::GdiplusLoadImage(LPVOID pBuf, size_t dwSize)
+    Gdiplus::Image* CRenderUI::GdiplusLoadImage(LPVOID pBuf, size_t dwSize)
     {
         HGLOBAL hMem = ::GlobalAlloc(GMEM_FIXED, dwSize);
         BYTE* pMem = (BYTE*)::GlobalLock(hMem);
@@ -797,7 +797,7 @@ namespace DUILIB
         return pImg;
     }
 
-    void CRenderEngine::FreeImage(TIMAGEINFO_UI * bitmap, BOOL bDelete)
+    void CRenderUI::FreeImage(TIMAGEINFO_UI * bitmap, BOOL bDelete)
     {
         if (bitmap == NULL) return;
         if (bitmap->hBitmap) {
@@ -819,13 +819,13 @@ namespace DUILIB
     }
 
 
-    BOOL CRenderEngine::DrawIconImageString(HDC hDC, CManagerUI * pManager, const RECT & rc, const RECT & rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify)
+    BOOL CRenderUI::DrawIconImageString(HDC hDC, CManagerUI * pManager, const RECT & rc, const RECT & rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify)
     {
         if ((pManager == NULL) || (hDC == NULL))
             return false;
 
         RECT rcDest = rc;
-        const TDRAWINFO * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
+        const TDRAWINFO_UI * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
         if (!pDrawInfo->sIconAlign.IsEmpty()) {
             MakeFitIconDest(rc, pDrawInfo->szIcon, pDrawInfo->sIconAlign, rcDest);
         }
@@ -836,7 +836,7 @@ namespace DUILIB
         return true;
     }
 
-    BOOL CRenderEngine::MakeFitIconDest(const RECT & rcControl, const CSizeUI & szIcon, const CStringUI & sAlign, RECT & rcDest)
+    BOOL CRenderUI::MakeFitIconDest(const RECT & rcControl, const CSizeUI & szIcon, const CStringUI & sAlign, RECT & rcDest)
     {
         ASSERT(!sAlign.IsEmpty());
         if (sAlign == _T("left")) {
@@ -870,7 +870,7 @@ namespace DUILIB
         return true;
     }
 
-    TIMAGEINFO_UI * CRenderEngine::LoadImage(LPCTSTR pStrImage, LPCTSTR type, DWORD mask, HINSTANCE instance)
+    TIMAGEINFO_UI * CRenderUI::LoadImage(LPCTSTR pStrImage, LPCTSTR type, DWORD mask, HINSTANCE instance)
     {
         if (pStrImage == NULL) return NULL;
 
@@ -889,12 +889,12 @@ namespace DUILIB
         return LoadImage(TSTRID_UI(sStrPath.GetData()), type, mask, instance);
     }
 
-    TIMAGEINFO_UI* CRenderEngine::LoadImage(UINT nID, LPCTSTR type, DWORD mask, HINSTANCE instance)
+    TIMAGEINFO_UI* CRenderUI::LoadImage(UINT nID, LPCTSTR type, DWORD mask, HINSTANCE instance)
     {
         return LoadImage(TSTRID_UI(nID), type, mask, instance);
     }
 
-    void CRenderEngine::DrawText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, \
+    void CRenderUI::DrawText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, \
         int iFont, UINT uStyle, DWORD dwTextBKColor)
     {
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
@@ -903,7 +903,7 @@ namespace DUILIB
         DrawText(hDC, pManager, rc, pstrText, dwTextColor, iFont, uStyle);
     }
 
-    void CRenderEngine::DrawImage(HDC hDC, HBITMAP hBitmap, const RECT & rc, const RECT & rcPaint,
+    void CRenderUI::DrawImage(HDC hDC, HBITMAP hBitmap, const RECT & rc, const RECT & rcPaint,
         const RECT & rcBmpPart, const RECT & rcCorners, BOOL bAlpha,
         BYTE uFade, BOOL hole, BOOL xtiled, BOOL ytiled)
     {
@@ -1341,7 +1341,7 @@ namespace DUILIB
         ::DeleteDC(hCloneDC);
     }
 
-    BOOL CRenderEngine::DrawImageInfo(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, const TDRAWINFO * pDrawInfo, HINSTANCE instance)
+    BOOL CRenderUI::DrawImageInfo(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, const TDRAWINFO_UI * pDrawInfo, HINSTANCE instance)
     {
         if (pManager == NULL || hDC == NULL || pDrawInfo == NULL) return false;
         RECT rcDest = rcItem;
@@ -1360,14 +1360,14 @@ namespace DUILIB
         return bRet;
     }
 
-    BOOL CRenderEngine::DrawImageString(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify, HINSTANCE instance)
+    BOOL CRenderUI::DrawImageString(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify, HINSTANCE instance)
     {
         if ((pManager == NULL) || (hDC == NULL)) return false;
-        const TDRAWINFO * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
+        const TDRAWINFO_UI * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
         return DrawImageInfo(hDC, pManager, rcItem, rcPaint, pDrawInfo, instance);
     }
 
-    void CRenderEngine::DrawColor(HDC hDC, const RECT & rc, DWORD color)
+    void CRenderUI::DrawColor(HDC hDC, const RECT & rc, DWORD color)
     {
         if (color <= 0x00FFFFFF) return;
 
@@ -1376,7 +1376,7 @@ namespace DUILIB
         graphics.FillRectangle(&brush, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
     }
 
-    void CRenderEngine::DrawGradient(HDC hDC, const RECT & rc, DWORD dwFirst, DWORD dwSecond, BOOL bVertical, int nSteps)
+    void CRenderUI::DrawGradient(HDC hDC, const RECT & rc, DWORD dwFirst, DWORD dwSecond, BOOL bVertical, int nSteps)
     {
         typedef BOOL(WINAPI * LPALPHABLEND)(HDC, int, int, int, int, HDC, int, int, int, int, BLENDFUNCTION);
         static LPALPHABLEND lpAlphaBlend = (LPALPHABLEND) ::GetProcAddress(::GetModuleHandle(_T("msimg32.dll")), "AlphaBlend");
@@ -1454,7 +1454,7 @@ namespace DUILIB
         }
     }
 
-    void CRenderEngine::DrawLine(HDC hDC, const RECT & rc, int nSize, DWORD dwPenColor, int nStyle /*= PS_SOLID*/)
+    void CRenderUI::DrawLine(HDC hDC, const RECT & rc, int nSize, DWORD dwPenColor, int nStyle /*= PS_SOLID*/)
     {
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
 
@@ -1471,7 +1471,7 @@ namespace DUILIB
         ::DeleteObject(hPen);
     }
 
-    void CRenderEngine::DrawRect(HDC hDC, const RECT & rc, int nSize, DWORD dwPenColor, int nStyle /*= PS_SOLID*/)
+    void CRenderUI::DrawRect(HDC hDC, const RECT & rc, int nSize, DWORD dwPenColor, int nStyle /*= PS_SOLID*/)
     {
 #ifdef USE_GDI_RENDER
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
@@ -1546,7 +1546,7 @@ namespace DUILIB
     }
 
 
-    void CRenderEngine::DrawRoundRect(HDC hDC, const RECT & rc, int nSize, int width, int height, DWORD dwPenColor, int nStyle /*= PS_SOLID*/)
+    void CRenderUI::DrawRoundRect(HDC hDC, const RECT & rc, int nSize, int width, int height, DWORD dwPenColor, int nStyle /*= PS_SOLID*/)
     {
 #ifdef USE_GDI_RENDER
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
@@ -1570,7 +1570,7 @@ namespace DUILIB
 #endif
     }
 
-    void CRenderEngine::DrawText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, int iFont, UINT uStyle)
+    void CRenderUI::DrawText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, int iFont, UINT uStyle)
     {
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
         if (pstrText == NULL || pManager == NULL) return;
@@ -1684,7 +1684,7 @@ namespace DUILIB
         }
     }
 
-    void CRenderEngine::DrawHtmlText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, RECT * prcLinks, CStringUI * sLinks, int& nLinkRects, int iFont, UINT uStyle)
+    void CRenderUI::DrawHtmlText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, RECT * prcLinks, CStringUI * sLinks, int& nLinkRects, int iFont, UINT uStyle)
     {
         // 考虑到在xml编辑器中使用<>符号不方便，可以使用{}符号代替
         // 支持标签嵌套（如<l><b>text</b></l>），但是交叉嵌套是应该避免的（如<l><b>text</l></b>）
@@ -2345,7 +2345,7 @@ namespace DUILIB
         ::SelectObject(hDC, hOldFont);
     }
 
-    HBITMAP CRenderEngine::GenerateBitmap(CManagerUI * pManager, RECT rc, CControlUI * pStopControl, DWORD dwFilterColor)
+    HBITMAP CRenderUI::GenerateBitmap(CManagerUI * pManager, RECT rc, CControlUI * pStopControl, DWORD dwFilterColor)
     {
         if (pManager == NULL) return NULL;
         int cx = rc.right - rc.left;
@@ -2398,7 +2398,7 @@ namespace DUILIB
         return hBitmap;
     }
 
-    HBITMAP CRenderEngine::GenerateBitmap(CManagerUI * pManager, CControlUI * pControl, RECT rc, DWORD dwFilterColor)
+    HBITMAP CRenderUI::GenerateBitmap(CManagerUI * pManager, CControlUI * pControl, RECT rc, DWORD dwFilterColor)
     {
         if (pManager == NULL || pControl == NULL) return NULL;
         int cx = rc.right - rc.left;
@@ -2442,7 +2442,7 @@ namespace DUILIB
         return hBitmap;
     }
 
-    SIZE CRenderEngine::GetTextSize(HDC hDC, CManagerUI * pManager, LPCTSTR pstrText, int iFont, UINT uStyle)
+    SIZE CRenderUI::GetTextSize(HDC hDC, CManagerUI * pManager, LPCTSTR pstrText, int iFont, UINT uStyle)
     {
         SIZE size = {0,0};
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
@@ -2454,7 +2454,7 @@ namespace DUILIB
         return size;
     }
 
-    void CRenderEngine::CheckAlphaColor(DWORD & dwColor)
+    void CRenderUI::CheckAlphaColor(DWORD & dwColor)
     {
         //RestoreAlphaColor认为0x00000000是真正的透明，其它都是GDI绘制导致的
         //所以在GDI绘制中不能用0xFF000000这个颜色值，现在处理是让它变成RGB(0,0,1)
@@ -2464,7 +2464,7 @@ namespace DUILIB
         }
     }
 
-    HBITMAP CRenderEngine::CreateARGB32Bitmap(HDC hDC, int cx, int cy, BYTE * *pBits)
+    HBITMAP CRenderUI::CreateARGB32Bitmap(HDC hDC, int cx, int cy, BYTE * *pBits)
     {
         LPBITMAPINFO lpbiSrc = NULL;
         lpbiSrc = (LPBITMAPINFO) new BYTE[sizeof(BITMAPINFOHEADER)];
@@ -2487,7 +2487,7 @@ namespace DUILIB
         return hBitmap;
     }
 
-    void CRenderEngine::AdjustImage(BOOL bUseHSL, TIMAGEINFO_UI * imageInfo, short H, short S, short L)
+    void CRenderUI::AdjustImage(BOOL bUseHSL, TIMAGEINFO_UI * imageInfo, short H, short S, short L)
     {
         if (imageInfo == NULL || imageInfo->bUseHSL == false || imageInfo->hBitmap == NULL ||
             imageInfo->pBits == NULL || imageInfo->pSrcBits == NULL)
@@ -2510,4 +2510,4 @@ namespace DUILIB
         }
     }
 
-} // namespace DUILIB
+} // namespace DUI

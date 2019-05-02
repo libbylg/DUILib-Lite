@@ -3,7 +3,7 @@
 
 #include "Core/UIDefine.h"
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CTileLayoutUI : public CContainerUI
 	{

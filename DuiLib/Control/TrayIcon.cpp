@@ -2,7 +2,7 @@
 
 #include "Core/UIManager.h"
 
-namespace DUILIB
+namespace DUI
 {
     CTrayIcon::CTrayIcon(void)
     {

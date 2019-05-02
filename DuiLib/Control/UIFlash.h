@@ -13,7 +13,7 @@
 
 class CActiveXCtrl;
 
-namespace DUILIB
+namespace DUI
 {
 	class DUILIB_API CFlashUI
 		: public CActiveXUI
@@ -21,7 +21,7 @@ namespace DUILIB
 		, public _IShockwaveFlashEvents
 		, public ITranslateAccelerator
 	{
-		DECLARE_DUICONTROL(CFlashUI)
+		UI_DECLARE_CONTROL(CFlashUI)
 	public:
 		CFlashUI(void);
 		~CFlashUI(void);

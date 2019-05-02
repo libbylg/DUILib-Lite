@@ -3,13 +3,13 @@
 
 #pragma once
 
-namespace DUILIB
+namespace DUI
 {
 	class CEditWnd;
 
 	class DUILIB_API CEditUI : public CLabelUI
 	{
-		DECLARE_DUICONTROL(CEditUI)
+		UI_DECLARE_CONTROL(CEditUI)
 		friend class CEditWnd;
 	public:
 		CEditUI();

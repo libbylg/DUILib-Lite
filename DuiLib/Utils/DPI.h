@@ -23,7 +23,7 @@ typedef enum MONITOR_DPI_TYPE
 #define DPI_ENUMS_DECLARED
 #endif // (DPI_ENUMS_DECLARED)
 
-namespace DUILIB
+namespace DUI
 {
     class DUILIB_API CDPI
     {

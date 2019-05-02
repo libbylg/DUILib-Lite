@@ -1,6 +1,6 @@
 #include "Core/UIDelegate.h"
 
-namespace DUILIB
+namespace DUI
 {
 
     CDelegateBase::CDelegateBase(void* pObject, void* pFn)
@@ -100,4 +100,4 @@ namespace DUILIB
         }
         m_aDelegates.Empty();
     }
-} // namespace DUILIB
+} // namespace DUI

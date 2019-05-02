@@ -5,11 +5,11 @@
 #include "../Utils/downloadmgr.h"
 #include <mshtml.h>
 
-namespace DUILIB
+namespace DUI
 {
 	////////////////////////////////////////////////////////////////////////
 	//
-	IMPLEMENT_DUICONTROL(CWebBrowserUI)
+	UI_IMPLEMENT_CONTROL(CWebBrowserUI)
 
 		CWebBrowserUI::CWebBrowserUI()
 		: m_pWebBrowser2(NULL)
@@ -513,7 +513,7 @@ namespace DUILIB
 
 	LPVOID CWebBrowserUI::GetInterface( LPCTSTR pstrName )
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_WEBBROWSER) == 0 ) return static_cast<CWebBrowserUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_WEBBROWSER) == 0 ) return static_cast<CWebBrowserUI*>(this);
 		return CActiveXUI::GetInterface(pstrName);
 	}
 

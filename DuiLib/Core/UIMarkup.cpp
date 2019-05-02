@@ -6,7 +6,7 @@
 #define TRACE
 #endif
 
-namespace DUILIB
+namespace DUI
 {
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -222,7 +222,7 @@ namespace DUILIB
     BOOL CMarkupUI::LoadFromMem(BYTE * pByte, DWORD dwSize, int encoding)
     {
 #ifdef _UNICODE
-        if (encoding == XMLFILE_ENCODING_UTF8) {
+        if (encoding == UIXMLFILE_ENCODING_UTF8) {
             if (dwSize >= 3 && pByte[0] == 0xEF && pByte[1] == 0xBB && pByte[2] == 0xBF) {
                 pByte += 3; dwSize -= 3;
             }
@@ -231,7 +231,7 @@ namespace DUILIB
             m_pstrXML = static_cast<LPTSTR>(malloc((nWide + 1) * sizeof(TCHAR)));
             ::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pByte, dwSize, m_pstrXML, nWide);
             m_pstrXML[nWide] = _T('\0');
-        } else if (encoding == XMLFILE_ENCODING_ASNI) {
+        } else if (encoding == UIXMLFILE_ENCODING_ASNI) {
             DWORD nWide = ::MultiByteToWideChar(CP_ACP, 0, (LPCSTR)pByte, dwSize, NULL, 0);
 
             m_pstrXML = static_cast<LPTSTR>(malloc((nWide + 1) * sizeof(TCHAR)));
@@ -261,7 +261,7 @@ namespace DUILIB
             }
         }
 #else // !_UNICODE
-        if (encoding == XMLFILE_ENCODING_UTF8) {
+        if (encoding == UIXMLFILE_ENCODING_UTF8) {
             if (dwSize >= 3 && pByte[0] == 0xEF && pByte[1] == 0xBB && pByte[2] == 0xBF) {
                 pByte += 3; dwSize -= 3;
             }
@@ -278,7 +278,7 @@ namespace DUILIB
             m_pstrXML[wide] = _T('\0');
 
             free(w_str);
-        } else if (encoding == XMLFILE_ENCODING_UNICODE) {
+        } else if (encoding == UIXMLFILE_ENCODING_UNICODE) {
             if (dwSize >= 2 && ((pByte[0] == 0xFE && pByte[1] == 0xFF) || (pByte[0] == 0xFF && pByte[1] == 0xFE))) {
                 dwSize = dwSize / 2 - 1;
 
@@ -604,4 +604,4 @@ namespace DUILIB
         return false; // Always return 'false'
     }
 
-} // namespace DUILIB
+} // namespace DUI

@@ -1,9 +1,9 @@
 
 #include "UIHorizontalLayout.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CHorizontalLayoutUI)
+	UI_IMPLEMENT_CONTROL(CHorizontalLayoutUI)
 	CHorizontalLayoutUI::CHorizontalLayoutUI() : m_iSepWidth(0), m_uButtonState(0), m_bImmMode(FALSE)
 	{
 		ptLastMouse.x = ptLastMouse.y = 0;
@@ -17,7 +17,7 @@ namespace DUILIB
 
 	LPVOID CHorizontalLayoutUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_HORIZONTALLAYOUT) == 0 ) return static_cast<CHorizontalLayoutUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_HORIZONTALLAYOUT) == 0 ) return static_cast<CHorizontalLayoutUI*>(this);
 		return CContainerUI::GetInterface(pstrName);
 	}
 

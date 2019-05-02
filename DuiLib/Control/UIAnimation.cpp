@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace DUILIB {
+namespace DUI {
 	struct CUIAnimation::Imp
 	{
 		std::vector<CAnimationData*> m_arAnimations;
@@ -173,4 +173,4 @@ namespace DUILIB {
 		return pRet;
 	}
 
-} // namespace DUILIB
+} // namespace DUI

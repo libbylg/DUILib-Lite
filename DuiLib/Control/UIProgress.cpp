@@ -1,9 +1,9 @@
 
 #include "UIProgress.h"
 
-namespace DUILIB
+namespace DUI
 {
-	IMPLEMENT_DUICONTROL(CProgressUI)
+	UI_IMPLEMENT_CONTROL(CProgressUI)
 
 	CProgressUI::CProgressUI() : m_bShowText(FALSE), m_bHorizontal(true), m_nMin(0), m_nMax(100), m_nValue(0), m_bStretchForeImage(true)
 	{
@@ -18,7 +18,7 @@ namespace DUILIB
 
 	LPVOID CProgressUI::GetInterface(LPCTSTR pstrName)
 	{
-		if( _tcsicmp(pstrName, DUI_CTR_PROGRESS) == 0 ) return static_cast<CProgressUI*>(this);
+		if( _tcsicmp(pstrName, UICONTROL_PROGRESS) == 0 ) return static_cast<CProgressUI*>(this);
 		return CLabelUI::GetInterface(pstrName);
 	}
 	

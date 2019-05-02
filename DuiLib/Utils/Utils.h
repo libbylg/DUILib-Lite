@@ -3,7 +3,7 @@
 
 #include "DUILIB.h"
 
-namespace DUILIB
+namespace DUI
 {
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -377,6 +377,6 @@ namespace DUILIB
     //	BOOL	m_bTiledX;
     //	BOOL	m_bTiledY;
     //};
-}// namespace DUILIB
+}// namespace DUI
 
 #endif // __UTILS_H__

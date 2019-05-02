@@ -5,7 +5,7 @@
 
 #include "../Utils/observer_impl_base.h"
 
-namespace DUILIB {
+namespace DUI {
 
 struct ContextMenuParam
 {
@@ -243,7 +243,7 @@ class CListUI;
 class CMenuWnd;
 class DUILIB_API CMenuUI : public CListUI
 {
-	DECLARE_DUICONTROL(CMenuUI)
+	UI_DECLARE_CONTROL(CMenuUI)
 public:
 	CMenuUI();
 	virtual ~CMenuUI();
@@ -336,7 +336,7 @@ public:
 class CListContainerElementUI;
 class DUILIB_API CMenuElementUI : public CListContainerElementUI
 {
-	DECLARE_DUICONTROL(CMenuElementUI)
+	UI_DECLARE_CONTROL(CMenuElementUI)
 	friend CMenuWnd;
 public:
     CMenuElementUI();
@@ -387,6 +387,6 @@ protected:
 	BOOL		m_bShowExplandIcon;
 };
 
-} // namespace DUILIB
+} // namespace DUI
 
 #endif // __UIMENU_H__
