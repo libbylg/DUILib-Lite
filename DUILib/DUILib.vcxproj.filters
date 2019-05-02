@@ -12,14 +12,13 @@
     <ClCompile Include="Core\UIScrollBar.cpp" />
     <ClCompile Include="Core\UIShadow.cpp" />
     <ClCompile Include="Core\UIWindow.cpp" />
-    <ClCompile Include="Control\UIButton.cpp" />
     <ClCompile Include="Control\UILabel.cpp" />
     <ClCompile Include="Utils\DPI.cpp" />
     <ClCompile Include="Utils\unzip.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
-    <ClCompile Include="Layout\UITileLayout.cpp" />
-    <ClCompile Include="Layout\UITabLayout.cpp" />
     <ClCompile Include="Core\UIDefine.cpp" />
+    <ClCompile Include="Layout\UITabLayout.cpp" />
+    <ClCompile Include="Control\UIAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\UIContainer.h" />
@@ -46,7 +45,6 @@
     <ClInclude Include="Utils\VersionHelpers.h" />
     <ClInclude Include="Utils\WebBrowserEventHandler.h" />
     <ClInclude Include="DUILib.h" />
-    <ClInclude Include="Layout\UITileLayout.h" />
     <ClInclude Include="Layout\UITabLayout.h" />
   </ItemGroup>
 </Project>

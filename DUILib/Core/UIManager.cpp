@@ -386,8 +386,8 @@ namespace DUI
 #else
             m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), password);
 #endif
-            }
         }
+    }
 
     void CManagerUI::SetResourceType(int nType)
     {
@@ -3837,4 +3837,4 @@ namespace DUI
         }
         return true; //let base free the medium
     }
-        } // namespace DUI
+} // namespace DUI

@@ -23,23 +23,23 @@ namespace DUI
 
 
     // 鼠标光标定义
-    #define  UICURSOR_ARROW          32512
-    #define  UICURSOR_IBEAM          32513
-    #define  UICURSOR_WAIT           32514
-    #define  UICURSOR_CROSS          32515
-    #define  UICURSOR_UPARROW        32516
-    #define  UICURSOR_SIZE           32640
-    #define  UICURSOR_ICON           32641
-    #define  UICURSOR_SIZENWSE       32642
-    #define  UICURSOR_SIZENESW       32643
-    #define  UICURSOR_SIZEWE         32644
-    #define  UICURSOR_SIZENS         32645
-    #define  UICURSOR_SIZEALL        32646
-    #define  UICURSOR_NO             32648
-    #define  UICURSOR_HAND           32649
+#define  UICURSOR_ARROW          32512
+#define  UICURSOR_IBEAM          32513
+#define  UICURSOR_WAIT           32514
+#define  UICURSOR_CROSS          32515
+#define  UICURSOR_UPARROW        32516
+#define  UICURSOR_SIZE           32640
+#define  UICURSOR_ICON           32641
+#define  UICURSOR_SIZENWSE       32642
+#define  UICURSOR_SIZENESW       32643
+#define  UICURSOR_SIZEWE         32644
+#define  UICURSOR_SIZENS         32645
+#define  UICURSOR_SIZEALL        32646
+#define  UICURSOR_NO             32648
+#define  UICURSOR_HAND           32649
 
 
-    // 消息类型
+// 消息类型
     enum SIGTYPE_UI
     {
         UISIG_end = 0, // [marks end of message map]
@@ -106,7 +106,7 @@ namespace DUI
 #define UIMSG_LISTPAGECHANGED       (_T("listpagechanged"))
 
     //////////////////////////////////////////////////////////////////////////
-    
+
     class CNotifyPumpUI;
     struct TNOTIFY_UI;
     typedef void (CNotifyPumpUI::* PMSG_UI)(TNOTIFY_UI& msg);  //指针类型

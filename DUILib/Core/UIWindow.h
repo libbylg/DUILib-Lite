@@ -26,15 +26,15 @@ namespace DUI
 
 
 #ifdef _DEBUG
-    #ifndef UITRACE
-    #define UITRACE    UI__Trace
-    #endif
-    #define UITRACEMSG UI__TraceMsg
+#ifndef UITRACE
+#define UITRACE    UI__Trace
+#endif
+#define UITRACEMSG UI__TraceMsg
 #else
-    #ifndef UITRACE
-    #define UITRACE
-    #endif
-    #define UITRACEMSG _T("")
+#ifndef UITRACE
+#define UITRACE
+#endif
+#define UITRACEMSG _T("")
 #endif
 
     void    DUILIB_API UI__Trace(LPCTSTR pstrFormat, ...);
@@ -42,9 +42,9 @@ namespace DUI
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
-    
+
     class CControlUI;
-    
+
     // Structure for notifications to the outside world
     typedef struct TNOTIFY_UI
     {

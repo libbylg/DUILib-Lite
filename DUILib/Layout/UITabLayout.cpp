@@ -7,7 +7,7 @@ namespace DUI
 
 
 
-        CTabLayoutUI::CTabLayoutUI() : m_iCurSel(-1)
+    CTabLayoutUI::CTabLayoutUI() : m_iCurSel(-1)
     {
     }
 
