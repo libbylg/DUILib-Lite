@@ -1,26 +1,24 @@
 #include "Core/UIRender.h"
+#include "Core/UIControl.h"
 #include "Core/UIDefine.h"
 #include "Core/UIManager.h"
 #include "Core/UIResourceManager.h"
-#include "Core/UIControl.h"
 #include "Utils/unzip.h"
-
-
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Utils/stb_image.h"
 
 #ifdef USE_XIMAGE_EFFECT
-#	include "3rd/CxImage/ximage.h"
-#	include "3rd/CxImage/ximage.cpp"
-#	include "3rd/CxImage/ximaenc.cpp"
-#	include "3rd/CxImage/ximagif.cpp"
-#	include "3rd/CxImage/ximainfo.cpp"
-#	include "3rd/CxImage/ximalpha.cpp"
-#	include "3rd/CxImage/ximapal.cpp"
-#	include "3rd/CxImage/ximatran.cpp"
-#	include "3rd/CxImage/ximawnd.cpp"
-#	include "3rd/CxImage/xmemfile.cpp"
+#include "3rd/CxImage/ximaenc.cpp"
+#include "3rd/CxImage/ximage.cpp"
+#include "3rd/CxImage/ximage.h"
+#include "3rd/CxImage/ximagif.cpp"
+#include "3rd/CxImage/ximainfo.cpp"
+#include "3rd/CxImage/ximalpha.cpp"
+#include "3rd/CxImage/ximapal.cpp"
+#include "3rd/CxImage/ximatran.cpp"
+#include "3rd/CxImage/ximawnd.cpp"
+#include "3rd/CxImage/xmemfile.cpp"
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +38,7 @@ namespace DUI
     void TDRAWINFO_UI::Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CDPI* pDPI)
     {
         // 1、aaa.jpg
-        // 2、file='aaa.jpg' res='' restype='0' dest='0,0,0,0' source='0,0,0,0' corner='0,0,0,0' 
+        // 2、file='aaa.jpg' res='' restype='0' dest='0,0,0,0' source='0,0,0,0' corner='0,0,0,0'
         // mask='#FF0000' fade='255' hole='false' xtiled='false' ytiled='false'
         sDrawString = pStrImage;
         sDrawModify = pStrModify;
@@ -55,16 +53,19 @@ namespace DUI
             while (*pStrImage != _T('\0')) {
                 sItem.Empty();
                 sValue.Empty();
-                while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                    pStrImage = ::CharNext(pStrImage);
                 while (*pStrImage != _T('\0') && *pStrImage != _T('=') && *pStrImage > _T(' ')) {
                     LPTSTR pstrTemp = ::CharNext(pStrImage);
                     while (pStrImage < pstrTemp) {
                         sItem += *pStrImage++;
                     }
                 }
-                while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                    pStrImage = ::CharNext(pStrImage);
                 if (*pStrImage++ != _T('=')) break;
-                while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                    pStrImage = ::CharNext(pStrImage);
                 if (*pStrImage++ != _T('\'')) break;
                 while (*pStrImage != _T('\0') && *pStrImage != _T('\'')) {
                     LPTSTR pstrTemp = ::CharNext(pStrImage);
@@ -79,26 +80,40 @@ namespace DUI
                     } else if (sItem == _T("restype")) {
                         sResType = sValue;
                     } else if (sItem == _T("dest")) {
-                        rcDest.left = _tcstol(sValue.GetData(), &pstr, 10);  ASSERT(pstr);
-                        rcDest.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
-                        rcDest.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
-                        rcDest.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+                        rcDest.left = _tcstol(sValue.GetData(), &pstr, 10);
+                        ASSERT(pstr);
+                        rcDest.top = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
+                        rcDest.right = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
+                        rcDest.bottom = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
                         if (pDPI != NULL) pDPI->Scale(&rcDest);
                     } else if (sItem == _T("source")) {
-                        rcSource.left = _tcstol(sValue.GetData(), &pstr, 10);  ASSERT(pstr);
-                        rcSource.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
-                        rcSource.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
-                        rcSource.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+                        rcSource.left = _tcstol(sValue.GetData(), &pstr, 10);
+                        ASSERT(pstr);
+                        rcSource.top = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
+                        rcSource.right = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
+                        rcSource.bottom = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
                         if (pDPI != NULL) pDPI->Scale(&rcSource);
                     } else if (sItem == _T("corner")) {
-                        rcCorner.left = _tcstol(sValue.GetData(), &pstr, 10);  ASSERT(pstr);
-                        rcCorner.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
-                        rcCorner.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
-                        rcCorner.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+                        rcCorner.left = _tcstol(sValue.GetData(), &pstr, 10);
+                        ASSERT(pstr);
+                        rcCorner.top = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
+                        rcCorner.right = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
+                        rcCorner.bottom = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
                         if (pDPI != NULL) pDPI->Scale(&rcCorner);
                     } else if (sItem == _T("mask")) {
-                        if (sValue[0] == _T('#')) dwMask = _tcstoul(sValue.GetData() + 1, &pstr, 16);
-                        else dwMask = _tcstoul(sValue.GetData(), &pstr, 16);
+                        if (sValue[0] == _T('#'))
+                            dwMask = _tcstoul(sValue.GetData() + 1, &pstr, 16);
+                        else
+                            dwMask = _tcstoul(sValue.GetData(), &pstr, 16);
                     } else if (sItem == _T("fade")) {
                         uFade = (BYTE)_tcstoul(sValue.GetData(), &pstr, 10);
                     } else if (sItem == _T("hole")) {
@@ -110,8 +125,10 @@ namespace DUI
                     } else if (sItem == _T("hsl")) {
                         bHSL = (_tcsicmp(sValue.GetData(), _T("true")) == 0);
                     } else if (sItem == _T("iconsize")) {
-                        szIcon.cx = _tcstol(sValue.GetData(), &pstr, 10);  ASSERT(pstr);
-                        szIcon.cy = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
+                        szIcon.cx = _tcstol(sValue.GetData(), &pstr, 10);
+                        ASSERT(pstr);
+                        szIcon.cy = _tcstol(pstr + 1, &pstr, 10);
+                        ASSERT(pstr);
                     } else if (sItem == _T("iconalign")) {
                         sIconAlign = sValue;
                     }
@@ -209,7 +226,8 @@ namespace DUI
             m = min(min(nR, nG), nB),
             M = max(max(nR, nG), nB);
         *L = (m + M) / 2;
-        if (M == m) * H = *S = 0;
+        if (M == m)
+            * H = *S = 0;
         else {
             const float
                 f = (nR == m)?(nG - nB):((nG == m)?(nB - nR):(nR - nG)),
@@ -247,7 +265,7 @@ namespace DUI
             GetBValue(clrSrc) * src_darken + GetBValue(clrDest) * dest_darken);
     }
 
-    static BOOL WINAPI AlphaBitBlt(HDC hDC, int nDestX, int nDestY, int dwWidth, int dwHeight, HDC hSrcDC, \
+    static BOOL WINAPI AlphaBitBlt(HDC hDC, int nDestX, int nDestY, int dwWidth, int dwHeight, HDC hSrcDC,
         int nSrcX, int nSrcY, int wSrc, int hSrc, BLENDFUNCTION ftn)
     {
         HDC hTempDC = ::CreateCompatibleDC(hDC);
@@ -356,8 +374,8 @@ namespace DUI
     //
     //
 
-    BOOL DrawImage(HDC hDC, CManagerUI * pManager, const RECT & rc, const RECT & rcPaint, const CStringUI & sImageName, \
-        const CStringUI & sImageResType, RECT rcItem, RECT rcBmpPart, RECT rcCorner, DWORD dwMask, BYTE bFade, \
+    BOOL DrawImage(HDC hDC, CManagerUI * pManager, const RECT & rc, const RECT & rcPaint, const CStringUI & sImageName,
+        const CStringUI & sImageResType, RECT rcItem, RECT rcBmpPart, RECT rcCorner, DWORD dwMask, BYTE bFade,
         BOOL bHole, BOOL bTiledX, BOOL bTiledY, HINSTANCE instance = NULL)
     {
         if (sImageName.IsEmpty()) {
@@ -411,7 +429,7 @@ namespace DUI
                 CStringUI sFile = CManagerUI::GetResourcePath();
                 if (CManagerUI::GetResourceZip().IsEmpty()) {
                     sFile += bitmap.m_lpstr;
-                    HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
+                    HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                         FILE_ATTRIBUTE_NORMAL, NULL);
                     if (hFile == INVALID_HANDLE_VALUE) break;
                     dwSize = ::GetFileSize(hFile, NULL);
@@ -431,7 +449,8 @@ namespace DUI
                     sFile += CManagerUI::GetResourceZip();
                     CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
                     HZIP hz = NULL;
-                    if (CManagerUI::IsCachedResourceZip()) hz = (HZIP)CManagerUI::GetResourceZipHandle();
+                    if (CManagerUI::IsCachedResourceZip())
+                        hz = (HZIP)CManagerUI::GetResourceZipHandle();
                     else {
 #ifdef UNICODE
                         char* pwd = w2a((wchar_t*)sFilePwd.GetData());
@@ -484,7 +503,7 @@ namespace DUI
 
         while (!pData) {
             //读不到图片, 则直接去读取bitmap.m_lpstr指向的路径
-            HANDLE hFile = ::CreateFile(bitmap.m_lpstr, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
+            HANDLE hFile = ::CreateFile(bitmap.m_lpstr, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                 FILE_ATTRIBUTE_NORMAL, NULL);
             if (hFile == INVALID_HANDLE_VALUE) break;
             dwSize = ::GetFileSize(hFile, NULL);
@@ -574,7 +593,7 @@ namespace DUI
                 CDuiString sFile = CPaintManagerUI::GetResourcePath();
                 if (CPaintManagerUI::GetResourceZip().IsEmpty()) {
                     sFile += bitmap.m_lpstr;
-                    HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
+                    HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                         FILE_ATTRIBUTE_NORMAL, NULL);
                     if (hFile == INVALID_HANDLE_VALUE) break;
                     dwSize = ::GetFileSize(hFile, NULL);
@@ -648,7 +667,7 @@ namespace DUI
 
         while (!pData) {
             //读不到图片, 则直接去读取bitmap.m_lpstr指向的路径
-            HANDLE hFile = ::CreateFile(bitmap.m_lpstr, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
+            HANDLE hFile = ::CreateFile(bitmap.m_lpstr, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                 FILE_ATTRIBUTE_NORMAL, NULL);
             if (hFile == INVALID_HANDLE_VALUE) break;
             dwSize = ::GetFileSize(hFile, NULL);
@@ -687,7 +706,7 @@ namespace DUI
         pData = NULL;
         return pImg;
     }
-#endif//USE_XIMAGE_EFFECT
+#endif //USE_XIMAGE_EFFECT
 
     Gdiplus::Image* CRenderUI::GdiplusLoadImage(LPCTSTR pstrPath1)
     {
@@ -702,7 +721,7 @@ namespace DUI
             CStringUI sFile = CManagerUI::GetResourcePath();
             if (CManagerUI::GetResourceZip().IsEmpty()) {
                 sFile += sImageName;
-                HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
+                HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                     FILE_ATTRIBUTE_NORMAL, NULL);
                 if (hFile == INVALID_HANDLE_VALUE) break;
                 dwSize = ::GetFileSize(hFile, NULL);
@@ -721,7 +740,8 @@ namespace DUI
             } else {
                 sFile += CManagerUI::GetResourceZip();
                 HZIP hz = NULL;
-                if (CManagerUI::IsCachedResourceZip()) hz = (HZIP)CManagerUI::GetResourceZipHandle();
+                if (CManagerUI::IsCachedResourceZip())
+                    hz = (HZIP)CManagerUI::GetResourceZipHandle();
                 else {
                     CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
@@ -784,7 +804,7 @@ namespace DUI
     Gdiplus::Image* CRenderUI::GdiplusLoadImage(LPVOID pBuf, size_t dwSize)
     {
         HGLOBAL hMem = ::GlobalAlloc(GMEM_FIXED, dwSize);
-        BYTE* pMem = (BYTE*)::GlobalLock(hMem);
+        BYTE* pMem = (BYTE*) ::GlobalLock(hMem);
         memcpy(pMem, pBuf, dwSize);
         IStream* pStm = NULL;
         ::CreateStreamOnHGlobal(hMem, TRUE, &pStm);
@@ -818,7 +838,6 @@ namespace DUI
         }
     }
 
-
     BOOL CRenderUI::DrawIconImageString(HDC hDC, CManagerUI * pManager, const RECT & rc, const RECT & rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify)
     {
         if ((pManager == NULL) || (hDC == NULL))
@@ -830,7 +849,7 @@ namespace DUI
             MakeFitIconDest(rc, pDrawInfo->szIcon, pDrawInfo->sIconAlign, rcDest);
         }
 
-        BOOL bRet = DUILIB::DrawImage(hDC, pManager, rc, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest, \
+        BOOL bRet = DUI::DrawImage(hDC, pManager, rc, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest,
             pDrawInfo->rcSource, pDrawInfo->rcCorner, pDrawInfo->dwMask, pDrawInfo->uFade, pDrawInfo->bHole, pDrawInfo->bTiledX, pDrawInfo->bTiledY);
 
         return true;
@@ -877,13 +896,14 @@ namespace DUI
         CStringUI sStrPath = pStrImage;
         if (type == NULL) {
             sStrPath = CResourceManagerUI::GetInstance()->GetImagePath(pStrImage);
-            if (sStrPath.IsEmpty()) sStrPath = pStrImage;
+            if (sStrPath.IsEmpty())
+                sStrPath = pStrImage;
             else {
                 /*if (CResourceManager::GetInstance()->GetScale() != 100) {
-                CDuiString sScale;
-                sScale.Format(_T("@%d."), CResourceManager::GetInstance()->GetScale());
-                sStrPath.Replace(_T("."), sScale);
-                }*/
+                    CDuiString sScale;
+                    sScale.Format(_T("@%d."), CResourceManager::GetInstance()->GetScale());
+                    sStrPath.Replace(_T("."), sScale);
+                    }*/
             }
         }
         return LoadImage(TSTRID_UI(sStrPath.GetData()), type, mask, instance);
@@ -894,7 +914,7 @@ namespace DUI
         return LoadImage(TSTRID_UI(nID), type, mask, instance);
     }
 
-    void CRenderUI::DrawText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, \
+    void CRenderUI::DrawText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor,
         int iFont, UINT uStyle, DWORD dwTextBKColor)
     {
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
@@ -910,13 +930,13 @@ namespace DUI
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
 
         typedef BOOL(WINAPI * LPALPHABLEND)(HDC, int, int, int, int, HDC, int, int, int, int, BLENDFUNCTION);
-        static LPALPHABLEND lpAlphaBlend = (LPALPHABLEND) ::GetProcAddress(::GetModuleHandle(_T("msimg32.dll")), "AlphaBlend");
+        static LPALPHABLEND lpAlphaBlend = (LPALPHABLEND)::GetProcAddress(::GetModuleHandle(_T("msimg32.dll")), "AlphaBlend");
 
         if (lpAlphaBlend == NULL) lpAlphaBlend = AlphaBitBlt;
         if (hBitmap == NULL) return;
 
         HDC hCloneDC = ::CreateCompatibleDC(hDC);
-        HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(hCloneDC, hBitmap);
+        HBITMAP hOldBitmap = (HBITMAP)::SelectObject(hCloneDC, hBitmap);
         ::SetStretchBltMode(hDC, HALFTONE);
 
         RECT rcTemp = {0};
@@ -935,9 +955,9 @@ namespace DUI
                     if (!xtiled && !ytiled) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                            rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top, \
-                            rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right, \
+                        lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                            rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top,
+                            rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right,
                             rcBmpPart.bottom - rcBmpPart.top - rcCorners.top - rcCorners.bottom, bf);
                     } else if (xtiled && ytiled) {
                         LONG lWidth = rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right;
@@ -977,7 +997,7 @@ namespace DUI
                                 lDestRight = rcDest.right;
                             }
                             lpAlphaBlend(hDC, lDestLeft, rcDest.top, lDestRight - lDestLeft, rcDest.bottom,
-                                hCloneDC, rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top, \
+                                hCloneDC, rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top,
                                 lDrawWidth, rcBmpPart.bottom - rcBmpPart.top - rcCorners.top - rcCorners.bottom, bf);
                         }
                     } else { // ytiled
@@ -992,7 +1012,7 @@ namespace DUI
                                 lDestBottom = rcDest.bottom;
                             }
                             lpAlphaBlend(hDC, rcDest.left, rcDest.top + lHeight * i, rcDest.right, lDestBottom - lDestTop,
-                                hCloneDC, rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top, \
+                                hCloneDC, rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top,
                                 rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right, lDrawHeight, bf);
                         }
                     }
@@ -1010,7 +1030,7 @@ namespace DUI
                 if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                     rcDest.right -= rcDest.left;
                     rcDest.bottom -= rcDest.top;
-                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
+                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
                         rcBmpPart.left, rcBmpPart.top, rcCorners.left, rcCorners.top, bf);
                 }
             }
@@ -1025,9 +1045,8 @@ namespace DUI
                 if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                     rcDest.right -= rcDest.left;
                     rcDest.bottom -= rcDest.top;
-                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                        rcBmpPart.left + rcCorners.left, rcBmpPart.top, rcBmpPart.right - rcBmpPart.left - \
-                        rcCorners.left - rcCorners.right, rcCorners.top, bf);
+                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                        rcBmpPart.left + rcCorners.left, rcBmpPart.top, rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right, rcCorners.top, bf);
                 }
             }
             // right-top
@@ -1041,7 +1060,7 @@ namespace DUI
                 if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                     rcDest.right -= rcDest.left;
                     rcDest.bottom -= rcDest.top;
-                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
+                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
                         rcBmpPart.right - rcCorners.right, rcBmpPart.top, rcCorners.right, rcCorners.top, bf);
                 }
             }
@@ -1056,9 +1075,8 @@ namespace DUI
                 if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                     rcDest.right -= rcDest.left;
                     rcDest.bottom -= rcDest.top;
-                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                        rcBmpPart.left, rcBmpPart.top + rcCorners.top, rcCorners.left, rcBmpPart.bottom - \
-                        rcBmpPart.top - rcCorners.top - rcCorners.bottom, bf);
+                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                        rcBmpPart.left, rcBmpPart.top + rcCorners.top, rcCorners.left, rcBmpPart.bottom - rcBmpPart.top - rcCorners.top - rcCorners.bottom, bf);
                 }
             }
             // right
@@ -1072,8 +1090,8 @@ namespace DUI
                 if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                     rcDest.right -= rcDest.left;
                     rcDest.bottom -= rcDest.top;
-                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                        rcBmpPart.right - rcCorners.right, rcBmpPart.top + rcCorners.top, rcCorners.right, \
+                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                        rcBmpPart.right - rcCorners.right, rcBmpPart.top + rcCorners.top, rcCorners.right,
                         rcBmpPart.bottom - rcBmpPart.top - rcCorners.top - rcCorners.bottom, bf);
                 }
             }
@@ -1088,7 +1106,7 @@ namespace DUI
                 if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                     rcDest.right -= rcDest.left;
                     rcDest.bottom -= rcDest.top;
-                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
+                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
                         rcBmpPart.left, rcBmpPart.bottom - rcCorners.bottom, rcCorners.left, rcCorners.bottom, bf);
                 }
             }
@@ -1103,8 +1121,8 @@ namespace DUI
                 if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                     rcDest.right -= rcDest.left;
                     rcDest.bottom -= rcDest.top;
-                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                        rcBmpPart.left + rcCorners.left, rcBmpPart.bottom - rcCorners.bottom, \
+                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                        rcBmpPart.left + rcCorners.left, rcBmpPart.bottom - rcCorners.bottom,
                         rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right, rcCorners.bottom, bf);
                 }
             }
@@ -1119,17 +1137,15 @@ namespace DUI
                 if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                     rcDest.right -= rcDest.left;
                     rcDest.bottom -= rcDest.top;
-                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                        rcBmpPart.right - rcCorners.right, rcBmpPart.bottom - rcCorners.bottom, rcCorners.right, \
+                    lpAlphaBlend(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                        rcBmpPart.right - rcCorners.right, rcBmpPart.bottom - rcCorners.bottom, rcCorners.right,
                         rcCorners.bottom, bf);
                 }
             }
         } else {
-            if (rc.right - rc.left == rcBmpPart.right - rcBmpPart.left \
-                && rc.bottom - rc.top == rcBmpPart.bottom - rcBmpPart.top \
-                && rcCorners.left == 0 && rcCorners.right == 0 && rcCorners.top == 0 && rcCorners.bottom == 0) {
+            if (rc.right - rc.left == rcBmpPart.right - rcBmpPart.left && rc.bottom - rc.top == rcBmpPart.bottom - rcBmpPart.top && rcCorners.left == 0 && rcCorners.right == 0 && rcCorners.top == 0 && rcCorners.bottom == 0) {
                 if (::IntersectRect(&rcTemp, &rcPaint, &rc)) {
-                    ::BitBlt(hDC, rcTemp.left, rcTemp.top, rcTemp.right - rcTemp.left, rcTemp.bottom - rcTemp.top, \
+                    ::BitBlt(hDC, rcTemp.left, rcTemp.top, rcTemp.right - rcTemp.left, rcTemp.bottom - rcTemp.top,
                         hCloneDC, rcBmpPart.left + rcTemp.left - rc.left, rcBmpPart.top + rcTemp.top - rc.top, SRCCOPY);
                 }
             } else {
@@ -1145,9 +1161,9 @@ namespace DUI
                         if (!xtiled && !ytiled) {
                             rcDest.right -= rcDest.left;
                             rcDest.bottom -= rcDest.top;
-                            ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                                rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top, \
-                                rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right, \
+                            ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                                rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top,
+                                rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right,
                                 rcBmpPart.bottom - rcBmpPart.top - rcCorners.top - rcCorners.bottom, SRCCOPY);
                         } else if (xtiled && ytiled) {
                             LONG lWidth = rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right;
@@ -1170,8 +1186,8 @@ namespace DUI
                                         lDrawWidth -= lDestRight - rcDest.right;
                                         lDestRight = rcDest.right;
                                     }
-                                    ::BitBlt(hDC, rcDest.left + lWidth * i, rcDest.top + lHeight * j, \
-                                        lDestRight - lDestLeft, lDestBottom - lDestTop, hCloneDC, \
+                                    ::BitBlt(hDC, rcDest.left + lWidth * i, rcDest.top + lHeight * j,
+                                        lDestRight - lDestLeft, lDestBottom - lDestTop, hCloneDC,
                                         rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top, SRCCOPY);
                                 }
                             }
@@ -1187,7 +1203,7 @@ namespace DUI
                                     lDestRight = rcDest.right;
                                 }
                                 ::StretchBlt(hDC, lDestLeft, rcDest.top, lDestRight - lDestLeft, rcDest.bottom,
-                                    hCloneDC, rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top, \
+                                    hCloneDC, rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top,
                                     lDrawWidth, rcBmpPart.bottom - rcBmpPart.top - rcCorners.top - rcCorners.bottom, SRCCOPY);
                             }
                         } else { // ytiled
@@ -1202,7 +1218,7 @@ namespace DUI
                                     lDestBottom = rcDest.bottom;
                                 }
                                 ::StretchBlt(hDC, rcDest.left, rcDest.top + lHeight * i, rcDest.right, lDestBottom - lDestTop,
-                                    hCloneDC, rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top, \
+                                    hCloneDC, rcBmpPart.left + rcCorners.left, rcBmpPart.top + rcCorners.top,
                                     rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right, lDrawHeight, SRCCOPY);
                             }
                         }
@@ -1220,7 +1236,7 @@ namespace DUI
                     if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
+                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
                             rcBmpPart.left, rcBmpPart.top, rcCorners.left, rcCorners.top, SRCCOPY);
                     }
                 }
@@ -1235,9 +1251,8 @@ namespace DUI
                     if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                            rcBmpPart.left + rcCorners.left, rcBmpPart.top, rcBmpPart.right - rcBmpPart.left - \
-                            rcCorners.left - rcCorners.right, rcCorners.top, SRCCOPY);
+                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                            rcBmpPart.left + rcCorners.left, rcBmpPart.top, rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right, rcCorners.top, SRCCOPY);
                     }
                 }
                 // right-top
@@ -1251,7 +1266,7 @@ namespace DUI
                     if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
+                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
                             rcBmpPart.right - rcCorners.right, rcBmpPart.top, rcCorners.right, rcCorners.top, SRCCOPY);
                     }
                 }
@@ -1266,9 +1281,8 @@ namespace DUI
                     if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                            rcBmpPart.left, rcBmpPart.top + rcCorners.top, rcCorners.left, rcBmpPart.bottom - \
-                            rcBmpPart.top - rcCorners.top - rcCorners.bottom, SRCCOPY);
+                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                            rcBmpPart.left, rcBmpPart.top + rcCorners.top, rcCorners.left, rcBmpPart.bottom - rcBmpPart.top - rcCorners.top - rcCorners.bottom, SRCCOPY);
                     }
                 }
                 // right
@@ -1282,8 +1296,8 @@ namespace DUI
                     if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                            rcBmpPart.right - rcCorners.right, rcBmpPart.top + rcCorners.top, rcCorners.right, \
+                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                            rcBmpPart.right - rcCorners.right, rcBmpPart.top + rcCorners.top, rcCorners.right,
                             rcBmpPart.bottom - rcBmpPart.top - rcCorners.top - rcCorners.bottom, SRCCOPY);
                     }
                 }
@@ -1298,7 +1312,7 @@ namespace DUI
                     if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
+                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
                             rcBmpPart.left, rcBmpPart.bottom - rcCorners.bottom, rcCorners.left, rcCorners.bottom, SRCCOPY);
                     }
                 }
@@ -1313,8 +1327,8 @@ namespace DUI
                     if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                            rcBmpPart.left + rcCorners.left, rcBmpPart.bottom - rcCorners.bottom, \
+                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                            rcBmpPart.left + rcCorners.left, rcBmpPart.bottom - rcCorners.bottom,
                             rcBmpPart.right - rcBmpPart.left - rcCorners.left - rcCorners.right, rcCorners.bottom, SRCCOPY);
                     }
                 }
@@ -1329,8 +1343,8 @@ namespace DUI
                     if (::IntersectRect(&rcTemp, &rcPaint, &rcDest)) {
                         rcDest.right -= rcDest.left;
                         rcDest.bottom -= rcDest.top;
-                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC, \
-                            rcBmpPart.right - rcCorners.right, rcBmpPart.bottom - rcCorners.bottom, rcCorners.right, \
+                        ::StretchBlt(hDC, rcDest.left, rcDest.top, rcDest.right, rcDest.bottom, hCloneDC,
+                            rcBmpPart.right - rcCorners.right, rcBmpPart.bottom - rcCorners.bottom, rcCorners.right,
                             rcCorners.bottom, SRCCOPY);
                     }
                 }
@@ -1354,7 +1368,7 @@ namespace DUI
             rcDest.bottom = rcItem.top + pDrawInfo->rcDest.bottom;
             if (rcDest.bottom > rcItem.bottom) rcDest.bottom = rcItem.bottom;
         }
-        BOOL bRet = DUILIB::DrawImage(hDC, pManager, rcItem, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest, \
+        BOOL bRet = DUI::DrawImage(hDC, pManager, rcItem, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest,
             pDrawInfo->rcSource, pDrawInfo->rcCorner, pDrawInfo->dwMask, pDrawInfo->uFade, pDrawInfo->bHole, pDrawInfo->bTiledX, pDrawInfo->bTiledY, instance);
 
         return bRet;
@@ -1379,10 +1393,10 @@ namespace DUI
     void CRenderUI::DrawGradient(HDC hDC, const RECT & rc, DWORD dwFirst, DWORD dwSecond, BOOL bVertical, int nSteps)
     {
         typedef BOOL(WINAPI * LPALPHABLEND)(HDC, int, int, int, int, HDC, int, int, int, int, BLENDFUNCTION);
-        static LPALPHABLEND lpAlphaBlend = (LPALPHABLEND) ::GetProcAddress(::GetModuleHandle(_T("msimg32.dll")), "AlphaBlend");
+        static LPALPHABLEND lpAlphaBlend = (LPALPHABLEND)::GetProcAddress(::GetModuleHandle(_T("msimg32.dll")), "AlphaBlend");
         if (lpAlphaBlend == NULL) lpAlphaBlend = AlphaBitBlt;
         typedef BOOL(WINAPI * PGradientFill)(HDC, PTRIVERTEX, ULONG, PVOID, ULONG, ULONG);
-        static PGradientFill lpGradientFill = (PGradientFill) ::GetProcAddress(::GetModuleHandle(_T("msimg32.dll")), "GradientFill");
+        static PGradientFill lpGradientFill = (PGradientFill)::GetProcAddress(::GetModuleHandle(_T("msimg32.dll")), "GradientFill");
 
         BYTE bAlpha = (BYTE)(((dwFirst >> 24) + (dwSecond >> 24)) >> 1);
         if (bAlpha == 0) return;
@@ -1400,30 +1414,34 @@ namespace DUI
             hPaintBitmap = ::CreateCompatibleBitmap(hDC, cx, cy);
             ASSERT(hPaintDC);
             ASSERT(hPaintBitmap);
-            hOldPaintBitmap = (HBITMAP) ::SelectObject(hPaintDC, hPaintBitmap);
+            hOldPaintBitmap = (HBITMAP)::SelectObject(hPaintDC, hPaintBitmap);
         }
         if (lpGradientFill != NULL) {
             TRIVERTEX triv[2] =
             {
-                { rcPaint.left, rcPaint.top,
-                static_cast<COLOR16>(GetBValue(dwFirst) << 8),
-                static_cast<COLOR16>(GetGValue(dwFirst) << 8),
-                static_cast<COLOR16>(GetRValue(dwFirst) << 8), 0xFF00 },
-                { rcPaint.right, rcPaint.bottom,
-                static_cast<COLOR16>(GetBValue(dwSecond) << 8),
-                static_cast<COLOR16>(GetGValue(dwSecond) << 8),
-                static_cast<COLOR16>(GetRValue(dwSecond) << 8), 0xFF00 }
-            };
+                {rcPaint.left, rcPaint.top,
+                 static_cast<COLOR16>(GetBValue(dwFirst) << 8),
+                 static_cast<COLOR16>(GetGValue(dwFirst) << 8),
+                 static_cast<COLOR16>(GetRValue(dwFirst) << 8), 0xFF00},
+                {rcPaint.right, rcPaint.bottom,
+                 static_cast<COLOR16>(GetBValue(dwSecond) << 8),
+                 static_cast<COLOR16>(GetGValue(dwSecond) << 8),
+                 static_cast<COLOR16>(GetRValue(dwSecond) << 8), 0xFF00}};
             GRADIENT_RECT grc = {0, 1};
             lpGradientFill(hPaintDC, triv, 2, &grc, 1, bVertical?GRADIENT_FILL_RECT_V:GRADIENT_FILL_RECT_H);
         } else {
             // Determine how many shades
             int nShift = 1;
-            if (nSteps >= 64) nShift = 6;
-            else if (nSteps >= 32) nShift = 5;
-            else if (nSteps >= 16) nShift = 4;
-            else if (nSteps >= 8) nShift = 3;
-            else if (nSteps >= 4) nShift = 2;
+            if (nSteps >= 64)
+                nShift = 6;
+            else if (nSteps >= 32)
+                nShift = 5;
+            else if (nSteps >= 16)
+                nShift = 4;
+            else if (nSteps >= 8)
+                nShift = 3;
+            else if (nSteps >= 4)
+                nShift = 2;
             int nLines = 1 << nShift;
             for (int i = 0; i < nLines; i++) {
                 // Do a little alpha blending
@@ -1484,7 +1502,7 @@ namespace DUI
 #else
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
         Gdiplus::Graphics graphics(hDC);
-        Gdiplus::Pen pen(Gdiplus::Color(dwPenColor), (Gdiplus::REAL)nSize);
+        Gdiplus::Pen pen(Gdiplus::Color(dwPenColor), (Gdiplus::REAL) nSize);
         pen.SetAlignment(Gdiplus::PenAlignmentInset);
 
         graphics.DrawRectangle(&pen, rc.left, rc.top, rc.right - rc.left - 1, rc.bottom - rc.top - 1);
@@ -1504,7 +1522,7 @@ namespace DUI
         }
 
         // 创建GDI+对象
-        Gdiplus::Graphics  g(hDC);
+        Gdiplus::Graphics g(hDC);
 
         //设置画图时的滤波模式为消除锯齿现象
         g.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
@@ -1513,17 +1531,17 @@ namespace DUI
         Gdiplus::GraphicsPath roundRectPath;
 
         // 保存绘图路径
-        roundRectPath.AddLine(x + hew, y, x + nWidth - hew, y);  // 顶部横线
+        roundRectPath.AddLine(x + hew, y, x + nWidth - hew, y);                   // 顶部横线
         roundRectPath.AddArc(x + nWidth - 2 * hew, y, 2 * hew, 2 * heh, 270, 90); // 右上圆角
 
-        roundRectPath.AddLine(x + nWidth, y + heh, x + nWidth, y + nHeight - heh);  // 右侧竖线
+        roundRectPath.AddLine(x + nWidth, y + heh, x + nWidth, y + nHeight - heh);                  // 右侧竖线
         roundRectPath.AddArc(x + nWidth - 2 * hew, y + nHeight - 2 * heh, 2 * hew, 2 * heh, 0, 90); // 右下圆角
 
-        roundRectPath.AddLine(x + nWidth - hew, y + nHeight, x + hew, y + nHeight);  // 底部横线
-        roundRectPath.AddArc(x, y + nHeight - 2 * heh, 2 * hew, 2 * heh, 90, 90); // 左下圆角
+        roundRectPath.AddLine(x + nWidth - hew, y + nHeight, x + hew, y + nHeight); // 底部横线
+        roundRectPath.AddArc(x, y + nHeight - 2 * heh, 2 * hew, 2 * heh, 90, 90);   // 左下圆角
 
-        roundRectPath.AddLine(x, y + nHeight - heh, x, y + heh);  // 左侧竖线
-        roundRectPath.AddArc(x, y, 2 * hew, 2 * heh, 180, 90); // 左上圆角
+        roundRectPath.AddLine(x, y + nHeight - heh, x, y + heh); // 左侧竖线
+        roundRectPath.AddArc(x, y, 2 * hew, 2 * heh, 180, 90);   // 左上圆角
 
         //创建画笔
         Gdiplus::Pen pen(lineColor, lineWidth);
@@ -1544,7 +1562,6 @@ namespace DUI
         // 填充
         g.FillPath(&brush, &roundRectPath);
     }
-
 
     void CRenderUI::DrawRoundRect(HDC hDC, const RECT & rc, int nSize, int width, int height, DWORD dwPenColor, int nStyle /*= PS_SOLID*/)
     {
@@ -1581,18 +1598,36 @@ namespace DUI
             Gdiplus::Font font(hDC, pManager->GetFont(iFont));
             Gdiplus::TextRenderingHint trh = Gdiplus::TextRenderingHintSystemDefault;
             switch (pManager->GetGdiplusTextRenderingHint()) {
-                case 0: {trh = Gdiplus::TextRenderingHintSystemDefault; break; }
-                case 1: {trh = Gdiplus::TextRenderingHintSingleBitPerPixelGridFit; break; }
-                case 2: {trh = Gdiplus::TextRenderingHintSingleBitPerPixel; break; }
-                case 3: {trh = Gdiplus::TextRenderingHintAntiAliasGridFit; break; }
-                case 4: {trh = Gdiplus::TextRenderingHintAntiAlias; break; }
-                case 5: {trh = Gdiplus::TextRenderingHintClearTypeGridFit; break; }
+                case 0: {
+                    trh = Gdiplus::TextRenderingHintSystemDefault;
+                    break;
+                }
+                case 1: {
+                    trh = Gdiplus::TextRenderingHintSingleBitPerPixelGridFit;
+                    break;
+                }
+                case 2: {
+                    trh = Gdiplus::TextRenderingHintSingleBitPerPixel;
+                    break;
+                }
+                case 3: {
+                    trh = Gdiplus::TextRenderingHintAntiAliasGridFit;
+                    break;
+                }
+                case 4: {
+                    trh = Gdiplus::TextRenderingHintAntiAlias;
+                    break;
+                }
+                case 5: {
+                    trh = Gdiplus::TextRenderingHintClearTypeGridFit;
+                    break;
+                }
             }
             graphics.SetTextRenderingHint(trh);
             graphics.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
             graphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
 
-            Gdiplus::RectF rectF((Gdiplus::REAL)rc.left, (Gdiplus::REAL)rc.top, (Gdiplus::REAL)(rc.right - rc.left), (Gdiplus::REAL)(rc.bottom - rc.top));
+            Gdiplus::RectF rectF((Gdiplus::REAL) rc.left, (Gdiplus::REAL) rc.top, (Gdiplus::REAL)(rc.right - rc.left), (Gdiplus::REAL)(rc.bottom - rc.top));
             Gdiplus::SolidBrush brush(Gdiplus::Color(254, GetBValue(dwTextColor), GetGValue(dwTextColor), GetRValue(dwTextColor)));
 
             Gdiplus::StringFormat stringFormat = Gdiplus::StringFormat::GenericTypographic();
@@ -1656,7 +1691,7 @@ namespace DUI
                 } else {
                     graphics.DrawString(pcwszDest, -1, &font, rectF, &stringFormat, &brush);
                 }
-                delete[]pcwszDest;
+                delete[] pcwszDest;
             }
 #endif
             ::SelectObject(hDC, hOldFont);
@@ -1696,13 +1731,13 @@ namespace DUI
         //   Italic:           <i>text</i>
         //   Image:            <i x y z>            where x = image name and y = imagelist num and z(optional) = imagelist id
         //   Link:             <a x>text</a>        where x(optional) = link content, normal like app:notepad or http:www.xxx.com
-        //   NewLine           <n>                  
+        //   NewLine           <n>
         //   Paragraph:        <p x>text</p>        where x = extra pixels indent in p
         //   Raw Text:         <r>text</r>
         //   Selected:         <s>text</s>
         //   Underline:        <u>text</u>
         //   X Indent:         <x i>                where i = hor indent in pixels
-        //   Y Indent:         <y i>                where i = ver indent in pixels 
+        //   Y Indent:         <y i>                where i = ver indent in pixels
 
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
         if (pstrText == NULL || pManager == NULL) return;
@@ -1725,7 +1760,7 @@ namespace DUI
             pDefFontInfo = pManager->GetDefaultFontInfo();
         }
         TEXTMETRIC* pTm = &pDefFontInfo->tm;
-        HFONT hOldFont = (HFONT) ::SelectObject(hDC, pDefFontInfo->hFont);
+        HFONT hOldFont = (HFONT)::SelectObject(hDC, pDefFontInfo->hFont);
         ::SetBkMode(hDC, TRANSPARENT);
         ::SetTextColor(hDC, RGB(GetBValue(dwTextColor), GetGValue(dwTextColor), GetRValue(dwTextColor)));
         DWORD dwBkColor = pManager->GetDefaultSelectedBkColor();
@@ -1818,16 +1853,15 @@ namespace DUI
                 ptLinkStart = pt;
                 cyLine = pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1);
                 if (pt.x >= rc.right) break;
-            } else if (!bInRaw && (*pstrText == _T('<') || *pstrText == _T('{'))
-                && (pstrText[1] >= _T('a') && pstrText[1] <= _T('z'))
-                && (pstrText[2] == _T(' ') || pstrText[2] == _T('>') || pstrText[2] == _T('}'))) {
+            } else if (!bInRaw && (*pstrText == _T('<') || *pstrText == _T('{')) && (pstrText[1] >= _T('a') && pstrText[1] <= _T('z')) && (pstrText[2] == _T(' ') || pstrText[2] == _T('>') || pstrText[2] == _T('}'))) {
                 pstrText++;
                 LPCTSTR pstrNextStart = NULL;
                 switch (*pstrText) {
-                    case _T('a'):  // Link
+                    case _T('a'): // Link
                     {
                         pstrText++;
-                        while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                        while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                            pstrText = ::CharNext(pstrText);
                         if (iLinkIndex < nLinkRects && !bLineDraw) {
                             CStringUI* pStr = (CStringUI*)(sLinks + iLinkIndex);
                             pStr->Empty();
@@ -1864,9 +1898,8 @@ namespace DUI
                         }
                         ptLinkStart = pt;
                         bInLink = true;
-                    }
-                    break;
-                    case _T('b'):  // Bold
+                    } break;
+                    case _T('b'): // Bold
                     {
                         pstrText++;
                         TFONTINFO_UI* pFontInfo = pDefFontInfo;
@@ -1880,22 +1913,22 @@ namespace DUI
                             ::SelectObject(hDC, pFontInfo->hFont);
                             cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                         }
-                    }
-                    break;
-                    case _T('c'):  // Color
+                    } break;
+                    case _T('c'): // Color
                     {
                         pstrText++;
-                        while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                        while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                            pstrText = ::CharNext(pstrText);
                         if (*pstrText == _T('#')) pstrText++;
                         DWORD clrColor = _tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 16);
                         aColorArray.Add((LPVOID)clrColor);
                         ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
-                    }
-                    break;
-                    case _T('f'):  // Font
+                    } break;
+                    case _T('f'): // Font
                     {
                         pstrText++;
-                        while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                        while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                            pstrText = ::CharNext(pstrText);
                         LPCTSTR pstrTemp = pstrText;
                         int iFontId = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
                         if (pstrTemp != pstrText) {
@@ -1916,11 +1949,13 @@ namespace DUI
                                     sFontName += *pstrText++;
                                 }
                             }
-                            while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                            while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                                pstrText = ::CharNext(pstrText);
                             if (isdigit(*pstrText)) {
                                 iFontSize = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
                             }
-                            while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                            while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                                pstrText = ::CharNext(pstrText);
                             while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}')) {
                                 pstrTemp = ::CharNext(pstrText);
                                 while (pstrText < pstrTemp) {
@@ -1939,16 +1974,16 @@ namespace DUI
                             ::SelectObject(hDC, pFontInfo->hFont);
                         }
                         cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
-                    }
-                    break;
-                    case _T('i'):  // Italic or Image
+                    } break;
+                    case _T('i'): // Italic or Image
                     {
                         pstrNextStart = pstrText - 1;
                         pstrText++;
                         CStringUI sImageString = pstrText;
                         int iWidth = 0;
                         int iHeight = 0;
-                        while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                        while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                            pstrText = ::CharNext(pstrText);
                         const TIMAGEINFO_UI * pImageInfo = NULL;
                         CStringUI sName;
                         while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}') && *pstrText != _T(' ')) {
@@ -1971,10 +2006,12 @@ namespace DUI
                                 cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                             }
                         } else {
-                            while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                            while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                                pstrText = ::CharNext(pstrText);
                             int iImageListNum = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
                             if (iImageListNum <= 0) iImageListNum = 1;
-                            while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                            while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                                pstrText = ::CharNext(pstrText);
                             int iImageListIndex = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
                             if (iImageListIndex < 0 || iImageListIndex >= iImageListNum) iImageListIndex = 0;
 
@@ -1987,16 +2024,19 @@ namespace DUI
                                 while (*pStrImage != _T('\0')) {
                                     sItem.Empty();
                                     sValue.Empty();
-                                    while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                                    while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                                        pStrImage = ::CharNext(pStrImage);
                                     while (*pStrImage != _T('\0') && *pStrImage != _T('=') && *pStrImage > _T(' ')) {
                                         LPTSTR pstrTemp = ::CharNext(pStrImage);
                                         while (pStrImage < pstrTemp) {
                                             sItem += *pStrImage++;
                                         }
                                     }
-                                    while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                                    while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                                        pStrImage = ::CharNext(pStrImage);
                                     if (*pStrImage++ != _T('=')) break;
-                                    while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                                    while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                                        pStrImage = ::CharNext(pStrImage);
                                     if (*pStrImage++ != _T('\'')) break;
                                     while (*pStrImage != _T('\0') && *pStrImage != _T('\'')) {
                                         LPTSTR pstrTemp = ::CharNext(pStrImage);
@@ -2038,7 +2078,7 @@ namespace DUI
                                         rcBmpPart.left = iWidth * iImageListIndex;
                                         rcBmpPart.right = iWidth * (iImageListIndex + 1);
                                         CRectUI rcCorner(0, 0, 0, 0);
-                                        DrawImage(hDC, pImageInfo->hBitmap, rcImage, rcImage, rcBmpPart, rcCorner, \
+                                        DrawImage(hDC, pImageInfo->hBitmap, rcImage, rcImage, rcBmpPart, rcCorner,
                                             pImageInfo->bAlpha, 255);
                                     }
 
@@ -2047,44 +2087,43 @@ namespace DUI
                                     cyMinHeight = pt.y + iHeight;
                                     cxMaxWidth = MAX(cxMaxWidth, pt.x);
                                 }
-                            } else pstrNextStart = NULL;
+                            } else
+                                pstrNextStart = NULL;
                         }
-                    }
-                    break;
-                    case _T('n'):  // Newline
+                    } break;
+                    case _T('n'): // Newline
                     {
                         pstrText++;
                         if ((uStyle & DT_SINGLELINE) != 0) break;
                         bLineEnd = true;
-                    }
-                    break;
-                    case _T('p'):  // Paragraph
+                    } break;
+                    case _T('p'): // Paragraph
                     {
                         pstrText++;
                         if (pt.x > rc.left) bLineEnd = true;
-                        while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                        while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                            pstrText = ::CharNext(pstrText);
                         int cyLineExtra = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
                         aPIndentArray.Add((LPVOID)cyLineExtra);
                         cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + cyLineExtra);
-                    }
-                    break;
-                    case _T('r'):  // Raw Text
+                    } break;
+                    case _T('r'): // Raw Text
                     {
                         pstrText++;
                         bInRaw = true;
-                    }
-                    break;
-                    case _T('s'):  // Selected text background color
+                    } break;
+                    case _T('s'): // Selected text background color
                     {
                         pstrText++;
                         bInSelected = !bInSelected;
                         if (bDraw && bLineDraw) {
-                            if (bInSelected) ::SetBkMode(hDC, OPAQUE);
-                            else ::SetBkMode(hDC, TRANSPARENT);
+                            if (bInSelected)
+                                ::SetBkMode(hDC, OPAQUE);
+                            else
+                                ::SetBkMode(hDC, TRANSPARENT);
                         }
-                    }
-                    break;
-                    case _T('u'):  // Underline text
+                    } break;
+                    case _T('u'): // Underline text
                     {
                         pstrText++;
                         TFONTINFO_UI* pFontInfo = pDefFontInfo;
@@ -2098,61 +2137,59 @@ namespace DUI
                             ::SelectObject(hDC, pFontInfo->hFont);
                             cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                         }
-                    }
-                    break;
-                    case _T('x'):  // X Indent
+                    } break;
+                    case _T('x'): // X Indent
                     {
                         pstrText++;
-                        while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                        while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                            pstrText = ::CharNext(pstrText);
                         int iWidth = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
                         pt.x += iWidth;
                         cxMaxWidth = MAX(cxMaxWidth, pt.x);
-                    }
-                    break;
-                    case _T('y'):  // Y Indent
+                    } break;
+                    case _T('y'): // Y Indent
                     {
                         pstrText++;
-                        while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
+                        while (*pstrText > _T('\0') && *pstrText <= _T(' '))
+                            pstrText = ::CharNext(pstrText);
                         cyLine = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
-                    }
-                    break;
+                    } break;
                 }
-                if (pstrNextStart != NULL) pstrText = pstrNextStart;
+                if (pstrNextStart != NULL)
+                    pstrText = pstrNextStart;
                 else {
-                    while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}')) pstrText = ::CharNext(pstrText);
+                    while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}'))
+                        pstrText = ::CharNext(pstrText);
                     pstrText = ::CharNext(pstrText);
                 }
             } else if (!bInRaw && (*pstrText == _T('<') || *pstrText == _T('{')) && pstrText[1] == _T('/')) {
                 pstrText++;
                 pstrText++;
                 switch (*pstrText) {
-                    case _T('c'):
-                    {
+                    case _T('c'): {
                         pstrText++;
                         aColorArray.Remove(aColorArray.GetSize() - 1);
                         DWORD clrColor = dwTextColor;
                         if (aColorArray.GetSize() > 0) clrColor = (int)aColorArray.GetAt(aColorArray.GetSize() - 1);
                         ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
-                    }
-                    break;
+                    } break;
                     case _T('p'):
                         pstrText++;
                         if (pt.x > rc.left) bLineEnd = true;
                         aPIndentArray.Remove(aPIndentArray.GetSize() - 1);
                         cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                         break;
-                    case _T('s'):
-                    {
+                    case _T('s'): {
                         pstrText++;
                         bInSelected = !bInSelected;
                         if (bDraw && bLineDraw) {
-                            if (bInSelected) ::SetBkMode(hDC, OPAQUE);
-                            else ::SetBkMode(hDC, TRANSPARENT);
+                            if (bInSelected)
+                                ::SetBkMode(hDC, OPAQUE);
+                            else
+                                ::SetBkMode(hDC, TRANSPARENT);
                         }
-                    }
-                    break;
-                    case _T('a'):
-                    {
+                    } break;
+                    case _T('a'): {
                         if (iLinkIndex < nLinkRects) {
                             if (!bLineDraw) ::SetRect(&prcLinks[iLinkIndex], ptLinkStart.x, ptLinkStart.y, MIN(pt.x, rc.right), pt.y + pTm->tmHeight + pTm->tmExternalLeading);
                             iLinkIndex++;
@@ -2166,8 +2203,7 @@ namespace DUI
                     case _T('b'):
                     case _T('f'):
                     case _T('i'):
-                    case _T('u'):
-                    {
+                    case _T('u'): {
                         pstrText++;
                         aFontArray.Remove(aFontArray.GetSize() - 1);
                         TFONTINFO_UI * pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
@@ -2180,10 +2216,10 @@ namespace DUI
                         pTm = &pFontInfo->tm;
                         ::SelectObject(hDC, pFontInfo->hFont);
                         cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
-                    }
-                    break;
+                    } break;
                 }
-                while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}')) pstrText = ::CharNext(pstrText);
+                while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}'))
+                    pstrText = ::CharNext(pstrText);
                 pstrText = ::CharNext(pstrText);
             } else if (!bInRaw && *pstrText == _T('<') && pstrText[2] == _T('>') && (pstrText[1] == _T('{') || pstrText[1] == _T('}'))) {
                 SIZE szSpace = {0};
@@ -2191,14 +2227,18 @@ namespace DUI
                 if (bDraw && bLineDraw) ::TextOut(hDC, pt.x, pt.y + cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading, &pstrText[1], 1);
                 pt.x += szSpace.cx;
                 cxMaxWidth = MAX(cxMaxWidth, pt.x);
-                pstrText++; pstrText++; pstrText++;
+                pstrText++;
+                pstrText++;
+                pstrText++;
             } else if (!bInRaw && *pstrText == _T('{') && pstrText[2] == _T('}') && (pstrText[1] == _T('<') || pstrText[1] == _T('>'))) {
                 SIZE szSpace = {0};
                 ::GetTextExtentPoint32(hDC, &pstrText[1], 1, &szSpace);
                 if (bDraw && bLineDraw) ::TextOut(hDC, pt.x, pt.y + cyLineHeight - pTm->tmHeight - pTm->tmExternalLeading, &pstrText[1], 1);
                 pt.x += szSpace.cx;
                 cxMaxWidth = MAX(cxMaxWidth, pt.x);
-                pstrText++; pstrText++; pstrText++;
+                pstrText++;
+                pstrText++;
+                pstrText++;
             } else if (!bInRaw && *pstrText == _T(' ')) {
                 SIZE szSpace = {0};
                 ::GetTextExtentPoint32(hDC, _T(" "), 1, &szSpace);
@@ -2224,8 +2264,7 @@ namespace DUI
                     // slow when repeated so often.
                     // TODO: Rewrite and use GetTextExtentExPoint() instead!
                     if (bInRaw) {
-                        if ((*p == _T('<') || *p == _T('{')) && p[1] == _T('/')
-                            && p[2] == _T('r') && (p[3] == _T('>') || p[3] == _T('}'))) {
+                        if ((*p == _T('<') || *p == _T('{')) && p[1] == _T('/') && p[2] == _T('r') && (p[3] == _T('>') || p[3] == _T('}'))) {
                             p += 4;
                             bInRaw = false;
                             break;
@@ -2361,7 +2400,7 @@ namespace DUI
             hPaintBitmap = ::CreateCompatibleBitmap(pManager->GetPaintDC(), rc.right, rc.bottom);
             ASSERT(hPaintBitmap);
         }
-        HBITMAP hOldPaintBitmap = (HBITMAP) ::SelectObject(hPaintDC, hPaintBitmap);
+        HBITMAP hOldPaintBitmap = (HBITMAP)::SelectObject(hPaintDC, hPaintBitmap);
         if (!bUseOffscreenBitmap) {
             CControlUI* pRoot = pManager->GetRoot();
             pRoot->Paint(hPaintDC, rc, pStopControl);
@@ -2381,7 +2420,7 @@ namespace DUI
         ASSERT(hCloneDC);
         ASSERT(hBitmap);
         if (hBitmap != NULL) {
-            HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(hCloneDC, hBitmap);
+            HBITMAP hOldBitmap = (HBITMAP)::SelectObject(hCloneDC, hBitmap);
             ::BitBlt(hCloneDC, 0, 0, cx, cy, hPaintDC, rc.left, rc.top, SRCCOPY);
             RECT rcClone = {0, 0, cx, cy};
             if (dwFilterColor > 0x00FFFFFF) DrawColor(hCloneDC, rcClone, dwFilterColor);
@@ -2408,7 +2447,7 @@ namespace DUI
         HBITMAP hPaintBitmap = ::CreateCompatibleBitmap(pManager->GetPaintDC(), rc.right, rc.bottom);
         ASSERT(hPaintDC);
         ASSERT(hPaintBitmap);
-        HBITMAP hOldPaintBitmap = (HBITMAP) ::SelectObject(hPaintDC, hPaintBitmap);
+        HBITMAP hOldPaintBitmap = (HBITMAP)::SelectObject(hPaintDC, hPaintBitmap);
         pControl->Paint(hPaintDC, rc, NULL);
 
         BITMAPINFO bmi = {0};
@@ -2425,7 +2464,7 @@ namespace DUI
         ASSERT(hCloneDC);
         ASSERT(hBitmap);
         if (hBitmap != NULL) {
-            HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(hCloneDC, hBitmap);
+            HBITMAP hOldBitmap = (HBITMAP)::SelectObject(hCloneDC, hBitmap);
             ::BitBlt(hCloneDC, 0, 0, cx, cy, hPaintDC, rc.left, rc.top, SRCCOPY);
             RECT rcClone = {0, 0, cx, cy};
             if (dwFilterColor > 0x00FFFFFF) DrawColor(hCloneDC, rcClone, dwFilterColor);
@@ -2444,7 +2483,7 @@ namespace DUI
 
     SIZE CRenderUI::GetTextSize(HDC hDC, CManagerUI * pManager, LPCTSTR pstrText, int iFont, UINT uStyle)
     {
-        SIZE size = {0,0};
+        SIZE size = {0, 0};
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
         if (pstrText == NULL || pManager == NULL) return size;
         ::SetBkMode(hDC, TRANSPARENT);

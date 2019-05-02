@@ -1,9 +1,8 @@
 #include "Core/UIWindow.h"
-#include "Core/UIManager.h"
 #include "Core/UIControl.h"
+#include "Core/UIManager.h"
 
 #include "Utils/Utils.h"
-
 
 namespace DUI
 {
@@ -30,7 +29,8 @@ namespace DUI
 
     LPCTSTR UI__TraceMsg(UINT uMsg)
     {
-#define MSGDEF(x) if(uMsg==x) return _T(#x)
+#define MSGDEF(x) \
+    if (uMsg == x) return _T(#x)
         MSGDEF(WM_SETCURSOR);
         MSGDEF(WM_NCHITTEST);
         MSGDEF(WM_NCPAINT);
@@ -96,10 +96,10 @@ namespace DUI
 
     //////////////////////////////////////////////////////////////////////////
     //
-    UILIB_BASE_BEGIN_MESSAGE_MAP(CNotifyPumpUI)
-        UI_END_MESSAGE_MAP()
+    UI_BASE_BEGIN_MESSAGE_MAP(CNotifyPumpUI)
+        UI_END_MESSAGE_MAP();
 
-        static const TMSGMAPENTRY_UI* DuiFindMessageEntry(const TMSGMAPENTRY_UI * lpEntry, TNOTIFY_UI & msg)
+    static const TMSGMAPENTRY_UI* DuiFindMessageEntry(const TMSGMAPENTRY_UI * lpEntry, TNOTIFY_UI & msg)
     {
         CStringUI sMsgType = msg.sType;
         CStringUI sCtrlName = msg.pSender->GetName();
@@ -342,23 +342,27 @@ namespace DUI
         int yTop = (rcCenter.top + rcCenter.bottom) / 2 - DlgHeight / 2;
 
         // The dialog is outside the screen, move it inside
-        if (xLeft < rcArea.left) xLeft = rcArea.left;
-        else if (xLeft + DlgWidth > rcArea.right) xLeft = rcArea.right - DlgWidth;
-        if (yTop < rcArea.top) yTop = rcArea.top;
-        else if (yTop + DlgHeight > rcArea.bottom) yTop = rcArea.bottom - DlgHeight;
+        if (xLeft < rcArea.left)
+            xLeft = rcArea.left;
+        else if (xLeft + DlgWidth > rcArea.right)
+            xLeft = rcArea.right - DlgWidth;
+        if (yTop < rcArea.top)
+            yTop = rcArea.top;
+        else if (yTop + DlgHeight > rcArea.bottom)
+            yTop = rcArea.bottom - DlgHeight;
         ::SetWindowPos(m_hWnd, NULL, xLeft, yTop, -1, -1, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
     }
 
     void CWindowUI::SetIcon(UINT nRes)
     {
         HICON hIcon = (HICON)::LoadImage(CManagerUI::GetInstance(), MAKEINTRESOURCE(nRes), IMAGE_ICON,
-            (::GetSystemMetrics(SM_CXICON) + 15) & ~15, (::GetSystemMetrics(SM_CYICON) + 15) & ~15,	// 防止高DPI下图标模糊
+            (::GetSystemMetrics(SM_CXICON) + 15) & ~15, (::GetSystemMetrics(SM_CYICON) + 15) & ~15, // 防止高DPI下图标模糊
             LR_DEFAULTCOLOR);
         ASSERT(hIcon);
         ::SendMessage(m_hWnd, WM_SETICON, (WPARAM)TRUE, (LPARAM)hIcon);
 
         hIcon = (HICON)::LoadImage(CManagerUI::GetInstance(), MAKEINTRESOURCE(nRes), IMAGE_ICON,
-            (::GetSystemMetrics(SM_CXICON) + 15) & ~15, (::GetSystemMetrics(SM_CYICON) + 15) & ~15,	// 防止高DPI下图标模糊
+            (::GetSystemMetrics(SM_CXICON) + 15) & ~15, (::GetSystemMetrics(SM_CYICON) + 15) & ~15, // 防止高DPI下图标模糊
             LR_DEFAULTCOLOR);
         ASSERT(hIcon);
         ::SendMessage(m_hWnd, WM_SETICON, (WPARAM)FALSE, (LPARAM)hIcon);

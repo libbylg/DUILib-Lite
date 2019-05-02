@@ -1,7 +1,7 @@
 #include "Control/UILabel.h"
-#include "Core/UIRender.h"
 #include "Core/UIContainer.h"
 #include "Core/UIManager.h"
+#include "Core/UIRender.h"
 
 namespace DUI
 {
@@ -164,7 +164,6 @@ namespace DUI
                     m_cxyFixedLast.cy = rcText.bottom - rcText.top + GetManager()->GetDPIObj()->Scale(m_rcTextPadding.top + m_rcTextPadding.bottom);
                 }
             }
-
         }
         return m_cxyFixedLast;
     }
@@ -211,8 +210,10 @@ namespace DUI
                 m_uTextStyle |= (DT_BOTTOM | DT_SINGLELINE);
             }
         } else if (_tcsicmp(pstrName, _T("endellipsis")) == 0) {
-            if (_tcsicmp(pstrValue, _T("true")) == 0) m_uTextStyle |= DT_END_ELLIPSIS;
-            else m_uTextStyle &= ~DT_END_ELLIPSIS;
+            if (_tcsicmp(pstrValue, _T("true")) == 0)
+                m_uTextStyle |= DT_END_ELLIPSIS;
+            else
+                m_uTextStyle &= ~DT_END_ELLIPSIS;
         } else if (_tcsicmp(pstrName, _T("wordbreak")) == 0) {
             if (_tcsicmp(pstrValue, _T("true")) == 0) {
                 m_uTextStyle &= ~DT_SINGLELINE;
@@ -227,7 +228,8 @@ namespace DUI
             } else {
                 m_uTextStyle = m_uTextStyle & ~DT_NOPREFIX;
             }
-        } else if (_tcsicmp(pstrName, _T("font")) == 0) SetFont(_ttoi(pstrValue));
+        } else if (_tcsicmp(pstrName, _T("font")) == 0)
+            SetFont(_ttoi(pstrValue));
         else if (_tcsicmp(pstrName, _T("textcolor")) == 0) {
             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
             LPTSTR pstr = NULL;
@@ -241,17 +243,23 @@ namespace DUI
         } else if (_tcsicmp(pstrName, _T("textpadding")) == 0) {
             RECT rcTextPadding = {0};
             LPTSTR pstr = NULL;
-            rcTextPadding.left = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);
-            rcTextPadding.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
-            rcTextPadding.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
-            rcTextPadding.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+            rcTextPadding.left = _tcstol(pstrValue, &pstr, 10);
+            ASSERT(pstr);
+            rcTextPadding.top = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
+            rcTextPadding.right = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
+            rcTextPadding.bottom = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
             SetTextPadding(rcTextPadding);
-        } else if (_tcsicmp(pstrName, _T("showhtml")) == 0) SetShowHtml(_tcsicmp(pstrValue, _T("true")) == 0);
+        } else if (_tcsicmp(pstrName, _T("showhtml")) == 0)
+            SetShowHtml(_tcsicmp(pstrValue, _T("true")) == 0);
         else if (_tcsicmp(pstrName, _T("autocalcwidth")) == 0) {
             SetAutoCalcWidth(_tcsicmp(pstrValue, _T("true")) == 0);
         } else if (_tcsicmp(pstrName, _T("autocalcheight")) == 0) {
             SetAutoCalcHeight(_tcsicmp(pstrValue, _T("true")) == 0);
-        } else CControlUI::SetAttribute(pstrName, pstrValue);
+        } else
+            CControlUI::SetAttribute(pstrName, pstrValue);
     }
 
     void CLabelUI::PaintText(HDC hDC)
@@ -272,17 +280,17 @@ namespace DUI
         int nLinks = 0;
         if (IsEnabled()) {
             if (m_bShowHtml)
-                CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, m_dwTextColor, \
+                CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, m_dwTextColor,
                     NULL, NULL, nLinks, m_iFont, m_uTextStyle);
             else
-                CRenderUI::DrawText(hDC, m_pManager, rc, sText, m_dwTextColor, \
+                CRenderUI::DrawText(hDC, m_pManager, rc, sText, m_dwTextColor,
                     m_iFont, m_uTextStyle);
         } else {
             if (m_bShowHtml)
-                CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor, \
+                CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor,
                     NULL, NULL, nLinks, m_iFont, m_uTextStyle);
             else
-                CRenderUI::DrawText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor, \
+                CRenderUI::DrawText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor,
                     m_iFont, m_uTextStyle);
         }
     }
@@ -314,4 +322,4 @@ namespace DUI
             NeedParentUpdate();
         }
     }
-}
+} // namespace DUI

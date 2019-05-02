@@ -2,7 +2,6 @@
 #include "Core/UIManager.h"
 #include "Core/UIRender.h"
 
-
 namespace DUI
 {
 
@@ -10,20 +9,7 @@ namespace DUI
     BOOL CShadowUI::s_bHasInit = FALSE;
 
     CShadowUI::CShadowUI(void)
-        : m_hWnd((HWND)NULL)
-        , m_OriParentProc(NULL)
-        , m_Status(0)
-        , m_nDarkness(150)
-        , m_nSharpness(5)
-        , m_nSize(0)
-        , m_nxOffset(0)
-        , m_nyOffset(0)
-        , m_Color(RGB(0, 0, 0))
-        , m_WndSize(0)
-        , m_bUpdate(false)
-        , m_bIsImageMode(false)
-        , m_bIsShowShadow(false)
-        , m_bIsDisableShadow(false)
+        : m_hWnd((HWND)NULL), m_OriParentProc(NULL), m_Status(0), m_nDarkness(150), m_nSharpness(5), m_nSize(0), m_nxOffset(0), m_nyOffset(0), m_Color(RGB(0, 0, 0)), m_WndSize(0), m_bUpdate(false), m_bIsImageMode(false), m_bIsShowShadow(false), m_bIsDisableShadow(false)
     {
         ::ZeroMemory(&m_rcShadowCorner, sizeof(RECT));
     }
@@ -72,7 +58,7 @@ namespace DUI
         m_pManager = pPaintManager;
         HWND hParentWnd = m_pManager->GetPaintWindow();
         // Add parent window - shadow pair to the map
-        _ASSERT(GetShadowMap().find(hParentWnd) == GetShadowMap().end());	// Only one shadow for each window
+        _ASSERT(GetShadowMap().find(hParentWnd) == GetShadowMap().end()); // Only one shadow for each window
         GetShadowMap()[hParentWnd] = this;
 
         // Determine the initial show state of shadow according to parent window's state
@@ -81,14 +67,14 @@ namespace DUI
         // Create the shadow window
         LONG styleValue = lParentStyle & WS_CAPTION;
         m_hWnd = CreateWindowEx(WS_EX_LAYERED | WS_EX_TRANSPARENT, strWndClassName, NULL,
-            /*WS_VISIBLE | */styleValue | WS_POPUPWINDOW,
+            /*WS_VISIBLE | */ styleValue | WS_POPUPWINDOW,
             CW_USEDEFAULT, 0, 0, 0, hParentWnd, NULL, CManagerUI::GetInstance(), NULL);
 
-        if (!(WS_VISIBLE & lParentStyle))	// Parent invisible
+        if (!(WS_VISIBLE & lParentStyle)) // Parent invisible
             m_Status = UISS_ENABLED;
-        else if ((WS_MAXIMIZE | WS_MINIMIZE) & lParentStyle)	// Parent visible but does not need shadow
+        else if ((WS_MAXIMIZE | WS_MINIMIZE) & lParentStyle) // Parent visible but does not need shadow
             m_Status = UISS_ENABLED | UISS_PARENTVISIBLE;
-        else	// Show the shadow
+        else // Show the shadow
         {
             m_Status = UISS_ENABLED | UISS_VISABLE | UISS_PARENTVISIBLE;
             ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
@@ -98,10 +84,9 @@ namespace DUI
         // Replace the original WndProc of parent window to steal messages
         m_OriParentProc = GetWindowLongPtr(hParentWnd, GWLP_WNDPROC);
 
-#pragma warning(disable: 4311)	// temporrarily disable the type_cast warning in Win32
+#pragma warning(disable : 4311) // temporrarily disable the type_cast warning in Win32
         SetWindowLongPtr(hParentWnd, GWLP_WNDPROC, (LONG_PTR)ParentProc);
-#pragma warning(default: 4311)
-
+#pragma warning(default : 4311)
     }
 
     std::map<HWND, CShadowUI*>& CShadowUI::GetShadowMap()
@@ -112,15 +97,15 @@ namespace DUI
 
     LRESULT CALLBACK CShadowUI::ParentProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-        _ASSERT(GetShadowMap().find(hwnd) != GetShadowMap().end());	// Shadow must have been attached
+        _ASSERT(GetShadowMap().find(hwnd) != GetShadowMap().end()); // Shadow must have been attached
 
         CShadowUI * pThis = GetShadowMap()[hwnd];
         if (pThis->m_bIsDisableShadow) {
 
-#pragma warning(disable: 4312)	// temporrarily disable the type_cast warning in Win32
+#pragma warning(disable : 4312) // temporrarily disable the type_cast warning in Win32
             // Call the default(original) window procedure for other messages or messages processed but not returned
             return ((WNDPROC)pThis->m_OriParentProc)(hwnd, uMsg, wParam, lParam);
-#pragma warning(default: 4312)
+#pragma warning(default : 4312)
         }
         switch (uMsg) {
             case WM_ACTIVATEAPP:
@@ -170,7 +155,7 @@ namespace DUI
                     if (SIZE_MAXIMIZED == wParam || SIZE_MINIMIZED == wParam) {
                         ::ShowWindow(pThis->m_hWnd, SW_HIDE);
                         pThis->m_Status &= ~UISS_VISABLE;
-                    } else if (pThis->m_Status & UISS_PARENTVISIBLE)	// Parent maybe resized even if invisible
+                    } else if (pThis->m_Status & UISS_PARENTVISIBLE) // Parent maybe resized even if invisible
                     {
                         // Awful! It seems that if the window size was not decreased
                         // the window region would never be updated until WM_PAINT was sent.
@@ -207,7 +192,7 @@ namespace DUI
             }
             case WM_SHOWWINDOW: {
                 if (pThis->m_Status & UISS_ENABLED) {
-                    if (!wParam)	// the window is being hidden
+                    if (!wParam) // the window is being hidden
                     {
                         ::ShowWindow(pThis->m_hWnd, SW_HIDE);
                         pThis->m_Status &= ~(UISS_VISABLE | UISS_PARENTVISIBLE);
@@ -221,39 +206,35 @@ namespace DUI
                 break;
             }
             case WM_DESTROY: {
-                DestroyWindow(pThis->m_hWnd);	// Destroy the shadow
+                DestroyWindow(pThis->m_hWnd); // Destroy the shadow
                 break;
             }
             case WM_NCDESTROY: {
-                GetShadowMap().erase(hwnd);	// Remove this window and shadow from the map
+                GetShadowMap().erase(hwnd); // Remove this window and shadow from the map
                 break;
             }
         }
 
-
-#pragma warning(disable: 4312)	// temporrarily disable the type_cast warning in Win32
+#pragma warning(disable : 4312) // temporrarily disable the type_cast warning in Win32
         // Call the default(original) window procedure for other messages or messages processed but not returned
         return ((WNDPROC)pThis->m_OriParentProc)(hwnd, uMsg, wParam, lParam);
-#pragma warning(default: 4312)
-
+#pragma warning(default : 4312)
     }
     void GetLastErrorMessage()
-    {          //Formats GetLastError() value.
+    { //Formats GetLastError() value.
         LPVOID lpMsgBuf;
 
         FormatMessage(
             FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
             NULL, GetLastError(),
             MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-            (LPTSTR)& lpMsgBuf, 0, NULL
-        );
+            (LPTSTR)& lpMsgBuf, 0, NULL);
 
         // Display the string.
         //MessageBox(NULL, (const wchar_t*)lpMsgBuf, L"GetLastError", MB_OK | MB_ICONINFORMATION);
 
         // Free the buffer.
         LocalFree(lpMsgBuf);
-
     }
     void CShadowUI::Update(HWND hParent)
     {
@@ -273,16 +254,16 @@ namespace DUI
         }
 
         // Create the alpha blending bitmap
-        BITMAPINFO bmi;        // bitmap header
+        BITMAPINFO bmi; // bitmap header
         ZeroMemory(&bmi, sizeof(BITMAPINFO));
         bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
         bmi.bmiHeader.biWidth = nShadWndWid;
         bmi.bmiHeader.biHeight = nShadWndHei;
         bmi.bmiHeader.biPlanes = 1;
-        bmi.bmiHeader.biBitCount = 32;         // four 8-bit components
+        bmi.bmiHeader.biBitCount = 32; // four 8-bit components
         bmi.bmiHeader.biCompression = BI_RGB;
         bmi.bmiHeader.biSizeImage = nShadWndWid * nShadWndHei * 4;
-        BYTE* pvBits;          // pointer to DIB section
+        BYTE* pvBits; // pointer to DIB section
         HBITMAP hbitmap = CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, (void**)& pvBits, NULL, 0);
         if (hbitmap == NULL) {
             GetLastErrorMessage();
@@ -347,9 +328,9 @@ namespace DUI
         SIZE szParent = {rcParent->right - rcParent->left, rcParent->bottom - rcParent->top};
         SIZE szShadow = {szParent.cx + 2 * m_nSize, szParent.cy + 2 * m_nSize};
         // Extra 2 lines (set to be empty) in ptAnchors are used in dilation
-        int nAnchors = max(szParent.cy, szShadow.cy);	// # of anchor points pares
+        int nAnchors = max(szParent.cy, szShadow.cy); // # of anchor points pares
         int(*ptAnchors)[2] = new int[nAnchors + 2][2];
-        int(*ptAnchorsOri)[2] = new int[szParent.cy][2];	// anchor points, will not modify during erosion
+        int(*ptAnchorsOri)[2] = new int[szParent.cy][2]; // anchor points, will not modify during erosion
         ptAnchors[0][0] = szParent.cx;
         ptAnchors[0][1] = 0;
         ptAnchors[nAnchors + 1][0] = szParent.cx;
@@ -375,7 +356,7 @@ namespace DUI
                 }
             }
 
-            if (j >= szParent.cx)	// Start point not found
+            if (j >= szParent.cx) // Start point not found
             {
                 ptAnchors[i + 1][0] = szParent.cx;
                 ptAnchorsOri[i][1] = 0;
@@ -394,8 +375,8 @@ namespace DUI
         }
 
         if (m_nSize > 0)
-            ptAnchors -= m_nSize;	// Restore pos of ptAnchors for erosion
-        int(*ptAnchorsTmp)[2] = new int[nAnchors + 2][2];	// Store the result of erosion
+            ptAnchors -= m_nSize;                         // Restore pos of ptAnchors for erosion
+        int(*ptAnchorsTmp)[2] = new int[nAnchors + 2][2]; // Store the result of erosion
         // First and last line should be empty
         ptAnchorsTmp[0][0] = szParent.cx;
         ptAnchorsTmp[0][1] = 0;
@@ -420,7 +401,7 @@ namespace DUI
         }
 
         // morphologic dilation
-        ptAnchors += (m_nSize < 0?-m_nSize:0) + 1;	// now coordinates in ptAnchors are same as in shadow window
+        ptAnchors += (m_nSize < 0?-m_nSize:0) + 1; // now coordinates in ptAnchors are same as in shadow window
         // Generate the kernel
         int nKernelSize = m_nSize > m_nSharpness?m_nSize:m_nSharpness;
         int nCenterSize = m_nSize > m_nSharpness?(m_nSize - m_nSharpness):0;
@@ -462,7 +443,7 @@ namespace DUI
                             pKernelPixel++;
                         }
                     }
-                }	// for() start of line
+                } // for() start of line
 
                 // End of line
                 for (j = max(j, min(ptAnchors[i - 1][1], ptAnchors[i + 1][1]) - 1);
@@ -479,10 +460,9 @@ namespace DUI
                             pKernelPixel++;
                         }
                     }
-                }	// for() end of line
-
+                } // for() end of line
             }
-        }	// for() Generate blurred border
+        } // for() Generate blurred border
 
         // Erase unwanted parts and complement missing
         UINT32 clCenter = m_nDarkness << 24 | PreMultiply(m_Color, m_nDarkness);
@@ -490,7 +470,7 @@ namespace DUI
             i < max(szShadow.cy - nKernelSize, min(szParent.cy + m_nSize - m_nyOffset, szParent.cy + 2 * m_nSize));
             i++) {
             UINT32* pLine = pShadBits + (szShadow.cy - i - 1) * szShadow.cx;
-            if (i - m_nSize + m_nyOffset < 0 || i - m_nSize + m_nyOffset >= szParent.cy)	// Line is not covered by parent window
+            if (i - m_nSize + m_nyOffset < 0 || i - m_nSize + m_nyOffset >= szParent.cy) // Line is not covered by parent window
             {
                 for (int j = ptAnchors[i][0]; j < ptAnchors[i][1]; j++) {
                     *(pLine + j) = clCenter;
@@ -529,10 +509,8 @@ namespace DUI
         return m_bIsShowShadow;
     }
 
-
     void CShadowUI::DisableShadow(BOOL bDisable)
     {
-
 
         m_bIsDisableShadow = bDisable;
         if (m_hWnd != NULL) {
@@ -543,31 +521,22 @@ namespace DUI
                 // Determine the initial show state of shadow according to parent window's state
                 LONG lParentStyle = GetWindowLongPtr(GetParent(m_hWnd), GWL_STYLE);
 
-
-                if (!(WS_VISIBLE & lParentStyle))	// Parent invisible
+                if (!(WS_VISIBLE & lParentStyle)) // Parent invisible
                     m_Status = UISS_ENABLED;
-                else if ((WS_MAXIMIZE | WS_MINIMIZE) & lParentStyle)	// Parent visible but does not need shadow
+                else if ((WS_MAXIMIZE | WS_MINIMIZE) & lParentStyle) // Parent visible but does not need shadow
                     m_Status = UISS_ENABLED | UISS_PARENTVISIBLE;
-                else	// Show the shadow
+                else // Show the shadow
                 {
                     m_Status = UISS_ENABLED | UISS_VISABLE | UISS_PARENTVISIBLE;
-
                 }
 
-
-                if ((WS_VISIBLE & lParentStyle) && !((WS_MAXIMIZE | WS_MINIMIZE) & lParentStyle))// Parent visible && no maxsize or min size
+                if ((WS_VISIBLE & lParentStyle) && !((WS_MAXIMIZE | WS_MINIMIZE) & lParentStyle)) // Parent visible && no maxsize or min size
                 {
                     ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
                     Update(GetParent(m_hWnd));
                 }
-
-
-
             }
-
-
         }
-
     }
     ////TODO shadow disnable fix////
     BOOL CShadowUI::IsDisableShadow() const

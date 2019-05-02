@@ -1,12 +1,11 @@
 #include "Core/UIManager.h"
-#include "Core/UIDefine.h"
 #include "Core/UIControl.h"
+#include "Core/UIDefine.h"
 #include "Core/UIRender.h"
-#include "Core/UIWindow.h"
 #include "Core/UIResourceManager.h"
+#include "Core/UIWindow.h"
 
 #include "Utils/unzip.h"
-
 
 namespace DUI
 {
@@ -68,10 +67,8 @@ namespace DUI
         BOOL bKilled;
     } TIMERINFO;
 
-
-
     /////////////////////////////////////////////////////////////////////////////////////
-    typedef BOOL(__stdcall * PFUNCUPDATELAYEREDWINDOW)(HWND, HDC, POINT*, SIZE*, HDC, POINT*, COLORREF, BLENDFUNCTION*, DWORD);
+    typedef BOOL(__stdcall* PFUNCUPDATELAYEREDWINDOW)(HWND, HDC, POINT*, SIZE*, HDC, POINT*, COLORREF, BLENDFUNCTION*, DWORD);
     PFUNCUPDATELAYEREDWINDOW g_fUpdateLayeredWindow = NULL;
 
     HPEN m_hUpdateRectPen = NULL;
@@ -79,7 +76,7 @@ namespace DUI
     HINSTANCE CManagerUI::m_hResourceInstance = NULL;
     CStringUI CManagerUI::m_pStrResourcePath;
     CStringUI CManagerUI::m_pStrResourceZip;
-    CStringUI CManagerUI::m_pStrResourceZipPwd;  //Garfield 20160325 带密码zip包解密
+    CStringUI CManagerUI::m_pStrResourceZipPwd; //Garfield 20160325 带密码zip包解密
     HANDLE CManagerUI::m_hResourceZip = NULL;
     BOOL CManagerUI::m_bCachedResourceZip = true;
     int CManagerUI::m_nResType = UIRES_FILE;
@@ -92,8 +89,7 @@ namespace DUI
     CStdPtrArray CManagerUI::m_aPreMessages;
     CStdPtrArray CManagerUI::m_aPlugins;
 
-    CManagerUI::CManagerUI() :
-        m_hWndPaint(NULL),
+    CManagerUI::CManagerUI() : m_hWndPaint(NULL),
         m_hDcPaint(NULL),
         m_hDcOffscreen(NULL),
         m_hDcBackground(NULL),
@@ -183,9 +179,11 @@ namespace DUI
     CManagerUI::~CManagerUI()
     {
         // Delete the control-tree structures
-        for (int i = 0; i < m_aDelayedCleanup.GetSize(); i++) delete static_cast<CControlUI*>(m_aDelayedCleanup[i]);
+        for (int i = 0; i < m_aDelayedCleanup.GetSize(); i++)
+            delete static_cast<CControlUI*>(m_aDelayedCleanup[i]);
         m_aDelayedCleanup.Resize(0);
-        for (int i = 0; i < m_aAsyncNotify.GetSize(); i++) delete static_cast<TNOTIFY_UI*>(m_aAsyncNotify[i]);
+        for (int i = 0; i < m_aAsyncNotify.GetSize(); i++)
+            delete static_cast<TNOTIFY_UI*>(m_aAsyncNotify[i]);
         m_aAsyncNotify.Resize(0);
 
         m_mNameHash.Resize(0);
@@ -257,7 +255,10 @@ namespace DUI
 
     void CManagerUI::DeletePtr(void* ptr)
     {
-        if (ptr) { delete ptr; ptr = NULL; }
+        if (ptr) {
+            delete ptr;
+            ptr = NULL;
+        }
     }
 
     HINSTANCE CManagerUI::GetInstance()
@@ -347,7 +348,7 @@ namespace DUI
         }
         m_pStrResourceZip = _T("membuffer");
         m_bCachedResourceZip = true;
-        m_pStrResourceZipPwd = password;  //Garfield 20160325 带密码zip包解密
+        m_pStrResourceZipPwd = password; //Garfield 20160325 带密码zip包解密
         if (m_bCachedResourceZip) {
 #ifdef UNICODE
             char* pwd = w2a((wchar_t*)password);
@@ -385,8 +386,8 @@ namespace DUI
 #else
             m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), password);
 #endif
+            }
         }
-    }
 
     void CManagerUI::SetResourceType(int nType)
     {
@@ -620,8 +621,10 @@ namespace DUI
 
             DWORD dwStyle = ::GetWindowLong(m_hWndPaint, GWL_EXSTYLE);
             DWORD dwNewStyle = dwStyle;
-            if (nOpacity >= 0 && nOpacity < 256) dwNewStyle |= WS_EX_LAYERED;
-            else dwNewStyle &= ~WS_EX_LAYERED;
+            if (nOpacity >= 0 && nOpacity < 256)
+                dwNewStyle |= WS_EX_LAYERED;
+            else
+                dwNewStyle &= ~WS_EX_LAYERED;
             if (dwStyle != dwNewStyle) ::SetWindowLong(m_hWndPaint, GWL_EXSTYLE, dwNewStyle);
             fSetLayeredWindowAttributes(m_hWndPaint, 0, nOpacity, LWA_ALPHA);
         }
@@ -725,14 +728,13 @@ namespace DUI
             }
         }
         switch (uMsg) {
-            case WM_KEYDOWN:
-            {
+            case WM_KEYDOWN: {
                 // Tabbing between controls
                 if (wParam == VK_TAB) {
                     if (m_pFocus && m_pFocus->IsVisible() && m_pFocus->IsEnabled() && _tcsstr(m_pFocus->GetClass(), _T("RichEditUI")) != NULL) {
                         /* if (static_cast<CRichEditUI*>(m_pFocus)->IsWantTab()) {
-                             return false;
-                         }*/
+                                     return false;
+                                 }*/
                     }
                     if (m_pFocus && m_pFocus->IsVisible() && m_pFocus->IsEnabled() && _tcsstr(m_pFocus->GetClass(), _T("WkeWebkitUI")) != NULL) {
                         return false;
@@ -740,10 +742,8 @@ namespace DUI
                     SetNextTabControl(::GetKeyState(VK_SHIFT) >= 0);
                     return true;
                 }
-            }
-            break;
-            case WM_SYSCHAR:
-            {
+            } break;
+            case WM_SYSCHAR: {
                 // Handle ALT-shortcut key-combinations
                 FINDSHORTCUT fs = {0};
                 fs.ch = (TCHAR)toupper((int)wParam);
@@ -753,10 +753,8 @@ namespace DUI
                     pControl->Activate();
                     return true;
                 }
-            }
-            break;
-            case WM_SYSKEYDOWN:
-            {
+            } break;
+            case WM_SYSKEYDOWN: {
                 if (m_pFocus != NULL) {
                     TEVENT_UI event = {0};
                     event.Type = UIEVENT_SYSKEY;
@@ -766,8 +764,7 @@ namespace DUI
                     event.dwTimestamp = ::GetTickCount();
                     m_pFocus->Event(event);
                 }
-            }
-            break;
+            } break;
         }
         return false;
     }
@@ -785,20 +782,16 @@ namespace DUI
                     case WM_MOUSEMOVE:
                     case WM_LBUTTONDOWN:
                     case WM_LBUTTONDBLCLK:
-                    case WM_LBUTTONUP:
-                    {
+                    case WM_LBUTTONUP: {
                         POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                         m_ptLastMousePos = pt;
-                    }
-                    break;
+                    } break;
                     case WM_CONTEXTMENU:
-                    case WM_MOUSEWHEEL:
-                    {
+                    case WM_MOUSEWHEEL: {
                         POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                         ::ScreenToClient(m_hWndPaint, &pt);
                         m_ptLastMousePos = pt;
-                    }
-                    break;
+                    } break;
                 }
                 return true;
             }
@@ -820,8 +813,7 @@ namespace DUI
         }
         // Custom handling of events
         switch (uMsg) {
-            case WM_APP + 1:
-            {
+            case WM_APP + 1: {
                 for (int i = 0; i < m_aDelayedCleanup.GetSize(); i++)
                     delete static_cast<CControlUI*>(m_aDelayedCleanup[i]);
                 m_aDelayedCleanup.Empty();
@@ -839,10 +831,8 @@ namespace DUI
                     }
                     delete pMsg;
                 }
-            }
-            break;
-            case WM_CLOSE:
-            {
+            } break;
+            case WM_CLOSE: {
                 // Make sure all matching "closing" events are sent
                 TEVENT_UI event = {0};
                 event.ptMouse = m_ptLastMousePos;
@@ -870,16 +860,13 @@ namespace DUI
                     ::DestroyWindow(m_hwndTooltip);
                     m_hwndTooltip = NULL;
                 }
-            }
-            break;
-            case WM_ERASEBKGND:
-            {
+            } break;
+            case WM_ERASEBKGND: {
                 // We'll do the painting here...
                 lRes = 1;
             }
-            return true;
-            case WM_PAINT:
-            {
+                                return true;
+            case WM_PAINT: {
                 if (m_pRoot == NULL) {
                     PAINTSTRUCT ps = {0};
                     ::BeginPaint(m_hWndPaint, &ps);
@@ -950,8 +937,10 @@ namespace DUI
                             m_pRoot->FindControl(__FindControlsFromUpdate, NULL, UIFIND_VISIBLE | UIFIND_ME_FIRST | UIFIND_UPDATETEST);
                             for (int it = 0; it < m_aFoundControls.GetSize(); it++) {
                                 pControl = static_cast<CControlUI*>(m_aFoundControls[it]);
-                                if (!pControl->IsFloat()) pControl->SetPos(pControl->GetPos(), true);
-                                else pControl->SetPos(pControl->GetRelativePos(), true);
+                                if (!pControl->IsFloat())
+                                    pControl->SetPos(pControl->GetPos(), true);
+                                else
+                                    pControl->SetPos(pControl->GetRelativePos(), true);
                             }
                             bNeedSizeMsg = true;
                         }
@@ -972,8 +961,7 @@ namespace DUI
                     }
                 } else if (m_bLayered && m_bLayeredChanged) {
                     RECT rcRoot = rcClient;
-                    if (m_pOffscreenBits) ::ZeroMemory(m_pOffscreenBits, (rcRoot.right - rcRoot.left)
-                        * (rcRoot.bottom - rcRoot.top) * 4);
+                    if (m_pOffscreenBits) ::ZeroMemory(m_pOffscreenBits, (rcRoot.right - rcRoot.left) * (rcRoot.bottom - rcRoot.top) * 4);
                     rcRoot.left += m_rcLayeredInset.left;
                     rcRoot.top += m_rcLayeredInset.top;
                     rcRoot.right -= m_rcLayeredInset.right;
@@ -1006,7 +994,7 @@ namespace DUI
                 PAINTSTRUCT ps = {0};
                 ::BeginPaint(m_hWndPaint, &ps);
                 if (m_bOffscreenPaint) {
-                    HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(m_hDcOffscreen, m_hbmpOffscreen);
+                    HBITMAP hOldBitmap = (HBITMAP)::SelectObject(m_hDcOffscreen, m_hbmpOffscreen);
                     int iSaveDC = ::SaveDC(m_hDcOffscreen);
                     if (m_bLayered) {
                         for (LONG y = rcClient.bottom - rcPaint.bottom; y < rcClient.bottom - rcPaint.top; ++y) {
@@ -1019,7 +1007,7 @@ namespace DUI
                     m_pRoot->Paint(m_hDcOffscreen, rcPaint, NULL);
 
                     if (m_bLayered) {
-                        for (int i = 0; i < m_aNativeWindow.GetSize(); ) {
+                        for (int i = 0; i < m_aNativeWindow.GetSize();) {
                             HWND hChildWnd = static_cast<HWND>(m_aNativeWindow[i]);
                             if (!::IsWindow(hChildWnd)) {
                                 m_aNativeWindow.Remove(i);
@@ -1036,7 +1024,7 @@ namespace DUI
                             HDC hChildMemDC = ::CreateCompatibleDC(m_hDcOffscreen);
                             HBITMAP hChildBitmap = CRenderUI::CreateARGB32Bitmap(hChildMemDC, rcChildWnd.right - rcChildWnd.left, rcChildWnd.bottom - rcChildWnd.top, (BYTE * *)& pChildBitmapBits);
                             ::ZeroMemory(pChildBitmapBits, (rcChildWnd.right - rcChildWnd.left) * (rcChildWnd.bottom - rcChildWnd.top) * 4);
-                            HBITMAP hOldChildBitmap = (HBITMAP) ::SelectObject(hChildMemDC, hChildBitmap);
+                            HBITMAP hOldChildBitmap = (HBITMAP)::SelectObject(hChildMemDC, hChildBitmap);
                             ::SendMessage(hChildWnd, WM_PRINT, (WPARAM)hChildMemDC, (LPARAM)(PRF_CHECKVISIBLE | PRF_CHILDREN | PRF_CLIENT | PRF_OWNED));
                             COLORREF * pChildBitmapBit;
                             for (LONG y = 0; y < rcChildWnd.bottom - rcChildWnd.top; y++) {
@@ -1155,8 +1143,7 @@ namespace DUI
                 }
                 return true;
             }
-            case WM_PRINTCLIENT:
-            {
+            case WM_PRINTCLIENT: {
                 if (m_pRoot == NULL) break;
                 RECT rcClient;
                 ::GetClientRect(m_hWndPaint, &rcClient);
@@ -1175,10 +1162,8 @@ namespace DUI
                     }
                 }
                 ::RestoreDC(hDC, save);
-            }
-            break;
-            case WM_GETMINMAXINFO:
-            {
+            } break;
+            case WM_GETMINMAXINFO: {
                 MONITORINFO Monitor = {};
                 Monitor.cbSize = sizeof(Monitor);
                 ::GetMonitorInfo(::MonitorFromWindow(m_hWndPaint, MONITOR_DEFAULTTOPRIMARY), &Monitor);
@@ -1194,10 +1179,8 @@ namespace DUI
                 if (m_szMaxWindow.cy > 0) lpMMI->ptMaxTrackSize.y = m_szMaxWindow.cy;
                 if (m_szMaxWindow.cx > 0) lpMMI->ptMaxSize.x = m_szMaxWindow.cx;
                 if (m_szMaxWindow.cy > 0) lpMMI->ptMaxSize.y = m_szMaxWindow.cy;
-            }
-            break;
-            case WM_SIZE:
-            {
+            } break;
+            case WM_SIZE: {
                 if (m_pFocus != NULL) {
                     TEVENT_UI event = {0};
                     event.Type = UIEVENT_WINDOWSIZE;
@@ -1207,9 +1190,8 @@ namespace DUI
                 }
                 if (m_pRoot != NULL) m_pRoot->NeedUpdate();
             }
-            return true;
-            case WM_TIMER:
-            {
+                          return true;
+            case WM_TIMER: {
                 for (int i = 0; i < m_aTimers.GetSize(); i++) {
                     const TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
                     if (pTimer->hWnd == m_hWndPaint &&
@@ -1227,10 +1209,8 @@ namespace DUI
                         break;
                     }
                 }
-            }
-            break;
-            case WM_MOUSEHOVER:
-            {
+            } break;
+            case WM_MOUSEHOVER: {
                 m_bMouseTracking = false;
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                 CControlUI* pHover = FindControl(pt);
@@ -1268,9 +1248,8 @@ namespace DUI
                     ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, TRUE, (LPARAM)& m_ToolTip);
                 }
             }
-            return true;
-            case WM_MOUSELEAVE:
-            {
+                                return true;
+            case WM_MOUSELEAVE: {
                 if (m_hwndTooltip != NULL) ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM)& m_ToolTip);
                 if (m_bMouseTracking) {
                     POINT pt = {0};
@@ -1287,17 +1266,15 @@ namespace DUI
                         ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM)-1);
                 }
                 m_bMouseTracking = false;
-            }
-            break;
-            case WM_MOUSEMOVE:
-            {
+            } break;
+            case WM_MOUSEMOVE: {
                 // Start tracking this entire window again...
                 if (!m_bMouseTracking) {
                     TRACKMOUSEEVENT tme = {0};
                     tme.cbSize = sizeof(TRACKMOUSEEVENT);
                     tme.dwFlags = TME_HOVER | TME_LEAVE;
                     tme.hwndTrack = m_hWndPaint;
-                    tme.dwHoverTime = m_hwndTooltip == NULL?m_iHoverTime:(DWORD) ::SendMessage(m_hwndTooltip, TTM_GETDELAYTIME, TTDT_INITIAL, 0L);
+                    tme.dwHoverTime = m_hwndTooltip == NULL?m_iHoverTime:(DWORD)::SendMessage(m_hwndTooltip, TTM_GETDELAYTIME, TTDT_INITIAL, 0L);
                     _TrackMouseEvent(&tme);
                     m_bMouseTracking = true;
                 }
@@ -1406,10 +1383,8 @@ namespace DUI
                     event.pSender = pNewHover;
                     pNewHover->Event(event);
                 }
-            }
-            break;
-            case WM_LBUTTONDOWN:
-            {
+            } break;
+            case WM_LBUTTONDOWN: {
                 // We alway set focus back to our app (this helps
                 // when Win32 child windows are placed on the dialog
                 // and we need to remove them on focus change).
@@ -1447,10 +1422,8 @@ namespace DUI
                 event.wKeyState = (WORD)wParam;
                 event.dwTimestamp = ::GetTickCount();
                 pControl->Event(event);
-            }
-            break;
-            case WM_LBUTTONDBLCLK:
-            {
+            } break;
+            case WM_LBUTTONDBLCLK: {
                 if (!m_bNoActivate) ::SetFocus(m_hWndPaint);
 
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
@@ -1469,10 +1442,8 @@ namespace DUI
                 event.dwTimestamp = ::GetTickCount();
                 pControl->Event(event);
                 m_pEventClick = pControl;
-            }
-            break;
-            case WM_LBUTTONUP:
-            {
+            } break;
+            case WM_LBUTTONUP: {
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                 m_ptLastMousePos = pt;
                 if (m_pEventClick == NULL) break;
@@ -1489,10 +1460,8 @@ namespace DUI
                 CControlUI * pClick = m_pEventClick;
                 m_pEventClick = NULL;
                 pClick->Event(event);
-            }
-            break;
-            case WM_RBUTTONDOWN:
-            {
+            } break;
+            case WM_RBUTTONDOWN: {
                 if (!m_bNoActivate) ::SetFocus(m_hWndPaint);
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                 m_ptLastMousePos = pt;
@@ -1511,10 +1480,8 @@ namespace DUI
                 event.dwTimestamp = ::GetTickCount();
                 pControl->Event(event);
                 m_pEventClick = pControl;
-            }
-            break;
-            case WM_RBUTTONUP:
-            {
+            } break;
+            case WM_RBUTTONUP: {
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                 m_ptLastMousePos = pt;
                 m_pEventClick = FindControl(pt);
@@ -1529,10 +1496,8 @@ namespace DUI
                 event.wKeyState = (WORD)wParam;
                 event.dwTimestamp = ::GetTickCount();
                 m_pEventClick->Event(event);
-            }
-            break;
-            case WM_MBUTTONDOWN:
-            {
+            } break;
+            case WM_MBUTTONDOWN: {
                 if (!m_bNoActivate) ::SetFocus(m_hWndPaint);
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                 m_ptLastMousePos = pt;
@@ -1551,10 +1516,8 @@ namespace DUI
                 event.dwTimestamp = ::GetTickCount();
                 pControl->Event(event);
                 m_pEventClick = pControl;
-            }
-            break;
-            case WM_MBUTTONUP:
-            {
+            } break;
+            case WM_MBUTTONUP: {
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                 m_ptLastMousePos = pt;
                 m_pEventClick = FindControl(pt);
@@ -1570,10 +1533,8 @@ namespace DUI
                 event.wKeyState = (WORD)wParam;
                 event.dwTimestamp = ::GetTickCount();
                 m_pEventClick->Event(event);
-            }
-            break;
-            case WM_CONTEXTMENU:
-            {
+            } break;
+            case WM_CONTEXTMENU: {
                 if (m_pRoot == NULL) break;
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                 ::ScreenToClient(m_hWndPaint, &pt);
@@ -1591,10 +1552,8 @@ namespace DUI
                 event.dwTimestamp = ::GetTickCount();
                 m_pEventClick->Event(event);
                 m_pEventClick = NULL;
-            }
-            break;
-            case WM_MOUSEWHEEL:
-            {
+            } break;
+            case WM_MOUSEWHEEL: {
                 if (m_pRoot == NULL) break;
                 POINT pt = {GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)};
                 ::ScreenToClient(m_hWndPaint, &pt);
@@ -1615,10 +1574,8 @@ namespace DUI
 
                 // Let's make sure that the scroll item below the cursor is the same as before...
                 ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM)MAKELPARAM(m_ptLastMousePos.x, m_ptLastMousePos.y));
-            }
-            break;
-            case WM_CHAR:
-            {
+            } break;
+            case WM_CHAR: {
                 if (m_pRoot == NULL) break;
                 if (m_pFocus == NULL) break;
                 TEVENT_UI event = {0};
@@ -1631,10 +1588,8 @@ namespace DUI
                 event.wKeyState = MapKeyState();
                 event.dwTimestamp = ::GetTickCount();
                 m_pFocus->Event(event);
-            }
-            break;
-            case WM_KEYDOWN:
-            {
+            } break;
+            case WM_KEYDOWN: {
                 if (m_pRoot == NULL) break;
                 if (m_pFocus == NULL) break;
                 TEVENT_UI event = {0};
@@ -1648,10 +1603,8 @@ namespace DUI
                 event.dwTimestamp = ::GetTickCount();
                 m_pFocus->Event(event);
                 m_pEventKey = m_pFocus;
-            }
-            break;
-            case WM_KEYUP:
-            {
+            } break;
+            case WM_KEYUP: {
                 if (m_pRoot == NULL) break;
                 if (m_pEventKey == NULL) break;
                 TEVENT_UI event = {0};
@@ -1665,10 +1618,8 @@ namespace DUI
                 event.dwTimestamp = ::GetTickCount();
                 m_pEventKey->Event(event);
                 m_pEventKey = NULL;
-            }
-            break;
-            case WM_SETCURSOR:
-            {
+            } break;
+            case WM_SETCURSOR: {
                 if (m_pRoot == NULL) break;
                 if (LOWORD(lParam) != HTCLIENT) break;
                 if (m_bMouseCapture) return true;
@@ -1689,9 +1640,8 @@ namespace DUI
                 event.dwTimestamp = ::GetTickCount();
                 pControl->Event(event);
             }
-            return true;
-            case WM_SETFOCUS:
-            {
+                               return true;
+            case WM_SETFOCUS: {
                 if (m_pFocus != NULL) {
                     TEVENT_UI event = {0};
                     event.Type = UIEVENT_SETFOCUS;
@@ -1703,38 +1653,31 @@ namespace DUI
                 }
                 break;
             }
-            case WM_KILLFOCUS:
-            {
+            case WM_KILLFOCUS: {
                 if (IsCaptured()) ReleaseCapture();
                 break;
             }
-            case WM_NOTIFY:
-            {
+            case WM_NOTIFY: {
                 if (lParam == 0) break;
                 LPNMHDR lpNMHDR = (LPNMHDR)lParam;
                 if (lpNMHDR != NULL) lRes = ::SendMessage(lpNMHDR->hwndFrom, OCM__BASE + uMsg, wParam, lParam);
                 return true;
-            }
-            break;
-            case WM_COMMAND:
-            {
+            } break;
+            case WM_COMMAND: {
                 if (lParam == 0) break;
                 HWND hWndChild = (HWND)lParam;
                 lRes = ::SendMessage(hWndChild, OCM__BASE + uMsg, wParam, lParam);
                 if (lRes != 0) return true;
-            }
-            break;
+            } break;
             case WM_CTLCOLOREDIT:
-            case WM_CTLCOLORSTATIC:
-            {
+            case WM_CTLCOLORSTATIC: {
                 // Refer To: http://msdn.microsoft.com/en-us/library/bb761691(v=vs.85).aspx
                 // Read-only or disabled edit controls do not send the WM_CTLCOLOREDIT message; instead, they send the WM_CTLCOLORSTATIC message.
                 if (lParam == 0) break;
                 HWND hWndChild = (HWND)lParam;
                 lRes = ::SendMessage(hWndChild, OCM__BASE + uMsg, wParam, lParam);
                 if (lRes != 0) return true;
-            }
-            break;
+            } break;
             default:
                 break;
         }
@@ -1968,7 +1911,7 @@ namespace DUI
         }
     }
 
-    CDPI* DUILIB::CManagerUI::GetDPIObj()
+    CDPI* CManagerUI::GetDPIObj()
     {
         if (m_pDPI == NULL) {
             m_pDPI = new CDPI;
@@ -1976,7 +1919,7 @@ namespace DUI
         return m_pDPI;
     }
 
-    void DUILIB::CManagerUI::SetDPI(int iDPI)
+    void CManagerUI::SetDPI(int iDPI)
     {
         int scale1 = GetDPIObj()->GetScale();
         GetDPIObj()->SetScale(iDPI);
@@ -1996,7 +1939,7 @@ namespace DUI
         ::PostMessage(GetPaintWindow(), UIMSG_SET_DPI, 0, 0);
     }
 
-    void DUILIB::CManagerUI::SetAllDPI(int iDPI)
+    void CManagerUI::SetAllDPI(int iDPI)
     {
         for (int i = 0; i < m_aPreMessages.GetSize(); i++) {
             CManagerUI* pManager = static_cast<CManagerUI*>(m_aPreMessages[i]);
@@ -2004,10 +1947,11 @@ namespace DUI
         }
     }
 
-    void DUILIB::CManagerUI::ResetDPIAssets()
+    void CManagerUI::ResetDPIAssets()
     {
         RemoveAllDrawInfos();
-        RemoveAllImages();;
+        RemoveAllImages();
+        ;
 
         for (int it = 0; it < m_ResInfo.m_CustomFonts.GetSize(); it++) {
             TFONTINFO_UI* pFontInfo = static_cast<TFONTINFO_UI*>(m_ResInfo.m_CustomFonts.Find(m_ResInfo.m_CustomFonts[it]));
@@ -2025,11 +1969,10 @@ namespace DUI
         for (int i = 0; i < richEditList->GetSize(); i++) {
             //CRichEditUI* pT = static_cast<CRichEditUI*>((*richEditList)[i]);
             //pT->SetFont(pT->GetFont());
-
         }
     }
 
-    void DUILIB::CManagerUI::RebuildFont(TFONTINFO_UI * pFontInfo)
+    void CManagerUI::RebuildFont(TFONTINFO_UI * pFontInfo)
     {
         ::DeleteObject(pFontInfo->hFont);
         LOGFONT lf = {0};
@@ -2045,7 +1988,7 @@ namespace DUI
         pFontInfo->hFont = hFont;
         ::ZeroMemory(&(pFontInfo->tm), sizeof(pFontInfo->tm));
         if (m_hDcPaint) {
-            HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, hFont);
+            HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, hFont);
             ::GetTextMetrics(m_hDcPaint, &pFontInfo->tm);
             ::SelectObject(m_hDcPaint, hOldFont);
         }
@@ -2075,10 +2018,7 @@ namespace DUI
         }
         if (pControl == NULL) return;
         // Set focus to new control
-        if (pControl != NULL
-            && pControl->GetManager() == this
-            && pControl->IsVisible()
-            && pControl->IsEnabled()) {
+        if (pControl != NULL && pControl->GetManager() == this && pControl->IsVisible() && pControl->IsEnabled()) {
             m_pFocus = pControl;
             TEVENT_UI event = {0};
             event.Type = UIEVENT_SETFOCUS;
@@ -2116,9 +2056,7 @@ namespace DUI
         ASSERT(uElapse > 0);
         for (int i = 0; i < m_aTimers.GetSize(); i++) {
             TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
-            if (pTimer->pSender == pControl
-                && pTimer->hWnd == m_hWndPaint
-                && pTimer->nLocalID == nTimerID) {
+            if (pTimer->pSender == pControl && pTimer->hWnd == m_hWndPaint && pTimer->nLocalID == nTimerID) {
                 if (pTimer->bKilled) {
                     if (::SetTimer(m_hWndPaint, pTimer->uWinTimer, uElapse, NULL)) {
                         pTimer->bKilled = false;
@@ -2147,9 +2085,7 @@ namespace DUI
         ASSERT(pControl != NULL);
         for (int i = 0; i < m_aTimers.GetSize(); i++) {
             TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
-            if (pTimer->pSender == pControl
-                && pTimer->hWnd == m_hWndPaint
-                && pTimer->nLocalID == nTimerID) {
+            if (pTimer->pSender == pControl && pTimer->hWnd == m_hWndPaint && pTimer->nLocalID == nTimerID) {
                 if (pTimer->bKilled == false) {
                     if (::IsWindow(m_hWndPaint)) ::KillTimer(pTimer->hWnd, pTimer->uWinTimer);
                     pTimer->bKilled = true;
@@ -2535,14 +2471,14 @@ namespace DUI
     {
         if (m_ResInfo.m_DefaultFontInfo.sFontName.IsEmpty()) {
             if (m_SharedResInfo.m_DefaultFontInfo.tm.tmHeight == 0) {
-                HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, m_SharedResInfo.m_DefaultFontInfo.hFont);
+                HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, m_SharedResInfo.m_DefaultFontInfo.hFont);
                 ::GetTextMetrics(m_hDcPaint, &m_SharedResInfo.m_DefaultFontInfo.tm);
                 ::SelectObject(m_hDcPaint, hOldFont);
             }
             return &m_SharedResInfo.m_DefaultFontInfo;
         } else {
             if (m_ResInfo.m_DefaultFontInfo.tm.tmHeight == 0) {
-                HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, m_ResInfo.m_DefaultFontInfo.hFont);
+                HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, m_ResInfo.m_DefaultFontInfo.hFont);
                 ::GetTextMetrics(m_hDcPaint, &m_ResInfo.m_DefaultFontInfo.tm);
                 ::SelectObject(m_hDcPaint, hOldFont);
             }
@@ -2555,12 +2491,13 @@ namespace DUI
         LOGFONT lf = {0};
         ::GetObject(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
         if (lstrlen(pStrFontName) > 0) {
-            TCHAR szFaceName[32] = {0};//_T("@");
+            TCHAR szFaceName[32] = {0}; //_T("@");
             _tcsncat(szFaceName, pStrFontName, LF_FACESIZE);
             _tcsncpy(lf.lfFaceName, szFaceName, LF_FACESIZE);
         }
         lf.lfCharSet = DEFAULT_CHARSET;
-        lf.lfHeight = -GetDPIObj()->Scale(nSize);;
+        lf.lfHeight = -GetDPIObj()->Scale(nSize);
+        ;
         if (bBold) lf.lfWeight += FW_BOLD;
         if (bUnderline) lf.lfUnderline = TRUE;
         if (bItalic) lf.lfItalic = TRUE;
@@ -2578,7 +2515,7 @@ namespace DUI
             m_SharedResInfo.m_DefaultFontInfo.bItalic = bItalic;
             ::ZeroMemory(&m_SharedResInfo.m_DefaultFontInfo.tm, sizeof(m_SharedResInfo.m_DefaultFontInfo.tm));
             if (m_hDcPaint) {
-                HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, hFont);
+                HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, hFont);
                 ::GetTextMetrics(m_hDcPaint, &m_SharedResInfo.m_DefaultFontInfo.tm);
                 ::SelectObject(m_hDcPaint, hOldFont);
             }
@@ -2592,7 +2529,7 @@ namespace DUI
             m_ResInfo.m_DefaultFontInfo.bItalic = bItalic;
             ::ZeroMemory(&m_ResInfo.m_DefaultFontInfo.tm, sizeof(m_ResInfo.m_DefaultFontInfo.tm));
             if (m_hDcPaint) {
-                HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, hFont);
+                HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, hFont);
                 ::GetTextMetrics(m_hDcPaint, &m_ResInfo.m_DefaultFontInfo.tm);
                 ::SelectObject(m_hDcPaint, hOldFont);
             }
@@ -2612,7 +2549,7 @@ namespace DUI
         LOGFONT lf = {0};
         ::GetObject(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
         if (lstrlen(pStrFontName) > 0) {
-            TCHAR szFaceName[32] = {0};//_T("@");
+            TCHAR szFaceName[32] = {0}; //_T("@");
             _tcsncat(szFaceName, pStrFontName, LF_FACESIZE);
             _tcsncpy(lf.lfFaceName, szFaceName, LF_FACESIZE);
         }
@@ -2634,7 +2571,7 @@ namespace DUI
         pFontInfo->bUnderline = bUnderline;
         pFontInfo->bItalic = bItalic;
         if (m_hDcPaint) {
-            HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, hFont);
+            HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, hFont);
             ::GetTextMetrics(m_hDcPaint, &pFontInfo->tm);
             ::SelectObject(m_hDcPaint, hOldFont);
         }
@@ -2679,7 +2616,7 @@ namespace DUI
             CStringUI sFile = CManagerUI::GetResourcePath();
             if (CManagerUI::GetResourceZip().IsEmpty()) {
                 sFile += pstrPath;
-                HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
+                HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                     FILE_ATTRIBUTE_NORMAL, NULL);
                 if (hFile == INVALID_HANDLE_VALUE) break;
                 dwSize = ::GetFileSize(hFile, NULL);
@@ -2698,7 +2635,8 @@ namespace DUI
             } else {
                 sFile += CManagerUI::GetResourceZip();
                 HZIP hz = NULL;
-                if (CManagerUI::IsCachedResourceZip()) hz = (HZIP)CManagerUI::GetResourceZipHandle();
+                if (CManagerUI::IsCachedResourceZip())
+                    hz = (HZIP)CManagerUI::GetResourceZipHandle();
                 else {
                     CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
@@ -2931,7 +2869,7 @@ namespace DUI
         if (!pFontInfo) pFontInfo = static_cast<TFONTINFO_UI*>(m_SharedResInfo.m_CustomFonts.Find(idBuffer));
         if (!pFontInfo) pFontInfo = GetDefaultFontInfo();
         if (pFontInfo->tm.tmHeight == 0) {
-            HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, pFontInfo->hFont);
+            HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, pFontInfo->hFont);
             ::GetTextMetrics(m_hDcPaint, &pFontInfo->tm);
             ::SelectObject(m_hDcPaint, hOldFont);
         }
@@ -2957,7 +2895,7 @@ namespace DUI
         }
         if (!pFontInfo) pFontInfo = GetDefaultFontInfo();
         if (pFontInfo->tm.tmHeight == 0) {
-            HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, pFontInfo->hFont);
+            HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, pFontInfo->hFont);
             ::GetTextMetrics(m_hDcPaint, &pFontInfo->tm);
             ::SelectObject(m_hDcPaint, hOldFont);
         }
@@ -2976,8 +2914,10 @@ namespace DUI
         const TIMAGEINFO_UI* data = GetImage(bitmap);
         if (!data) {
             if (AddImage(bitmap, type, mask, bUseHSL, false, instance)) {
-                if (m_bForceUseSharedRes) data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(bitmap));
-                else data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(bitmap));
+                if (m_bForceUseSharedRes)
+                    data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(bitmap));
+                else
+                    data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(bitmap));
             }
         }
 
@@ -3008,7 +2948,8 @@ namespace DUI
         if (data->bUseHSL) {
             data->pSrcBits = new BYTE[data->nX * data->nY * 4];
             ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
-        } else data->pSrcBits = NULL;
+        } else
+            data->pSrcBits = NULL;
         if (m_bUseHSL) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
         if (data) {
             if (bShared || m_bForceUseSharedRes) {
@@ -3180,7 +3121,8 @@ namespace DUI
                     if (data->bUseHSL) {
                         data->pSrcBits = new BYTE[data->nX * data->nY * 4];
                         ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
-                    } else data->pSrcBits = NULL;
+                    } else
+                        data->pSrcBits = NULL;
                     if (m_bUseHSL) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
 
                     delete pNewData;
@@ -3223,7 +3165,8 @@ namespace DUI
                     if (data->bUseHSL) {
                         data->pSrcBits = new BYTE[data->nX * data->nY * 4];
                         ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
-                    } else data->pSrcBits = NULL;
+                    } else
+                        data->pSrcBits = NULL;
                     if (m_bUseHSL) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
 
                     delete pNewData;
@@ -3452,7 +3395,7 @@ namespace DUI
     {
         int* pnCount = static_cast<int*>(pData);
         (*pnCount)++;
-        return NULL;  // Count all controls
+        return NULL; // Count all controls
     }
 
     CControlUI* CALLBACK CManagerUI::__FindControlFromPoint(CControlUI * pThis, LPVOID pData)
@@ -3472,7 +3415,7 @@ namespace DUI
         pInfo->pLast = pThis;
         if (pInfo->bNextIsIt) return pThis;
         if (pInfo->pFocus == NULL) return pThis;
-        return NULL;  // Examine all controls
+        return NULL; // Examine all controls
     }
 
     CControlUI * CALLBACK CManagerUI::__FindControlFromShortcut(CControlUI * pThis, LPVOID pData)
@@ -3480,7 +3423,7 @@ namespace DUI
         if (!pThis->IsVisible()) return NULL;
         FINDSHORTCUT* pFS = static_cast<FINDSHORTCUT*>(pData);
         if (pFS->ch == toupper(pThis->GetShortcut())) pFS->bPickNext = true;
-        if (_tcsstr(pThis->GetClass(), _T("LabelUI")) != NULL) return NULL;   // Labels never get focus!
+        if (_tcsstr(pThis->GetClass(), _T("LabelUI")) != NULL) return NULL; // Labels never get focus!
         return pFS->bPickNext?pThis:NULL;
     }
 
@@ -3499,7 +3442,8 @@ namespace DUI
         CStdPtrArray* pFoundControls = pThis->GetManager()->GetFoundControls();
         if (_tcscmp(pstrType, _T("*")) == 0 || _tcscmp(pstrType, pType) == 0) {
             int iIndex = -1;
-            while (pFoundControls->GetAt(++iIndex) != NULL);
+            while (pFoundControls->GetAt(++iIndex) != NULL)
+                ;
             if (iIndex < pFoundControls->GetSize()) pFoundControls->SetAt(iIndex, pThis);
         }
         if (pFoundControls->GetAt(pFoundControls->GetSize() - 1) != NULL) return pThis;
@@ -3615,8 +3559,10 @@ namespace DUI
     {
         CStringUI* pStyle = static_cast<CStringUI*>(m_ResInfo.m_StyleHash.Find(pName));
         if (!pStyle) pStyle = static_cast<CStringUI*>(m_SharedResInfo.m_StyleHash.Find(pName));
-        if (pStyle) return pStyle->GetData();
-        else return NULL;
+        if (pStyle)
+            return pStyle->GetData();
+        else
+            return NULL;
     }
 
     BOOL CManagerUI::RemoveStyle(LPCTSTR pName, BOOL bShared)
@@ -3640,8 +3586,10 @@ namespace DUI
 
     const CStdStringPtrMap& CManagerUI::GetStyles(BOOL bShared) const
     {
-        if (bShared) return m_SharedResInfo.m_StyleHash;
-        else return m_ResInfo.m_StyleHash;
+        if (bShared)
+            return m_SharedResInfo.m_StyleHash;
+        else
+            return m_ResInfo.m_StyleHash;
     }
 
     void CManagerUI::RemoveAllStyle(BOOL bShared)
@@ -3685,16 +3633,19 @@ namespace DUI
             while (*pStrImage != _T('\0')) {
                 sItem.Empty();
                 sValue.Empty();
-                while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                    pStrImage = ::CharNext(pStrImage);
                 while (*pStrImage != _T('\0') && *pStrImage != _T('=') && *pStrImage > _T(' ')) {
                     LPTSTR pstrTemp = ::CharNext(pStrImage);
                     while (pStrImage < pstrTemp) {
                         sItem += *pStrImage++;
                     }
                 }
-                while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                    pStrImage = ::CharNext(pStrImage);
                 if (*pStrImage++ != _T('=')) break;
-                while (*pStrImage > _T('\0') && *pStrImage <= _T(' ')) pStrImage = ::CharNext(pStrImage);
+                while (*pStrImage > _T('\0') && *pStrImage <= _T(' '))
+                    pStrImage = ::CharNext(pStrImage);
                 if (*pStrImage++ != _T('\'')) break;
                 while (*pStrImage != _T('\0') && *pStrImage != _T('\'')) {
                     LPTSTR pstrTemp = ::CharNext(pStrImage);
@@ -3709,10 +3660,11 @@ namespace DUI
                     } else if (sItem == _T("restype")) {
                         sImageResType = sValue;
                     } else if (sItem == _T("mask")) {
-                        if (sValue[0] == _T('#')) dwMask = _tcstoul(sValue.GetData() + 1, &pstr, 16);
-                        else dwMask = _tcstoul(sValue.GetData(), &pstr, 16);
+                        if (sValue[0] == _T('#'))
+                            dwMask = _tcstoul(sValue.GetData() + 1, &pstr, 16);
+                        else
+                            dwMask = _tcstoul(sValue.GetData(), &pstr, 16);
                     }
-
                 }
                 if (*pStrImage++ != _T(' ')) break;
             }
@@ -3728,7 +3680,8 @@ namespace DUI
         {
             DWORD dwError = GetLastError();
             return false;
-        } else Release(); //i decided to AddRef explicitly after new
+        } else
+            Release(); //i decided to AddRef explicitly after new
 
         FORMATETC ftetc = {0};
         ftetc.cfFormat = CF_BITMAP;
@@ -3750,15 +3703,15 @@ namespace DUI
     static WORD DIBNumColors(void* pv)
     {
         int bits;
-        LPBITMAPINFOHEADER  lpbi;
-        LPBITMAPCOREHEADER  lpbc;
+        LPBITMAPINFOHEADER lpbi;
+        LPBITMAPCOREHEADER lpbc;
         lpbi = ((LPBITMAPINFOHEADER)pv);
         lpbc = ((LPBITMAPCOREHEADER)pv);
         /*  With the BITMAPINFO format headers, the size of the palette
-        *  is in biClrUsed, whereas in the BITMAPCORE - style headers, it
-        *  is dependent on the bits per pixel ( = 2 raised to the power of
-        *  bits/pixel).
-        */
+            *  is in biClrUsed, whereas in the BITMAPCORE - style headers, it
+            *  is dependent on the bits per pixel ( = 2 raised to the power of
+            *  bits/pixel).
+            */
         if (lpbi->biSize != sizeof(BITMAPCOREHEADER)) {
             if (lpbi->biClrUsed != 0)
                 return (WORD)lpbi->biClrUsed;
@@ -3800,7 +3753,7 @@ namespace DUI
 
         if (pFmtEtc->cfFormat == CF_DIB && medium.tymed == TYMED_HGLOBAL) {
             if (medium.hGlobal != NULL) {
-                LPBITMAPINFOHEADER  lpbi = (BITMAPINFOHEADER*)GlobalLock(medium.hGlobal);
+                LPBITMAPINFOHEADER lpbi = (BITMAPINFOHEADER*)GlobalLock(medium.hGlobal);
                 if (lpbi != NULL) {
                     HBITMAP hbm = NULL;
                     HDC hdc = GetDC(NULL);
@@ -3833,7 +3786,7 @@ namespace DUI
         if (pFmtEtc->cfFormat == CF_ENHMETAFILE && medium.tymed == TYMED_ENHMF) {
             ENHMETAHEADER emh;
             GetEnhMetaFileHeader(medium.hEnhMetaFile, sizeof(ENHMETAHEADER), &emh);
-            RECT rc;//={0,0,EnhMetaHdr.rclBounds.right-EnhMetaHdr.rclBounds.left, EnhMetaHdr.rclBounds.bottom-EnhMetaHdr.rclBounds.top};
+            RECT rc; //={0,0,EnhMetaHdr.rclBounds.right-EnhMetaHdr.rclBounds.left, EnhMetaHdr.rclBounds.bottom-EnhMetaHdr.rclBounds.top};
             HDC hDC = GetDC(m_hTargetWnd);
             //start code: taken from ENHMETA.EXE MSDN Sample
             //*ALSO NEED to GET the pallete (select and RealizePalette it, but i was too lazy*
@@ -3884,4 +3837,4 @@ namespace DUI
         }
         return true; //let base free the medium
     }
-} // namespace DUI
+        } // namespace DUI

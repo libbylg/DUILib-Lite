@@ -1,24 +1,13 @@
 #include "Control/UIButton.h"
 #include "Core/UIManager.h"
-
+#include "Layout/UITabLayout.h"
 
 namespace DUI
 {
     UI_IMPLEMENT_CONTROL(CButtonUI);
 
     CButtonUI::CButtonUI()
-        : m_uButtonState(0)
-        , m_iHotFont(-1)
-        , m_iPushedFont(-1)
-        , m_iFocusedFont(-1)
-        , m_dwHotTextColor(0)
-        , m_dwPushedTextColor(0)
-        , m_dwFocusedTextColor(0)
-        , m_dwHotBkColor(0)
-        , m_dwPushedBkColor(0)
-        , m_dwDisabledBkColor(0)
-        , m_iBindTabIndex(-1)
-        , m_nStateCount(0)
+        : m_uButtonState(0), m_iHotFont(-1), m_iPushedFont(-1), m_iFocusedFont(-1), m_dwHotTextColor(0), m_dwPushedTextColor(0), m_dwFocusedTextColor(0), m_dwHotBkColor(0), m_dwPushedBkColor(0), m_dwDisabledBkColor(0), m_iBindTabIndex(-1), m_nStateCount(0)
     {
         m_uTextStyle = DT_SINGLELINE | DT_VCENTER | DT_CENTER;
     }
@@ -42,8 +31,10 @@ namespace DUI
     void CButtonUI::DoEvent(TEVENT_UI & event)
     {
         if (!IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND) {
-            if (m_pParent != NULL) m_pParent->DoEvent(event);
-            else CLabelUI::DoEvent(event);
+            if (m_pParent != NULL)
+                m_pParent->DoEvent(event);
+            else
+                CLabelUI::DoEvent(event);
             return;
         }
 
@@ -70,8 +61,10 @@ namespace DUI
         }
         if (event.Type == UIEVENT_MOUSEMOVE) {
             if ((m_uButtonState & UISTATE_CAPTURED) != 0) {
-                if (::PtInRect(&m_rcItem, event.ptMouse)) m_uButtonState |= UISTATE_PUSHED;
-                else m_uButtonState &= ~UISTATE_PUSHED;
+                if (::PtInRect(&m_rcItem, event.ptMouse))
+                    m_uButtonState |= UISTATE_PUSHED;
+                else
+                    m_uButtonState &= ~UISTATE_PUSHED;
                 Invalidate();
             }
             return;
@@ -124,7 +117,6 @@ namespace DUI
             m_uButtonState = 0;
         }
     }
-
 
     void CButtonUI::SetHotFont(int index)
     {
@@ -352,16 +344,26 @@ namespace DUI
 
     void CButtonUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
     {
-        if (_tcsicmp(pstrName, _T("normalimage")) == 0) SetNormalImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("hotimage")) == 0) SetHotImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("pushedimage")) == 0) SetPushedImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("focusedimage")) == 0) SetFocusedImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("disabledimage")) == 0) SetDisabledImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("hotforeimage")) == 0) SetHotForeImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("stateimage")) == 0) SetStateImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("statecount")) == 0) SetStateCount(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("bindtabindex")) == 0) BindTabIndex(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("bindtablayoutname")) == 0) BindTabLayoutName(pstrValue);
+        if (_tcsicmp(pstrName, _T("normalimage")) == 0)
+            SetNormalImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("hotimage")) == 0)
+            SetHotImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("pushedimage")) == 0)
+            SetPushedImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("focusedimage")) == 0)
+            SetFocusedImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("disabledimage")) == 0)
+            SetDisabledImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("hotforeimage")) == 0)
+            SetHotForeImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("stateimage")) == 0)
+            SetStateImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("statecount")) == 0)
+            SetStateCount(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("bindtabindex")) == 0)
+            BindTabIndex(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("bindtablayoutname")) == 0)
+            BindTabLayoutName(pstrValue);
         else if (_tcsicmp(pstrName, _T("hotbkcolor")) == 0) {
             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
             LPTSTR pstr = NULL;
@@ -392,19 +394,27 @@ namespace DUI
             LPTSTR pstr = NULL;
             DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
             SetFocusedTextColor(clrColor);
-        } else if (_tcsicmp(pstrName, _T("hotfont")) == 0) SetHotFont(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("pushedfont")) == 0) SetPushedFont(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("focuedfont")) == 0) SetFocusedFont(_ttoi(pstrValue));
+        } else if (_tcsicmp(pstrName, _T("hotfont")) == 0)
+            SetHotFont(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("pushedfont")) == 0)
+            SetPushedFont(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("focuedfont")) == 0)
+            SetFocusedFont(_ttoi(pstrValue));
 
-        else CLabelUI::SetAttribute(pstrName, pstrValue);
+        else
+            CLabelUI::SetAttribute(pstrName, pstrValue);
     }
 
     void CButtonUI::PaintText(HDC hDC)
     {
-        if (IsFocused()) m_uButtonState |= UISTATE_FOCUSED;
-        else m_uButtonState &= ~UISTATE_FOCUSED;
-        if (!IsEnabled()) m_uButtonState |= UISTATE_DISABLED;
-        else m_uButtonState &= ~UISTATE_DISABLED;
+        if (IsFocused())
+            m_uButtonState |= UISTATE_FOCUSED;
+        else
+            m_uButtonState &= ~UISTATE_FOCUSED;
+        if (!IsEnabled())
+            m_uButtonState |= UISTATE_DISABLED;
+        else
+            m_uButtonState &= ~UISTATE_DISABLED;
 
         if (m_dwTextColor == 0) m_dwTextColor = m_pManager->GetDefaultFontColor();
         if (m_dwDisabledTextColor == 0) m_dwDisabledTextColor = m_pManager->GetDefaultDisabledColor();
@@ -439,10 +449,10 @@ namespace DUI
             iFont = GetFocusedFont();
 
         if (m_bShowHtml)
-            CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, clrColor, \
+            CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, clrColor,
                 NULL, NULL, nLinks, iFont, m_uTextStyle);
         else
-            CRenderUI::DrawText(hDC, m_pManager, rc, sText, clrColor, \
+            CRenderUI::DrawText(hDC, m_pManager, rc, sText, clrColor,
                 iFont, m_uTextStyle);
     }
 
@@ -512,33 +522,46 @@ namespace DUI
             }
         }
 
-        if (IsFocused()) m_uButtonState |= UISTATE_FOCUSED;
-        else m_uButtonState &= ~UISTATE_FOCUSED;
-        if (!IsEnabled()) m_uButtonState |= UISTATE_DISABLED;
-        else m_uButtonState &= ~UISTATE_DISABLED;
+        if (IsFocused())
+            m_uButtonState |= UISTATE_FOCUSED;
+        else
+            m_uButtonState &= ~UISTATE_FOCUSED;
+        if (!IsEnabled())
+            m_uButtonState |= UISTATE_DISABLED;
+        else
+            m_uButtonState &= ~UISTATE_DISABLED;
         if (!::IsWindowEnabled(m_pManager->GetPaintWindow())) {
             m_uButtonState &= UISTATE_DISABLED;
         }
         if ((m_uButtonState & UISTATE_DISABLED) != 0) {
             if (!m_sDisabledImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sDisabledImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sDisabledImage)) {
+                } else
+                    return;
             }
         } else if ((m_uButtonState & UISTATE_PUSHED) != 0) {
             if (!m_sPushedImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sPushedImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sPushedImage)) {
+                } else
+                    return;
             }
         } else if ((m_uButtonState & UISTATE_HOT) != 0) {
             if (!m_sHotImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sHotImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sHotImage)) {
+                } else
+                    return;
             }
         } else if ((m_uButtonState & UISTATE_FOCUSED) != 0) {
             if (!m_sFocusedImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sFocusedImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sFocusedImage)) {
+                } else
+                    return;
             }
         }
 
         if (!m_sNormalImage.IsEmpty()) {
-            if (!DrawImage(hDC, (LPCTSTR)m_sNormalImage)) {}
+            if (!DrawImage(hDC, (LPCTSTR)m_sNormalImage)) {
+            }
         }
     }
 
@@ -546,15 +569,20 @@ namespace DUI
     {
         if ((m_uButtonState & UISTATE_PUSHED) != 0) {
             if (!m_sPushedForeImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sPushedForeImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sPushedForeImage)) {
+                } else
+                    return;
             }
         } else if ((m_uButtonState & UISTATE_HOT) != 0) {
             if (!m_sHotForeImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sHotForeImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sHotForeImage)) {
+                } else
+                    return;
             }
         }
         if (!m_sForeImage.IsEmpty()) {
-            if (!DrawImage(hDC, (LPCTSTR)m_sForeImage)) {}
+            if (!DrawImage(hDC, (LPCTSTR)m_sForeImage)) {
+            }
         }
     }
-}
+} // namespace DUI

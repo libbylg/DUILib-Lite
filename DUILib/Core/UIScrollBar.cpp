@@ -1,15 +1,15 @@
 #include "Core/UIScrollBar.h"
-#include "Core/UIDefine.h"
-#include "Core/UIRender.h"
 #include "Core/UIContainer.h"
+#include "Core/UIDefine.h"
 #include "Core/UIManager.h"
+#include "Core/UIRender.h"
 
 namespace DUI
 {
     UI_IMPLEMENT_CONTROL(CScrollBarUI)
 
         CScrollBarUI::CScrollBarUI() : m_bHorizontal(false), m_nRange(0), m_nScrollPos(0), m_nLineSize(8),
-        m_pOwner(NULL), m_nLastScrollPos(0), m_nLastScrollOffset(0), m_nScrollRepeatDelay(0), m_uButton1State(0), \
+        m_pOwner(NULL), m_nLastScrollPos(0), m_nLastScrollOffset(0), m_nScrollRepeatDelay(0), m_uButton1State(0),
         m_uButton2State(0), m_uThumbState(0), m_bShowButton1(true), m_bShowButton2(true)
     {
         m_cxyFixed.cx = DEFAULT_SCROLLBAR_SIZE;
@@ -47,7 +47,6 @@ namespace DUI
         BOOL v = IsVisible();
         m_bVisible = bVisible;
         if (m_bFocused) m_bFocused = false;
-
     }
 
     void CScrollBarUI::SetEnabled(BOOL bEnable)
@@ -62,8 +61,10 @@ namespace DUI
 
     void CScrollBarUI::SetFocus()
     {
-        if (m_pOwner != NULL) m_pOwner->SetFocus();
-        else CControlUI::SetFocus();
+        if (m_pOwner != NULL)
+            m_pOwner->SetFocus();
+        else
+            CControlUI::SetFocus();
     }
 
     BOOL CScrollBarUI::IsHorizontal()
@@ -88,7 +89,10 @@ namespace DUI
             }
         }
 
-        if (m_pOwner != NULL) m_pOwner->NeedUpdate(); else NeedParentUpdate();
+        if (m_pOwner != NULL)
+            m_pOwner->NeedUpdate();
+        else
+            NeedParentUpdate();
     }
 
     int CScrollBarUI::GetScrollRange() const
@@ -519,8 +523,10 @@ namespace DUI
     void CScrollBarUI::DoEvent(TEVENT_UI & event)
     {
         if (!IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND) {
-            if (m_pOwner != NULL) m_pOwner->DoEvent(event);
-            else CControlUI::DoEvent(event);
+            if (m_pOwner != NULL)
+                m_pOwner->DoEvent(event);
+            else
+                CControlUI::DoEvent(event);
             return;
         }
 
@@ -540,20 +546,28 @@ namespace DUI
             if (::PtInRect(&m_rcButton1, event.ptMouse)) {
                 m_uButton1State |= UISTATE_PUSHED;
                 if (!m_bHorizontal) {
-                    if (m_pOwner != NULL) m_pOwner->LineUp();
-                    else SetScrollPos(m_nScrollPos - m_nLineSize);
+                    if (m_pOwner != NULL)
+                        m_pOwner->LineUp();
+                    else
+                        SetScrollPos(m_nScrollPos - m_nLineSize);
                 } else {
-                    if (m_pOwner != NULL) m_pOwner->LineLeft();
-                    else SetScrollPos(m_nScrollPos - m_nLineSize);
+                    if (m_pOwner != NULL)
+                        m_pOwner->LineLeft();
+                    else
+                        SetScrollPos(m_nScrollPos - m_nLineSize);
                 }
             } else if (::PtInRect(&m_rcButton2, event.ptMouse)) {
                 m_uButton2State |= UISTATE_PUSHED;
                 if (!m_bHorizontal) {
-                    if (m_pOwner != NULL) m_pOwner->LineDown();
-                    else SetScrollPos(m_nScrollPos + m_nLineSize);
+                    if (m_pOwner != NULL)
+                        m_pOwner->LineDown();
+                    else
+                        SetScrollPos(m_nScrollPos + m_nLineSize);
                 } else {
-                    if (m_pOwner != NULL) m_pOwner->LineRight();
-                    else SetScrollPos(m_nScrollPos + m_nLineSize);
+                    if (m_pOwner != NULL)
+                        m_pOwner->LineRight();
+                    else
+                        SetScrollPos(m_nScrollPos + m_nLineSize);
                 }
             } else if (::PtInRect(&m_rcThumb, event.ptMouse)) {
                 m_uThumbState |= UISTATE_CAPTURED | UISTATE_PUSHED;
@@ -562,19 +576,27 @@ namespace DUI
             } else {
                 if (!m_bHorizontal) {
                     if (event.ptMouse.y < m_rcThumb.top) {
-                        if (m_pOwner != NULL) m_pOwner->PageUp();
-                        else SetScrollPos(m_nScrollPos + m_rcItem.top - m_rcItem.bottom);
+                        if (m_pOwner != NULL)
+                            m_pOwner->PageUp();
+                        else
+                            SetScrollPos(m_nScrollPos + m_rcItem.top - m_rcItem.bottom);
                     } else if (event.ptMouse.y > m_rcThumb.bottom) {
-                        if (m_pOwner != NULL) m_pOwner->PageDown();
-                        else SetScrollPos(m_nScrollPos - m_rcItem.top + m_rcItem.bottom);
+                        if (m_pOwner != NULL)
+                            m_pOwner->PageDown();
+                        else
+                            SetScrollPos(m_nScrollPos - m_rcItem.top + m_rcItem.bottom);
                     }
                 } else {
                     if (event.ptMouse.x < m_rcThumb.left) {
-                        if (m_pOwner != NULL) m_pOwner->PageLeft();
-                        else SetScrollPos(m_nScrollPos + m_rcItem.left - m_rcItem.right);
+                        if (m_pOwner != NULL)
+                            m_pOwner->PageLeft();
+                        else
+                            SetScrollPos(m_nScrollPos + m_rcItem.left - m_rcItem.right);
                     } else if (event.ptMouse.x > m_rcThumb.right) {
-                        if (m_pOwner != NULL) m_pOwner->PageRight();
-                        else SetScrollPos(m_nScrollPos - m_rcItem.left + m_rcItem.right);
+                        if (m_pOwner != NULL)
+                            m_pOwner->PageRight();
+                        else
+                            SetScrollPos(m_nScrollPos - m_rcItem.left + m_rcItem.right);
                     }
                 }
             }
@@ -630,32 +652,44 @@ namespace DUI
             ++m_nScrollRepeatDelay;
             if ((m_uThumbState & UISTATE_CAPTURED) != 0) {
                 if (!m_bHorizontal) {
-                    if (m_pOwner != NULL) m_pOwner->SetScrollPos(CSizeUI(m_pOwner->GetScrollPos().cx, \
-                        m_nLastScrollPos + m_nLastScrollOffset));
-                    else SetScrollPos(m_nLastScrollPos + m_nLastScrollOffset);
+                    if (m_pOwner != NULL)
+                        m_pOwner->SetScrollPos(CSizeUI(m_pOwner->GetScrollPos().cx,
+                            m_nLastScrollPos + m_nLastScrollOffset));
+                    else
+                        SetScrollPos(m_nLastScrollPos + m_nLastScrollOffset);
                 } else {
-                    if (m_pOwner != NULL) m_pOwner->SetScrollPos(CSizeUI(m_nLastScrollPos + m_nLastScrollOffset, \
-                        m_pOwner->GetScrollPos().cy));
-                    else SetScrollPos(m_nLastScrollPos + m_nLastScrollOffset);
+                    if (m_pOwner != NULL)
+                        m_pOwner->SetScrollPos(CSizeUI(m_nLastScrollPos + m_nLastScrollOffset,
+                            m_pOwner->GetScrollPos().cy));
+                    else
+                        SetScrollPos(m_nLastScrollPos + m_nLastScrollOffset);
                 }
                 Invalidate();
             } else if ((m_uButton1State & UISTATE_PUSHED) != 0) {
                 if (m_nScrollRepeatDelay <= 5) return;
                 if (!m_bHorizontal) {
-                    if (m_pOwner != NULL) m_pOwner->LineUp();
-                    else SetScrollPos(m_nScrollPos - m_nLineSize);
+                    if (m_pOwner != NULL)
+                        m_pOwner->LineUp();
+                    else
+                        SetScrollPos(m_nScrollPos - m_nLineSize);
                 } else {
-                    if (m_pOwner != NULL) m_pOwner->LineLeft();
-                    else SetScrollPos(m_nScrollPos - m_nLineSize);
+                    if (m_pOwner != NULL)
+                        m_pOwner->LineLeft();
+                    else
+                        SetScrollPos(m_nScrollPos - m_nLineSize);
                 }
             } else if ((m_uButton2State & UISTATE_PUSHED) != 0) {
                 if (m_nScrollRepeatDelay <= 5) return;
                 if (!m_bHorizontal) {
-                    if (m_pOwner != NULL) m_pOwner->LineDown();
-                    else SetScrollPos(m_nScrollPos + m_nLineSize);
+                    if (m_pOwner != NULL)
+                        m_pOwner->LineDown();
+                    else
+                        SetScrollPos(m_nScrollPos + m_nLineSize);
                 } else {
-                    if (m_pOwner != NULL) m_pOwner->LineRight();
-                    else SetScrollPos(m_nScrollPos + m_nLineSize);
+                    if (m_pOwner != NULL)
+                        m_pOwner->LineRight();
+                    else
+                        SetScrollPos(m_nScrollPos + m_nLineSize);
                 }
             } else {
                 if (m_nScrollRepeatDelay <= 5) return;
@@ -664,19 +698,27 @@ namespace DUI
                 ::ScreenToClient(m_pManager->GetPaintWindow(), &pt);
                 if (!m_bHorizontal) {
                     if (pt.y < m_rcThumb.top) {
-                        if (m_pOwner != NULL) m_pOwner->PageUp();
-                        else SetScrollPos(m_nScrollPos + m_rcItem.top - m_rcItem.bottom);
+                        if (m_pOwner != NULL)
+                            m_pOwner->PageUp();
+                        else
+                            SetScrollPos(m_nScrollPos + m_rcItem.top - m_rcItem.bottom);
                     } else if (pt.y > m_rcThumb.bottom) {
-                        if (m_pOwner != NULL) m_pOwner->PageDown();
-                        else SetScrollPos(m_nScrollPos - m_rcItem.top + m_rcItem.bottom);
+                        if (m_pOwner != NULL)
+                            m_pOwner->PageDown();
+                        else
+                            SetScrollPos(m_nScrollPos - m_rcItem.top + m_rcItem.bottom);
                     }
                 } else {
                     if (pt.x < m_rcThumb.left) {
-                        if (m_pOwner != NULL) m_pOwner->PageLeft();
-                        else SetScrollPos(m_nScrollPos + m_rcItem.left - m_rcItem.right);
+                        if (m_pOwner != NULL)
+                            m_pOwner->PageLeft();
+                        else
+                            SetScrollPos(m_nScrollPos + m_rcItem.left - m_rcItem.right);
                     } else if (pt.x > m_rcThumb.right) {
-                        if (m_pOwner != NULL) m_pOwner->PageRight();
-                        else SetScrollPos(m_nScrollPos - m_rcItem.left + m_rcItem.right);
+                        if (m_pOwner != NULL)
+                            m_pOwner->PageRight();
+                        else
+                            SetScrollPos(m_nScrollPos - m_rcItem.left + m_rcItem.right);
                     }
                 }
             }
@@ -702,38 +744,68 @@ namespace DUI
             return;
         }
 
-        if (m_pOwner != NULL) m_pOwner->DoEvent(event); else CControlUI::DoEvent(event);
+        if (m_pOwner != NULL)
+            m_pOwner->DoEvent(event);
+        else
+            CControlUI::DoEvent(event);
     }
 
     void CScrollBarUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
     {
-        if (_tcsicmp(pstrName, _T("button1normalimage")) == 0) SetButton1NormalImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("button1hotimage")) == 0) SetButton1HotImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("button1pushedimage")) == 0) SetButton1PushedImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("button1disabledimage")) == 0) SetButton1DisabledImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("button2normalimage")) == 0) SetButton2NormalImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("button2hotimage")) == 0) SetButton2HotImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("button2pushedimage")) == 0) SetButton2PushedImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("button2disabledimage")) == 0) SetButton2DisabledImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("thumbnormalimage")) == 0) SetThumbNormalImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("thumbhotimage")) == 0) SetThumbHotImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("thumbpushedimage")) == 0) SetThumbPushedImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("thumbdisabledimage")) == 0) SetThumbDisabledImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("railnormalimage")) == 0) SetRailNormalImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("railhotimage")) == 0) SetRailHotImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("railpushedimage")) == 0) SetRailPushedImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("raildisabledimage")) == 0) SetRailDisabledImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("bknormalimage")) == 0) SetBkNormalImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("bkhotimage")) == 0) SetBkHotImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("bkpushedimage")) == 0) SetBkPushedImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("bkdisabledimage")) == 0) SetBkDisabledImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("hor")) == 0) SetHorizontal(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("linesize")) == 0) SetLineSize(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("range")) == 0) SetScrollRange(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("value")) == 0) SetScrollPos(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("showbutton1")) == 0) SetShowButton1(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("showbutton2")) == 0) SetShowButton2(_tcsicmp(pstrValue, _T("true")) == 0);
-        else CControlUI::SetAttribute(pstrName, pstrValue);
+        if (_tcsicmp(pstrName, _T("button1normalimage")) == 0)
+            SetButton1NormalImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("button1hotimage")) == 0)
+            SetButton1HotImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("button1pushedimage")) == 0)
+            SetButton1PushedImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("button1disabledimage")) == 0)
+            SetButton1DisabledImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("button2normalimage")) == 0)
+            SetButton2NormalImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("button2hotimage")) == 0)
+            SetButton2HotImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("button2pushedimage")) == 0)
+            SetButton2PushedImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("button2disabledimage")) == 0)
+            SetButton2DisabledImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("thumbnormalimage")) == 0)
+            SetThumbNormalImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("thumbhotimage")) == 0)
+            SetThumbHotImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("thumbpushedimage")) == 0)
+            SetThumbPushedImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("thumbdisabledimage")) == 0)
+            SetThumbDisabledImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("railnormalimage")) == 0)
+            SetRailNormalImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("railhotimage")) == 0)
+            SetRailHotImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("railpushedimage")) == 0)
+            SetRailPushedImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("raildisabledimage")) == 0)
+            SetRailDisabledImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("bknormalimage")) == 0)
+            SetBkNormalImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("bkhotimage")) == 0)
+            SetBkHotImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("bkpushedimage")) == 0)
+            SetBkPushedImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("bkdisabledimage")) == 0)
+            SetBkDisabledImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("hor")) == 0)
+            SetHorizontal(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("linesize")) == 0)
+            SetLineSize(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("range")) == 0)
+            SetScrollRange(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("value")) == 0)
+            SetScrollPos(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("showbutton1")) == 0)
+            SetShowButton1(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("showbutton2")) == 0)
+            SetShowButton2(_tcsicmp(pstrValue, _T("true")) == 0);
+        else
+            CControlUI::SetAttribute(pstrName, pstrValue);
     }
 
     BOOL CScrollBarUI::DoPaint(HDC hDC, const RECT & rcPaint, CControlUI * pStopControl)
@@ -751,25 +823,35 @@ namespace DUI
 
     void CScrollBarUI::PaintBk(HDC hDC)
     {
-        if (!IsEnabled()) m_uThumbState |= UISTATE_DISABLED;
-        else m_uThumbState &= ~UISTATE_DISABLED;
+        if (!IsEnabled())
+            m_uThumbState |= UISTATE_DISABLED;
+        else
+            m_uThumbState &= ~UISTATE_DISABLED;
 
         if ((m_uThumbState & UISTATE_DISABLED) != 0) {
             if (!m_sBkDisabledImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sBkDisabledImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sBkDisabledImage)) {
+                } else
+                    return;
             }
         } else if ((m_uThumbState & UISTATE_PUSHED) != 0) {
             if (!m_sBkPushedImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sBkPushedImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sBkPushedImage)) {
+                } else
+                    return;
             }
         } else if ((m_uThumbState & UISTATE_HOT) != 0) {
             if (!m_sBkHotImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sBkHotImage)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sBkHotImage)) {
+                } else
+                    return;
             }
         }
 
         if (!m_sBkNormalImage.IsEmpty()) {
-            if (!DrawImage(hDC, (LPCTSTR)m_sBkNormalImage)) {} else return;
+            if (!DrawImage(hDC, (LPCTSTR)m_sBkNormalImage)) {
+            } else
+                return;
         }
     }
 
@@ -777,8 +859,10 @@ namespace DUI
     {
         if (!m_bShowButton1) return;
 
-        if (!IsEnabled()) m_uButton1State |= UISTATE_DISABLED;
-        else m_uButton1State &= ~UISTATE_DISABLED;
+        if (!IsEnabled())
+            m_uButton1State |= UISTATE_DISABLED;
+        else
+            m_uButton1State &= ~UISTATE_DISABLED;
 
         int d1 = MulDiv(m_rcButton1.left - m_rcItem.left, 100, GetManager()->GetDPIObj()->GetScale());
         int d2 = MulDiv(m_rcButton1.top - m_rcItem.top, 100, GetManager()->GetDPIObj()->GetScale());
@@ -789,20 +873,28 @@ namespace DUI
 
         if ((m_uButton1State & UISTATE_DISABLED) != 0) {
             if (!m_sButton1DisabledImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sButton1DisabledImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sButton1DisabledImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         } else if ((m_uButton1State & UISTATE_PUSHED) != 0) {
             if (!m_sButton1PushedImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sButton1PushedImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sButton1PushedImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         } else if ((m_uButton1State & UISTATE_HOT) != 0) {
             if (!m_sButton1HotImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sButton1HotImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sButton1HotImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         }
 
         if (!m_sButton1NormalImage.IsEmpty()) {
-            if (!DrawImage(hDC, (LPCTSTR)m_sButton1NormalImage, (LPCTSTR)m_sImageModify)) {} else return;
+            if (!DrawImage(hDC, (LPCTSTR)m_sButton1NormalImage, (LPCTSTR)m_sImageModify)) {
+            } else
+                return;
         }
 
         DWORD dwBorderColor = 0xFF85E4FF;
@@ -814,8 +906,10 @@ namespace DUI
     {
         if (!m_bShowButton2) return;
 
-        if (!IsEnabled()) m_uButton2State |= UISTATE_DISABLED;
-        else m_uButton2State &= ~UISTATE_DISABLED;
+        if (!IsEnabled())
+            m_uButton2State |= UISTATE_DISABLED;
+        else
+            m_uButton2State &= ~UISTATE_DISABLED;
         int d1 = MulDiv(m_rcButton2.left - m_rcItem.left, 100, GetManager()->GetDPIObj()->GetScale());
         int d2 = MulDiv(m_rcButton2.top - m_rcItem.top, 100, GetManager()->GetDPIObj()->GetScale());
         int d3 = MulDiv(m_rcButton2.right - m_rcItem.left, 100, GetManager()->GetDPIObj()->GetScale());
@@ -825,20 +919,28 @@ namespace DUI
 
         if ((m_uButton2State & UISTATE_DISABLED) != 0) {
             if (!m_sButton2DisabledImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sButton2DisabledImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sButton2DisabledImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         } else if ((m_uButton2State & UISTATE_PUSHED) != 0) {
             if (!m_sButton2PushedImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sButton2PushedImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sButton2PushedImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         } else if ((m_uButton2State & UISTATE_HOT) != 0) {
             if (!m_sButton2HotImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sButton2HotImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sButton2HotImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         }
 
         if (!m_sButton2NormalImage.IsEmpty()) {
-            if (!DrawImage(hDC, (LPCTSTR)m_sButton2NormalImage, (LPCTSTR)m_sImageModify)) {} else return;
+            if (!DrawImage(hDC, (LPCTSTR)m_sButton2NormalImage, (LPCTSTR)m_sImageModify)) {
+            } else
+                return;
         }
 
         DWORD dwBorderColor = 0xFF85E4FF;
@@ -849,8 +951,10 @@ namespace DUI
     void CScrollBarUI::PaintThumb(HDC hDC)
     {
         if (m_rcThumb.left == 0 && m_rcThumb.top == 0 && m_rcThumb.right == 0 && m_rcThumb.bottom == 0) return;
-        if (!IsEnabled()) m_uThumbState |= UISTATE_DISABLED;
-        else m_uThumbState &= ~UISTATE_DISABLED;
+        if (!IsEnabled())
+            m_uThumbState |= UISTATE_DISABLED;
+        else
+            m_uThumbState &= ~UISTATE_DISABLED;
         int d1 = MulDiv(m_rcThumb.left - m_rcItem.left, 100, GetManager()->GetDPIObj()->GetScale());
         int d2 = MulDiv(m_rcThumb.top - m_rcItem.top, 100, GetManager()->GetDPIObj()->GetScale());
         int d3 = MulDiv(m_rcThumb.right - m_rcItem.left, 100, GetManager()->GetDPIObj()->GetScale());
@@ -860,20 +964,28 @@ namespace DUI
 
         if ((m_uThumbState & UISTATE_DISABLED) != 0) {
             if (!m_sThumbDisabledImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sThumbDisabledImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sThumbDisabledImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         } else if ((m_uThumbState & UISTATE_PUSHED) != 0) {
             if (!m_sThumbPushedImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sThumbPushedImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sThumbPushedImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         } else if ((m_uThumbState & UISTATE_HOT) != 0) {
             if (!m_sThumbHotImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sThumbHotImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sThumbHotImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         }
 
         if (!m_sThumbNormalImage.IsEmpty()) {
-            if (!DrawImage(hDC, (LPCTSTR)m_sThumbNormalImage, (LPCTSTR)m_sImageModify)) {} else return;
+            if (!DrawImage(hDC, (LPCTSTR)m_sThumbNormalImage, (LPCTSTR)m_sImageModify)) {
+            } else
+                return;
         }
 
         DWORD dwBorderColor = 0xFF85E4FF;
@@ -884,8 +996,10 @@ namespace DUI
     void CScrollBarUI::PaintRail(HDC hDC)
     {
         if (m_rcThumb.left == 0 && m_rcThumb.top == 0 && m_rcThumb.right == 0 && m_rcThumb.bottom == 0) return;
-        if (!IsEnabled()) m_uThumbState |= UISTATE_DISABLED;
-        else m_uThumbState &= ~UISTATE_DISABLED;
+        if (!IsEnabled())
+            m_uThumbState |= UISTATE_DISABLED;
+        else
+            m_uThumbState &= ~UISTATE_DISABLED;
 
         m_sImageModify.Empty();
         if (!m_bHorizontal) {
@@ -904,20 +1018,28 @@ namespace DUI
 
         if ((m_uThumbState & UISTATE_DISABLED) != 0) {
             if (!m_sRailDisabledImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sRailDisabledImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sRailDisabledImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         } else if ((m_uThumbState & UISTATE_PUSHED) != 0) {
             if (!m_sRailPushedImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sRailPushedImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sRailPushedImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         } else if ((m_uThumbState & UISTATE_HOT) != 0) {
             if (!m_sRailHotImage.IsEmpty()) {
-                if (!DrawImage(hDC, (LPCTSTR)m_sRailHotImage, (LPCTSTR)m_sImageModify)) {} else return;
+                if (!DrawImage(hDC, (LPCTSTR)m_sRailHotImage, (LPCTSTR)m_sImageModify)) {
+                } else
+                    return;
             }
         }
 
         if (!m_sRailNormalImage.IsEmpty()) {
-            if (!DrawImage(hDC, (LPCTSTR)m_sRailNormalImage, (LPCTSTR)m_sImageModify)) {} else return;
+            if (!DrawImage(hDC, (LPCTSTR)m_sRailNormalImage, (LPCTSTR)m_sImageModify)) {
+            } else
+                return;
         }
     }
-}
+} // namespace DUI

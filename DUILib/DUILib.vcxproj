@@ -66,6 +66,51 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Control\UIButton.cpp" />
+    <ClCompile Include="Control\UILabel.cpp" />
+    <ClCompile Include="Core\UIContainer.cpp" />
+    <ClCompile Include="Core\UIControl.cpp" />
+    <ClCompile Include="Core\UIDelegate.cpp" />
+    <ClCompile Include="Core\UIDragDropImpl.cpp" />
+    <ClCompile Include="Core\UIManager.cpp" />
+    <ClCompile Include="Core\UIMarkup.cpp" />
+    <ClCompile Include="Core\UIRender.cpp" />
+    <ClCompile Include="Core\UIResourceManager.cpp" />
+    <ClCompile Include="Core\UIScrollBar.cpp" />
+    <ClCompile Include="Core\UIShadow.cpp" />
+    <ClCompile Include="Core\UIWindow.cpp" />
+    <ClCompile Include="DUILib.cpp" />
+    <ClCompile Include="Utils\DPI.cpp" />
+    <ClCompile Include="Utils\unzip.cpp" />
+    <ClCompile Include="Utils\Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Control\UIButton.h" />
+    <ClInclude Include="Control\UILabel.h" />
+    <ClInclude Include="Core\UIContainer.h" />
+    <ClInclude Include="Core\UIControl.h" />
+    <ClInclude Include="Core\UIDefine.h" />
+    <ClInclude Include="Core\UIDelegate.h" />
+    <ClInclude Include="Core\UIDragDropImpl.h" />
+    <ClInclude Include="Core\UIManager.h" />
+    <ClInclude Include="Core\UIMarkup.h" />
+    <ClInclude Include="Core\UIRender.h" />
+    <ClInclude Include="Core\UIResourceManager.h" />
+    <ClInclude Include="Core\UIScrollBar.h" />
+    <ClInclude Include="Core\UIShadow.h" />
+    <ClInclude Include="Core\UIWindow.h" />
+    <ClInclude Include="DUILib.h" />
+    <ClInclude Include="Utils\downloadmgr.h" />
+    <ClInclude Include="Utils\DPI.h" />
+    <ClInclude Include="Utils\FlashEventHandler.h" />
+    <ClInclude Include="Utils\observer_impl_base.h" />
+    <ClInclude Include="Utils\stb_image.h" />
+    <ClInclude Include="Utils\unzip.h" />
+    <ClInclude Include="Utils\Utils.h" />
+    <ClInclude Include="Utils\VersionHelpers.h" />
+    <ClInclude Include="Utils\WebBrowserEventHandler.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}</ProjectGuid>
     <RootNamespace>DuiLib</RootNamespace>
@@ -933,71 +978,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Control\UIButton.cpp" />
-    <ClCompile Include="Control\UILabel.cpp" />
-    <ClCompile Include="Core\UIContainer.cpp" />
-    <ClCompile Include="Core\UIControl.cpp" />
-    <ClCompile Include="Core\UIDelegate.cpp" />
-    <ClCompile Include="Core\UIManager.cpp" />
-    <ClCompile Include="Core\UIMarkup.cpp" />
-    <ClCompile Include="Core\UIRender.cpp" />
-    <ClCompile Include="Core\UIResourceManager.cpp" />
-    <ClCompile Include="Core\UIScrollBar.cpp" />
-    <ClCompile Include="DUILIB.cpp" />
-    <ClCompile Include="Layout\UITabLayout.cpp" />
-    <ClCompile Include="Utils\DPI.cpp" />
-    <ClCompile Include="Core\UIDragDropImpl.cpp" />
-    <ClCompile Include="Core\UIShadow.cpp" />
-    <ClCompile Include="Utils\unzip.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugA|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseA|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='SDebugA|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='SDebug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='SReleaseA|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='SRelease|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Utils\Utils.cpp" />
-    <ClCompile Include="Core\UIWindow.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Control\UIButton.h" />
-    <ClInclude Include="Control\UILabel.h" />
-    <ClInclude Include="Core\CControlUI.h" />
-    <ClInclude Include="Core\UIContainer.h" />
-    <ClInclude Include="Core\UIControl.h" />
-    <ClInclude Include="Core\UIDefine.h" />
-    <ClInclude Include="Core\UIDelegate.h" />
-    <ClInclude Include="Core\UIManager.h" />
-    <ClInclude Include="Core\UIMarkup.h" />
-    <ClInclude Include="Core\UIRender.h" />
-    <ClInclude Include="Core\UIResourceManager.h" />
-    <ClInclude Include="Core\UIScrollBar.h" />
-    <ClInclude Include="Core\CResourceManagerUI.h" />
-    <ClInclude Include="DUILib.h" />
-    <ClInclude Include="Layout\UITabLayout.h" />
-    <ClInclude Include="Utils\downloadmgr.h" />
-    <ClInclude Include="Utils\DPI.h" />
-    <ClInclude Include="Core\UIDragDropImpl.h" />
-    <ClInclude Include="Utils\FlashEventHandler.h" />
-    <ClInclude Include="Utils\observer_impl_base.h" />
-    <ClInclude Include="Utils\stb_image.h" />
-    <ClInclude Include="Core\CDelegateUI.h" />
-    <ClInclude Include="Core\UIShadow.h" />
-    <ClInclude Include="Utils\unzip.h" />
-    <ClInclude Include="Utils\Utils.h" />
-    <ClInclude Include="Utils\VersionHelpers.h" />
-    <ClInclude Include="Utils\WebBrowserEventHandler.h" />
-    <ClInclude Include="Core\UIWindow.h" />
-    <ClInclude Include="Core\CContainerUI.h" />
-    <ClInclude Include="Core\DUIDefine.h" />
-    <ClInclude Include="Core\CUIManagerUI.h" />
-    <ClInclude Include="Core\CMarkupUI.h" />
-    <ClInclude Include="Core\CRenderUI.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

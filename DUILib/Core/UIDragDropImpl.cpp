@@ -9,8 +9,6 @@ Author: Leon Finker  1/2001
 //////////////////////////////////////////////////////////////////////
 #include "Core/UIDragDropImpl.h"
 
-
-
 namespace DUI
 {
     //////////////////////////////////////////////////////////////////////
@@ -18,8 +16,7 @@ namespace DUI
     //////////////////////////////////////////////////////////////////////
 
     CIDataObject::CIDataObject(CIDropSource* pDropSource)
-        :m_cRefCount(0)
-        , m_pDropSource(pDropSource)
+        : m_cRefCount(0), m_pDropSource(pDropSource)
     {
     }
 
@@ -40,7 +37,7 @@ namespace DUI
         if (IID_IUnknown == riid || IID_IDataObject == riid)
             * ppvObject = this;
         /*if(riid == IID_IAsyncOperation)
-        *ppvObject=(IAsyncOperation*)this;*/
+            *ppvObject=(IAsyncOperation*)this;*/
         if (NULL != *ppvObject) {
             ((LPUNKNOWN)* ppvObject)->AddRef();
             return S_OK;
@@ -48,13 +45,15 @@ namespace DUI
         return E_NOINTERFACE;
     }
 
-    STDMETHODIMP_(ULONG) CIDataObject::AddRef(void)
+    STDMETHODIMP_(ULONG)
+        CIDataObject::AddRef(void)
     {
         ATLTRACE("CIDataObject::AddRef\n");
         return ++m_cRefCount;
     }
 
-    STDMETHODIMP_(ULONG) CIDataObject::Release(void)
+    STDMETHODIMP_(ULONG)
+        CIDataObject::Release(void)
     {
         ATLTRACE("CIDataObject::Release\n");
         long nTemp;
@@ -104,7 +103,7 @@ namespace DUI
         //support others if needed DVASPECT_THUMBNAIL  //DVASPECT_ICON   //DVASPECT_DOCPRINT
         if (!(DVASPECT_CONTENT & pformatetc->dwAspect))
             return (DV_E_DVASPECT);
-        HRESULT  hr = DV_E_TYMED;
+        HRESULT hr = DV_E_TYMED;
         for (int i = 0; i < (int)m_ArrFormatEtc.size(); ++i) {
             if (pformatetc->tymed & m_ArrFormatEtc[i]->tymed) {
                 if (pformatetc->cfFormat == m_ArrFormatEtc[i]->cfFormat)
@@ -263,13 +262,15 @@ namespace DUI
         return E_NOINTERFACE;
     }
 
-    STDMETHODIMP_(ULONG) CIDropSource::AddRef(void)
+    STDMETHODIMP_(ULONG)
+        CIDropSource::AddRef(void)
     {
         ATLTRACE("CIDropSource::AddRef\n");
         return ++m_cRefCount;
     }
 
-    STDMETHODIMP_(ULONG) CIDropSource::Release(void)
+    STDMETHODIMP_(ULONG)
+        CIDropSource::Release(void)
     {
         ATLTRACE("CIDropSource::Release\n");
         long nTemp;
@@ -293,7 +294,6 @@ namespace DUI
         }
 
         return S_OK;
-
     }
 
     STDMETHODIMP CIDropSource::GiveFeedback(
@@ -307,22 +307,20 @@ namespace DUI
     // CEnumFormatEtc Class
     //////////////////////////////////////////////////////////////////////
 
-    CEnumFormatEtc::CEnumFormatEtc(const FormatEtcArray & ArrFE) :
-        m_cRefCount(0), m_iCur(0)
+    CEnumFormatEtc::CEnumFormatEtc(const FormatEtcArray & ArrFE) : m_cRefCount(0), m_iCur(0)
     {
         ATLTRACE("CEnumFormatEtc::CEnumFormatEtc()\n");
         for (int i = 0; i < (int)ArrFE.size(); ++i)
             m_pFmtEtc.push_back(ArrFE[i]);
     }
 
-    CEnumFormatEtc::CEnumFormatEtc(const PFormatEtcArray & ArrFE) :
-        m_cRefCount(0), m_iCur(0)
+    CEnumFormatEtc::CEnumFormatEtc(const PFormatEtcArray & ArrFE) : m_cRefCount(0), m_iCur(0)
     {
         for (int i = 0; i < (int)ArrFE.size(); ++i)
             m_pFmtEtc.push_back(*ArrFE[i]);
     }
 
-    STDMETHODIMP  CEnumFormatEtc::QueryInterface(REFIID refiid, void FAR * FAR * ppv)
+    STDMETHODIMP CEnumFormatEtc::QueryInterface(REFIID refiid, void FAR * FAR * ppv)
     {
         ATLTRACE("CEnumFormatEtc::QueryInterface()\n");
         *ppv = NULL;
@@ -336,13 +334,15 @@ namespace DUI
         return E_NOINTERFACE;
     }
 
-    STDMETHODIMP_(ULONG) CEnumFormatEtc::AddRef(void)
+    STDMETHODIMP_(ULONG)
+        CEnumFormatEtc::AddRef(void)
     {
         ATLTRACE("CEnumFormatEtc::AddRef()\n");
         return ++m_cRefCount;
     }
 
-    STDMETHODIMP_(ULONG) CEnumFormatEtc::Release(void)
+    STDMETHODIMP_(ULONG)
+        CEnumFormatEtc::Release(void)
     {
         ATLTRACE("CEnumFormatEtc::Release()\n");
         long nTemp = --m_cRefCount;
@@ -411,8 +411,7 @@ namespace DUI
     //////////////////////////////////////////////////////////////////////
     // CIDropTarget Class
     //////////////////////////////////////////////////////////////////////
-    CIDropTarget::CIDropTarget(HWND hTargetWnd) :
-        m_hTargetWnd(hTargetWnd),
+    CIDropTarget::CIDropTarget(HWND hTargetWnd) : m_hTargetWnd(hTargetWnd),
         m_cRefCount(0), m_bAllowDrop(false),
         m_pDropTargetHelper(NULL), m_pSupportedFrmt(NULL)
     {
@@ -429,7 +428,7 @@ namespace DUI
         }
     }
 
-    HRESULT STDMETHODCALLTYPE CIDropTarget::QueryInterface( /* [in] */ REFIID riid,
+    HRESULT STDMETHODCALLTYPE CIDropTarget::QueryInterface(/* [in] */ REFIID riid,
         /* [iid_is][out] */ void __RPC_FAR * __RPC_FAR * ppvObject)
     {
         *ppvObject = NULL;
@@ -467,11 +466,9 @@ namespace DUI
         //CTRL        -- DROPEFFECT_COPY
         //SHIFT       -- DROPEFFECT_MOVE
         //no modifier -- DROPEFFECT_MOVE or whatever is allowed by src
-        *pdwEffect = (grfKeyState & MK_CONTROL)?
-            ((grfKeyState & MK_SHIFT)?DROPEFFECT_LINK:DROPEFFECT_COPY):
-            ((grfKeyState & MK_SHIFT)?DROPEFFECT_MOVE:0);
+        *pdwEffect = (grfKeyState & MK_CONTROL)?((grfKeyState & MK_SHIFT)?DROPEFFECT_LINK:DROPEFFECT_COPY):((grfKeyState & MK_SHIFT)?DROPEFFECT_MOVE:0);
         if (*pdwEffect == 0) {
-            // No modifier keys used by user while dragging. 
+            // No modifier keys used by user while dragging.
             if (DROPEFFECT_COPY & dwOKEffects)
                 * pdwEffect = DROPEFFECT_COPY;
             else if (DROPEFFECT_MOVE & dwOKEffects)
@@ -576,4 +573,4 @@ namespace DUI
     //////////////////////////////////////////////////////////////////////
     // CIDragSourceHelper Class
     //////////////////////////////////////////////////////////////////////
-}
+} // namespace DUI

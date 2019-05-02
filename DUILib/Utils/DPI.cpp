@@ -10,22 +10,17 @@ namespace DUI
     //192 DPI = 200% scaling
 
     typedef HRESULT(WINAPI* LPSetProcessDpiAwareness)(
-        _In_ PROCESS_DPI_AWARENESS value
-        );
+        _In_ PROCESS_DPI_AWARENESS value);
 
     typedef HRESULT(WINAPI* LPGetProcessDpiAwareness)(
-        _In_  HANDLE                hprocess,
-        _Out_ PROCESS_DPI_AWARENESS* value
-        );
-
+        _In_ HANDLE hprocess,
+        _Out_ PROCESS_DPI_AWARENESS* value);
 
     typedef HRESULT(WINAPI* LPGetDpiForMonitor)(
-        _In_  HMONITOR         hmonitor,
-        _In_  MONITOR_DPI_TYPE dpiType,
+        _In_ HMONITOR hmonitor,
+        _In_ MONITOR_DPI_TYPE dpiType,
         _Out_ UINT* dpiX,
-        _Out_ UINT* dpiY
-        );
-
+        _Out_ UINT* dpiY);
 
     CDPI::CDPI()
     {
@@ -34,14 +29,13 @@ namespace DUI
         m_Awareness = PROCESS_PER_MONITOR_DPI_AWARE;
 
         SetScale(96);
-
     }
 
     int CDPI::GetDPIOfMonitor(HMONITOR hMonitor)
     {
         UINT dpix = 96, dpiy = 96;
         if (IsWindows8Point1OrGreater()) {
-            HRESULT  hr = E_FAIL;
+            HRESULT hr = E_FAIL;
             HMODULE hModule = ::LoadLibrary(_T("Shcore.dll"));
             if (hModule != NULL) {
                 LPGetDpiForMonitor GetDpiForMonitor = (LPGetDpiForMonitor)GetProcAddress(hModule, "GetDpiForMonitor");
@@ -67,7 +61,7 @@ namespace DUI
 
     int CDPI::GetMainMonitorDPI()
     {
-        POINT    pt;
+        POINT pt;
         // Get the DPI for the main monitor
         pt.x = 1;
         pt.y = 1;
@@ -109,7 +103,7 @@ namespace DUI
         return bRet;
     }
 
-    UINT DUILIB::CDPI::GetDPI()
+    UINT CDPI::GetDPI()
     {
         if (m_Awareness == PROCESS_DPI_UNAWARE) {
             return 96;
@@ -133,7 +127,6 @@ namespace DUI
         return m_nScaleFactor;
     }
 
-
     void CDPI::SetScale(UINT uDPI)
     {
         m_nScaleFactor = MulDiv(uDPI, 100, 96);
@@ -142,7 +135,7 @@ namespace DUI
         }
     }
 
-    int  CDPI::Scale(int iValue)
+    int CDPI::Scale(int iValue)
     {
         if (m_Awareness == PROCESS_DPI_UNAWARE) {
             return iValue;
@@ -153,7 +146,7 @@ namespace DUI
         return MulDiv(iValue, m_nScaleFactor, 100);
     }
 
-    int  CDPI::ScaleBack(int iValue)
+    int CDPI::ScaleBack(int iValue)
     {
 
         if (m_Awareness == PROCESS_DPI_UNAWARE) {
@@ -224,4 +217,4 @@ namespace DUI
         szScale.cy = Scale(szSize.cy);
         return szScale;
     }
-}
+} // namespace DUI

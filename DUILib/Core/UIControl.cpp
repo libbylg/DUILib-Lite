@@ -1,14 +1,14 @@
 #include "Core/UIControl.h"
-#include "Core/UIResourceManager.h"
-#include "Core/UIRender.h"
 #include "Core/UIManager.h"
+#include "Core/UIRender.h"
+#include "Core/UIResourceManager.h"
 
 namespace DUI
 {
     UI_IMPLEMENT_CONTROL(CControlUI)
 
         CControlUI::CControlUI()
-        :m_pManager(NULL),
+        : m_pManager(NULL),
         m_pParent(NULL),
         m_bUpdateNeeded(true),
         m_bMenuUsed(false),
@@ -802,7 +802,6 @@ namespace DUI
 
     void CControlUI::DoInit()
     {
-
     }
 
     void CControlUI::Event(TEVENT_UI & event)
@@ -816,9 +815,9 @@ namespace DUI
             if (GetCursor()) {
                 ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(GetCursor())));
             } else {
-                #pragma warning(disable:4302)   //warning C4302: “类型强制转换”: 从“LPWSTR”到“WORD”截断
+#pragma warning(disable : 4302) //warning C4302: “类型强制转换”: 从“LPWSTR”到“WORD”截断
                 ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW)));
-                #pragma warning(default:4302)
+#pragma warning(default : 4302)
             }
             return;
         }
@@ -846,7 +845,6 @@ namespace DUI
 
         if (m_pParent != NULL) m_pParent->DoEvent(event);
     }
-
 
     void CControlUI::SetVirtualWnd(LPCTSTR pstrValue)
     {
@@ -928,10 +926,14 @@ namespace DUI
         } else if (_tcsicmp(pstrName, _T("pos")) == 0) {
             RECT rcPos = {0};
             LPTSTR pstr = NULL;
-            rcPos.left = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);
-            rcPos.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
-            rcPos.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
-            rcPos.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+            rcPos.left = _tcstol(pstrValue, &pstr, 10);
+            ASSERT(pstr);
+            rcPos.top = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
+            rcPos.right = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
+            rcPos.bottom = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
             SIZE szXY = {rcPos.left >= 0?rcPos.left:rcPos.right, rcPos.top >= 0?rcPos.top:rcPos.bottom};
             SetFixedXY(szXY);
             SetFixedWidth(rcPos.right - rcPos.left);
@@ -944,10 +946,14 @@ namespace DUI
             } else {
                 TPERCENTINFO_UI piFloatPercent = {0};
                 LPTSTR pstr = NULL;
-                piFloatPercent.left = _tcstod(pstrValue, &pstr);  ASSERT(pstr);
-                piFloatPercent.top = _tcstod(pstr + 1, &pstr);    ASSERT(pstr);
-                piFloatPercent.right = _tcstod(pstr + 1, &pstr);  ASSERT(pstr);
-                piFloatPercent.bottom = _tcstod(pstr + 1, &pstr); ASSERT(pstr);
+                piFloatPercent.left = _tcstod(pstrValue, &pstr);
+                ASSERT(pstr);
+                piFloatPercent.top = _tcstod(pstr + 1, &pstr);
+                ASSERT(pstr);
+                piFloatPercent.right = _tcstod(pstr + 1, &pstr);
+                ASSERT(pstr);
+                piFloatPercent.bottom = _tcstod(pstr + 1, &pstr);
+                ASSERT(pstr);
                 SetFloatPercent(piFloatPercent);
                 SetFloat(true);
             }
@@ -956,7 +962,8 @@ namespace DUI
             // 解析文字属性
             while (*pstrValue != _T('\0')) {
                 CStringUI sValue;
-                while (*pstrValue == _T(',') || *pstrValue == _T(' ')) pstrValue = ::CharNext(pstrValue);
+                while (*pstrValue == _T(',') || *pstrValue == _T(' '))
+                    pstrValue = ::CharNext(pstrValue);
 
                 while (*pstrValue != _T('\0') && *pstrValue != _T(',') && *pstrValue != _T(' ')) {
                     LPTSTR pstrTemp = ::CharNext(pstrValue);
@@ -991,32 +998,41 @@ namespace DUI
         } else if (_tcsicmp(pstrName, _T("padding")) == 0) {
             RECT rcPadding = {0};
             LPTSTR pstr = NULL;
-            rcPadding.left = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);
-            rcPadding.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
-            rcPadding.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
-            rcPadding.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+            rcPadding.left = _tcstol(pstrValue, &pstr, 10);
+            ASSERT(pstr);
+            rcPadding.top = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
+            rcPadding.right = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
+            rcPadding.bottom = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
             SetPadding(rcPadding);
-        } else if (_tcsicmp(pstrName, _T("gradient")) == 0) SetGradient(pstrValue);
+        } else if (_tcsicmp(pstrName, _T("gradient")) == 0)
+            SetGradient(pstrValue);
         else if (_tcsicmp(pstrName, _T("bkcolor")) == 0 || _tcsicmp(pstrName, _T("bkcolor1")) == 0) {
-            while (*pstrValue > _T('\0') && *pstrValue <= _T(' ')) pstrValue = ::CharNext(pstrValue);
+            while (*pstrValue > _T('\0') && *pstrValue <= _T(' '))
+                pstrValue = ::CharNext(pstrValue);
             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
             LPTSTR pstr = NULL;
             DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
             SetBkColor(clrColor);
         } else if (_tcsicmp(pstrName, _T("bkcolor2")) == 0) {
-            while (*pstrValue > _T('\0') && *pstrValue <= _T(' ')) pstrValue = ::CharNext(pstrValue);
+            while (*pstrValue > _T('\0') && *pstrValue <= _T(' '))
+                pstrValue = ::CharNext(pstrValue);
             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
             LPTSTR pstr = NULL;
             DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
             SetBkColor2(clrColor);
         } else if (_tcsicmp(pstrName, _T("bkcolor3")) == 0) {
-            while (*pstrValue > _T('\0') && *pstrValue <= _T(' ')) pstrValue = ::CharNext(pstrValue);
+            while (*pstrValue > _T('\0') && *pstrValue <= _T(' '))
+                pstrValue = ::CharNext(pstrValue);
             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
             LPTSTR pstr = NULL;
             DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
             SetBkColor3(clrColor);
         } else if (_tcsicmp(pstrName, _T("forecolor")) == 0) {
-            while (*pstrValue > _T('\0') && *pstrValue <= _T(' ')) pstrValue = ::CharNext(pstrValue);
+            while (*pstrValue > _T('\0') && *pstrValue <= _T(' '))
+                pstrValue = ::CharNext(pstrValue);
             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
             LPTSTR pstr = NULL;
             DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
@@ -1031,7 +1047,8 @@ namespace DUI
             LPTSTR pstr = NULL;
             DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
             SetFocusBorderColor(clrColor);
-        } else if (_tcsicmp(pstrName, _T("colorhsl")) == 0) SetColorHSL(_tcsicmp(pstrValue, _T("true")) == 0);
+        } else if (_tcsicmp(pstrName, _T("colorhsl")) == 0)
+            SetColorHSL(_tcsicmp(pstrValue, _T("true")) == 0);
         else if (_tcsicmp(pstrName, _T("bordersize")) == 0) {
             CStringUI nValue = pstrValue;
             if (nValue.Find(',') < 0) {
@@ -1041,61 +1058,109 @@ namespace DUI
             } else {
                 RECT rcPadding = {0};
                 LPTSTR pstr = NULL;
-                rcPadding.left = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);
-                rcPadding.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
-                rcPadding.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
-                rcPadding.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+                rcPadding.left = _tcstol(pstrValue, &pstr, 10);
+                ASSERT(pstr);
+                rcPadding.top = _tcstol(pstr + 1, &pstr, 10);
+                ASSERT(pstr);
+                rcPadding.right = _tcstol(pstr + 1, &pstr, 10);
+                ASSERT(pstr);
+                rcPadding.bottom = _tcstol(pstr + 1, &pstr, 10);
+                ASSERT(pstr);
                 SetBorderSize(rcPadding);
             }
-        } else if (_tcsicmp(pstrName, _T("leftbordersize")) == 0) SetLeftBorderSize(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("topbordersize")) == 0) SetTopBorderSize(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("rightbordersize")) == 0) SetRightBorderSize(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("bottombordersize")) == 0) SetBottomBorderSize(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("borderstyle")) == 0) SetBorderStyle(_ttoi(pstrValue));
+        } else if (_tcsicmp(pstrName, _T("leftbordersize")) == 0)
+            SetLeftBorderSize(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("topbordersize")) == 0)
+            SetTopBorderSize(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("rightbordersize")) == 0)
+            SetRightBorderSize(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("bottombordersize")) == 0)
+            SetBottomBorderSize(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("borderstyle")) == 0)
+            SetBorderStyle(_ttoi(pstrValue));
         else if (_tcsicmp(pstrName, _T("borderround")) == 0) {
             SIZE cxyRound = {0};
             LPTSTR pstr = NULL;
-            cxyRound.cx = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);
-            cxyRound.cy = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
+            cxyRound.cx = _tcstol(pstrValue, &pstr, 10);
+            ASSERT(pstr);
+            cxyRound.cy = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
             SetBorderRound(cxyRound);
-        } else if (_tcsicmp(pstrName, _T("bkimage")) == 0) SetBkImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("foreimage")) == 0) SetForeImage(pstrValue);
-        else if (_tcsicmp(pstrName, _T("width")) == 0) SetFixedWidth(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("height")) == 0) SetFixedHeight(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("minwidth")) == 0) SetMinWidth(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("minheight")) == 0) SetMinHeight(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("maxwidth")) == 0) SetMaxWidth(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("maxheight")) == 0) SetMaxHeight(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("name")) == 0) SetName(pstrValue);
-        else if (_tcsicmp(pstrName, _T("drag")) == 0) SetDragEnable(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("drop")) == 0) SetDropEnable(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("resourcetext")) == 0) SetResourceText(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("text")) == 0) SetText(pstrValue);
-        else if (_tcsicmp(pstrName, _T("tooltip")) == 0) SetToolTip(pstrValue);
-        else if (_tcsicmp(pstrName, _T("userdata")) == 0) SetUserData(pstrValue);
-        else if (_tcsicmp(pstrName, _T("enabled")) == 0) SetEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("mouse")) == 0) SetMouseEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("keyboard")) == 0) SetKeyboardEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("visible")) == 0) SetVisible(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("float")) == 0) SetFloat(_tcsicmp(pstrValue, _T("true")) == 0);
-        else if (_tcsicmp(pstrName, _T("shortcut")) == 0) SetShortcut(pstrValue[0]);
-        else if (_tcsicmp(pstrName, _T("menu")) == 0) SetContextMenuUsed(_tcsicmp(pstrValue, _T("true")) == 0);
+        } else if (_tcsicmp(pstrName, _T("bkimage")) == 0)
+            SetBkImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("foreimage")) == 0)
+            SetForeImage(pstrValue);
+        else if (_tcsicmp(pstrName, _T("width")) == 0)
+            SetFixedWidth(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("height")) == 0)
+            SetFixedHeight(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("minwidth")) == 0)
+            SetMinWidth(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("minheight")) == 0)
+            SetMinHeight(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("maxwidth")) == 0)
+            SetMaxWidth(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("maxheight")) == 0)
+            SetMaxHeight(_ttoi(pstrValue));
+        else if (_tcsicmp(pstrName, _T("name")) == 0)
+            SetName(pstrValue);
+        else if (_tcsicmp(pstrName, _T("drag")) == 0)
+            SetDragEnable(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("drop")) == 0)
+            SetDropEnable(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("resourcetext")) == 0)
+            SetResourceText(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("text")) == 0)
+            SetText(pstrValue);
+        else if (_tcsicmp(pstrName, _T("tooltip")) == 0)
+            SetToolTip(pstrValue);
+        else if (_tcsicmp(pstrName, _T("userdata")) == 0)
+            SetUserData(pstrValue);
+        else if (_tcsicmp(pstrName, _T("enabled")) == 0)
+            SetEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("mouse")) == 0)
+            SetMouseEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("keyboard")) == 0)
+            SetKeyboardEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("visible")) == 0)
+            SetVisible(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("float")) == 0)
+            SetFloat(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("shortcut")) == 0)
+            SetShortcut(pstrValue[0]);
+        else if (_tcsicmp(pstrName, _T("menu")) == 0)
+            SetContextMenuUsed(_tcsicmp(pstrValue, _T("true")) == 0);
         else if (_tcsicmp(pstrName, _T("cursor")) == 0 && pstrValue) {
-            if (_tcsicmp(pstrValue, _T("arrow")) == 0)			SetCursor(UICURSOR_ARROW);
-            else if (_tcsicmp(pstrValue, _T("ibeam")) == 0)	SetCursor(UICURSOR_IBEAM);
-            else if (_tcsicmp(pstrValue, _T("wait")) == 0)		SetCursor(UICURSOR_WAIT);
-            else if (_tcsicmp(pstrValue, _T("cross")) == 0)	SetCursor(UICURSOR_CROSS);
-            else if (_tcsicmp(pstrValue, _T("uparrow")) == 0)	SetCursor(UICURSOR_UPARROW);
-            else if (_tcsicmp(pstrValue, _T("size")) == 0)		SetCursor(UICURSOR_SIZE);
-            else if (_tcsicmp(pstrValue, _T("icon")) == 0)		SetCursor(UICURSOR_ICON);
-            else if (_tcsicmp(pstrValue, _T("sizenwse")) == 0)	SetCursor(UICURSOR_SIZENWSE);
-            else if (_tcsicmp(pstrValue, _T("sizenesw")) == 0)	SetCursor(UICURSOR_SIZENESW);
-            else if (_tcsicmp(pstrValue, _T("sizewe")) == 0)	SetCursor(UICURSOR_SIZEWE);
-            else if (_tcsicmp(pstrValue, _T("sizens")) == 0)	SetCursor(UICURSOR_SIZENS);
-            else if (_tcsicmp(pstrValue, _T("sizeall")) == 0)	SetCursor(UICURSOR_SIZEALL);
-            else if (_tcsicmp(pstrValue, _T("no")) == 0)		SetCursor(UICURSOR_NO);
-            else if (_tcsicmp(pstrValue, _T("hand")) == 0)		SetCursor(UICURSOR_HAND);
-        } else if (_tcsicmp(pstrName, _T("virtualwnd")) == 0) SetVirtualWnd(pstrValue);
+            if (_tcsicmp(pstrValue, _T("arrow")) == 0)
+                SetCursor(UICURSOR_ARROW);
+            else if (_tcsicmp(pstrValue, _T("ibeam")) == 0)
+                SetCursor(UICURSOR_IBEAM);
+            else if (_tcsicmp(pstrValue, _T("wait")) == 0)
+                SetCursor(UICURSOR_WAIT);
+            else if (_tcsicmp(pstrValue, _T("cross")) == 0)
+                SetCursor(UICURSOR_CROSS);
+            else if (_tcsicmp(pstrValue, _T("uparrow")) == 0)
+                SetCursor(UICURSOR_UPARROW);
+            else if (_tcsicmp(pstrValue, _T("size")) == 0)
+                SetCursor(UICURSOR_SIZE);
+            else if (_tcsicmp(pstrValue, _T("icon")) == 0)
+                SetCursor(UICURSOR_ICON);
+            else if (_tcsicmp(pstrValue, _T("sizenwse")) == 0)
+                SetCursor(UICURSOR_SIZENWSE);
+            else if (_tcsicmp(pstrValue, _T("sizenesw")) == 0)
+                SetCursor(UICURSOR_SIZENESW);
+            else if (_tcsicmp(pstrValue, _T("sizewe")) == 0)
+                SetCursor(UICURSOR_SIZEWE);
+            else if (_tcsicmp(pstrValue, _T("sizens")) == 0)
+                SetCursor(UICURSOR_SIZENS);
+            else if (_tcsicmp(pstrValue, _T("sizeall")) == 0)
+                SetCursor(UICURSOR_SIZEALL);
+            else if (_tcsicmp(pstrValue, _T("no")) == 0)
+                SetCursor(UICURSOR_NO);
+            else if (_tcsicmp(pstrValue, _T("hand")) == 0)
+                SetCursor(UICURSOR_HAND);
+        } else if (_tcsicmp(pstrName, _T("virtualwnd")) == 0)
+            SetVirtualWnd(pstrValue);
         else {
             AddCustomAttribute(pstrName, pstrValue);
         }
@@ -1208,15 +1273,18 @@ namespace DUI
                 } else {
                     CRenderUI::DrawGradient(hDC, m_rcItem, GetAdjustColor(m_dwBackColor), GetAdjustColor(m_dwBackColor2), bVer, 16);
                 }
-            } else if (m_dwBackColor >= 0xFF000000) CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwBackColor));
-            else CRenderUI::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwBackColor));
+            } else if (m_dwBackColor >= 0xFF000000)
+                CRenderUI::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwBackColor));
+            else
+                CRenderUI::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwBackColor));
         }
     }
 
     void CControlUI::PaintBkImage(HDC hDC)
     {
         if (m_sBkImage.IsEmpty()) return;
-        if (!DrawImage(hDC, (LPCTSTR)m_sBkImage)) {}
+        if (!DrawImage(hDC, (LPCTSTR)m_sBkImage)) {
+        }
     }
 
     void CControlUI::PaintStatusImage(HDC hDC)

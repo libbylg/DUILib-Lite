@@ -31,7 +31,6 @@ namespace DUI
         y = GET_Y_LPARAM(lParam);
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////
     //
     //
@@ -58,7 +57,6 @@ namespace DUI
         cx = _cx;
         cy = _cy;
     }
-
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -120,8 +118,16 @@ namespace DUI
 
     void CRectUI::Normalize()
     {
-        if (left > right) { int iTemp = left; left = right; right = iTemp; }
-        if (top > bottom) { int iTemp = top; top = bottom; bottom = iTemp; }
+        if (left > right) {
+            int iTemp = left;
+            left = right;
+            right = iTemp;
+        }
+        if (top > bottom) {
+            int iTemp = top;
+            top = bottom;
+            bottom = iTemp;
+        }
     }
 
     void CRectUI::Offset(int cx, int cy)
@@ -143,7 +149,6 @@ namespace DUI
     {
         ::UnionRect(this, this, &rc);
     }
-
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -242,7 +247,8 @@ namespace DUI
 
     int CStdPtrArray::Find(LPVOID pData) const
     {
-        for (int i = 0; i < m_nCount; i++) if (m_ppVoid[i] == pData) return i;
+        for (int i = 0; i < m_nCount; i++)
+            if (m_ppVoid[i] == pData) return i;
         return -1;
     }
 
@@ -262,19 +268,17 @@ namespace DUI
         return m_ppVoid[iIndex];
     }
 
-    LPVOID CStdPtrArray::operator[] (int iIndex) const
+    LPVOID CStdPtrArray::operator[](int iIndex) const
     {
         ASSERT(iIndex >= 0 && iIndex < m_nCount);
         return m_ppVoid[iIndex];
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////
     //
     //
 
-    CStdValArray::CStdValArray(int iElementSize, int iPreallocSize /*= 0*/) :
-        m_pVoid(NULL),
+    CStdValArray::CStdValArray(int iElementSize, int iPreallocSize /*= 0*/) : m_pVoid(NULL),
         m_nCount(0),
         m_iElementSize(iElementSize),
         m_nAllocated(iPreallocSize)
@@ -291,7 +295,7 @@ namespace DUI
 
     void CStdValArray::Empty()
     {
-        m_nCount = 0;  // NOTE: We keep the memory in place
+        m_nCount = 0; // NOTE: We keep the memory in place
     }
 
     BOOL CStdValArray::IsEmpty() const
@@ -340,12 +344,11 @@ namespace DUI
         return m_pVoid + (iIndex * m_iElementSize);
     }
 
-    LPVOID CStdValArray::operator[] (int iIndex) const
+    LPVOID CStdValArray::operator[](int iIndex) const
     {
         ASSERT(iIndex >= 0 && iIndex < m_nCount);
         return m_pVoid + (iIndex * m_iElementSize);
     }
-
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -450,7 +453,7 @@ namespace DUI
         return m_pstr[nIndex];
     }
 
-    TCHAR CStringUI::operator[] (int nIndex) const
+    TCHAR CStringUI::operator[](int nIndex) const
     {
         return m_pstr[nIndex];
     }
@@ -464,7 +467,7 @@ namespace DUI
     const CStringUI& CStringUI::operator=(LPCTSTR lpStr)
     {
         if (lpStr) {
-            ASSERT(!::IsBadStringPtr(lpStr,(UINT_PTR)(-1)));
+            ASSERT(!::IsBadStringPtr(lpStr, (UINT_PTR)(-1)));
             Assign(lpStr);
         } else {
             Empty();
@@ -583,12 +586,12 @@ namespace DUI
         return *this;
     }
 
-    BOOL CStringUI::operator == (LPCTSTR str) const { return (Compare(str) == 0); };
-    BOOL CStringUI::operator != (LPCTSTR str) const { return (Compare(str) != 0); };
-    BOOL CStringUI::operator <= (LPCTSTR str) const { return (Compare(str) <= 0); };
-    BOOL CStringUI::operator <  (LPCTSTR str) const { return (Compare(str) < 0); };
-    BOOL CStringUI::operator >= (LPCTSTR str) const { return (Compare(str) >= 0); };
-    BOOL CStringUI::operator >  (LPCTSTR str) const { return (Compare(str) > 0); };
+    BOOL CStringUI::operator==(LPCTSTR str) const { return (Compare(str) == 0); };
+    BOOL CStringUI::operator!=(LPCTSTR str) const { return (Compare(str) != 0); };
+    BOOL CStringUI::operator<=(LPCTSTR str) const { return (Compare(str) <= 0); };
+    BOOL CStringUI::operator<(LPCTSTR str) const { return (Compare(str) < 0); };
+    BOOL CStringUI::operator>=(LPCTSTR str) const { return (Compare(str) >= 0); };
+    BOOL CStringUI::operator>(LPCTSTR str) const { return (Compare(str) > 0); };
 
     void CStringUI::SetAt(int nIndex, TCHAR ch)
     {
@@ -696,7 +699,6 @@ namespace DUI
         va_end(Args);
 
         return nRet;
-
     }
 
     int CStringUI::SmallFormat(LPCTSTR pstrFormat, ...)
@@ -763,7 +765,8 @@ namespace DUI
     {
         UINT i = 0;
         SIZE_T len = _tcslen(Key);
-        while (len-- > 0) i = (i << 5) + i + Key[len];
+        while (len-- > 0)
+            i = (i << 5) + i + Key[len];
         return i;
     }
 
@@ -915,7 +918,7 @@ namespace DUI
 
     int CStdStringPtrMap::GetSize() const
     {
-#if 0//def _DEBUG
+#if 0 //def _DEBUG
         int nCount = 0;
         int len = m_nBuckets;
         while (len--) {
@@ -943,11 +946,10 @@ namespace DUI
         return NULL;
     }
 
-    LPCTSTR CStdStringPtrMap::operator[] (int nIndex) const
+    LPCTSTR CStdStringPtrMap::operator[](int nIndex) const
     {
         return GetAt(nIndex);
     }
-
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -962,7 +964,6 @@ namespace DUI
     {
         ::SetCursor(m_hOrigCursor);
     }
-
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -1099,7 +1100,7 @@ namespace DUI
     //		return;
 
     //	// 1¡¢aaa.jpg
-    //	// 2¡¢file='aaa.jpg' res='' restype='0' dest='0,0,0,0' source='0,0,0,0' corner='0,0,0,0' 
+    //	// 2¡¢file='aaa.jpg' res='' restype='0' dest='0,0,0,0' source='0,0,0,0' corner='0,0,0,0'
     //	// mask='#FF0000' fade='255' hole='false' xtiled='false' ytiled='false'
     //	CDuiString sItem;
     //	CDuiString sValue;
@@ -1144,7 +1145,7 @@ namespace DUI
     //				//}
     //			}
     //			else if (sItem == _T("restype"))
-    //			{					
+    //			{
     //				m_sResType = sValue;
     //			}
     //			else if (sItem == _T("dest"))

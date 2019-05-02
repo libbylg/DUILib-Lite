@@ -1,7 +1,6 @@
 #include "Core/UIResourceManager.h"
 #include "Core/UIManager.h"
 #include "Utils/Utils.h"
-#include "Utils/Utils.h"
 
 namespace DUI
 {
@@ -9,7 +8,6 @@ namespace DUI
     CResourceManagerUI::CResourceManagerUI(void)
     {
         m_pQuerypInterface = NULL;
-
     }
 
     CResourceManagerUI::~CResourceManagerUI(void)
@@ -34,7 +32,7 @@ namespace DUI
                 return NULL;
             }
 
-            if (!m_xml.LoadFromMem((BYTE*)::LockResource(hGlobal), ::SizeofResource(CManagerUI::GetResourceDll(), hResource))) {
+            if (!m_xml.LoadFromMem((BYTE*) ::LockResource(hGlobal), ::SizeofResource(CManagerUI::GetResourceDll(), hResource))) {
                 return NULL;
             }
             ::FreeResource(hResource);
@@ -59,7 +57,8 @@ namespace DUI
         for (CMarkupNodeUI node = Root.GetChild(); node.IsValid(); node = node.GetSibling()) {
             pstrClass = node.GetName();
             CMarkupNodeUI ChildNode = node.GetChild();
-            if (ChildNode.IsValid()) LoadResource(node);
+            if (ChildNode.IsValid())
+                LoadResource(node);
             else if ((_tcsicmp(pstrClass, _T("Image")) == 0) && node.HasAttributes()) {
                 //加载图片资源
                 nAttributes = node.GetAttributeCount();
@@ -76,7 +75,7 @@ namespace DUI
                 if (pstrId == NULL || pstrPath == NULL) continue;
                 CStringUI * pstrFind = static_cast<CStringUI*>(m_mImageHashMap.Find(pstrId));
                 if (pstrFind != NULL) continue;
-                m_mImageHashMap.Insert(pstrId, (LPVOID)new CStringUI(pstrPath));
+                m_mImageHashMap.Insert(pstrId, (LPVOID) new CStringUI(pstrPath));
             } else if (_tcsicmp(pstrClass, _T("Xml")) == 0 && node.HasAttributes()) {
                 //加载XML配置文件
                 nAttributes = node.GetAttributeCount();
@@ -93,8 +92,9 @@ namespace DUI
                 if (pstrId == NULL || pstrPath == NULL) continue;
                 CStringUI * pstrFind = static_cast<CStringUI*>(m_mXmlHashMap.Find(pstrId));
                 if (pstrFind != NULL) continue;
-                m_mXmlHashMap.Insert(pstrId, (LPVOID)new CStringUI(pstrPath));
-            } else continue;
+                m_mXmlHashMap.Insert(pstrId, (LPVOID) new CStringUI(pstrPath));
+            } else
+                continue;
         }
         return TRUE;
     }
@@ -178,9 +178,10 @@ namespace DUI
                 if (lpstrFind != NULL) {
                     lpstrFind->Assign(pstrText);
                 } else {
-                    m_mTextResourceHashMap.Insert(pstrId, (LPVOID)new CStringUI(pstrText));
+                    m_mTextResourceHashMap.Insert(pstrId, (LPVOID) new CStringUI(pstrText));
                 }
-            } else continue;
+            } else
+                continue;
         }
 
         return TRUE;
@@ -224,6 +225,5 @@ namespace DUI
             }
         }
     }
-
 
 } // namespace DUI

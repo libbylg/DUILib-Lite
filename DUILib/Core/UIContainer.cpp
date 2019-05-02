@@ -1,8 +1,8 @@
 #include "Core/UIContainer.h"
-#include "Core/UIWindow.h"
 #include "Core/UIManager.h"
 #include "Core/UIRender.h"
 #include "Core/UIScrollBar.h"
+#include "Core/UIWindow.h"
 
 namespace DUI
 {
@@ -47,8 +47,10 @@ namespace DUI
 
     LPVOID CContainerUI::GetInterface(LPCTSTR pstrName)
     {
-        if (_tcsicmp(pstrName, _T("IContainer")) == 0) return static_cast<IContainerUI*>(this);
-        else if (_tcsicmp(pstrName, UICONTROL_CONTAINER) == 0) return static_cast<CContainerUI*>(this);
+        if (_tcsicmp(pstrName, _T("IContainer")) == 0)
+            return static_cast<IContainerUI*>(this);
+        else if (_tcsicmp(pstrName, UICONTROL_CONTAINER) == 0)
+            return static_cast<CContainerUI*>(this);
         return CControlUI::GetInterface(pstrName);
     }
 
@@ -92,8 +94,10 @@ namespace DUI
         if (pControl == NULL) return false;
 
         if (m_pManager != NULL) m_pManager->InitControls(pControl, this);
-        if (IsVisible()) NeedUpdate();
-        else pControl->SetInternVisible(false);
+        if (IsVisible())
+            NeedUpdate();
+        else
+            pControl->SetInternVisible(false);
         return m_items.Add(pControl);
     }
 
@@ -102,8 +106,10 @@ namespace DUI
         if (pControl == NULL) return false;
 
         if (m_pManager != NULL) m_pManager->InitControls(pControl, this);
-        if (IsVisible()) NeedUpdate();
-        else pControl->SetInternVisible(false);
+        if (IsVisible())
+            NeedUpdate();
+        else
+            pControl->SetInternVisible(false);
         return m_items.InsertAt(iIndex, pControl);
     }
 
@@ -115,8 +121,10 @@ namespace DUI
             if (static_cast<CControlUI*>(m_items[it]) == pControl) {
                 NeedUpdate();
                 if (m_bAutoDestroy) {
-                    if (m_bDelayedDestroy && m_pManager) m_pManager->AddDelayedCleanup(pControl);
-                    else delete pControl;
+                    if (m_bDelayedDestroy && m_pManager)
+                        m_pManager->AddDelayedCleanup(pControl);
+                    else
+                        delete pControl;
                 }
                 return m_items.Remove(it);
             }
@@ -186,7 +194,6 @@ namespace DUI
         if (m_pManager) return m_pManager->GetDPIObj()->Scale(m_iChildPadding);
         return m_iChildPadding;
     }
-
 
     void CContainerUI::SetChildPadding(int iPadding)
     {
@@ -271,8 +278,10 @@ namespace DUI
     void CContainerUI::DoEvent(TEVENT_UI & event)
     {
         if (!IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND) {
-            if (m_pParent != NULL) m_pParent->DoEvent(event);
-            else CControlUI::DoEvent(event);
+            if (m_pParent != NULL)
+                m_pParent->DoEvent(event);
+            else
+                CControlUI::DoEvent(event);
             return;
         }
 
@@ -420,7 +429,7 @@ namespace DUI
 
     int CContainerUI::GetScrollStepSize() const
     {
-        if (m_pManager)return m_pManager->GetDPIObj()->Scale(m_nScrollStepSize);
+        if (m_pManager) return m_pManager->GetDPIObj()->Scale(m_nScrollStepSize);
 
         return m_nScrollStepSize;
     }
@@ -596,16 +605,12 @@ namespace DUI
         iIndex = CLAMP(iIndex, 0, GetCount() - 1);
         if (bForward) {
             for (int i = iIndex; i < GetCount(); i++) {
-                if (GetItemAt(i)->GetInterface(_T("ListItem")) != NULL
-                    && GetItemAt(i)->IsVisible()
-                    && GetItemAt(i)->IsEnabled()) return i;
+                if (GetItemAt(i)->GetInterface(_T("ListItem")) != NULL && GetItemAt(i)->IsVisible() && GetItemAt(i)->IsEnabled()) return i;
             }
             return -1;
         } else {
             for (int i = iIndex; i >= 0; --i) {
-                if (GetItemAt(i)->GetInterface(_T("ListItem")) != NULL
-                    && GetItemAt(i)->IsVisible()
-                    && GetItemAt(i)->IsEnabled()) return i;
+                if (GetItemAt(i)->GetInterface(_T("ListItem")) != NULL && GetItemAt(i)->IsVisible() && GetItemAt(i)->IsEnabled()) return i;
             }
             return FindSelectable(0, true);
         }
@@ -691,12 +696,17 @@ namespace DUI
         if (_tcsicmp(pstrName, _T("inset")) == 0) {
             RECT rcInset = {0};
             LPTSTR pstr = NULL;
-            rcInset.left = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);
-            rcInset.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
-            rcInset.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);
-            rcInset.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);
+            rcInset.left = _tcstol(pstrValue, &pstr, 10);
+            ASSERT(pstr);
+            rcInset.top = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
+            rcInset.right = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
+            rcInset.bottom = _tcstol(pstr + 1, &pstr, 10);
+            ASSERT(pstr);
             SetInset(rcInset);
-        } else if (_tcsicmp(pstrName, _T("mousechild")) == 0) SetMouseChildEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
+        } else if (_tcsicmp(pstrName, _T("mousechild")) == 0)
+            SetMouseChildEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
         else if (_tcsicmp(pstrName, _T("vscrollbar")) == 0) {
             EnableScrollBar(_tcsicmp(pstrValue, _T("true")) == 0, GetHorizontalScrollBar() != NULL);
         } else if (_tcsicmp(pstrName, _T("vscrollbarstyle")) == 0) {
@@ -723,17 +733,26 @@ namespace DUI
                     GetHorizontalScrollBar()->ApplyAttributeList(pstrValue);
                 }
             }
-        } else if (_tcsicmp(pstrName, _T("childpadding")) == 0) SetChildPadding(_ttoi(pstrValue));
+        } else if (_tcsicmp(pstrName, _T("childpadding")) == 0)
+            SetChildPadding(_ttoi(pstrValue));
         else if (_tcscmp(pstrName, _T("childalign")) == 0) {
-            if (_tcscmp(pstrValue, _T("left")) == 0) m_iChildAlign = DT_LEFT;
-            else if (_tcscmp(pstrValue, _T("center")) == 0) m_iChildAlign = DT_CENTER;
-            else if (_tcscmp(pstrValue, _T("right")) == 0) m_iChildAlign = DT_RIGHT;
+            if (_tcscmp(pstrValue, _T("left")) == 0)
+                m_iChildAlign = DT_LEFT;
+            else if (_tcscmp(pstrValue, _T("center")) == 0)
+                m_iChildAlign = DT_CENTER;
+            else if (_tcscmp(pstrValue, _T("right")) == 0)
+                m_iChildAlign = DT_RIGHT;
         } else if (_tcscmp(pstrName, _T("childvalign")) == 0) {
-            if (_tcscmp(pstrValue, _T("top")) == 0) m_iChildVAlign = DT_TOP;
-            else if (_tcscmp(pstrValue, _T("vcenter")) == 0) m_iChildVAlign = DT_VCENTER;
-            else if (_tcscmp(pstrValue, _T("bottom")) == 0) m_iChildVAlign = DT_BOTTOM;
-        } else if (_tcsicmp(pstrName, _T("scrollstepsize")) == 0) SetScrollStepSize(_ttoi(pstrValue));
-        else CControlUI::SetAttribute(pstrName, pstrValue);
+            if (_tcscmp(pstrValue, _T("top")) == 0)
+                m_iChildVAlign = DT_TOP;
+            else if (_tcscmp(pstrValue, _T("vcenter")) == 0)
+                m_iChildVAlign = DT_VCENTER;
+            else if (_tcscmp(pstrValue, _T("bottom")) == 0)
+                m_iChildVAlign = DT_BOTTOM;
+        } else if (_tcsicmp(pstrName, _T("scrollstepsize")) == 0)
+            SetScrollStepSize(_ttoi(pstrValue));
+        else
+            CControlUI::SetAttribute(pstrName, pstrValue);
     }
 
     void CContainerUI::SetManager(CManagerUI * pManager, CControlUI * pParent, BOOL bInit)
@@ -1002,7 +1021,8 @@ namespace DUI
         if (pSubControl != NULL) {
             pSubControl->SetText(pstrText);
             return TRUE;
-        } else return FALSE;
+        } else
+            return FALSE;
     }
 
     BOOL CContainerUI::SetSubControlFixedHeight(LPCTSTR pstrSubControlName, int cy)
@@ -1012,7 +1032,8 @@ namespace DUI
         if (pSubControl != NULL) {
             pSubControl->SetFixedHeight(cy);
             return TRUE;
-        } else return FALSE;
+        } else
+            return FALSE;
     }
 
     BOOL CContainerUI::SetSubControlFixedWdith(LPCTSTR pstrSubControlName, int cx)
@@ -1022,7 +1043,8 @@ namespace DUI
         if (pSubControl != NULL) {
             pSubControl->SetFixedWidth(cx);
             return TRUE;
-        } else return FALSE;
+        } else
+            return FALSE;
     }
 
     BOOL CContainerUI::SetSubControlUserData(LPCTSTR pstrSubControlName, LPCTSTR pstrText)
@@ -1032,10 +1054,11 @@ namespace DUI
         if (pSubControl != NULL) {
             pSubControl->SetUserData(pstrText);
             return TRUE;
-        } else return FALSE;
+        } else
+            return FALSE;
     }
 
-    DUILIB::CStringUI CContainerUI::GetSubControlText(LPCTSTR pstrSubControlName)
+    CStringUI CContainerUI::GetSubControlText(LPCTSTR pstrSubControlName)
     {
         CControlUI* pSubControl = NULL;
         pSubControl = this->FindSubControl(pstrSubControlName);
@@ -1049,24 +1072,30 @@ namespace DUI
     {
         CControlUI* pSubControl = NULL;
         pSubControl = this->FindSubControl(pstrSubControlName);
-        if (pSubControl == NULL) return -1;
-        else return pSubControl->GetFixedHeight();
+        if (pSubControl == NULL)
+            return -1;
+        else
+            return pSubControl->GetFixedHeight();
     }
 
     int CContainerUI::GetSubControlFixedWdith(LPCTSTR pstrSubControlName)
     {
         CControlUI* pSubControl = NULL;
         pSubControl = this->FindSubControl(pstrSubControlName);
-        if (pSubControl == NULL) return -1;
-        else return pSubControl->GetFixedWidth();
+        if (pSubControl == NULL)
+            return -1;
+        else
+            return pSubControl->GetFixedWidth();
     }
 
     const CStringUI CContainerUI::GetSubControlUserData(LPCTSTR pstrSubControlName)
     {
         CControlUI* pSubControl = NULL;
         pSubControl = this->FindSubControl(pstrSubControlName);
-        if (pSubControl == NULL) return _T("");
-        else return pSubControl->GetUserData();
+        if (pSubControl == NULL)
+            return _T("");
+        else
+            return pSubControl->GetUserData();
     }
 
     CControlUI* CContainerUI::FindSubControl(LPCTSTR pstrSubControlName)

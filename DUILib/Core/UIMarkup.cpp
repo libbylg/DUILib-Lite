@@ -178,7 +178,6 @@ namespace DUI
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     //
@@ -224,7 +223,8 @@ namespace DUI
 #ifdef _UNICODE
         if (encoding == UIXMLFILE_ENCODING_UTF8) {
             if (dwSize >= 3 && pByte[0] == 0xEF && pByte[1] == 0xBB && pByte[2] == 0xBF) {
-                pByte += 3; dwSize -= 3;
+                pByte += 3;
+                dwSize -= 3;
             }
             DWORD nWide = ::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pByte, dwSize, NULL, 0);
 
@@ -260,10 +260,11 @@ namespace DUI
                 pByte -= 2;
             }
         }
-#else // !_UNICODE
+#else  // !_UNICODE
         if (encoding == UIXMLFILE_ENCODING_UTF8) {
             if (dwSize >= 3 && pByte[0] == 0xEF && pByte[1] == 0xBB && pByte[2] == 0xBF) {
-                pByte += 3; dwSize -= 3;
+                pByte += 3;
+                dwSize -= 3;
             }
             DWORD nWide = ::MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pByte, dwSize, NULL, 0);
 
@@ -344,7 +345,8 @@ namespace DUI
         } else {
             sFile += CManagerUI::GetResourceZip();
             HZIP hz = NULL;
-            if (CManagerUI::IsCachedResourceZip()) hz = (HZIP)CManagerUI::GetResourceZipHandle();
+            if (CManagerUI::IsCachedResourceZip())
+                hz = (HZIP)CManagerUI::GetResourceZipHandle();
             else {
                 CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
@@ -417,7 +419,7 @@ namespace DUI
     {
         _SkipWhitespace(pstrText);
         ULONG iPrevious = 0;
-        for (; ; ) {
+        for (;;) {
             if (*pstrText == _T('\0') && iParent <= 1) return true;
             _SkipWhitespace(pstrText);
             if (*pstrText != _T('<')) return _Failed(_T("Expected start tag"), pstrText);
@@ -428,7 +430,8 @@ namespace DUI
             if (*pstrText == _T('!') || *pstrText == _T('?')) {
                 TCHAR ch = *pstrText;
                 if (*pstrText == _T('!')) ch = _T('-');
-                while (*pstrText != _T('\0') && !(*pstrText == ch && *(pstrText + 1) == _T('>'))) pstrText = ::CharNext(pstrText);
+                while (*pstrText != _T('\0') && !(*pstrText == ch && *(pstrText + 1) == _T('>')))
+                    pstrText = ::CharNext(pstrText);
                 if (*pstrText != _T('\0')) pstrText += 2;
                 _SkipWhitespace(pstrText);
                 continue;
@@ -440,8 +443,10 @@ namespace DUI
             pEl->iStart = pstrText - m_pstrXML;
             pEl->iParent = iParent;
             pEl->iNext = pEl->iChild = 0;
-            if (iPrevious != 0) m_pElements[iPrevious].iNext = iPos;
-            else if (iParent > 0) m_pElements[iParent].iChild = iPos;
+            if (iPrevious != 0)
+                m_pElements[iPrevious].iNext = iPos;
+            else if (iParent > 0)
+                m_pElements[iParent].iChild = iPos;
             iPrevious = iPos;
             // Parse name
             LPCTSTR pstrName = pstrText;
@@ -496,24 +501,28 @@ namespace DUI
 
     void CMarkupUI::_SkipWhitespace(LPCTSTR & pstr) const
     {
-        while (*pstr > _T('\0') && *pstr <= _T(' ')) pstr = ::CharNext(pstr);
+        while (*pstr > _T('\0') && *pstr <= _T(' '))
+            pstr = ::CharNext(pstr);
     }
 
     void CMarkupUI::_SkipWhitespace(LPTSTR & pstr) const
     {
-        while (*pstr > _T('\0') && *pstr <= _T(' ')) pstr = ::CharNext(pstr);
+        while (*pstr > _T('\0') && *pstr <= _T(' '))
+            pstr = ::CharNext(pstr);
     }
 
     void CMarkupUI::_SkipIdentifier(LPCTSTR & pstr) const
     {
         // 属性只能用英文，所以这样处理没有问题
-        while (*pstr != _T('\0') && (*pstr == _T('_') || *pstr == _T(':') || _istalnum(*pstr))) pstr = ::CharNext(pstr);
+        while (*pstr != _T('\0') && (*pstr == _T('_') || *pstr == _T(':') || _istalnum(*pstr)))
+            pstr = ::CharNext(pstr);
     }
 
     void CMarkupUI::_SkipIdentifier(LPTSTR & pstr) const
     {
         // 属性只能用英文，所以这样处理没有问题
-        while (*pstr != _T('\0') && (*pstr == _T('_') || *pstr == _T(':') || _istalnum(*pstr))) pstr = ::CharNext(pstr);
+        while (*pstr != _T('\0') && (*pstr == _T('_') || *pstr == _T(':') || _istalnum(*pstr)))
+            pstr = ::CharNext(pstr);
     }
 
     BOOL CMarkupUI::_ParseAttributes(LPTSTR & pstrText)
@@ -568,7 +577,8 @@ namespace DUI
         // Make sure that MapAttributes() works correctly when it parses
         // over a value that has been transformed.
         LPTSTR pstrFill = pstrDest + 1;
-        while (pstrFill < pstrText)* pstrFill++ = _T(' ');
+        while (pstrFill < pstrText)
+            * pstrFill++ = _T(' ');
         return true;
     }
 

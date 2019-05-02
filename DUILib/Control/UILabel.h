@@ -42,19 +42,19 @@ namespace DUI
         virtual void SetText(LPCTSTR pstrText);
 
     protected:
-        DWORD	m_dwTextColor;
-        DWORD	m_dwDisabledTextColor;
-        int		m_iFont;
-        UINT	m_uTextStyle;
-        RECT	m_rcTextPadding;
-        BOOL	m_bShowHtml;
-        BOOL	m_bAutoCalcWidth;
-        BOOL	m_bAutoCalcHeight;
+        DWORD m_dwTextColor;
+        DWORD m_dwDisabledTextColor;
+        int m_iFont;
+        UINT m_uTextStyle;
+        RECT m_rcTextPadding;
+        BOOL m_bShowHtml;
+        BOOL m_bAutoCalcWidth;
+        BOOL m_bAutoCalcHeight;
 
-        SIZE    m_szAvailableLast;
-        SIZE    m_cxyFixedLast;
-        BOOL    m_bNeedEstimateSize;
+        SIZE m_szAvailableLast;
+        SIZE m_cxyFixedLast;
+        BOOL m_bNeedEstimateSize;
     };
-};
+}; // namespace DUI
 
 #endif // __UILABEL_H__
