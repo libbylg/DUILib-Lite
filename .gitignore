@@ -6,6 +6,7 @@
 Bin
 Lib
 Temp
+Pkg
 
 #	目标文件类型
 *.exe
@@ -32,6 +33,11 @@ Temp
 *.suo
 *.user
 *.res
+
+#	打包中间文件
+*.tar
+*.gz
+*.zip
 
 #	IDE管理类文件
 *.manifest
