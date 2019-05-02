@@ -3,7 +3,10 @@
 
 namespace DUI
 {
-    UI_IMPLEMENT_CONTROL(CTabLayoutUI)
+    UI_IMPLEMENT_CONTROL(CTabLayoutUI);
+
+
+
         CTabLayoutUI::CTabLayoutUI() : m_iCurSel(-1)
     {
     }

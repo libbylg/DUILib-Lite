@@ -80,7 +80,9 @@
     <ClCompile Include="Core\UIScrollBar.cpp" />
     <ClCompile Include="Core\UIShadow.cpp" />
     <ClCompile Include="Core\UIWindow.cpp" />
-    <ClCompile Include="DUILib.cpp" />
+    <ClCompile Include="Core\UIDefine.cpp" />
+    <ClCompile Include="Layout\UITabLayout.cpp" />
+    <ClCompile Include="Layout\UITileLayout.cpp" />
     <ClCompile Include="Utils\DPI.cpp" />
     <ClCompile Include="Utils\unzip.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
@@ -101,6 +103,8 @@
     <ClInclude Include="Core\UIShadow.h" />
     <ClInclude Include="Core\UIWindow.h" />
     <ClInclude Include="DUILib.h" />
+    <ClInclude Include="Layout\UITabLayout.h" />
+    <ClInclude Include="Layout\UITileLayout.h" />
     <ClInclude Include="Utils\downloadmgr.h" />
     <ClInclude Include="Utils\DPI.h" />
     <ClInclude Include="Utils\FlashEventHandler.h" />

@@ -17,7 +17,9 @@
     <ClCompile Include="Utils\DPI.cpp" />
     <ClCompile Include="Utils\unzip.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
-    <ClCompile Include="DUILib.cpp" />
+    <ClCompile Include="Layout\UITileLayout.cpp" />
+    <ClCompile Include="Layout\UITabLayout.cpp" />
+    <ClCompile Include="Core\UIDefine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\UIContainer.h" />
@@ -44,5 +46,7 @@
     <ClInclude Include="Utils\VersionHelpers.h" />
     <ClInclude Include="Utils\WebBrowserEventHandler.h" />
     <ClInclude Include="DUILib.h" />
+    <ClInclude Include="Layout\UITileLayout.h" />
+    <ClInclude Include="Layout\UITabLayout.h" />
   </ItemGroup>
 </Project>

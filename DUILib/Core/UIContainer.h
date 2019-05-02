@@ -2,6 +2,7 @@
 #define __UICONTAINER_H__
 
 #include "Core/UIControl.h"
+#include "Core/UIScrollBar.h"
 
 namespace DUI
 {
