@@ -67,7 +67,7 @@ namespace DUILIB
 		if( event.Type == UIEVENT_BUTTONUP && IsEnabled() ) {
 			for( int i = 0; i < m_nLinks; i++ ) {
 				if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) {
-					m_pManager->SendNotify(this, DUI_MSGTYPE_LINK, i);
+					m_pManager->SendNotify(this, UIMSGTYPE_LINK, i);
 					return;
 				}
 			}

@@ -11,7 +11,7 @@ namespace DUILIB
 
     class DUILIB_API CScrollBarUI : public CControlUI
     {
-        DECLARE_DUICONTROL(CScrollBarUI)
+        DECLARE_CONTROL_UI(CScrollBarUI)
     public:
         CScrollBarUI();
 
@@ -84,7 +84,7 @@ namespace DUILIB
         void SetBkDisabledImage(LPCTSTR pStrImage);
 
         void SetPos(RECT rc, BOOL bNeedInvalidate = true);
-        void DoEvent(TEventUI& event);
+        void DoEvent(TEVENT_UI& event);
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
         BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
@@ -113,40 +113,40 @@ namespace DUILIB
         int m_nLastScrollOffset;
         int m_nScrollRepeatDelay;
 
-        CDuiString m_sBkNormalImage;
-        CDuiString m_sBkHotImage;
-        CDuiString m_sBkPushedImage;
-        CDuiString m_sBkDisabledImage;
+        CStringUI m_sBkNormalImage;
+        CStringUI m_sBkHotImage;
+        CStringUI m_sBkPushedImage;
+        CStringUI m_sBkDisabledImage;
 
         BOOL m_bShowButton1;
         RECT m_rcButton1;
         UINT m_uButton1State;
-        CDuiString m_sButton1NormalImage;
-        CDuiString m_sButton1HotImage;
-        CDuiString m_sButton1PushedImage;
-        CDuiString m_sButton1DisabledImage;
+        CStringUI m_sButton1NormalImage;
+        CStringUI m_sButton1HotImage;
+        CStringUI m_sButton1PushedImage;
+        CStringUI m_sButton1DisabledImage;
 
         BOOL m_bShowButton2;
         RECT m_rcButton2;
         UINT m_uButton2State;
-        CDuiString m_sButton2NormalImage;
-        CDuiString m_sButton2HotImage;
-        CDuiString m_sButton2PushedImage;
-        CDuiString m_sButton2DisabledImage;
+        CStringUI m_sButton2NormalImage;
+        CStringUI m_sButton2HotImage;
+        CStringUI m_sButton2PushedImage;
+        CStringUI m_sButton2DisabledImage;
 
         RECT m_rcThumb;
         UINT m_uThumbState;
-        CDuiString m_sThumbNormalImage;
-        CDuiString m_sThumbHotImage;
-        CDuiString m_sThumbPushedImage;
-        CDuiString m_sThumbDisabledImage;
+        CStringUI m_sThumbNormalImage;
+        CStringUI m_sThumbHotImage;
+        CStringUI m_sThumbPushedImage;
+        CStringUI m_sThumbDisabledImage;
 
-        CDuiString m_sRailNormalImage;
-        CDuiString m_sRailHotImage;
-        CDuiString m_sRailPushedImage;
-        CDuiString m_sRailDisabledImage;
+        CStringUI m_sRailNormalImage;
+        CStringUI m_sRailHotImage;
+        CStringUI m_sRailPushedImage;
+        CStringUI m_sRailDisabledImage;
 
-        CDuiString m_sImageModify;
+        CStringUI m_sImageModify;
     };
 }
 

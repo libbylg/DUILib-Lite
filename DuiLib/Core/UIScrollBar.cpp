@@ -6,7 +6,7 @@
 
 namespace DUILIB
 {
-    IMPLEMENT_DUICONTROL(CScrollBarUI)
+    IMPLEMENT_CONTROL_UI(CScrollBarUI)
 
         CScrollBarUI::CScrollBarUI() : m_bHorizontal(false), m_nRange(0), m_nScrollPos(0), m_nLineSize(8),
         m_pOwner(NULL), m_nLastScrollPos(0), m_nLastScrollOffset(0), m_nScrollRepeatDelay(0), m_uButton1State(0), \
@@ -516,7 +516,7 @@ namespace DUILIB
         }
     }
 
-    void CScrollBarUI::DoEvent(TEventUI & event)
+    void CScrollBarUI::DoEvent(TEVENT_UI & event)
     {
         if (!IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND) {
             if (m_pOwner != NULL) m_pOwner->DoEvent(event);
@@ -578,7 +578,7 @@ namespace DUILIB
                     }
                 }
             }
-            if (m_pManager != NULL) m_pManager->SendNotify(this, DUI_MSGTYPE_SCROLL);
+            if (m_pManager != NULL) m_pManager->SendNotify(this, UIMSGTYPE_SCROLL);
             return;
         }
         if (event.Type == UIEVENT_BUTTONUP) {
@@ -630,11 +630,11 @@ namespace DUILIB
             ++m_nScrollRepeatDelay;
             if ((m_uThumbState & UISTATE_CAPTURED) != 0) {
                 if (!m_bHorizontal) {
-                    if (m_pOwner != NULL) m_pOwner->SetScrollPos(CDuiSize(m_pOwner->GetScrollPos().cx, \
+                    if (m_pOwner != NULL) m_pOwner->SetScrollPos(CSizeUI(m_pOwner->GetScrollPos().cx, \
                         m_nLastScrollPos + m_nLastScrollOffset));
                     else SetScrollPos(m_nLastScrollPos + m_nLastScrollOffset);
                 } else {
-                    if (m_pOwner != NULL) m_pOwner->SetScrollPos(CDuiSize(m_nLastScrollPos + m_nLastScrollOffset, \
+                    if (m_pOwner != NULL) m_pOwner->SetScrollPos(CSizeUI(m_nLastScrollPos + m_nLastScrollOffset, \
                         m_pOwner->GetScrollPos().cy));
                     else SetScrollPos(m_nLastScrollPos + m_nLastScrollOffset);
                 }
@@ -680,7 +680,7 @@ namespace DUILIB
                     }
                 }
             }
-            if (m_pManager != NULL) m_pManager->SendNotify(this, DUI_MSGTYPE_SCROLL);
+            if (m_pManager != NULL) m_pManager->SendNotify(this, UIMSGTYPE_SCROLL);
             return;
         }
         if (event.Type == UIEVENT_MOUSEENTER) {

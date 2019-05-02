@@ -452,7 +452,7 @@ namespace DUILIB {
 		EnsureVisible(iIndex);
 		if( bTakeFocus ) pControl->SetFocus();
 		if( m_pManager != NULL && iLastSel != m_iCurSel) {
-			m_pManager->SendNotify(this, DUI_MSGTYPE_ITEMSELECT, iIndex);
+			m_pManager->SendNotify(this, UIMSGTYPE_ITEMSELECT, iIndex);
 		}
 
 		return true;
@@ -475,7 +475,7 @@ namespace DUILIB {
 		EnsureVisible(iIndex);
 		if( bTakeFocus ) pControl->SetFocus();
 		if( m_pManager != NULL ) {
-			m_pManager->SendNotify(this, DUI_MSGTYPE_ITEMSELECT, iIndex);
+			m_pManager->SendNotify(this, UIMSGTYPE_ITEMSELECT, iIndex);
 		}
 		return true;
 	}
@@ -1820,7 +1820,7 @@ namespace DUILIB {
 			}
 			else {
 				m_uButtonState |= UISTATE_PUSHED;
-				m_pManager->SendNotify(this, DUI_MSGTYPE_HEADERCLICK);
+				m_pManager->SendNotify(this, UIMSGTYPE_HEADERCLICK);
 				Invalidate();
 			}
 			return;
@@ -2074,7 +2074,7 @@ namespace DUILIB {
 	BOOL CListElementUI::Activate()
 	{
 		if( !CControlUI::Activate() ) return FALSE;
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, DUI_MSGTYPE_ITEMACTIVATE);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_ITEMACTIVATE);
 		return true;
 	}
 
@@ -2277,7 +2277,7 @@ namespace DUILIB {
 		if( event.Type == UIEVENT_BUTTONUP ) 
 		{
 			if( IsEnabled() ){
-				m_pManager->SendNotify(this, DUI_MSGTYPE_ITEMCLICK);
+				m_pManager->SendNotify(this, UIMSGTYPE_ITEMCLICK);
 			}
 			return;
 		}
@@ -2470,7 +2470,7 @@ namespace DUILIB {
 		if( event.Type == UIEVENT_BUTTONUP && IsEnabled() ) {
 			for( int i = 0; i < m_nLinks; i++ ) {
 				if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) {
-					m_pManager->SendNotify(this, DUI_MSGTYPE_LINK, i);
+					m_pManager->SendNotify(this, UIMSGTYPE_LINK, i);
 					return;
 				}
 			}
@@ -2678,7 +2678,7 @@ namespace DUILIB {
 	BOOL CListContainerElementUI::Activate()
 	{
 		if( !CContainerUI::Activate() ) return FALSE;
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, DUI_MSGTYPE_ITEMACTIVATE);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_ITEMACTIVATE);
 		return true;
 	}
 
@@ -2772,7 +2772,7 @@ namespace DUILIB {
 		if( event.Type == UIEVENT_BUTTONUP ) 
 		{
 			if( IsEnabled() ){
-				m_pManager->SendNotify(this, DUI_MSGTYPE_ITEMCLICK);
+				m_pManager->SendNotify(this, UIMSGTYPE_ITEMCLICK);
 			}
 			return;
 		}
@@ -2798,14 +2798,14 @@ namespace DUILIB {
 		}
 		if( event.Type == UIEVENT_TIMER )
 		{
-			m_pManager->SendNotify(this, DUI_MSGTYPE_TIMER, event.wParam, event.lParam);
+			m_pManager->SendNotify(this, UIMSGTYPE_TIMER, event.wParam, event.lParam);
 			return;
 		}
 
 		if( event.Type == UIEVENT_CONTEXTMENU )
 		{
 			if( IsContextMenuUsed() ) {
-				m_pManager->SendNotify(this, DUI_MSGTYPE_MENU, event.wParam, event.lParam);
+				m_pManager->SendNotify(this, UIMSGTYPE_MENU, event.wParam, event.lParam);
 				return;
 			}
 		}

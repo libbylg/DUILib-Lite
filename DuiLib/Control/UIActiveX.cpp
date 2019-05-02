@@ -821,7 +821,7 @@ namespace DUILIB {
 	LRESULT CActiveXWnd::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
 		if( m_pOwner->m_pOwner->GetManager()->IsLayered() ) {
-			::SetTimer(m_hWnd, CARET_TIMERID, ::GetCaretBlinkTime(), NULL);
+			::SetTimer(m_hWnd, UITIMERID_CARET, ::GetCaretBlinkTime(), NULL);
 		}
 		return 0;
 	}
@@ -1206,7 +1206,7 @@ namespace DUILIB {
 		if( FAILED(Hr) ) Hr = m_pUnk->QueryInterface(IID_IViewObject, (LPVOID*) &m_pControl->m_pViewObject);
 		// Activate and done...
 		m_pUnk->SetHostNames(OLESTR("UIActiveX"), NULL);
-		if( m_pManager != NULL ) m_pManager->SendNotify((CControlUI*)this, DUI_MSGTYPE_SHOWACTIVEX, 0, 0, FALSE);
+		if( m_pManager != NULL ) m_pManager->SendNotify((CControlUI*)this, UIMSGTYPE_SHOWACTIVEX, 0, 0, FALSE);
 		if( (dwMiscStatus & OLEMISC_INVISIBLEATRUNTIME) == 0 ) {
 			try
 			{

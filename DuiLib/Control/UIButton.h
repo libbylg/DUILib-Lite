@@ -7,7 +7,7 @@ namespace DUILIB
 {
 	class DUILIB_API CButtonUI : public CLabelUI
 	{
-		DECLARE_DUICONTROL(CButtonUI)
+		DECLARE_CONTROL_UI(CButtonUI)
 
 	public:
 		CButtonUI();
@@ -18,7 +18,7 @@ namespace DUILIB
 
 		BOOL Activate();
 		void SetEnabled(BOOL bEnable = true);
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 
 		virtual LPCTSTR GetNormalImage();
 		virtual void SetNormalImage(LPCTSTR pStrImage);
@@ -85,18 +85,18 @@ namespace DUILIB
 		DWORD m_dwPushedTextColor;
 		DWORD m_dwFocusedTextColor;
 
-		CDuiString m_sNormalImage;
-		CDuiString m_sHotImage;
-		CDuiString m_sHotForeImage;
-		CDuiString m_sPushedImage;
-		CDuiString m_sPushedForeImage;
-		CDuiString m_sFocusedImage;
-		CDuiString m_sDisabledImage;
+		CStringUI m_sNormalImage;
+		CStringUI m_sHotImage;
+		CStringUI m_sHotForeImage;
+		CStringUI m_sPushedImage;
+		CStringUI m_sPushedForeImage;
+		CStringUI m_sFocusedImage;
+		CStringUI m_sDisabledImage;
 		int m_nStateCount;
-		CDuiString m_sStateImage;
+		CStringUI m_sStateImage;
 
 		int			m_iBindTabIndex;
-		CDuiString	m_sBindTabLayoutName;
+		CStringUI	m_sBindTabLayoutName;
 	};
 
 }	// namespace DUILIB

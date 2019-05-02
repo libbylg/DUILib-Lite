@@ -28,8 +28,8 @@ namespace DUILIB
         void Release(void) { delete this; }
 
     public:
-        BOOL LoadResource(STRINGorID xml, LPCTSTR type = NULL);
-        BOOL LoadResource(CMarkupNode Root);
+        BOOL LoadResource(TSTRID_UI xml, LPCTSTR type = NULL);
+        BOOL LoadResource(CMarkupNodeUI Root);
         void ResetResourceMap();
         LPCTSTR GetImagePath(LPCTSTR lpstrId);
         LPCTSTR GetXmlPath(LPCTSTR lpstrId);
@@ -41,7 +41,7 @@ namespace DUILIB
 
     public:
         void SetTextQueryInterface(IQueryControlTextUI* pInterface) { m_pQuerypInterface = pInterface; }
-        CDuiString GetText(LPCTSTR lpstrId, LPCTSTR lpstrType = NULL);
+        CStringUI GetText(LPCTSTR lpstrId, LPCTSTR lpstrType = NULL);
         void ReloadText();
         void ResetTextMap();
 
@@ -50,8 +50,8 @@ namespace DUILIB
         IQueryControlTextUI* m_pQuerypInterface;
         CStdStringPtrMap m_mImageHashMap;
         CStdStringPtrMap m_mXmlHashMap;
-        CMarkup m_xml;
-        CDuiString m_sLauguage;
+        CMarkupUI m_xml;
+        CStringUI m_sLauguage;
         CStdStringPtrMap m_mTextHashMap;
     };
 

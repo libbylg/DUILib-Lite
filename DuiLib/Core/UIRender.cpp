@@ -26,18 +26,18 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 namespace DUILIB
 {
-    static int g_iFontID = MAX_FONT_ID;
+    static int g_iFontID = UIFONTID_MAX;
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
     //
 
-    TDrawInfo::TDrawInfo()
+    TDRAWINFO::TDRAWINFO()
     {
         Clear();
     }
 
-    void TDrawInfo::Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CDPI* pDPI)
+    void TDRAWINFO::Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CDPI* pDPI)
     {
         // 1、aaa.jpg
         // 2、file='aaa.jpg' res='' restype='0' dest='0,0,0,0' source='0,0,0,0' corner='0,0,0,0' 
@@ -46,8 +46,8 @@ namespace DUILIB
         sDrawModify = pStrModify;
         sImageName = pStrImage;
 
-        CDuiString sItem;
-        CDuiString sValue;
+        CStringUI sItem;
+        CStringUI sValue;
         LPTSTR pstr = NULL;
         for (int i = 0; i < 2; ++i) {
             if (i == 1) pStrImage = pStrModify;
@@ -122,12 +122,12 @@ namespace DUILIB
 
         // 调整DPI资源
         if (pDPI != NULL && pDPI->GetScale() != 100) {
-            CDuiString sScale;
+            CStringUI sScale;
             sScale.Format(_T("@%d."), pDPI->GetScale());
             sImageName.Replace(_T("."), sScale);
         }
     }
-    void TDrawInfo::Clear()
+    void TDRAWINFO::Clear()
     {
         sDrawString.Empty();
         sDrawModify.Empty();
@@ -146,7 +146,7 @@ namespace DUILIB
         sIconAlign.Empty();
     }
 
-    CRenderClip::~CRenderClip()
+    CRenderClipUI::~CRenderClipUI()
     {
         ASSERT(::GetObjectType(hDC) == OBJ_DC || ::GetObjectType(hDC) == OBJ_MEMDC);
         ASSERT(::GetObjectType(hRgn) == OBJ_REGION);
@@ -156,7 +156,7 @@ namespace DUILIB
         ::DeleteObject(hRgn);
     }
 
-    void CRenderClip::GenerateClip(HDC hDC, RECT rc, CRenderClip & clip)
+    void CRenderClipUI::GenerateClip(HDC hDC, RECT rc, CRenderClipUI & clip)
     {
         RECT rcClip = {0};
         ::GetClipBox(hDC, &rcClip);
@@ -167,7 +167,7 @@ namespace DUILIB
         clip.rcItem = rc;
     }
 
-    void CRenderClip::GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, int height, CRenderClip & clip)
+    void CRenderClipUI::GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, int height, CRenderClipUI & clip)
     {
         RECT rcClip = {0};
         ::GetClipBox(hDC, &rcClip);
@@ -181,12 +181,12 @@ namespace DUILIB
         ::DeleteObject(hRgnItem);
     }
 
-    void CRenderClip::UseOldClipBegin(HDC hDC, CRenderClip & clip)
+    void CRenderClipUI::UseOldClipBegin(HDC hDC, CRenderClipUI & clip)
     {
         ::SelectClipRgn(hDC, clip.hOldRgn);
     }
 
-    void CRenderClip::UseOldClipEnd(HDC hDC, CRenderClip & clip)
+    void CRenderClipUI::UseOldClipEnd(HDC hDC, CRenderClipUI & clip)
     {
         ::SelectClipRgn(hDC, clip.hRgn);
     }
@@ -356,14 +356,14 @@ namespace DUILIB
     //
     //
 
-    BOOL DrawImage(HDC hDC, CManagerUI * pManager, const RECT & rc, const RECT & rcPaint, const CDuiString & sImageName, \
-        const CDuiString & sImageResType, RECT rcItem, RECT rcBmpPart, RECT rcCorner, DWORD dwMask, BYTE bFade, \
+    BOOL DrawImage(HDC hDC, CManagerUI * pManager, const RECT & rc, const RECT & rcPaint, const CStringUI & sImageName, \
+        const CStringUI & sImageResType, RECT rcItem, RECT rcBmpPart, RECT rcCorner, DWORD dwMask, BYTE bFade, \
         BOOL bHole, BOOL bTiledX, BOOL bTiledY, HINSTANCE instance = NULL)
     {
         if (sImageName.IsEmpty()) {
             return false;
         }
-        const TImageInfo* data = NULL;
+        const TIMAGEINFO_UI* data = NULL;
         if (sImageResType.IsEmpty()) {
             data = pManager->GetImageEx((LPCTSTR)sImageName, NULL, dwMask, false, instance);
         } else {
@@ -402,13 +402,13 @@ namespace DUILIB
         return dwColor;
     }
 
-    TImageInfo * CRenderEngine::LoadImage(STRINGorID bitmap, LPCTSTR type, DWORD mask, HINSTANCE instance)
+    TIMAGEINFO_UI * CRenderEngine::LoadImage(TSTRID_UI bitmap, LPCTSTR type, DWORD mask, HINSTANCE instance)
     {
         LPBYTE pData = NULL;
         DWORD dwSize = 0;
         do {
             if (type == NULL) {
-                CDuiString sFile = CManagerUI::GetResourcePath();
+                CStringUI sFile = CManagerUI::GetResourcePath();
                 if (CManagerUI::GetResourceZip().IsEmpty()) {
                     sFile += bitmap.m_lpstr;
                     HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
@@ -429,7 +429,7 @@ namespace DUILIB
                     }
                 } else {
                     sFile += CManagerUI::GetResourceZip();
-                    CDuiString sFilePwd = CManagerUI::GetResourceZipPwd();
+                    CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
                     HZIP hz = NULL;
                     if (CManagerUI::IsCachedResourceZip()) hz = (HZIP)CManagerUI::GetResourceZipHandle();
                     else {
@@ -444,7 +444,7 @@ namespace DUILIB
                     if (hz == NULL) break;
                     ZIPENTRY ze;
                     int i = 0;
-                    CDuiString key = bitmap.m_lpstr;
+                    CStringUI key = bitmap.m_lpstr;
                     key.Replace(_T("\\"), _T("/"));
                     if (FindZipItem(hz, key, true, &i, &ze) != 0) break;
                     dwSize = ze.unc_size;
@@ -554,7 +554,7 @@ namespace DUILIB
 
         stbi_image_free(pImage);
 
-        TImageInfo* data = new TImageInfo;
+        TIMAGEINFO_UI* data = new TIMAGEINFO_UI;
         data->pBits = NULL;
         data->pSrcBits = NULL;
         data->hBitmap = hBitmap;
@@ -691,15 +691,15 @@ namespace DUILIB
 
     Gdiplus::Image* CRenderEngine::GdiplusLoadImage(LPCTSTR pstrPath1)
     {
-        TDrawInfo drawInfo;
+        TDRAWINFO drawInfo;
         drawInfo.Parse(pstrPath1, NULL, NULL);
-        CDuiString sImageName = drawInfo.sImageName;
+        CStringUI sImageName = drawInfo.sImageName;
 
         LPBYTE pData = NULL;
         DWORD dwSize = 0;
 
         do {
-            CDuiString sFile = CManagerUI::GetResourcePath();
+            CStringUI sFile = CManagerUI::GetResourcePath();
             if (CManagerUI::GetResourceZip().IsEmpty()) {
                 sFile += sImageName;
                 HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, \
@@ -723,7 +723,7 @@ namespace DUILIB
                 HZIP hz = NULL;
                 if (CManagerUI::IsCachedResourceZip()) hz = (HZIP)CManagerUI::GetResourceZipHandle();
                 else {
-                    CDuiString sFilePwd = CManagerUI::GetResourceZipPwd();
+                    CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
                     char* pwd = w2a((wchar_t*)sFilePwd.GetData());
                     hz = OpenZip(sFile.GetData(), pwd);
@@ -735,7 +735,7 @@ namespace DUILIB
                 if (hz == NULL) break;
                 ZIPENTRY ze;
                 int i = 0;
-                CDuiString key = sImageName;
+                CStringUI key = sImageName;
                 key.Replace(_T("\\"), _T("/"));
                 if (FindZipItem(hz, key, true, &i, &ze) != 0) break;
                 dwSize = ze.unc_size;
@@ -797,7 +797,7 @@ namespace DUILIB
         return pImg;
     }
 
-    void CRenderEngine::FreeImage(TImageInfo * bitmap, BOOL bDelete)
+    void CRenderEngine::FreeImage(TIMAGEINFO_UI * bitmap, BOOL bDelete)
     {
         if (bitmap == NULL) return;
         if (bitmap->hBitmap) {
@@ -825,7 +825,7 @@ namespace DUILIB
             return false;
 
         RECT rcDest = rc;
-        const TDrawInfo * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
+        const TDRAWINFO * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
         if (!pDrawInfo->sIconAlign.IsEmpty()) {
             MakeFitIconDest(rc, pDrawInfo->szIcon, pDrawInfo->sIconAlign, rcDest);
         }
@@ -836,7 +836,7 @@ namespace DUILIB
         return true;
     }
 
-    BOOL CRenderEngine::MakeFitIconDest(const RECT & rcControl, const CDuiSize & szIcon, const CDuiString & sAlign, RECT & rcDest)
+    BOOL CRenderEngine::MakeFitIconDest(const RECT & rcControl, const CSizeUI & szIcon, const CStringUI & sAlign, RECT & rcDest)
     {
         ASSERT(!sAlign.IsEmpty());
         if (sAlign == _T("left")) {
@@ -870,11 +870,11 @@ namespace DUILIB
         return true;
     }
 
-    TImageInfo * CRenderEngine::LoadImage(LPCTSTR pStrImage, LPCTSTR type, DWORD mask, HINSTANCE instance)
+    TIMAGEINFO_UI * CRenderEngine::LoadImage(LPCTSTR pStrImage, LPCTSTR type, DWORD mask, HINSTANCE instance)
     {
         if (pStrImage == NULL) return NULL;
 
-        CDuiString sStrPath = pStrImage;
+        CStringUI sStrPath = pStrImage;
         if (type == NULL) {
             sStrPath = CResourceManagerUI::GetInstance()->GetImagePath(pStrImage);
             if (sStrPath.IsEmpty()) sStrPath = pStrImage;
@@ -886,12 +886,12 @@ namespace DUILIB
                 }*/
             }
         }
-        return LoadImage(STRINGorID(sStrPath.GetData()), type, mask, instance);
+        return LoadImage(TSTRID_UI(sStrPath.GetData()), type, mask, instance);
     }
 
-    TImageInfo* CRenderEngine::LoadImage(UINT nID, LPCTSTR type, DWORD mask, HINSTANCE instance)
+    TIMAGEINFO_UI* CRenderEngine::LoadImage(UINT nID, LPCTSTR type, DWORD mask, HINSTANCE instance)
     {
-        return LoadImage(STRINGorID(nID), type, mask, instance);
+        return LoadImage(TSTRID_UI(nID), type, mask, instance);
     }
 
     void CRenderEngine::DrawText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, \
@@ -1341,7 +1341,7 @@ namespace DUILIB
         ::DeleteDC(hCloneDC);
     }
 
-    BOOL CRenderEngine::DrawImageInfo(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, const TDrawInfo * pDrawInfo, HINSTANCE instance)
+    BOOL CRenderEngine::DrawImageInfo(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, const TDRAWINFO * pDrawInfo, HINSTANCE instance)
     {
         if (pManager == NULL || hDC == NULL || pDrawInfo == NULL) return false;
         RECT rcDest = rcItem;
@@ -1363,7 +1363,7 @@ namespace DUILIB
     BOOL CRenderEngine::DrawImageString(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify, HINSTANCE instance)
     {
         if ((pManager == NULL) || (hDC == NULL)) return false;
-        const TDrawInfo * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
+        const TDRAWINFO * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
         return DrawImageInfo(hDC, pManager, rcItem, rcPaint, pDrawInfo, instance);
     }
 
@@ -1664,9 +1664,9 @@ namespace DUILIB
             ::SetBkMode(hDC, TRANSPARENT);
             ::SetTextColor(hDC, RGB(GetBValue(dwTextColor), GetGValue(dwTextColor), GetRValue(dwTextColor)));
             HFONT hOldFont = (HFONT)::SelectObject(hDC, pManager->GetFont(iFont));
-            int fonticonpos = CDuiString(pstrText).Find(_T("&#x"));
+            int fonticonpos = CStringUI(pstrText).Find(_T("&#x"));
             if (fonticonpos != -1) {
-                CDuiString strUnicode = CDuiString(pstrText).Mid(fonticonpos + 3);
+                CStringUI strUnicode = CStringUI(pstrText).Mid(fonticonpos + 3);
                 if (strUnicode.GetLength() > 4) strUnicode = strUnicode.Mid(0, 4);
                 if (strUnicode.Right(1).CompareNoCase(_T(" ")) == 0) {
                     strUnicode = strUnicode.Mid(0, strUnicode.GetLength() - 1);
@@ -1684,7 +1684,7 @@ namespace DUILIB
         }
     }
 
-    void CRenderEngine::DrawHtmlText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, RECT * prcLinks, CDuiString * sLinks, int& nLinkRects, int iFont, UINT uStyle)
+    void CRenderEngine::DrawHtmlText(HDC hDC, CManagerUI * pManager, RECT & rc, LPCTSTR pstrText, DWORD dwTextColor, RECT * prcLinks, CStringUI * sLinks, int& nLinkRects, int iFont, UINT uStyle)
     {
         // 考虑到在xml编辑器中使用<>符号不方便，可以使用{}符号代替
         // 支持标签嵌套（如<l><b>text</b></l>），但是交叉嵌套是应该避免的（如<l><b>text</l></b>）
@@ -1720,7 +1720,7 @@ namespace DUILIB
         HRGN hRgn = ::CreateRectRgnIndirect(&rc);
         if (bDraw) ::ExtSelectClipRgn(hDC, hRgn, RGN_AND);
 
-        TFontInfo * pDefFontInfo = pManager->GetFontInfo(iFont);
+        TFONTINFO_UI * pDefFontInfo = pManager->GetFontInfo(iFont);
         if (pDefFontInfo == NULL) {
             pDefFontInfo = pManager->GetDefaultFontInfo();
         }
@@ -1756,11 +1756,11 @@ namespace DUILIB
         }
 
         BOOL bHoverLink = false;
-        CDuiString sHoverLink;
+        CStringUI sHoverLink;
         POINT ptMouse = pManager->GetMousePos();
         for (int i = 0; !bHoverLink && i < nLinkRects; i++) {
             if (::PtInRect(prcLinks + i, ptMouse)) {
-                sHoverLink = *(CDuiString*)(sLinks + i);
+                sHoverLink = *(CStringUI*)(sLinks + i);
                 bHoverLink = true;
             }
         }
@@ -1794,8 +1794,8 @@ namespace DUILIB
                 if (!bLineDraw) {
                     if (bInLink && iLinkIndex < nLinkRects) {
                         ::SetRect(&prcLinks[iLinkIndex++], ptLinkStart.x, ptLinkStart.y, MIN(pt.x, rc.right), pt.y + cyLine);
-                        CDuiString * pStr1 = (CDuiString*)(sLinks + iLinkIndex - 1);
-                        CDuiString * pStr2 = (CDuiString*)(sLinks + iLinkIndex);
+                        CStringUI * pStr1 = (CStringUI*)(sLinks + iLinkIndex - 1);
+                        CStringUI * pStr2 = (CStringUI*)(sLinks + iLinkIndex);
                         *pStr2 = *pStr1;
                     }
                     for (int i = iLineLinkIndex; i < iLinkIndex; i++) {
@@ -1829,7 +1829,7 @@ namespace DUILIB
                         pstrText++;
                         while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
                         if (iLinkIndex < nLinkRects && !bLineDraw) {
-                            CDuiString* pStr = (CDuiString*)(sLinks + iLinkIndex);
+                            CStringUI* pStr = (CStringUI*)(sLinks + iLinkIndex);
                             pStr->Empty();
                             while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}')) {
                                 LPCTSTR pstrTemp = ::CharNext(pstrText);
@@ -1842,7 +1842,7 @@ namespace DUILIB
                         DWORD clrColor = dwTextColor;
                         if (clrColor == 0) pManager->GetDefaultLinkFontColor();
                         if (bHoverLink && iLinkIndex < nLinkRects) {
-                            CDuiString* pStr = (CDuiString*)(sLinks + iLinkIndex);
+                            CStringUI* pStr = (CStringUI*)(sLinks + iLinkIndex);
                             if (sHoverLink == *pStr) clrColor = pManager->GetDefaultLinkHoverFontColor();
                         }
                         //else if( prcLinks == NULL ) {
@@ -1851,8 +1851,8 @@ namespace DUILIB
                         //}
                         aColorArray.Add((LPVOID)clrColor);
                         ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
-                        TFontInfo * pFontInfo = pDefFontInfo;
-                        if (aFontArray.GetSize() > 0) pFontInfo = (TFontInfo*)aFontArray.GetAt(aFontArray.GetSize() - 1);
+                        TFONTINFO_UI * pFontInfo = pDefFontInfo;
+                        if (aFontArray.GetSize() > 0) pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
                         if (pFontInfo->bUnderline == false) {
                             HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, true, pFontInfo->bItalic);
                             if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, true, pFontInfo->bItalic);
@@ -1869,8 +1869,8 @@ namespace DUILIB
                     case _T('b'):  // Bold
                     {
                         pstrText++;
-                        TFontInfo* pFontInfo = pDefFontInfo;
-                        if (aFontArray.GetSize() > 0) pFontInfo = (TFontInfo*)aFontArray.GetAt(aFontArray.GetSize() - 1);
+                        TFONTINFO_UI* pFontInfo = pDefFontInfo;
+                        if (aFontArray.GetSize() > 0) pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
                         if (pFontInfo->bBold == false) {
                             HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, true, pFontInfo->bUnderline, pFontInfo->bItalic);
                             if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, true, pFontInfo->bUnderline, pFontInfo->bItalic);
@@ -1899,14 +1899,14 @@ namespace DUILIB
                         LPCTSTR pstrTemp = pstrText;
                         int iFontId = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
                         if (pstrTemp != pstrText) {
-                            TFontInfo* pFontInfo = pManager->GetFontInfo(iFontId);
+                            TFONTINFO_UI* pFontInfo = pManager->GetFontInfo(iFontId);
                             aFontArray.Add(pFontInfo);
                             pTm = &pFontInfo->tm;
                             ::SelectObject(hDC, pFontInfo->hFont);
                         } else {
-                            CDuiString sFontName;
+                            CStringUI sFontName;
                             int iFontSize = 10;
-                            CDuiString sFontAttr;
+                            CStringUI sFontAttr;
                             BOOL bBold = false;
                             BOOL bUnderline = false;
                             BOOL bItalic = false;
@@ -1933,7 +1933,7 @@ namespace DUILIB
                             if (sFontAttr.Find(_T("italic")) >= 0) bItalic = true;
                             HFONT hFont = pManager->GetFont(sFontName, iFontSize, bBold, bUnderline, bItalic);
                             if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, sFontName, iFontSize, bBold, bUnderline, bItalic);
-                            TFontInfo * pFontInfo = pManager->GetFontInfo(hFont);
+                            TFONTINFO_UI * pFontInfo = pManager->GetFontInfo(hFont);
                             aFontArray.Add(pFontInfo);
                             pTm = &pFontInfo->tm;
                             ::SelectObject(hDC, pFontInfo->hFont);
@@ -1945,12 +1945,12 @@ namespace DUILIB
                     {
                         pstrNextStart = pstrText - 1;
                         pstrText++;
-                        CDuiString sImageString = pstrText;
+                        CStringUI sImageString = pstrText;
                         int iWidth = 0;
                         int iHeight = 0;
                         while (*pstrText > _T('\0') && *pstrText <= _T(' ')) pstrText = ::CharNext(pstrText);
-                        const TImageInfo * pImageInfo = NULL;
-                        CDuiString sName;
+                        const TIMAGEINFO_UI * pImageInfo = NULL;
+                        CStringUI sName;
                         while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}') && *pstrText != _T(' ')) {
                             LPCTSTR pstrTemp = ::CharNext(pstrText);
                             while (pstrText < pstrTemp) {
@@ -1959,8 +1959,8 @@ namespace DUILIB
                         }
                         if (sName.IsEmpty()) { // Italic
                             pstrNextStart = NULL;
-                            TFontInfo* pFontInfo = pDefFontInfo;
-                            if (aFontArray.GetSize() > 0) pFontInfo = (TFontInfo*)aFontArray.GetAt(aFontArray.GetSize() - 1);
+                            TFONTINFO_UI* pFontInfo = pDefFontInfo;
+                            if (aFontArray.GetSize() > 0) pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
                             if (pFontInfo->bItalic == false) {
                                 HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, pFontInfo->bUnderline, true);
                                 if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, pFontInfo->bUnderline, true);
@@ -1979,11 +1979,11 @@ namespace DUILIB
                             if (iImageListIndex < 0 || iImageListIndex >= iImageListNum) iImageListIndex = 0;
 
                             if (_tcsstr(sImageString.GetData(), _T("file=\'")) != NULL || _tcsstr(sImageString.GetData(), _T("res=\'")) != NULL) {
-                                CDuiString sImageResType;
-                                CDuiString sImageName;
+                                CStringUI sImageResType;
+                                CStringUI sImageName;
                                 LPCTSTR pStrImage = sImageString.GetData();
-                                CDuiString sItem;
-                                CDuiString sValue;
+                                CStringUI sItem;
+                                CStringUI sValue;
                                 while (*pStrImage != _T('\0')) {
                                     sItem.Empty();
                                     sValue.Empty();
@@ -2029,15 +2029,15 @@ namespace DUILIB
                                 } else {
                                     pstrNextStart = NULL;
                                     if (bDraw && bLineDraw) {
-                                        CDuiRect rcImage(pt.x, pt.y + cyLineHeight - iHeight, pt.x + iWidth, pt.y + cyLineHeight);
+                                        CRectUI rcImage(pt.x, pt.y + cyLineHeight - iHeight, pt.x + iWidth, pt.y + cyLineHeight);
                                         if (iHeight < cyLineHeight) {
                                             rcImage.bottom -= (cyLineHeight - iHeight) / 2;
                                             rcImage.top = rcImage.bottom - iHeight;
                                         }
-                                        CDuiRect rcBmpPart(0, 0, iWidth, iHeight);
+                                        CRectUI rcBmpPart(0, 0, iWidth, iHeight);
                                         rcBmpPart.left = iWidth * iImageListIndex;
                                         rcBmpPart.right = iWidth * (iImageListIndex + 1);
-                                        CDuiRect rcCorner(0, 0, 0, 0);
+                                        CRectUI rcCorner(0, 0, 0, 0);
                                         DrawImage(hDC, pImageInfo->hBitmap, rcImage, rcImage, rcBmpPart, rcCorner, \
                                             pImageInfo->bAlpha, 255);
                                     }
@@ -2087,8 +2087,8 @@ namespace DUILIB
                     case _T('u'):  // Underline text
                     {
                         pstrText++;
-                        TFontInfo* pFontInfo = pDefFontInfo;
-                        if (aFontArray.GetSize() > 0) pFontInfo = (TFontInfo*)aFontArray.GetAt(aFontArray.GetSize() - 1);
+                        TFONTINFO_UI* pFontInfo = pDefFontInfo;
+                        if (aFontArray.GetSize() > 0) pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
                         if (pFontInfo->bUnderline == false) {
                             HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, true, pFontInfo->bItalic);
                             if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, true, pFontInfo->bItalic);
@@ -2170,7 +2170,7 @@ namespace DUILIB
                     {
                         pstrText++;
                         aFontArray.Remove(aFontArray.GetSize() - 1);
-                        TFontInfo * pFontInfo = (TFontInfo*)aFontArray.GetAt(aFontArray.GetSize() - 1);
+                        TFONTINFO_UI * pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
                         if (pFontInfo == NULL) pFontInfo = pDefFontInfo;
                         if (pTm->tmItalic && pFontInfo->bItalic == false) {
                             ABC abc;
@@ -2309,7 +2309,7 @@ namespace DUILIB
                     DWORD clrColor = dwTextColor;
                     if (aColorArray.GetSize() > 0) clrColor = (int)aColorArray.GetAt(aColorArray.GetSize() - 1);
                     ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
-                    TFontInfo * pFontInfo = (TFontInfo*)aFontArray.GetAt(aFontArray.GetSize() - 1);
+                    TFONTINFO_UI * pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
                     if (pFontInfo == NULL) pFontInfo = pDefFontInfo;
                     pTm = &pFontInfo->tm;
                     ::SelectObject(hDC, pFontInfo->hFont);
@@ -2487,7 +2487,7 @@ namespace DUILIB
         return hBitmap;
     }
 
-    void CRenderEngine::AdjustImage(BOOL bUseHSL, TImageInfo * imageInfo, short H, short S, short L)
+    void CRenderEngine::AdjustImage(BOOL bUseHSL, TIMAGEINFO_UI * imageInfo, short H, short S, short L)
     {
         if (imageInfo == NULL || imageInfo->bUseHSL == false || imageInfo->hBitmap == NULL ||
             imageInfo->pBits == NULL || imageInfo->pSrcBits == NULL)

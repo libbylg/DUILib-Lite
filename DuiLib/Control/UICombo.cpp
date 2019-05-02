@@ -358,7 +358,7 @@ namespace DUILIB {
 		m_iCurSel = iIndex;
 		if( m_pWindow != NULL || bTakeFocus ) pControl->SetFocus();
 		pListItem->Select(true);
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, DUI_MSGTYPE_ITEMSELECT, m_iCurSel, iOldSel);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_ITEMSELECT, m_iCurSel, iOldSel);
 		Invalidate();
 
 		return true;
@@ -582,12 +582,12 @@ namespace DUILIB {
 	BOOL CComboUI::Activate()
 	{
 		if( !CControlUI::Activate() ) return FALSE;
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, DUI_MSGTYPE_PREDROPDOWN);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_PREDROPDOWN);
 		if( m_pWindow ) return true;
 		m_pWindow = new CComboWnd();
 		ASSERT(m_pWindow);
 		m_pWindow->Init(this);
-		if( m_pManager != NULL ) m_pManager->SendNotify(this, DUI_MSGTYPE_DROPDOWN);
+		if( m_pManager != NULL ) m_pManager->SendNotify(this, UIMSGTYPE_DROPDOWN);
 		Invalidate();
 		return true;
 	}

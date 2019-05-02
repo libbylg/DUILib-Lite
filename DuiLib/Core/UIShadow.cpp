@@ -85,12 +85,12 @@ namespace DUILIB
             CW_USEDEFAULT, 0, 0, 0, hParentWnd, NULL, CManagerUI::GetInstance(), NULL);
 
         if (!(WS_VISIBLE & lParentStyle))	// Parent invisible
-            m_Status = SS_ENABLED;
+            m_Status = UISS_ENABLED;
         else if ((WS_MAXIMIZE | WS_MINIMIZE) & lParentStyle)	// Parent visible but does not need shadow
-            m_Status = SS_ENABLED | SS_PARENTVISIBLE;
+            m_Status = UISS_ENABLED | UISS_PARENTVISIBLE;
         else	// Show the shadow
         {
-            m_Status = SS_ENABLED | SS_VISABLE | SS_PARENTVISIBLE;
+            m_Status = UISS_ENABLED | UISS_VISABLE | UISS_PARENTVISIBLE;
             ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
             Update(hParentWnd);
         }
@@ -140,21 +140,21 @@ namespace DUILIB
                 }
 
                 if (pWndPos->flags & SWP_SHOWWINDOW) {
-                    if (pThis->m_Status & SS_ENABLED && !(pThis->m_Status & SS_PARENTVISIBLE)) {
+                    if (pThis->m_Status & UISS_ENABLED && !(pThis->m_Status & UISS_PARENTVISIBLE)) {
                         pThis->m_bUpdate = true;
                         ::ShowWindow(pThis->m_hWnd, SW_SHOWNOACTIVATE);
-                        pThis->m_Status |= SS_VISABLE | SS_PARENTVISIBLE;
+                        pThis->m_Status |= UISS_VISABLE | UISS_PARENTVISIBLE;
                     }
                 } else if (pWndPos->flags & SWP_HIDEWINDOW) {
-                    if (pThis->m_Status & SS_ENABLED) {
+                    if (pThis->m_Status & UISS_ENABLED) {
                         ::ShowWindow(pThis->m_hWnd, SW_HIDE);
-                        pThis->m_Status &= ~(SS_VISABLE | SS_PARENTVISIBLE);
+                        pThis->m_Status &= ~(UISS_VISABLE | UISS_PARENTVISIBLE);
                     }
                 }
                 break;
             }
             case WM_MOVE: {
-                if (pThis->m_Status & SS_VISABLE) {
+                if (pThis->m_Status & UISS_VISABLE) {
                     RECT WndRect;
                     GetWindowRect(hwnd, &WndRect);
                     if (pThis->m_bIsImageMode) {
@@ -166,11 +166,11 @@ namespace DUILIB
                 break;
             }
             case WM_SIZE: {
-                if (pThis->m_Status & SS_ENABLED) {
+                if (pThis->m_Status & UISS_ENABLED) {
                     if (SIZE_MAXIMIZED == wParam || SIZE_MINIMIZED == wParam) {
                         ::ShowWindow(pThis->m_hWnd, SW_HIDE);
-                        pThis->m_Status &= ~SS_VISABLE;
-                    } else if (pThis->m_Status & SS_PARENTVISIBLE)	// Parent maybe resized even if invisible
+                        pThis->m_Status &= ~UISS_VISABLE;
+                    } else if (pThis->m_Status & UISS_PARENTVISIBLE)	// Parent maybe resized even if invisible
                     {
                         // Awful! It seems that if the window size was not decreased
                         // the window region would never be updated until WM_PAINT was sent.
@@ -179,9 +179,9 @@ namespace DUILIB
                             pThis->m_bUpdate = true;
                         else
                             pThis->Update(hwnd);
-                        if (!(pThis->m_Status & SS_VISABLE)) {
+                        if (!(pThis->m_Status & UISS_VISABLE)) {
                             ::ShowWindow(pThis->m_hWnd, SW_SHOWNOACTIVATE);
-                            pThis->m_Status |= SS_VISABLE;
+                            pThis->m_Status |= UISS_VISABLE;
                         }
                     }
                     pThis->m_WndSize = lParam;
@@ -200,22 +200,22 @@ namespace DUILIB
                            // In some cases of sizing, the up-right corner of the parent window region would not be properly updated
                            // Update() again when sizing is finished
             case WM_EXITSIZEMOVE: {
-                if (pThis->m_Status & SS_VISABLE) {
+                if (pThis->m_Status & UISS_VISABLE) {
                     pThis->Update(hwnd);
                 }
                 break;
             }
             case WM_SHOWWINDOW: {
-                if (pThis->m_Status & SS_ENABLED) {
+                if (pThis->m_Status & UISS_ENABLED) {
                     if (!wParam)	// the window is being hidden
                     {
                         ::ShowWindow(pThis->m_hWnd, SW_HIDE);
-                        pThis->m_Status &= ~(SS_VISABLE | SS_PARENTVISIBLE);
-                    } else if (!(pThis->m_Status & SS_PARENTVISIBLE)) {
+                        pThis->m_Status &= ~(UISS_VISABLE | UISS_PARENTVISIBLE);
+                    } else if (!(pThis->m_Status & UISS_PARENTVISIBLE)) {
                         //pThis->Update(hwnd);
                         pThis->m_bUpdate = true;
                         ::ShowWindow(pThis->m_hWnd, SW_SHOWNOACTIVATE);
-                        pThis->m_Status |= SS_VISABLE | SS_PARENTVISIBLE;
+                        pThis->m_Status |= UISS_VISABLE | UISS_PARENTVISIBLE;
                     }
                 }
                 break;
@@ -257,7 +257,7 @@ namespace DUILIB
     }
     void CShadowUI::Update(HWND hParent)
     {
-        if (!m_bIsShowShadow || !(m_Status & SS_VISABLE)) return;
+        if (!m_bIsShowShadow || !(m_Status & UISS_VISABLE)) return;
         RECT WndRect;
         GetWindowRect(hParent, &WndRect);
         int nShadWndWid;
@@ -298,7 +298,7 @@ namespace DUILIB
         }
         if (m_bIsImageMode) {
             RECT rcPaint = {0, 0, nShadWndWid, nShadWndHei};
-            const TImageInfo* data = m_pManager->GetImageEx((LPCTSTR)m_sShadowImage, NULL, 0);
+            const TIMAGEINFO_UI* data = m_pManager->GetImageEx((LPCTSTR)m_sShadowImage, NULL, 0);
             if (!data) return;
             RECT rcBmpPart = {0};
             rcBmpPart.right = data->nX;
@@ -545,12 +545,12 @@ namespace DUILIB
 
 
                 if (!(WS_VISIBLE & lParentStyle))	// Parent invisible
-                    m_Status = SS_ENABLED;
+                    m_Status = UISS_ENABLED;
                 else if ((WS_MAXIMIZE | WS_MINIMIZE) & lParentStyle)	// Parent visible but does not need shadow
-                    m_Status = SS_ENABLED | SS_PARENTVISIBLE;
+                    m_Status = UISS_ENABLED | UISS_PARENTVISIBLE;
                 else	// Show the shadow
                 {
-                    m_Status = SS_ENABLED | SS_VISABLE | SS_PARENTVISIBLE;
+                    m_Status = UISS_ENABLED | UISS_VISABLE | UISS_PARENTVISIBLE;
 
                 }
 
@@ -582,7 +582,7 @@ namespace DUILIB
             return false;
 
         m_nSize = (signed char)NewSize;
-        if (m_hWnd != NULL && (SS_VISABLE & m_Status))
+        if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
         return true;
     }
@@ -593,7 +593,7 @@ namespace DUILIB
             return false;
 
         m_nSharpness = (unsigned char)NewSharpness;
-        if (m_hWnd != NULL && (SS_VISABLE & m_Status))
+        if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
         return true;
     }
@@ -604,7 +604,7 @@ namespace DUILIB
             return false;
 
         m_nDarkness = (unsigned char)NewDarkness;
-        if (m_hWnd != NULL && (SS_VISABLE & m_Status))
+        if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
         return true;
     }
@@ -617,7 +617,7 @@ namespace DUILIB
 
         m_nxOffset = (signed char)NewXOffset;
         m_nyOffset = (signed char)NewYOffset;
-        if (m_hWnd != NULL && (SS_VISABLE & m_Status))
+        if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
         return true;
     }
@@ -625,7 +625,7 @@ namespace DUILIB
     BOOL CShadowUI::SetColor(COLORREF NewColor)
     {
         m_Color = NewColor;
-        if (m_hWnd != NULL && (SS_VISABLE & m_Status))
+        if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
         return true;
     }
@@ -637,7 +637,7 @@ namespace DUILIB
 
         m_bIsImageMode = true;
         m_sShadowImage = szImage;
-        if (m_hWnd != NULL && (SS_VISABLE & m_Status))
+        if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
 
         return true;
@@ -648,7 +648,7 @@ namespace DUILIB
         if (rcCorner.left < 0 || rcCorner.top < 0 || rcCorner.right < 0 || rcCorner.bottom < 0) return false;
 
         m_rcShadowCorner = rcCorner;
-        if (m_hWnd != NULL && (SS_VISABLE & m_Status)) {
+        if (m_hWnd != NULL && (UISS_VISABLE & m_Status)) {
             Update(GetParent(m_hWnd));
         }
 

@@ -168,7 +168,7 @@ namespace DUILIB
 			}
 		}
 		else if( uMsg == WM_KEYDOWN && TCHAR(wParam) == VK_RETURN ){
-			m_pOwner->GetManager()->SendNotify(m_pOwner, DUI_MSGTYPE_RETURN);
+			m_pOwner->GetManager()->SendNotify(m_pOwner, UIMSGTYPE_RETURN);
 		}
 		else if( uMsg == WM_KEYDOWN && TCHAR(wParam) == VK_TAB ){
 			if (m_pOwner->GetManager()->IsLayered()) {
@@ -256,7 +256,7 @@ namespace DUILIB
 		if( pstr == NULL ) return 0;
 		::GetWindowText(m_hWnd, pstr, cchLen);
 		m_pOwner->m_sText = pstr;
-		m_pOwner->GetManager()->SendNotify(m_pOwner, DUI_MSGTYPE_TEXTCHANGED);
+		m_pOwner->GetManager()->SendNotify(m_pOwner, UIMSGTYPE_TEXTCHANGED);
 		if( m_pOwner->GetManager()->IsLayered() ) m_pOwner->Invalidate();
 		return 0;
 	}

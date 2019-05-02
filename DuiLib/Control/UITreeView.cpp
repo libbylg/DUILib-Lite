@@ -4,7 +4,7 @@
 #pragma warning( disable: 4251 )
 namespace DUILIB
 {
-	IMPLEMENT_DUICONTROL(CTreeNodeUI)
+	IMPLEMENT_CONTROL_UI(CTreeNodeUI)
 
 	//************************************
 	// 函数名称: CTreeNodeUI
@@ -95,7 +95,7 @@ namespace DUILIB
 	// 参数信息: TEventUI & event
 	// 函数说明:
 	//************************************
-	void CTreeNodeUI::DoEvent( TEventUI& event )
+	void CTreeNodeUI::DoEvent( TEVENT_UI& event )
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pOwner != NULL ) m_pOwner->DoEvent(event);
@@ -105,7 +105,7 @@ namespace DUILIB
 		CListContainerElementUI::DoEvent(event);
 		if( event.Type == UIEVENT_DBLCLICK ) {
 			if( IsEnabled() ) {
-				m_pManager->SendNotify(this, DUI_MSGTYPE_TREEITEMDBCLICK);
+				m_pManager->SendNotify(this, UIMSGTYPE_TREEITEMDBCLICK);
 				Invalidate();
 			}
 			return;
@@ -307,7 +307,7 @@ namespace DUILIB
 	// 返回类型: DUILIB::CDuiString
 	// 函数说明: 
 	//************************************
-	CDuiString CTreeNodeUI::GetItemText()
+	CStringUI CTreeNodeUI::GetItemText()
 	{
 		return pItemButton->GetText();
 	}
@@ -726,7 +726,7 @@ namespace DUILIB
 	/*****************************************************************************/
 	/*****************************************************************************/
 	/*****************************************************************************/
-	IMPLEMENT_DUICONTROL(CTreeViewUI)
+	IMPLEMENT_CONTROL_UI(CTreeViewUI)
 	
 	//************************************
 	// 函数名称: CTreeViewUI
@@ -763,7 +763,7 @@ namespace DUILIB
 
 	UINT CTreeViewUI::GetListType()
 	{
-		return LT_TREE;
+		return UILIST_TREE;
 	}
 
 	//************************************
@@ -920,7 +920,7 @@ namespace DUILIB
 	// 参数信息: TNotifyUI & msg
 	// 函数说明: 
 	//************************************
-	void CTreeViewUI::Notify( TNotifyUI& msg )
+	void CTreeViewUI::Notify( TNOTIFY_UI& msg )
 	{
 		
 	}
@@ -933,8 +933,8 @@ namespace DUILIB
 	//************************************
 	BOOL CTreeViewUI::OnCheckBoxChanged( void* param )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
-		if(pMsg->sType == DUI_MSGTYPE_SELECTCHANGED)
+		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
+		if(pMsg->sType == UIMSGTYPE_SELECTCHANGED)
 		{
 			CCheckBoxUI* pCheckBox = (CCheckBoxUI*)pMsg->pSender;
 			CTreeNodeUI* pItem = (CTreeNodeUI*)pCheckBox->GetParent()->GetParent();
@@ -952,8 +952,8 @@ namespace DUILIB
 	//************************************
 	BOOL CTreeViewUI::OnFolderChanged( void* param )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
-		if(pMsg->sType == DUI_MSGTYPE_SELECTCHANGED) {
+		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
+		if(pMsg->sType == UIMSGTYPE_SELECTCHANGED) {
 			CCheckBoxUI* pFolder = (CCheckBoxUI*)pMsg->pSender;
 			CTreeNodeUI* pItem = (CTreeNodeUI*)pFolder->GetParent()->GetParent();
 			pItem->SetVisibleTag(!pFolder->GetCheck());
@@ -971,8 +971,8 @@ namespace DUILIB
 	//************************************
 	BOOL CTreeViewUI::OnDBClickItem( void* param )
 	{
-		TNotifyUI* pMsg = (TNotifyUI*)param;
-		if(_tcsicmp(pMsg->sType, DUI_MSGTYPE_TREEITEMDBCLICK) == 0) {
+		TNOTIFY_UI* pMsg = (TNOTIFY_UI*)param;
+		if(_tcsicmp(pMsg->sType, UIMSGTYPE_TREEITEMDBCLICK) == 0) {
 			CTreeNodeUI* pItem		= static_cast<CTreeNodeUI*>(pMsg->pSender);
 			CCheckBoxUI* pFolder	= pItem->GetFolderButton();
 			pFolder->Selected(!pFolder->IsSelected());

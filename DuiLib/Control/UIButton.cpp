@@ -2,7 +2,7 @@
 
 namespace DUILIB
 {
-    IMPLEMENT_DUICONTROL(CButtonUI);
+    IMPLEMENT_CONTROL_UI(CButtonUI);
 
     CButtonUI::CButtonUI()
         : m_uButtonState(0)
@@ -37,7 +37,7 @@ namespace DUILIB
         return (IsKeyboardEnabled()?UIFLAG_TABSTOP:0) | (IsEnabled()?UIFLAG_SETCURSOR:0);
     }
 
-    void CButtonUI::DoEvent(TEventUI & event)
+    void CButtonUI::DoEvent(TEVENT_UI & event)
     {
         if (!IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND) {
             if (m_pParent != NULL) m_pParent->DoEvent(event);
@@ -84,7 +84,7 @@ namespace DUILIB
         }
         if (event.Type == UIEVENT_CONTEXTMENU) {
             if (IsContextMenuUsed()) {
-                m_pManager->SendNotify(this, DUI_MSGTYPE_MENU, event.wParam, event.lParam);
+                m_pManager->SendNotify(this, UIMSGTYPE_MENU, event.wParam, event.lParam);
             }
             return;
         }
@@ -107,7 +107,7 @@ namespace DUILIB
     {
         if (!CControlUI::Activate()) return FALSE;
         if (m_pManager != NULL) {
-            m_pManager->SendNotify(this, DUI_MSGTYPE_CLICK);
+            m_pManager->SendNotify(this, UIMSGTYPE_CLICK);
             BindTriggerTabSel();
         }
         return true;
@@ -407,7 +407,7 @@ namespace DUILIB
         if (m_dwTextColor == 0) m_dwTextColor = m_pManager->GetDefaultFontColor();
         if (m_dwDisabledTextColor == 0) m_dwDisabledTextColor = m_pManager->GetDefaultDisabledColor();
 
-        CDuiString sText = GetText();
+        CStringUI sText = GetText();
         if (sText.IsEmpty()) return;
 
         RECT m_rcTextPadding = CButtonUI::m_rcTextPadding;
@@ -469,9 +469,9 @@ namespace DUILIB
     void CButtonUI::PaintStatusImage(HDC hDC)
     {
         if (!m_sStateImage.IsEmpty() && m_nStateCount > 0) {
-            TDrawInfo info;
+            TDRAWINFO info;
             info.Parse(m_sStateImage, _T(""), m_pManager->GetDPIObj());
-            const TImageInfo* pImage = m_pManager->GetImageEx(info.sImageName, info.sResType, info.dwMask, info.bHSL);
+            const TIMAGEINFO_UI* pImage = m_pManager->GetImageEx(info.sImageName, info.sResType, info.dwMask, info.bHSL);
             if (m_sNormalImage.IsEmpty() && pImage != NULL) {
                 SIZE szImage = {pImage->nX, pImage->nY};
                 SIZE szStatus = {pImage->nX / m_nStateCount, pImage->nY};

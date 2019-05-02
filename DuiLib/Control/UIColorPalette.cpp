@@ -282,7 +282,7 @@ namespace DUILIB {
 			if ((m_uButtonState | UISTATE_PUSHED) && (IsEnabled()))
 			{
 				color = GetSelectColor();
-				m_pManager->SendNotify(this, DUI_MSGTYPE_COLORCHANGED, color, 0);
+				m_pManager->SendNotify(this, UIMSGTYPE_COLORCHANGED, color, 0);
 			}
 
 			m_uButtonState &= ~UISTATE_PUSHED;

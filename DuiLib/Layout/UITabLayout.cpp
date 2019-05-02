@@ -116,7 +116,7 @@ namespace DUILIB
 
 		if( m_pManager != NULL ) {
 			m_pManager->SetNextTabControl();
-			m_pManager->SendNotify(this, DUI_MSGTYPE_TABSELECT, m_iCurSel, iOldSel);
+			m_pManager->SendNotify(this, UIMSGTYPE_TABSELECT, m_iCurSel, iOldSel);
 		}
 		return true;
 	}

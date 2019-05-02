@@ -10,8 +10,8 @@ namespace DUILIB
 {
 	//////////////////////////////////////////////////////////////////////////
 	//
-	DUI_BEGIN_MESSAGE_MAP(WindowImplBase, CNotifyPump)
-		DUI_ON_MSGTYPE(DUI_MSGTYPE_CLICK,OnClick)
+	DUI_BEGIN_MESSAGE_MAP(WindowImplBase, CNotifyPumpUI)
+		DUI_ON_MSGTYPE(UIMSGTYPE_CLICK,OnClick)
 	DUI_END_MESSAGE_MAP()
 
 	void WindowImplBase::OnFinalMessage( HWND hWnd )
@@ -296,9 +296,9 @@ namespace DUILIB
 		// 创建主窗口
 		CControlUI* pRoot=NULL;
 		//CDialogBuilder builder;
-		CDuiString sSkinType = GetSkinType();
+		CStringUI sSkinType = GetSkinType();
 		if (!sSkinType.IsEmpty()) {
-			STRINGorID xml(_ttoi(GetSkinFile().GetData()));
+			TSTRID_UI xml(_ttoi(GetSkinFile().GetData()));
             pRoot = NULL;//DialogBuilder不应该放在Core，避免引起大量不合理依赖 //builder.Create(xml, sSkinType, this, &m_pm);
 		}
 		else {
@@ -306,7 +306,7 @@ namespace DUILIB
 		}
 
 		if (pRoot == NULL) {
-			CDuiString sError = _T("加载资源文件失败：");
+			CStringUI sError = _T("加载资源文件失败：");
 			sError += GetSkinFile();
 			MessageBox(NULL, sError, _T("Duilib") ,MB_OK|MB_ICONERROR);
 			ExitProcess(1);
@@ -409,9 +409,9 @@ namespace DUILIB
 		return styleValue;
 	}
 
-	void WindowImplBase::OnClick(TNotifyUI& msg)
+	void WindowImplBase::OnClick(TNOTIFY_UI& msg)
 	{
-		CDuiString sCtrlName = msg.pSender->GetName();
+		CStringUI sCtrlName = msg.pSender->GetName();
 		if( sCtrlName == _T("closebtn") ) {
             CWindowWnd::Close();
 			return; 
@@ -431,8 +431,8 @@ namespace DUILIB
 		return;
 	}
 
-	void WindowImplBase::Notify(TNotifyUI& msg)
+	void WindowImplBase::Notify(TNOTIFY_UI& msg)
 	{
-		return CNotifyPump::NotifyPump(msg);
+		return CNotifyPumpUI::NotifyPump(msg);
 	}
 }

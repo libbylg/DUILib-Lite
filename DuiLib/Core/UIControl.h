@@ -11,8 +11,8 @@ namespace DUILIB
     //
 
 
-    class DUILIB_API CManagerUI;
-    class DUILIB_API CControlUI;
+    class CManagerUI;
+    class CControlUI;
 
     // Flags for CControlUI::GetControlFlags()
     #define UIFLAG_TABSTOP       0x00000001
@@ -20,17 +20,17 @@ namespace DUILIB
     #define UIFLAG_WANTRETURN    0x00000004
 
 
-    typedef struct DUILIB_API TPercentInfo
+    typedef struct DUILIB_API TPERCENTINFO_UI
     {
         double left;
         double top;
         double right;
         double bottom;
-    } TPercentInfo;
+    } TPERCENTINFO_UI;
 
     // Structure for notifications from the system
     // to the control implementation.
-    typedef struct DUILIB_API TEventUI
+    typedef struct DUILIB_API TEVENT_UI
     {
         int Type;
         CControlUI* pSender;
@@ -40,36 +40,36 @@ namespace DUILIB
         WORD wKeyState;
         WPARAM wParam;
         LPARAM lParam;
-    } TEventUI;
+    } TEVENT_UI;
 
-    class CNotifyPump;
+    class CNotifyPumpUI;
 
     union DuiMessageMapFunctions
     {
-        DUI_PMSG pfn;   // generic member function pointer
-        LRESULT(CNotifyPump::* pfn_Notify_lwl)(WPARAM, LPARAM);
-        void (CNotifyPump::* pfn_Notify_vn)(TNotifyUI&);
+        PMSG_UI pfn;   // generic member function pointer
+        LRESULT(CNotifyPumpUI::* pfn_Notify_lwl)(WPARAM, LPARAM);
+        void (CNotifyPumpUI::* pfn_Notify_vn)(TNOTIFY_UI&);
     };
 
     typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, LPVOID);
 
-#define DECLARE_DUICONTROL(class_name)\
+#define DECLARE_CONTROL_UI(class_name)\
 public:\
 	static CControlUI* CreateControl();
 
-#define IMPLEMENT_DUICONTROL(class_name)\
+#define IMPLEMENT_CONTROL_UI(class_name)\
 	CControlUI* class_name::CreateControl()\
 	{ return new class_name; }
 
     class DUILIB_API CControlUI
     {
-        DECLARE_DUICONTROL(CControlUI)
+        DECLARE_CONTROL_UI(CControlUI)
     public:
         CControlUI();
         virtual ~CControlUI();
 
     public:
-        virtual CDuiString GetName() const;
+        virtual CStringUI GetName() const;
         virtual void SetName(LPCTSTR pstrName);
         virtual LPCTSTR GetClass() const;
         virtual LPVOID GetInterface(LPCTSTR pstrName);
@@ -86,7 +86,7 @@ public:\
         void KillTimer(UINT nTimerID);
 
         // 文本相关
-        virtual CDuiString GetText() const;
+        virtual CStringUI GetText() const;
         virtual void SetText(LPCTSTR pstrText);
 
         virtual BOOL IsResourceText() const;
@@ -165,12 +165,12 @@ public:\
         virtual void SetMinHeight(int cy);
         virtual int GetMaxHeight() const;
         virtual void SetMaxHeight(int cy);
-        virtual TPercentInfo GetFloatPercent() const;
-        virtual void SetFloatPercent(TPercentInfo piFloatPercent);
+        virtual TPERCENTINFO_UI GetFloatPercent() const;
+        virtual void SetFloatPercent(TPERCENTINFO_UI piFloatPercent);
         virtual void SetFloatAlign(UINT uAlign);
         virtual UINT GetFloatAlign() const;
         // 鼠标提示
-        virtual CDuiString GetToolTip() const;
+        virtual CStringUI GetToolTip() const;
         virtual void SetToolTip(LPCTSTR pstrText);
         virtual void SetToolTipWidth(int nWidth);
         virtual int	  GetToolTipWidth(void);	// 多行ToolTip单行最长宽度
@@ -188,7 +188,7 @@ public:\
         virtual void SetContextMenuUsed(BOOL bMenuUsed);
 
         // 用户属性
-        virtual const CDuiString& GetUserData(); // 辅助函数，供用户使用
+        virtual const CStringUI& GetUserData(); // 辅助函数，供用户使用
         virtual void SetUserData(LPCTSTR pstrText); // 辅助函数，供用户使用
         virtual UINT_PTR GetTag() const; // 辅助函数，供用户使用
         virtual void SetTag(UINT_PTR pTag); // 辅助函数，供用户使用
@@ -219,8 +219,8 @@ public:\
         virtual void Init();
         virtual void DoInit();
 
-        virtual void Event(TEventUI& event);
-        virtual void DoEvent(TEventUI& event);
+        virtual void Event(TEVENT_UI& event);
+        virtual void DoEvent(TEVENT_UI& event);
 
         // 自定义(未处理的)属性
         void AddCustomAttribute(LPCTSTR pstrName, LPCTSTR pstrAttr);
@@ -246,7 +246,7 @@ public:\
 
         //虚拟窗口参数
         void SetVirtualWnd(LPCTSTR pstrValue);
-        CDuiString GetVirtualWnd() const;
+        CStringUI GetVirtualWnd() const;
 
     public:
         CEventSource OnInit;
@@ -258,8 +258,8 @@ public:\
     protected:
         CManagerUI* m_pManager;
         CControlUI* m_pParent;
-        CDuiString m_sVirtualWnd;
-        CDuiString m_sName;
+        CStringUI m_sVirtualWnd;
+        CStringUI m_sName;
         BOOL m_bUpdateNeeded;
         BOOL m_bMenuUsed;
         RECT m_rcItem;
@@ -275,7 +275,7 @@ public:\
         BOOL m_bKeyboardEnabled;
         BOOL m_bFocused;
         BOOL m_bFloat;
-        TPercentInfo m_piFloatPercent;
+        TPERCENTINFO_UI m_piFloatPercent;
         UINT m_uFloatAlign;
         BOOL m_bSetPos; // 防止SetPos循环调用
 
@@ -283,19 +283,19 @@ public:\
         BOOL m_bDropEnabled;
 
         BOOL m_bResourceText;
-        CDuiString m_sText;
-        CDuiString m_sToolTip;
+        CStringUI m_sText;
+        CStringUI m_sToolTip;
         TCHAR m_chShortcut;
-        CDuiString m_sUserData;
+        CStringUI m_sUserData;
         UINT_PTR m_pTag;
 
-        CDuiString m_sGradient;
+        CStringUI m_sGradient;
         DWORD m_dwBackColor;
         DWORD m_dwBackColor2;
         DWORD m_dwBackColor3;
         DWORD m_dwForeColor;
-        CDuiString m_sBkImage;
-        CDuiString m_sForeImage;
+        CStringUI m_sBkImage;
+        CStringUI m_sForeImage;
         DWORD m_dwBorderColor;
         DWORD m_dwFocusBorderColor;
         BOOL m_bColorHSL;

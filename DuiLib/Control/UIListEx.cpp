@@ -127,7 +127,7 @@ namespace DUILIB {
 				}
 			}
 		}
-		else if (_tcsicmp(msg.sType, DUI_MSGTYPE_LISTITEMCHECKED) == 0)
+		else if (_tcsicmp(msg.sType, UIMSGTYPE_LISTITEMCHECKED) == 0)
 		{
 			for (int i = 0; i < GetCount(); ++i) {
 				CControlUI* p = GetItemAt(i);
@@ -143,11 +143,11 @@ namespace DUILIB {
 		//±à¼­¿ò¡¢×éºÏ¿ò
 		if (_tcsicmp(strName, _T("ListEx_Edit")) == 0 && m_pEditUI && m_nRow >= 0 && m_nColum >= 0)
 		{
-			if(_tcsicmp(msg.sType, DUI_MSGTYPE_SETFOCUS) == 0)
+			if(_tcsicmp(msg.sType, UIMSGTYPE_SETFOCUS) == 0)
 			{
 
 			}
-			else if(_tcsicmp(msg.sType, DUI_MSGTYPE_KILLFOCUS) == 0)
+			else if(_tcsicmp(msg.sType, UIMSGTYPE_KILLFOCUS) == 0)
 			{
 				CDuiString sText = m_pEditUI->GetText();
 				CListTextExtElementUI* pRowCtrl = (CListTextExtElementUI*)GetItemAt(m_nRow);
@@ -171,14 +171,14 @@ namespace DUILIB {
 			iCurSel = msg.wParam;
 			iOldSel = msg.lParam;
 
-			if(_tcsicmp(msg.sType, DUI_MSGTYPE_SETFOCUS) == 0)
+			if(_tcsicmp(msg.sType, UIMSGTYPE_SETFOCUS) == 0)
 			{
 
 			}
-			else if(_tcsicmp(msg.sType, DUI_MSGTYPE_KILLFOCUS) == 0)
+			else if(_tcsicmp(msg.sType, UIMSGTYPE_KILLFOCUS) == 0)
 			{
 			}
-			else if(_tcsicmp(msg.sType, DUI_MSGTYPE_LISTITEMSELECT) == 0 && iOldSel >= 0)
+			else if(_tcsicmp(msg.sType, UIMSGTYPE_LISTITEMSELECT) == 0 && iOldSel >= 0)
 			{
 				CListTextExtElementUI* pRowCtrl = (CListTextExtElementUI*)GetItemAt(m_nRow);
 				if (pRowCtrl)
@@ -645,7 +645,7 @@ namespace DUILIB {
 						CContainerUI* pOwner = (CContainerUI*)m_pParent;
 						if (pOwner)
 						{
-							m_pManager->SendNotify(this, DUI_MSGTYPE_LISTHEADITEMCHECKED, pOwner->GetItemIndex(this), m_bChecked);
+							m_pManager->SendNotify(this, UIMSGTYPE_LISTHEADITEMCHECKED, pOwner->GetItemIndex(this), m_bChecked);
 						}
 
 					}
@@ -696,7 +696,7 @@ namespace DUILIB {
 			}
 			else {
 				m_uButtonState |= UISTATE_PUSHED;
-				m_pManager->SendNotify(this, DUI_MSGTYPE_LISTHEADERCLICK);
+				m_pManager->SendNotify(this, UIMSGTYPE_LISTHEADERCLICK);
 				Invalidate();
 			}
 			return;
@@ -1142,7 +1142,7 @@ Label_ForeImage:
 		if( event.Type == UIEVENT_BUTTONUP && IsEnabled() ) {
 			for( int i = 0; i < m_nLinks; i++ ) {
 				if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) {
-					m_pManager->SendNotify(this, DUI_MSGTYPE_LINK, i);
+					m_pManager->SendNotify(this, UIMSGTYPE_LINK, i);
 					return;
 				}
 			}
@@ -1219,7 +1219,7 @@ Label_ForeImage:
 							SetCheck(!GetCheck());
 							if (m_pManager)
 							{
-								m_pManager->SendNotify(this, DUI_MSGTYPE_LISTITEMCHECKED, MAKEWPARAM(GetIndex(), 0), m_bChecked);
+								m_pManager->SendNotify(this, UIMSGTYPE_LISTITEMCHECKED, MAKEWPARAM(GetIndex(), 0), m_bChecked);
 							}
 						}
 						m_uCheckBoxState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);

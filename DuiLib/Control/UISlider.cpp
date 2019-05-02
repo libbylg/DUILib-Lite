@@ -162,7 +162,7 @@ namespace DUILIB
 				}
 				if(nValue >= m_nMin && nValue <= m_nMax) {
 					m_nValue =nValue;
-					m_pManager->SendNotify(this, DUI_MSGTYPE_VALUECHANGED);
+					m_pManager->SendNotify(this, UIMSGTYPE_VALUECHANGED);
 					Invalidate();
 				}
 				UpdateText();
@@ -179,11 +179,11 @@ namespace DUILIB
 				switch( LOWORD(event.wParam) ) {
 				case SB_LINEUP:
 					SetValue(GetValue() + GetChangeStep());
-					m_pManager->SendNotify(this, DUI_MSGTYPE_VALUECHANGED);
+					m_pManager->SendNotify(this, UIMSGTYPE_VALUECHANGED);
 					return;
 				case SB_LINEDOWN:
 					SetValue(GetValue() - GetChangeStep());
-					m_pManager->SendNotify(this, DUI_MSGTYPE_VALUECHANGED);
+					m_pManager->SendNotify(this, UIMSGTYPE_VALUECHANGED);
 					return;
 				}
 			}
@@ -202,7 +202,7 @@ namespace DUILIB
 				}
 				if (m_bSendMove) {
 					UpdateText();
-					m_pManager->SendNotify(this, DUI_MSGTYPE_VALUECHANGED_MOVE);
+					m_pManager->SendNotify(this, UIMSGTYPE_VALUECHANGED_MOVE);
 				}
 				Invalidate();
 			}

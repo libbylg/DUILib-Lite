@@ -83,13 +83,13 @@ namespace DUILIB
 						}
 					}
 					if(bMsg) {
-						m_pManager->SendNotify(this, DUI_MSGTYPE_SELECTCHANGED);
+						m_pManager->SendNotify(this, UIMSGTYPE_SELECTCHANGED);
 					}
 				}
 			}
 			else {
 				if(bMsg) {
-					m_pManager->SendNotify(this, DUI_MSGTYPE_SELECTCHANGED);
+					m_pManager->SendNotify(this, UIMSGTYPE_SELECTCHANGED);
 				}
 			}
 		}
@@ -414,7 +414,7 @@ namespace DUILIB
 		if( m_bAutoCheck && (event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK)) {
 			if( ::PtInRect(&m_rcItem, event.ptMouse) && IsEnabled() ) {
 				SetCheck(!GetCheck()); 
-				m_pManager->SendNotify(this, DUI_MSGTYPE_CHECKCLICK, 0, 0);
+				m_pManager->SendNotify(this, UIMSGTYPE_CHECKCLICK, 0, 0);
 				Invalidate();
 			}
 			return;
@@ -441,13 +441,13 @@ namespace DUILIB
 						}
 					}
 					if(bMsg) {
-						m_pManager->SendNotify(this, DUI_MSGTYPE_SELECTCHANGED, m_bSelected, 0);
+						m_pManager->SendNotify(this, UIMSGTYPE_SELECTCHANGED, m_bSelected, 0);
 					}
 				}
 			}
 			else {
 				if(bMsg) {
-					m_pManager->SendNotify(this, DUI_MSGTYPE_SELECTCHANGED, m_bSelected, 0);
+					m_pManager->SendNotify(this, UIMSGTYPE_SELECTCHANGED, m_bSelected, 0);
 				}
 			}
 		}

@@ -15,7 +15,7 @@ namespace DUILIB
 
 	class DUILIB_API CTreeNodeUI : public CListContainerElementUI
 	{
-		DECLARE_DUICONTROL(CTreeNodeUI)
+		DECLARE_CONTROL_UI(CTreeNodeUI)
 	public:
 		CTreeNodeUI(CTreeNodeUI* _ParentNode = NULL);
 		~CTreeNodeUI(void);
@@ -23,7 +23,7 @@ namespace DUILIB
 	public:
 		LPCTSTR GetClass() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
-		void DoEvent(TEventUI& event);
+		void DoEvent(TEVENT_UI& event);
 		void Invalidate();
 		BOOL Select(BOOL bSelect = true);
 		BOOL SelectMulti(BOOL bSelect = true);
@@ -35,7 +35,7 @@ namespace DUILIB
 		void SetVisibleTag(BOOL _IsVisible);
 		BOOL GetVisibleTag();
 		void SetItemText(LPCTSTR pstrValue);
-		CDuiString GetItemText();
+		CStringUI GetItemText();
 		void CheckBoxSelected(BOOL _Selected);
 		BOOL IsCheckBoxSelected() const;
 		BOOL IsHasChild() const;
@@ -98,7 +98,7 @@ namespace DUILIB
 
 	class DUILIB_API CTreeViewUI : public CListUI,public INotifyUI
 	{
-		DECLARE_DUICONTROL(CTreeViewUI)
+		DECLARE_CONTROL_UI(CTreeViewUI)
 	public:
 		CTreeViewUI(void);
 		~CTreeViewUI(void);
@@ -119,7 +119,7 @@ namespace DUILIB
 		virtual BOOL OnDBClickItem(void* param);
 		virtual BOOL SetItemCheckBox(BOOL _Selected,CTreeNodeUI* _TreeNode = NULL);
 		virtual void SetItemExpand(BOOL _Expanded,CTreeNodeUI* _TreeNode = NULL);
-		virtual void Notify(TNotifyUI& msg);
+		virtual void Notify(TNOTIFY_UI& msg);
 		virtual void SetVisibleFolderBtn(BOOL _IsVisibled);
 		virtual BOOL GetVisibleFolderBtn();
 		virtual void SetVisibleCheckBtn(BOOL _IsVisibled);

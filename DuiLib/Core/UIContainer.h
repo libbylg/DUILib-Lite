@@ -29,7 +29,7 @@ namespace DUILIB
 
     class DUILIB_API CContainerUI : public CControlUI, public IContainerUI
     {
-        DECLARE_DUICONTROL(CContainerUI)
+        DECLARE_CONTROL_UI(CContainerUI)
 
     public:
         CContainerUI();
@@ -49,7 +49,7 @@ namespace DUILIB
         BOOL RemoveAt(int iIndex);
         void RemoveAll();
 
-        void DoEvent(TEventUI& event);
+        void DoEvent(TEVENT_UI& event);
         void SetVisible(BOOL bVisible = true);
         void SetInternVisible(BOOL bVisible = true);
         void SetEnabled(BOOL bEnabled);
@@ -87,10 +87,10 @@ namespace DUILIB
         BOOL SetSubControlFixedWdith(LPCTSTR pstrSubControlName, int cx);
         BOOL SetSubControlUserData(LPCTSTR pstrSubControlName, LPCTSTR pstrText);
 
-        CDuiString GetSubControlText(LPCTSTR pstrSubControlName);
+        CStringUI GetSubControlText(LPCTSTR pstrSubControlName);
         int GetSubControlFixedHeight(LPCTSTR pstrSubControlName);
         int GetSubControlFixedWdith(LPCTSTR pstrSubControlName);
-        const CDuiString GetSubControlUserData(LPCTSTR pstrSubControlName);
+        const CStringUI GetSubControlUserData(LPCTSTR pstrSubControlName);
         CControlUI* FindSubControl(LPCTSTR pstrSubControlName);
 
         virtual SIZE GetScrollPos() const;
@@ -131,8 +131,8 @@ namespace DUILIB
 
         CScrollBarUI* m_pVerticalScrollBar;
         CScrollBarUI* m_pHorizontalScrollBar;
-        CDuiString	m_sVerticalScrollBarStyle;
-        CDuiString	m_sHorizontalScrollBarStyle;
+        CStringUI	m_sVerticalScrollBarStyle;
+        CStringUI	m_sHorizontalScrollBarStyle;
     };
 
 } // namespace DUILIB

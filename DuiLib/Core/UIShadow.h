@@ -64,11 +64,11 @@ namespace DUILIB
         }
 
     protected:
-        enum ShadowStatus
+        enum SHADOWSTATUS_UI
         {
-            SS_ENABLED = 1,				// Shadow is enabled, if not, the following one is always false
-            SS_VISABLE = 1 << 1,		// Shadow window is visible
-            SS_PARENTVISIBLE = 1 << 2	// Parent window is visible, if not, the above one is always false
+            UISS_ENABLED = 1,				// Shadow is enabled, if not, the following one is always false
+            UISS_VISABLE = 1 << 1,		// Shadow window is visible
+            UISS_PARENTVISIBLE = 1 << 2	// Parent window is visible, if not, the above one is always false
         };
 
 
@@ -100,7 +100,7 @@ namespace DUILIB
         COLORREF m_Color;	// Color of shadow
 
         // 图片阴影成员变量
-        CDuiString	m_sShadowImage;
+        CStringUI	m_sShadowImage;
         RECT		m_rcShadowCorner;
     };
 

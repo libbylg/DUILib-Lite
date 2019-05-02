@@ -20,16 +20,16 @@ namespace DUILIB
     class CShadowUI;
     class CManagerUI;
     class CDPI;
-    struct TDrawInfo;
+    struct TDRAWINFO;
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
-    enum DUILIB_RESTYPE
+    enum RESTYPE_UI
     {
-        DUILIB_FILE = 1,		// 来自磁盘文件
-        DUILIB_ZIP,			// 来自磁盘zip压缩包
-        DUILIB_RESOURCE,		// 来自资源
-        DUILIB_ZIPRESOURCE,	// 来自资源的zip压缩包
+        UIRES_FILE = 1,		// 来自磁盘文件
+        UIRES_ZIP,			// 来自磁盘zip压缩包
+        UIRES_RESOURCE,		// 来自资源
+        UIRES_ZIPRESOURCE,	// 来自资源的zip压缩包
     };
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -105,10 +105,10 @@ namespace DUILIB
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    struct DUILIB_API TFontInfo
+    struct DUILIB_API TFONTINFO_UI
     {
         HFONT hFont;
-        CDuiString sFontName;
+        CStringUI sFontName;
         int iSize;
         BOOL bBold;
         BOOL bUnderline;
@@ -116,7 +116,7 @@ namespace DUILIB
         TEXTMETRIC tm;
     };
 
-    struct DUILIB_API TImageInfo
+    struct DUILIB_API TIMAGEINFO_UI
     {
         HBITMAP hBitmap;
         LPBYTE pBits;
@@ -125,21 +125,21 @@ namespace DUILIB
         int nY;
         BOOL bAlpha;
         BOOL bUseHSL;
-        CDuiString sResType;
+        CStringUI sResType;
         DWORD dwMask;
 
     };
 
 
 
-    struct DUILIB_API TResInfo
+    struct DUILIB_API TRESINFO_UI
     {
         DWORD m_dwDefaultDisabledColor;
         DWORD m_dwDefaultFontColor;
         DWORD m_dwDefaultLinkFontColor;
         DWORD m_dwDefaultLinkHoverFontColor;
         DWORD m_dwDefaultSelectedBkColor;
-        TFontInfo m_DefaultFontInfo;
+        TFONTINFO_UI m_DefaultFontInfo;
         CStdStringPtrMap m_CustomFonts;
         CStdStringPtrMap m_ImageHash;
         CStdStringPtrMap m_AttrHash;
@@ -152,7 +152,7 @@ namespace DUILIB
     // Drag&Drop control
     const TCHAR* const CF_MOVECONTROL = _T("CF_MOVECONTROL");
 
-    struct DUILIB_API TCFMoveUI
+    struct DUILIB_API TCFMOVE_UI
     {
         CControlUI* pControl;
     };
@@ -161,7 +161,7 @@ namespace DUILIB
     class INotifyUI
     {
     public:
-        virtual void Notify(TNotifyUI& msg) = 0;
+        virtual void Notify(TNOTIFY_UI& msg) = 0;
     };
 
     // MessageFilter interface
@@ -171,7 +171,7 @@ namespace DUILIB
         virtual LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) = 0;
     };
 
-    class ITranslateAccelerator
+    class ITranslateAcceleratorUI
     {
     public:
         virtual LRESULT TranslateAccelerator(MSG* pMsg) = 0;
@@ -180,7 +180,7 @@ namespace DUILIB
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
-    typedef CControlUI* (*LPCREATECONTROL)(LPCTSTR pstrType);
+    typedef CControlUI* (*LPCREATECONTROL_UI)(LPCTSTR pstrType);
 
     class DUILIB_API CManagerUI : public CIDropTarget
     {
@@ -241,12 +241,12 @@ namespace DUILIB
         int GetGdiplusTextRenderingHint() const;
 
         static HINSTANCE GetInstance();
-        static CDuiString GetInstancePath();
-        static CDuiString GetCurrentPath();
+        static CStringUI GetInstancePath();
+        static CStringUI GetCurrentPath();
         static HINSTANCE GetResourceDll();
-        static const CDuiString& GetResourcePath();
-        static const CDuiString& GetResourceZip();
-        static const CDuiString& GetResourceZipPwd();
+        static const CStringUI& GetResourcePath();
+        static const CStringUI& GetResourceZip();
+        static const CStringUI& GetResourceZipPwd();
         static BOOL IsCachedResourceZip();
         static HANDLE GetResourceZipHandle();
         static void SetInstance(HINSTANCE hInst);
@@ -280,7 +280,7 @@ namespace DUILIB
         void SetDefaultLinkHoverFontColor(DWORD dwColor, BOOL bShared = false);
         DWORD GetDefaultSelectedBkColor() const;
         void SetDefaultSelectedBkColor(DWORD dwColor, BOOL bShared = false);
-        TFontInfo* GetDefaultFontInfo();
+        TFONTINFO_UI* GetDefaultFontInfo();
         void SetDefaultFont(LPCTSTR pStrFontName, int nSize, BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bShared = false);
         DWORD GetCustomFontCount(BOOL bShared = false) const;
         void AddFontArray(LPCTSTR pstrPath);
@@ -292,19 +292,19 @@ namespace DUILIB
         void RemoveFont(HFONT hFont, BOOL bShared = false);
         void RemoveFont(int id, BOOL bShared = false);
         void RemoveAllFonts(BOOL bShared = false);
-        TFontInfo* GetFontInfo(int id);
-        TFontInfo* GetFontInfo(HFONT hFont);
+        TFONTINFO_UI* GetFontInfo(int id);
+        TFONTINFO_UI* GetFontInfo(HFONT hFont);
 
-        const TImageInfo* GetImage(LPCTSTR bitmap);
-        const TImageInfo* GetImageEx(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, BOOL bUseHSL = false, HINSTANCE instance = NULL);
-        const TImageInfo* AddImage(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, BOOL bUseHSL = false, BOOL bShared = false, HINSTANCE instance = NULL);
-        const TImageInfo* AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, BOOL bAlpha, BOOL bShared = false);
+        const TIMAGEINFO_UI* GetImage(LPCTSTR bitmap);
+        const TIMAGEINFO_UI* GetImageEx(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, BOOL bUseHSL = false, HINSTANCE instance = NULL);
+        const TIMAGEINFO_UI* AddImage(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, BOOL bUseHSL = false, BOOL bShared = false, HINSTANCE instance = NULL);
+        const TIMAGEINFO_UI* AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, BOOL bAlpha, BOOL bShared = false);
         void RemoveImage(LPCTSTR bitmap, BOOL bShared = false);
         void RemoveAllImages(BOOL bShared = false);
         static void ReloadSharedImages();
         void ReloadImages();
 
-        const TDrawInfo* GetDrawInfo(LPCTSTR pStrImage, LPCTSTR pStrModify);
+        const TDRAWINFO* GetDrawInfo(LPCTSTR pStrImage, LPCTSTR pStrModify);
         void RemoveDrawInfo(LPCTSTR pStrImage, LPCTSTR pStrModify);
         void RemoveAllDrawInfos();
 
@@ -325,7 +325,7 @@ namespace DUILIB
         const CStdStringPtrMap& GetStyles(BOOL bShared = false) const;
         void RemoveAllStyle(BOOL bShared = false);
 
-        const TImageInfo* GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify = NULL);
+        const TIMAGEINFO_UI* GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify = NULL);
 
         // 初始化拖拽
         BOOL InitDragDrop();
@@ -360,7 +360,7 @@ namespace DUILIB
 
         BOOL AddNotifier(INotifyUI* pControl);
         BOOL RemoveNotifier(INotifyUI* pControl);
-        void SendNotify(TNotifyUI& Msg, BOOL bAsync = false);
+        void SendNotify(TNOTIFY_UI& Msg, BOOL bAsync = false);
         void SendNotify(CControlUI* pControl, LPCTSTR pstrMessage, WPARAM wParam = 0, LPARAM lParam = 0, BOOL bAsync = false);
 
         BOOL AddPreMessageFilter(IMessageFilterUI* pFilter);
@@ -384,8 +384,8 @@ namespace DUILIB
         void AddMouseLeaveNeeded(CControlUI* pControl);
         BOOL RemoveMouseLeaveNeeded(CControlUI* pControl);
 
-        BOOL AddTranslateAccelerator(ITranslateAccelerator* pTranslateAccelerator);
-        BOOL RemoveTranslateAccelerator(ITranslateAccelerator* pTranslateAccelerator);
+        BOOL AddTranslateAccelerator(ITranslateAcceleratorUI* pTranslateAccelerator);
+        BOOL RemoveTranslateAccelerator(ITranslateAcceleratorUI* pTranslateAccelerator);
         BOOL TranslateAccelerator(LPMSG pMsg);
 
         CControlUI* GetRoot() const;
@@ -402,7 +402,7 @@ namespace DUILIB
 
         CDPI* GetDPIObj();
         void ResetDPIAssets();
-        void RebuildFont(TFontInfo* pFontInfo);
+        void RebuildFont(TFONTINFO_UI* pFontInfo);
         void SetDPI(int iDPI);
         static void SetAllDPI(int iDPI);
 
@@ -427,7 +427,7 @@ namespace DUILIB
         void PostAsyncNotify();
 
     private:
-        CDuiString m_sName;
+        CStringUI m_sName;
         HWND m_hWndPaint;	//所附加的窗体的句柄
         HDC m_hDcPaint;
         HDC m_hDcOffscreen;
@@ -470,7 +470,7 @@ namespace DUILIB
         RECT m_rcLayeredInset;
         BOOL m_bLayeredChanged;
         RECT m_rcLayeredUpdate;
-        TDrawInfo m_diLayered;
+        TDRAWINFO m_diLayered;
 
         BOOL m_bMouseTracking;
         BOOL m_bMouseCapture;
@@ -497,7 +497,7 @@ namespace DUILIB
         CStdStringPtrMap m_mOptionGroup;
 
         BOOL m_bForceUseSharedRes;
-        TResInfo m_ResInfo;
+        TRESINFO_UI m_ResInfo;
 
         // 窗口阴影
         CShadowUI m_shadow;
@@ -517,13 +517,13 @@ namespace DUILIB
         //
         static HINSTANCE m_hInstance;
         static HINSTANCE m_hResourceInstance;
-        static CDuiString m_pStrResourcePath;
-        static CDuiString m_pStrResourceZip;
-        static CDuiString m_pStrResourceZipPwd;
+        static CStringUI m_pStrResourcePath;
+        static CStringUI m_pStrResourceZip;
+        static CStringUI m_pStrResourceZipPwd;
         static HANDLE m_hResourceZip;
         static BOOL m_bCachedResourceZip;
         static int m_nResType;
-        static TResInfo m_SharedResInfo;
+        static TRESINFO_UI m_SharedResInfo;
         static BOOL m_bUseHSL;
         static short m_H;
         static short m_S;

@@ -5,7 +5,7 @@
 
 namespace DUILIB
 {
-    IMPLEMENT_DUICONTROL(CLabelUI);
+    IMPLEMENT_CONTROL_UI(CLabelUI);
 
     CLabelUI::CLabelUI() : m_uTextStyle(DT_VCENTER | DT_SINGLELINE), m_dwTextColor(0),
         m_dwDisabledTextColor(0),
@@ -124,7 +124,7 @@ namespace DUILIB
         }
 
         if (m_bNeedEstimateSize) {
-            CDuiString sText = GetText();
+            CStringUI sText = GetText();
             m_bNeedEstimateSize = FALSE;
             m_szAvailableLast = szAvailable;
             m_cxyFixedLast = m_cxyFixed;
@@ -169,7 +169,7 @@ namespace DUILIB
         return m_cxyFixedLast;
     }
 
-    void CLabelUI::DoEvent(TEventUI & event)
+    void CLabelUI::DoEvent(TEVENT_UI & event)
     {
         if (event.Type == UIEVENT_SETFOCUS) {
             m_bFocused = true;
@@ -267,7 +267,7 @@ namespace DUILIB
         rc.top += m_rcTextPadding.top;
         rc.bottom -= m_rcTextPadding.bottom;
 
-        CDuiString sText = GetText();
+        CStringUI sText = GetText();
         if (sText.IsEmpty()) return;
         int nLinks = 0;
         if (IsEnabled()) {

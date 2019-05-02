@@ -8,13 +8,13 @@ namespace DUILIB
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API STRINGorID
+    struct DUILIB_API TSTRID_UI
     {
     public:
-        STRINGorID(LPCTSTR lpString) : m_lpstr(lpString)
+        TSTRID_UI(LPCTSTR lpString) : m_lpstr(lpString)
         {
         }
-        STRINGorID(UINT nID) : m_lpstr(MAKEINTRESOURCE(nID))
+        TSTRID_UI(UINT nID) : m_lpstr(MAKEINTRESOURCE(nID))
         {
         }
         LPCTSTR m_lpstr;
@@ -23,38 +23,38 @@ namespace DUILIB
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CDuiPoint : public tagPOINT
+    class DUILIB_API CPointUI : public POINT
     {
     public:
-        CDuiPoint();
-        CDuiPoint(const POINT& src);
-        CDuiPoint(int x, int y);
-        CDuiPoint(LPARAM lParam);
+        CPointUI();
+        CPointUI(const POINT& src);
+        CPointUI(int x, int y);
+        CPointUI(LPARAM lParam);
     };
 
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CDuiSize : public tagSIZE
+    class DUILIB_API CSizeUI : public SIZE
     {
     public:
-        CDuiSize();
-        CDuiSize(const SIZE& src);
-        CDuiSize(const RECT rc);
-        CDuiSize(int cx, int cy);
+        CSizeUI();
+        CSizeUI(const SIZE& src);
+        CSizeUI(const RECT rc);
+        CSizeUI(int cx, int cy);
     };
 
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CDuiRect : public tagRECT
+    class DUILIB_API CRectUI : public RECT
     {
     public:
-        CDuiRect();
-        CDuiRect(const RECT& src);
-        CDuiRect(int iLeft, int iTop, int iRight, int iBottom);
+        CRectUI();
+        CRectUI(const RECT& src);
+        CRectUI(int iLeft, int iTop, int iRight, int iBottom);
 
         int GetWidth() const;
         int GetHeight() const;
@@ -66,7 +66,7 @@ namespace DUILIB
         void Offset(int cx, int cy);
         void Inflate(int cx, int cy);
         void Deflate(int cx, int cy);
-        void Union(CDuiRect& rc);
+        void Union(CRectUI& rc);
     };
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -130,16 +130,16 @@ namespace DUILIB
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CDuiString
+    class DUILIB_API CStringUI
     {
     public:
         enum { MAX_LOCAL_STRING_LEN = 63 };
 
-        CDuiString();
-        CDuiString(const TCHAR ch);
-        CDuiString(const CDuiString& src);
-        CDuiString(LPCTSTR lpsz, int nLen = -1);
-        ~CDuiString();
+        CStringUI();
+        CStringUI(const TCHAR ch);
+        CStringUI(const CStringUI& src);
+        CStringUI(LPCTSTR lpsz, int nLen = -1);
+        ~CStringUI();
 
         void Empty();
         int GetLength() const;
@@ -153,21 +153,21 @@ namespace DUILIB
         operator LPCTSTR() const;
 
         TCHAR operator[] (int nIndex) const;
-        const CDuiString& operator=(const CDuiString& src);
-        const CDuiString& operator=(const TCHAR ch);
-        const CDuiString& operator=(LPCTSTR pstr);
+        const CStringUI& operator=(const CStringUI& src);
+        const CStringUI& operator=(const TCHAR ch);
+        const CStringUI& operator=(LPCTSTR pstr);
 #ifdef _UNICODE
-        const CDuiString& CDuiString::operator=(LPCSTR lpStr);
-        const CDuiString& CDuiString::operator+=(LPCSTR lpStr);
+        const CStringUI& CStringUI::operator=(LPCSTR lpStr);
+        const CStringUI& CStringUI::operator+=(LPCSTR lpStr);
 #else
         const CDuiString& CDuiString::operator=(LPCWSTR lpwStr);
         const CDuiString& CDuiString::operator+=(LPCWSTR lpwStr);
 #endif
-        CDuiString operator+(const CDuiString& src) const;
-        CDuiString operator+(LPCTSTR pstr) const;
-        const CDuiString& operator+=(const CDuiString& src);
-        const CDuiString& operator+=(LPCTSTR pstr);
-        const CDuiString& operator+=(const TCHAR ch);
+        CStringUI operator+(const CStringUI& src) const;
+        CStringUI operator+(LPCTSTR pstr) const;
+        const CStringUI& operator+=(const CStringUI& src);
+        const CStringUI& operator+=(LPCTSTR pstr);
+        const CStringUI& operator+=(const TCHAR ch);
 
         BOOL operator == (LPCTSTR str) const;
         BOOL operator != (LPCTSTR str) const;
@@ -182,9 +182,9 @@ namespace DUILIB
         void MakeUpper();
         void MakeLower();
 
-        CDuiString Left(int nLength) const;
-        CDuiString Mid(int iPos, int nLength = -1) const;
-        CDuiString Right(int nLength) const;
+        CStringUI Left(int nLength) const;
+        CStringUI Mid(int iPos, int nLength = -1) const;
+        CStringUI Right(int nLength) const;
 
         int Find(TCHAR ch, int iPos = 0) const;
         int Find(LPCTSTR pstr, int iPos = 0) const;
@@ -202,12 +202,12 @@ namespace DUILIB
         TCHAR m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
     };
 
-    static std::vector<CDuiString> StrSplit(CDuiString text, CDuiString sp)
+    static std::vector<CStringUI> StrSplit(CStringUI text, CStringUI sp)
     {
-        std::vector<CDuiString> vResults;
+        std::vector<CStringUI> vResults;
         int pos = text.Find(sp, 0);
         while (pos >= 0) {
-            CDuiString t = text.Left(pos);
+            CStringUI t = text.Left(pos);
             vResults.push_back(t);
             text = text.Right(text.GetLength() - pos - sp.GetLength());
             pos = text.Find(sp);
@@ -218,12 +218,12 @@ namespace DUILIB
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    struct TITEM
+    struct TITEM_UI
     {
-        CDuiString Key;
+        CStringUI Key;
         LPVOID Data;
-        struct TITEM* pPrev;
-        struct TITEM* pNext;
+        struct TITEM_UI* pPrev;
+        struct TITEM_UI* pNext;
     };
 
     class DUILIB_API CStdStringPtrMap
@@ -243,7 +243,7 @@ namespace DUILIB
         LPCTSTR operator[] (int nIndex) const;
 
     protected:
-        TITEM** m_aT;
+        TITEM_UI** m_aT;
         int m_nBuckets;
         int m_nCount;
     };

@@ -10,7 +10,7 @@ namespace DUILIB
     /////////////////////////////////////////////////////////////////////////////////////
     //
     //
-    IMPLEMENT_DUICONTROL(CContainerUI)
+    IMPLEMENT_CONTROL_UI(CContainerUI)
 
         CContainerUI::CContainerUI()
         : m_iChildPadding(0),
@@ -268,7 +268,7 @@ namespace DUILIB
         this->SetMouseEnabled(bEnabled);
     }
 
-    void CContainerUI::DoEvent(TEventUI & event)
+    void CContainerUI::DoEvent(TEVENT_UI & event)
     {
         if (!IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND) {
             if (m_pParent != NULL) m_pParent->DoEvent(event);
@@ -407,7 +407,7 @@ namespace DUILIB
             // 发送滚动消息
             if (m_pManager != NULL && bMsg) {
                 int nPage = (m_pVerticalScrollBar->GetScrollPos() + m_pVerticalScrollBar->GetLineSize()) / m_pVerticalScrollBar->GetLineSize();
-                m_pManager->SendNotify(this, DUI_MSGTYPE_SCROLL, (WPARAM)nPage);
+                m_pManager->SendNotify(this, UIMSGTYPE_SCROLL, (WPARAM)nPage);
             }
         }
     }
@@ -809,8 +809,8 @@ namespace DUILIB
         RECT rcTemp = {0};
         if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem)) return true;
 
-        CRenderClip clip;
-        CRenderClip::GenerateClip(hDC, rcTemp, clip);
+        CRenderClipUI clip;
+        CRenderClipUI::GenerateClip(hDC, rcTemp, clip);
         CControlUI::DoPaint(hDC, rcPaint, pStopControl);
 
         if (m_items.GetSize() > 0) {
@@ -835,8 +835,8 @@ namespace DUILIB
                     }
                 }
             } else {
-                CRenderClip childClip;
-                CRenderClip::GenerateClip(hDC, rcTemp, childClip);
+                CRenderClipUI childClip;
+                CRenderClipUI::GenerateClip(hDC, rcTemp, childClip);
                 for (int it = 0; it < m_items.GetSize(); it++) {
                     CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
                     if (pControl == pStopControl) return false;
@@ -844,9 +844,9 @@ namespace DUILIB
                     if (!::IntersectRect(&rcTemp, &rcPaint, &pControl->GetPos())) continue;
                     if (pControl->IsFloat()) {
                         if (!::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos())) continue;
-                        CRenderClip::UseOldClipBegin(hDC, childClip);
+                        CRenderClipUI::UseOldClipBegin(hDC, childClip);
                         if (!pControl->Paint(hDC, rcPaint, pStopControl)) return false;
-                        CRenderClip::UseOldClipEnd(hDC, childClip);
+                        CRenderClipUI::UseOldClipEnd(hDC, childClip);
                     } else {
                         if (!::IntersectRect(&rcTemp, &rc, &pControl->GetPos())) continue;
                         if (!pControl->Paint(hDC, rcPaint, pStopControl)) return false;
@@ -909,7 +909,7 @@ namespace DUILIB
             ::OffsetRect(&rcCtrl, m_rcItem.left, m_rcItem.top);
             pControl->SetPos(rcCtrl, false);
         } else {
-            TPercentInfo rcPercent = pControl->GetFloatPercent();
+            TPERCENTINFO_UI rcPercent = pControl->GetFloatPercent();
             LONG width = m_rcItem.right - m_rcItem.left;
             LONG height = m_rcItem.bottom - m_rcItem.top;
             RECT rcCtrl = {0};
@@ -1035,7 +1035,7 @@ namespace DUILIB
         } else return FALSE;
     }
 
-    DUILIB::CDuiString CContainerUI::GetSubControlText(LPCTSTR pstrSubControlName)
+    DUILIB::CStringUI CContainerUI::GetSubControlText(LPCTSTR pstrSubControlName)
     {
         CControlUI* pSubControl = NULL;
         pSubControl = this->FindSubControl(pstrSubControlName);
@@ -1061,7 +1061,7 @@ namespace DUILIB
         else return pSubControl->GetFixedWidth();
     }
 
-    const CDuiString CContainerUI::GetSubControlUserData(LPCTSTR pstrSubControlName)
+    const CStringUI CContainerUI::GetSubControlUserData(LPCTSTR pstrSubControlName)
     {
         CControlUI* pSubControl = NULL;
         pSubControl = this->FindSubControl(pstrSubControlName);

@@ -46,24 +46,24 @@ namespace DUILIB
     class CControlUI;
     
     // Structure for notifications to the outside world
-    typedef struct TNotifyUI
+    typedef struct TNOTIFY_UI
     {
-        CDuiString sType;
-        CDuiString sVirtualWnd;
+        CStringUI sType;
+        CStringUI sVirtualWnd;
         CControlUI* pSender;
         DWORD dwTimestamp;
         POINT ptMouse;
         WPARAM wParam;
         LPARAM lParam;
-    }TNotifyUI;
+    }TNOTIFY_UI;
 
-    class DUILIB_API CNotifyPump
+    class DUILIB_API CNotifyPumpUI
     {
     public:
-        BOOL AddVirtualWnd(CDuiString strName, CNotifyPump* pObject);
-        BOOL RemoveVirtualWnd(CDuiString strName);
-        void NotifyPump(TNotifyUI& msg);
-        BOOL LoopDispatch(TNotifyUI& msg);
+        BOOL AddVirtualWnd(CStringUI strName, CNotifyPumpUI* pObject);
+        BOOL RemoveVirtualWnd(CStringUI strName);
+        void NotifyPump(TNOTIFY_UI& msg);
+        BOOL LoopDispatch(TNOTIFY_UI& msg);
         DUI_DECLARE_MESSAGE_MAP()
     private:
         CStdStringPtrMap m_VirtualWndMap;

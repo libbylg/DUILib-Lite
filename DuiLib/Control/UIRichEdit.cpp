@@ -1781,7 +1781,7 @@ err:
 		if( m_pTwh ) {
 			if( msg == WM_KEYDOWN && TCHAR(wparam) == VK_RETURN ) {
 				if( !m_bWantReturn || (::GetKeyState(VK_CONTROL) < 0 && !m_bWantCtrlReturn) ) {
-					if( m_pManager != NULL ) m_pManager->SendNotify((CControlUI*)this, DUI_MSGTYPE_RETURN);
+					if( m_pManager != NULL ) m_pManager->SendNotify((CControlUI*)this, UIMSGTYPE_RETURN);
 					return S_OK;
 				}
 			}
@@ -1816,7 +1816,7 @@ err:
 		{ 
 		case EN_CHANGE:
 			{
-				GetManager()->SendNotify(this, DUI_MSGTYPE_TEXTCHANGED);
+				GetManager()->SendNotify(this, UIMSGTYPE_TEXTCHANGED);
 				break;
 			}
 		case EN_DROPFILES:   

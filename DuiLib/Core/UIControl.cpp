@@ -5,7 +5,7 @@
 
 namespace DUILIB
 {
-    IMPLEMENT_DUICONTROL(CControlUI)
+    IMPLEMENT_CONTROL_UI(CControlUI)
 
         CControlUI::CControlUI()
         :m_pManager(NULL),
@@ -59,7 +59,7 @@ namespace DUILIB
         if (m_pManager != NULL) m_pManager->ReapObjects(this);
     }
 
-    CDuiString CControlUI::GetName() const
+    CStringUI CControlUI::GetName() const
     {
         return m_sName;
     }
@@ -123,7 +123,7 @@ namespace DUILIB
         m_pManager->KillTimer(this, nTimerID);
     }
 
-    CDuiString CControlUI::GetText() const
+    CStringUI CControlUI::GetText() const
     {
         if (!IsResourceText()) return m_sText;
         return CResourceManagerUI::GetInstance()->GetText(m_sText);
@@ -349,11 +349,11 @@ namespace DUILIB
         CControlUI* pParent = GetParent();
         if (pParent != NULL) {
             RECT rcParentPos = pParent->GetPos();
-            CDuiRect rcRelativePos(m_rcItem);
+            CRectUI rcRelativePos(m_rcItem);
             rcRelativePos.Offset(-rcParentPos.left, -rcParentPos.top);
             return rcRelativePos;
         } else {
-            return CDuiRect(0, 0, 0, 0);
+            return CRectUI(0, 0, 0, 0);
         }
     }
 
@@ -366,7 +366,7 @@ namespace DUILIB
         if (rc.right < rc.left) rc.right = rc.left;
         if (rc.bottom < rc.top) rc.bottom = rc.top;
 
-        CDuiRect invalidateRc = m_rcItem;
+        CRectUI invalidateRc = m_rcItem;
         if (::IsRectEmpty(&invalidateRc)) invalidateRc = rc;
 
         m_rcItem = rc;
@@ -549,12 +549,12 @@ namespace DUILIB
         NeedParentUpdate();
     }
 
-    TPercentInfo CControlUI::GetFloatPercent() const
+    TPERCENTINFO_UI CControlUI::GetFloatPercent() const
     {
         return m_piFloatPercent;
     }
 
-    void CControlUI::SetFloatPercent(TPercentInfo piFloatPercent)
+    void CControlUI::SetFloatPercent(TPERCENTINFO_UI piFloatPercent)
     {
         m_piFloatPercent = piFloatPercent;
         NeedParentUpdate();
@@ -571,7 +571,7 @@ namespace DUILIB
         return m_uFloatAlign;
     }
 
-    CDuiString CControlUI::GetToolTip() const
+    CStringUI CControlUI::GetToolTip() const
     {
         if (!IsResourceText()) return m_sToolTip;
         return CResourceManagerUI::GetInstance()->GetText(m_sToolTip);
@@ -579,7 +579,7 @@ namespace DUILIB
 
     void CControlUI::SetToolTip(LPCTSTR pstrText)
     {
-        CDuiString strTemp(pstrText);
+        CStringUI strTemp(pstrText);
         strTemp.Replace(_T("<n>"), _T("\r\n"));
         m_sToolTip = strTemp;
     }
@@ -626,7 +626,7 @@ namespace DUILIB
         m_bMenuUsed = bMenuUsed;
     }
 
-    const CDuiString& CControlUI::GetUserData()
+    const CStringUI& CControlUI::GetUserData()
     {
         return m_sUserData;
     }
@@ -805,12 +805,12 @@ namespace DUILIB
 
     }
 
-    void CControlUI::Event(TEventUI & event)
+    void CControlUI::Event(TEVENT_UI & event)
     {
         if (OnEvent(&event)) DoEvent(event);
     }
 
-    void CControlUI::DoEvent(TEventUI & event)
+    void CControlUI::DoEvent(TEVENT_UI & event)
     {
         if (event.Type == UIEVENT_SETCURSOR) {
             if (GetCursor()) {
@@ -834,12 +834,12 @@ namespace DUILIB
             return;
         }
         if (event.Type == UIEVENT_TIMER) {
-            m_pManager->SendNotify(this, DUI_MSGTYPE_TIMER, event.wParam, event.lParam);
+            m_pManager->SendNotify(this, UIMSGTYPE_TIMER, event.wParam, event.lParam);
             return;
         }
         if (event.Type == UIEVENT_CONTEXTMENU) {
             if (IsContextMenuUsed()) {
-                m_pManager->SendNotify(this, DUI_MSGTYPE_MENU, event.wParam, event.lParam);
+                m_pManager->SendNotify(this, UIMSGTYPE_MENU, event.wParam, event.lParam);
                 return;
             }
         }
@@ -854,9 +854,9 @@ namespace DUILIB
         m_pManager->UsedVirtualWnd(true);
     }
 
-    CDuiString CControlUI::GetVirtualWnd() const
+    CStringUI CControlUI::GetVirtualWnd() const
     {
-        CDuiString str;
+        CStringUI str;
         if (!m_sVirtualWnd.IsEmpty()) {
             str = m_sVirtualWnd;
         } else {
@@ -875,7 +875,7 @@ namespace DUILIB
         if (pstrName == NULL || pstrName[0] == _T('\0') || pstrAttr == NULL || pstrAttr[0] == _T('\0')) return;
 
         if (m_mCustomAttrHash.Find(pstrName) == NULL) {
-            CDuiString* pCostomAttr = new CDuiString(pstrAttr);
+            CStringUI* pCostomAttr = new CStringUI(pstrAttr);
             if (pCostomAttr != NULL) {
                 m_mCustomAttrHash.Set(pstrName, (LPVOID)pCostomAttr);
             }
@@ -885,7 +885,7 @@ namespace DUILIB
     LPCTSTR CControlUI::GetCustomAttribute(LPCTSTR pstrName) const
     {
         if (pstrName == NULL || pstrName[0] == _T('\0')) return NULL;
-        CDuiString * pCostomAttr = static_cast<CDuiString*>(m_mCustomAttrHash.Find(pstrName));
+        CStringUI * pCostomAttr = static_cast<CStringUI*>(m_mCustomAttrHash.Find(pstrName));
         if (pCostomAttr) return pCostomAttr->GetData();
         return NULL;
     }
@@ -893,7 +893,7 @@ namespace DUILIB
     BOOL CControlUI::RemoveCustomAttribute(LPCTSTR pstrName)
     {
         if (pstrName == NULL || pstrName[0] == _T('\0')) return NULL;
-        CDuiString * pCostomAttr = static_cast<CDuiString*>(m_mCustomAttrHash.Find(pstrName));
+        CStringUI * pCostomAttr = static_cast<CStringUI*>(m_mCustomAttrHash.Find(pstrName));
         if (!pCostomAttr) return false;
 
         delete pCostomAttr;
@@ -902,10 +902,10 @@ namespace DUILIB
 
     void CControlUI::RemoveAllCustomAttribute()
     {
-        CDuiString* pCostomAttr;
+        CStringUI* pCostomAttr;
         for (int i = 0; i < m_mCustomAttrHash.GetSize(); i++) {
             if (LPCTSTR key = m_mCustomAttrHash.GetAt(i)) {
-                pCostomAttr = static_cast<CDuiString*>(m_mCustomAttrHash.Find(key));
+                pCostomAttr = static_cast<CStringUI*>(m_mCustomAttrHash.Find(key));
                 delete pCostomAttr;
             }
         }
@@ -937,12 +937,12 @@ namespace DUILIB
             SetFixedWidth(rcPos.right - rcPos.left);
             SetFixedHeight(rcPos.bottom - rcPos.top);
         } else if (_tcsicmp(pstrName, _T("float")) == 0) {
-            CDuiString nValue = pstrValue;
+            CStringUI nValue = pstrValue;
             // 动态计算相对比例
             if (nValue.Find(',') < 0) {
                 SetFloat(_tcsicmp(pstrValue, _T("true")) == 0);
             } else {
-                TPercentInfo piFloatPercent = {0};
+                TPERCENTINFO_UI piFloatPercent = {0};
                 LPTSTR pstr = NULL;
                 piFloatPercent.left = _tcstod(pstrValue, &pstr);  ASSERT(pstr);
                 piFloatPercent.top = _tcstod(pstr + 1, &pstr);    ASSERT(pstr);
@@ -955,7 +955,7 @@ namespace DUILIB
             UINT uAlign = GetFloatAlign();
             // 解析文字属性
             while (*pstrValue != _T('\0')) {
-                CDuiString sValue;
+                CStringUI sValue;
                 while (*pstrValue == _T(',') || *pstrValue == _T(' ')) pstrValue = ::CharNext(pstrValue);
 
                 while (*pstrValue != _T('\0') && *pstrValue != _T(',') && *pstrValue != _T(' ')) {
@@ -1033,7 +1033,7 @@ namespace DUILIB
             SetFocusBorderColor(clrColor);
         } else if (_tcsicmp(pstrName, _T("colorhsl")) == 0) SetColorHSL(_tcsicmp(pstrValue, _T("true")) == 0);
         else if (_tcsicmp(pstrName, _T("bordersize")) == 0) {
-            CDuiString nValue = pstrValue;
+            CStringUI nValue = pstrValue;
             if (nValue.Find(',') < 0) {
                 SetBorderSize(_ttoi(pstrValue));
                 RECT rcPadding = {0};
@@ -1081,20 +1081,20 @@ namespace DUILIB
         else if (_tcsicmp(pstrName, _T("shortcut")) == 0) SetShortcut(pstrValue[0]);
         else if (_tcsicmp(pstrName, _T("menu")) == 0) SetContextMenuUsed(_tcsicmp(pstrValue, _T("true")) == 0);
         else if (_tcsicmp(pstrName, _T("cursor")) == 0 && pstrValue) {
-            if (_tcsicmp(pstrValue, _T("arrow")) == 0)			SetCursor(DUI_ARROW);
-            else if (_tcsicmp(pstrValue, _T("ibeam")) == 0)	SetCursor(DUI_IBEAM);
-            else if (_tcsicmp(pstrValue, _T("wait")) == 0)		SetCursor(DUI_WAIT);
-            else if (_tcsicmp(pstrValue, _T("cross")) == 0)	SetCursor(DUI_CROSS);
-            else if (_tcsicmp(pstrValue, _T("uparrow")) == 0)	SetCursor(DUI_UPARROW);
-            else if (_tcsicmp(pstrValue, _T("size")) == 0)		SetCursor(DUI_SIZE);
-            else if (_tcsicmp(pstrValue, _T("icon")) == 0)		SetCursor(DUI_ICON);
-            else if (_tcsicmp(pstrValue, _T("sizenwse")) == 0)	SetCursor(DUI_SIZENWSE);
-            else if (_tcsicmp(pstrValue, _T("sizenesw")) == 0)	SetCursor(DUI_SIZENESW);
-            else if (_tcsicmp(pstrValue, _T("sizewe")) == 0)	SetCursor(DUI_SIZEWE);
-            else if (_tcsicmp(pstrValue, _T("sizens")) == 0)	SetCursor(DUI_SIZENS);
-            else if (_tcsicmp(pstrValue, _T("sizeall")) == 0)	SetCursor(DUI_SIZEALL);
-            else if (_tcsicmp(pstrValue, _T("no")) == 0)		SetCursor(DUI_NO);
-            else if (_tcsicmp(pstrValue, _T("hand")) == 0)		SetCursor(DUI_HAND);
+            if (_tcsicmp(pstrValue, _T("arrow")) == 0)			SetCursor(UICURSOR_ARROW);
+            else if (_tcsicmp(pstrValue, _T("ibeam")) == 0)	SetCursor(UICURSOR_IBEAM);
+            else if (_tcsicmp(pstrValue, _T("wait")) == 0)		SetCursor(UICURSOR_WAIT);
+            else if (_tcsicmp(pstrValue, _T("cross")) == 0)	SetCursor(UICURSOR_CROSS);
+            else if (_tcsicmp(pstrValue, _T("uparrow")) == 0)	SetCursor(UICURSOR_UPARROW);
+            else if (_tcsicmp(pstrValue, _T("size")) == 0)		SetCursor(UICURSOR_SIZE);
+            else if (_tcsicmp(pstrValue, _T("icon")) == 0)		SetCursor(UICURSOR_ICON);
+            else if (_tcsicmp(pstrValue, _T("sizenwse")) == 0)	SetCursor(UICURSOR_SIZENWSE);
+            else if (_tcsicmp(pstrValue, _T("sizenesw")) == 0)	SetCursor(UICURSOR_SIZENESW);
+            else if (_tcsicmp(pstrValue, _T("sizewe")) == 0)	SetCursor(UICURSOR_SIZEWE);
+            else if (_tcsicmp(pstrValue, _T("sizens")) == 0)	SetCursor(UICURSOR_SIZENS);
+            else if (_tcsicmp(pstrValue, _T("sizeall")) == 0)	SetCursor(UICURSOR_SIZEALL);
+            else if (_tcsicmp(pstrValue, _T("no")) == 0)		SetCursor(UICURSOR_NO);
+            else if (_tcsicmp(pstrValue, _T("hand")) == 0)		SetCursor(UICURSOR_HAND);
         } else if (_tcsicmp(pstrName, _T("virtualwnd")) == 0) SetVirtualWnd(pstrValue);
         else {
             AddCustomAttribute(pstrName, pstrValue);
@@ -1110,12 +1110,12 @@ namespace DUILIB
                 return ApplyAttributeList(pStyle);
             }
         }
-        CDuiString sXmlData = pstrValue;
+        CStringUI sXmlData = pstrValue;
         sXmlData.Replace(_T("&quot;"), _T("\""));
         LPCTSTR pstrList = sXmlData.GetData();
         // 解析样式属性
-        CDuiString sItem;
-        CDuiString sValue;
+        CStringUI sItem;
+        CStringUI sValue;
         while (*pstrList != _T('\0')) {
             sItem.Empty();
             sValue.Empty();
@@ -1172,8 +1172,8 @@ namespace DUILIB
         }
 
         if (cxyBorderRound.cx > 0 || cxyBorderRound.cy > 0) {
-            CRenderClip roundClip;
-            CRenderClip::GenerateRoundClip(hDC, m_rcPaint, m_rcItem, cxyBorderRound.cx, cxyBorderRound.cy, roundClip);
+            CRenderClipUI roundClip;
+            CRenderClipUI::GenerateRoundClip(hDC, m_rcPaint, m_rcItem, cxyBorderRound.cx, cxyBorderRound.cy, roundClip);
             PaintBkColor(hDC);
             PaintBkImage(hDC);
             PaintStatusImage(hDC);

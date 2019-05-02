@@ -7,7 +7,7 @@ namespace DUILIB
 {
     class DUILIB_API CLabelUI : public CControlUI
     {
-        DECLARE_DUICONTROL(CLabelUI)
+        DECLARE_CONTROL_UI(CLabelUI)
     public:
         CLabelUI();
         ~CLabelUI();
@@ -30,7 +30,7 @@ namespace DUILIB
         void SetShowHtml(BOOL bShowHtml = true);
 
         SIZE EstimateSize(SIZE szAvailable);
-        void DoEvent(TEventUI& event);
+        void DoEvent(TEVENT_UI& event);
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
         void PaintText(HDC hDC);

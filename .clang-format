@@ -5,10 +5,10 @@ DerivePointerAlignment: false
 
 IndentWidth: 4
 
-#@[]里面两边空格，原true
+# @[]里面两边空格，原true
 SpacesInContainerLiterals: false
 
-#Add a space after @property in Objective-C, i.e. use \@property (readonly) instead of \@property(readonly).
+# Add a space after @property in Objective-C, i.e. use \@property (readonly) instead of \@property(readonly).
 ObjCSpaceAfterProperty: true
 
 #The number of characters to use for indentation of ObjC blocks.
@@ -34,8 +34,3 @@ AlignTrailingComments: true
 
 #括号后加空格
 SpaceAfterCStyleCast: true
-
----
-Language: JavaScript
-# Use 100 columns for JS.
-ColumnLimit: 0

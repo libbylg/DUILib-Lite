@@ -76,7 +76,7 @@ namespace DUILIB
 		if (event.Type == UIEVENT_TIMER && event.wParam == ROLLTEXT_ROLL_END)
 		{
 			m_pManager->KillTimer(this, ROLLTEXT_ROLL_END);
-			m_pManager->SendNotify(this, DUI_MSGTYPE_TEXTROLLEND);
+			m_pManager->SendNotify(this, UIMSGTYPE_TEXTROLLEND);
 		}
 		else if( event.Type == UIEVENT_TIMER && event.wParam == ROLLTEXT_TIMERID ) 
 		{

@@ -13,34 +13,34 @@ namespace DUILIB
     //
 
     class CManagerUI;
-    struct TImageInfo;
+    struct TIMAGEINFO_UI;
 
-    class DUILIB_API CRenderClip
+    class DUILIB_API CRenderClipUI
     {
     public:
-        ~CRenderClip();
+        ~CRenderClipUI();
         RECT rcItem;
         HDC hDC;
         HRGN hRgn;
         HRGN hOldRgn;
 
-        static void GenerateClip(HDC hDC, RECT rc, CRenderClip& clip);
-        static void GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, int height, CRenderClip& clip);
-        static void UseOldClipBegin(HDC hDC, CRenderClip& clip);
-        static void UseOldClipEnd(HDC hDC, CRenderClip& clip);
+        static void GenerateClip(HDC hDC, RECT rc, CRenderClipUI& clip);
+        static void GenerateRoundClip(HDC hDC, RECT rc, RECT rcItem, int width, int height, CRenderClipUI& clip);
+        static void UseOldClipBegin(HDC hDC, CRenderClipUI& clip);
+        static void UseOldClipEnd(HDC hDC, CRenderClipUI& clip);
     };
 
     class CDPI;
-    typedef struct DUILIB_API TDrawInfo
+    typedef struct DUILIB_API TDRAWINFO
     {
-        TDrawInfo();
+        TDRAWINFO();
         void Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CDPI* pDPI);
         void Clear();
 
-        CDuiString sDrawString;
-        CDuiString sDrawModify;
-        CDuiString sImageName;
-        CDuiString sResType;
+        CStringUI sDrawString;
+        CStringUI sDrawModify;
+        CStringUI sImageName;
+        CStringUI sResType;
         RECT rcDest;
         RECT rcSource;
         RECT rcCorner;
@@ -51,8 +51,8 @@ namespace DUILIB
         BOOL bTiledY;
         BOOL bHSL;
         SIZE szIcon;
-        CDuiString sIconAlign;
-    } TDrawInfo;
+        CStringUI sIconAlign;
+    } TDRAWINFO;
 
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -63,21 +63,21 @@ namespace DUILIB
     public:
         static DWORD AdjustColor(DWORD dwColor, short H, short S, short L);
         static HBITMAP CreateARGB32Bitmap(HDC hDC, int cx, int cy, BYTE** pBits);
-        static void AdjustImage(BOOL bUseHSL, TImageInfo* imageInfo, short H, short S, short L);
-        static TImageInfo* LoadImage(STRINGorID bitmap, LPCTSTR type = NULL, DWORD mask = 0, HINSTANCE instance = NULL);
+        static void AdjustImage(BOOL bUseHSL, TIMAGEINFO_UI* imageInfo, short H, short S, short L);
+        static TIMAGEINFO_UI* LoadImage(TSTRID_UI bitmap, LPCTSTR type = NULL, DWORD mask = 0, HINSTANCE instance = NULL);
 #ifdef USE_XIMAGE_EFFECT
         static CxImage* LoadGifImageX(STRINGorID bitmap, LPCTSTR type = NULL, DWORD mask = 0);
 #endif
-        static void FreeImage(TImageInfo* bitmap, BOOL bDelete = TRUE);
-        static TImageInfo* LoadImage(LPCTSTR pStrImage, LPCTSTR type = NULL, DWORD mask = 0, HINSTANCE instance = NULL);
-        static TImageInfo* LoadImage(UINT nID, LPCTSTR type = NULL, DWORD mask = 0, HINSTANCE instance = NULL);
+        static void FreeImage(TIMAGEINFO_UI* bitmap, BOOL bDelete = TRUE);
+        static TIMAGEINFO_UI* LoadImage(LPCTSTR pStrImage, LPCTSTR type = NULL, DWORD mask = 0, HINSTANCE instance = NULL);
+        static TIMAGEINFO_UI* LoadImage(UINT nID, LPCTSTR type = NULL, DWORD mask = 0, HINSTANCE instance = NULL);
 
         static Gdiplus::Image* GdiplusLoadImage(LPCTSTR pstrPath);
         static Gdiplus::Image* GdiplusLoadImage(LPVOID pBuf, size_t dwSize);
 
         static BOOL DrawIconImageString(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, \
             LPCTSTR pStrImage, LPCTSTR pStrModify = NULL);
-        static BOOL MakeFitIconDest(const RECT& rcControl, const CDuiSize& szIcon, const CDuiString& sAlign, RECT& rcDest);
+        static BOOL MakeFitIconDest(const RECT& rcControl, const CSizeUI& szIcon, const CStringUI& sAlign, RECT& rcDest);
 
         static void DrawText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText, DWORD dwTextColor, \
             int iFont, UINT uStyle, DWORD dwTextBKColor);
@@ -86,7 +86,7 @@ namespace DUILIB
             const RECT& rcBmpPart, const RECT& rcCorners, BOOL bAlpha, BYTE uFade = 255,
             BOOL hole = false, BOOL xtiled = false, BOOL ytiled = false);
 
-        static BOOL DrawImageInfo(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, const TDrawInfo* pDrawInfo, HINSTANCE instance = NULL);
+        static BOOL DrawImageInfo(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, const TDRAWINFO* pDrawInfo, HINSTANCE instance = NULL);
         static BOOL DrawImageString(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, HINSTANCE instance = NULL);
 
         static void DrawColor(HDC hDC, const RECT& rc, DWORD color);
@@ -99,7 +99,7 @@ namespace DUILIB
         static void DrawText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText, \
             DWORD dwTextColor, int iFont, UINT uStyle);
         static void DrawHtmlText(HDC hDC, CManagerUI* pManager, RECT& rc, LPCTSTR pstrText,
-            DWORD dwTextColor, RECT* pLinks, CDuiString* sLinks, int& nLinkRects, int iFont, UINT uStyle);
+            DWORD dwTextColor, RECT* pLinks, CStringUI* sLinks, int& nLinkRects, int iFont, UINT uStyle);
         static HBITMAP GenerateBitmap(CManagerUI* pManager, RECT rc, CControlUI* pStopControl = NULL, DWORD dwFilterColor = 0);
         static HBITMAP GenerateBitmap(CManagerUI* pManager, CControlUI* pControl, RECT rc, DWORD dwFilterColor = 0);
         static SIZE GetTextSize(HDC hDC, CManagerUI* pManager, LPCTSTR pstrText, int iFont, UINT uStyle);

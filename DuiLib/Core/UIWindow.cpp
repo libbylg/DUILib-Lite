@@ -21,7 +21,7 @@ namespace DUILIB
         _vsntprintf(szBuffer, 2048, pstrFormat, args);
         va_end(args);
 
-        CDuiString strMsg = szBuffer;
+        CStringUI strMsg = szBuffer;
         strMsg += _T("\n");
         OutputDebugString(strMsg.GetData());
 
@@ -96,15 +96,15 @@ namespace DUILIB
 
     //////////////////////////////////////////////////////////////////////////
     //
-    DUI_BASE_BEGIN_MESSAGE_MAP(CNotifyPump)
+    UILIB_BASE_BEGIN_MESSAGE_MAP(CNotifyPumpUI)
         DUI_END_MESSAGE_MAP()
 
-        static const DUI_MSGMAP_ENTRY* DuiFindMessageEntry(const DUI_MSGMAP_ENTRY * lpEntry, TNotifyUI & msg)
+        static const TMSGMAPENTRY_UI* DuiFindMessageEntry(const TMSGMAPENTRY_UI * lpEntry, TNOTIFY_UI & msg)
     {
-        CDuiString sMsgType = msg.sType;
-        CDuiString sCtrlName = msg.pSender->GetName();
-        const DUI_MSGMAP_ENTRY* pMsgTypeEntry = NULL;
-        while (lpEntry->nSig != DuiSig_end) {
+        CStringUI sMsgType = msg.sType;
+        CStringUI sCtrlName = msg.pSender->GetName();
+        const TMSGMAPENTRY_UI* pMsgTypeEntry = NULL;
+        while (lpEntry->nSig != UISIG_end) {
             if (lpEntry->sMsgType == sMsgType) {
                 if (!lpEntry->sCtrlName.IsEmpty()) {
                     if (lpEntry->sCtrlName == sCtrlName) {
@@ -119,7 +119,7 @@ namespace DUILIB
         return pMsgTypeEntry;
     }
 
-    BOOL CNotifyPump::AddVirtualWnd(CDuiString strName, CNotifyPump * pObject)
+    BOOL CNotifyPumpUI::AddVirtualWnd(CStringUI strName, CNotifyPumpUI * pObject)
     {
         if (m_VirtualWndMap.Find(strName) == NULL) {
             m_VirtualWndMap.Insert(strName.GetData(), (LPVOID)pObject);
@@ -128,7 +128,7 @@ namespace DUILIB
         return false;
     }
 
-    BOOL CNotifyPump::RemoveVirtualWnd(CDuiString strName)
+    BOOL CNotifyPumpUI::RemoveVirtualWnd(CStringUI strName)
     {
         if (m_VirtualWndMap.Find(strName) != NULL) {
             m_VirtualWndMap.Remove(strName);
@@ -137,10 +137,10 @@ namespace DUILIB
         return false;
     }
 
-    BOOL CNotifyPump::LoopDispatch(TNotifyUI & msg)
+    BOOL CNotifyPumpUI::LoopDispatch(TNOTIFY_UI & msg)
     {
-        const DUI_MSGMAP_ENTRY* lpEntry = NULL;
-        const DUI_MSGMAP* pMessageMap = NULL;
+        const TMSGMAPENTRY_UI* lpEntry = NULL;
+        const TMSGMAP_UI* pMessageMap = NULL;
 
 #ifndef DUILIB_STATIC
         for (pMessageMap = GetMessageMap(); pMessageMap != NULL; pMessageMap = (*pMessageMap->pfnGetBaseMap)())
@@ -170,11 +170,11 @@ namespace DUILIB
             default:
                 ASSERT(FALSE);
                 break;
-            case DuiSig_lwl:
+            case UISIG_lwl:
                 (this->*mmf.pfn_Notify_lwl)(msg.wParam, msg.lParam);
                 bRet = true;
                 break;
-            case DuiSig_vn:
+            case UISIG_vn:
                 (this->*mmf.pfn_Notify_vn)(msg);
                 bRet = true;
                 break;
@@ -182,14 +182,14 @@ namespace DUILIB
         return bRet;
     }
 
-    void CNotifyPump::NotifyPump(TNotifyUI & msg)
+    void CNotifyPumpUI::NotifyPump(TNOTIFY_UI & msg)
     {
         ///±éÀúÐéÄâ´°¿Ú
         if (!msg.sVirtualWnd.IsEmpty()) {
             for (int i = 0; i < m_VirtualWndMap.GetSize(); i++) {
                 if (LPCTSTR key = m_VirtualWndMap.GetAt(i)) {
                     if (_tcsicmp(key, msg.sVirtualWnd.GetData()) == 0) {
-                        CNotifyPump* pObject = static_cast<CNotifyPump*>(m_VirtualWndMap.Find(key, false));
+                        CNotifyPumpUI* pObject = static_cast<CNotifyPumpUI*>(m_VirtualWndMap.Find(key, false));
                         if (pObject && pObject->LoopDispatch(msg))
                             return;
                     }
