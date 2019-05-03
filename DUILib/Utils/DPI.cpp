@@ -75,7 +75,7 @@ namespace DUI
             if (hModule != NULL) {
                 LPGetProcessDpiAwareness GetProcessDpiAwareness = (LPGetProcessDpiAwareness)GetProcAddress(hModule, "GetProcessDpiAwareness");
                 if (GetProcessDpiAwareness != NULL) {
-                    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, false, GetCurrentProcessId());
+                    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
                     if (GetProcessDpiAwareness(hProcess, &m_Awareness) == S_OK) {
                     }
                 }

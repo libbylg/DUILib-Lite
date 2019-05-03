@@ -27,7 +27,7 @@ namespace DUI
         RECT GetTextPadding() const;
         void SetTextPadding(RECT rc);
         BOOL IsShowHtml();
-        void SetShowHtml(BOOL bShowHtml = true);
+        void SetShowHtml(BOOL bShowHtml = TRUE);
 
         SIZE EstimateSize(SIZE szAvailable);
         void DoEvent(TEVENT_UI& event);

@@ -1,7 +1,7 @@
 #ifndef __UITEXTSCROLLH__
 #define __UITEXTSCROLLH__
 
-#pragma once
+#include "Control/UILabel.h"
 
 namespace DUI
 {
@@ -29,7 +29,7 @@ namespace DUI
 
 	public:	
 		virtual void PaintText(HDC hDC);
-		virtual void DoEvent(TEventUI& event);
+		virtual void DoEvent(struct TEVENT_UI& event);
 		virtual void SetPos(RECT rc);
 		virtual void SetText(LPCTSTR pstrText);
 

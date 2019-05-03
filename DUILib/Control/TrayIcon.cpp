@@ -7,8 +7,8 @@ namespace DUI
     CTrayIcon::CTrayIcon(void)
     {
         memset(&m_trayData, 0, sizeof(m_trayData));
-        m_bEnabled = false;
-        m_bVisible = false;
+        m_bEnabled = FALSE;
+        m_bVisible = FALSE;
         m_hWnd = NULL;
         m_uMessage = UIMSG_TRAYICON;
     }
@@ -24,7 +24,7 @@ namespace DUI
             return;
         }
         if (_Message != 0) m_uMessage = _Message;
-        m_hIcon = LoadIcon(CPaintManagerUI::GetInstance(), MAKEINTRESOURCE(_IconIDResource));
+        m_hIcon = LoadIcon(CManagerUI::GetInstance(), MAKEINTRESOURCE(_IconIDResource));
         m_trayData.cbSize = sizeof(NOTIFYICONDATA);
         m_trayData.hWnd = _RecvHwnd;
         m_trayData.uID = _IconIDResource;
@@ -33,14 +33,14 @@ namespace DUI
         m_trayData.uCallbackMessage = m_uMessage;
         if (_ToolTipText) _tcscpy(m_trayData.szTip, _ToolTipText);
         Shell_NotifyIcon(NIM_ADD, &m_trayData);
-        m_bEnabled = true;
+        m_bEnabled = TRUE;
     }
 
     void CTrayIcon::DeleteTrayIcon()
     {
         Shell_NotifyIcon(NIM_DELETE, &m_trayData);
-        m_bEnabled = false;
-        m_bVisible = false;
+        m_bEnabled = FALSE;
+        m_bVisible = FALSE;
         m_hWnd = NULL;
         m_uMessage = UIMSG_TRAYICON;
     }
@@ -56,11 +56,11 @@ namespace DUI
     BOOL CTrayIcon::SetTooltipText(UINT _IDResource)
     {
         TCHAR mbuf[256] = {0};
-        LoadString(CPaintManagerUI::GetInstance(), _IDResource, mbuf, 256);
+        LoadString(CManagerUI::GetInstance(), _IDResource, mbuf, 256);
         return SetTooltipText(mbuf);
     }
 
-    DUILIB::CDuiString CTrayIcon::GetTooltipText() const
+    DUILIB::CStringUI CTrayIcon::GetTooltipText() const
     {
         return m_trayData.szTip;
     }
@@ -74,18 +74,18 @@ namespace DUI
         if (!m_bEnabled) return FALSE;
         return Shell_NotifyIcon(NIM_MODIFY, &m_trayData) == TRUE;
 
-        return false;
+        return FALSE;
     }
 
     BOOL CTrayIcon::SetIcon(LPCTSTR _IconFile)
     {
-        HICON hIcon = LoadIcon(CPaintManagerUI::GetInstance(), _IconFile);
+        HICON hIcon = LoadIcon(CManagerUI::GetInstance(), _IconFile);
         return SetIcon(hIcon);
     }
 
     BOOL CTrayIcon::SetIcon(UINT _IDResource)
     {
-        HICON hIcon = LoadIcon(CPaintManagerUI::GetInstance(), MAKEINTRESOURCE(_IDResource));
+        HICON hIcon = LoadIcon(CManagerUI::GetInstance(), MAKEINTRESOURCE(_IDResource));
         return SetIcon(hIcon);
     }
 

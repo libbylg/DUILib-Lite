@@ -1,8 +1,7 @@
 #include "Core/UIRender.h"
 #include "Core/UIControl.h"
-#include "Core/UIDefine.h"
 #include "Core/UIManager.h"
-#include "Core/UIResourceManager.h"
+#include "Core/UIResource.h"
 #include "Utils/unzip.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -39,7 +38,7 @@ namespace DUI
     {
         // 1、aaa.jpg
         // 2、file='aaa.jpg' res='' restype='0' dest='0,0,0,0' source='0,0,0,0' corner='0,0,0,0'
-        // mask='#FF0000' fade='255' hole='false' xtiled='false' ytiled='false'
+        // mask='#FF0000' fade='255' hole='FALSE' xtiled='FALSE' ytiled='FALSE'
         sDrawString = pStrImage;
         sDrawModify = pStrModify;
         sImageName = pStrImage;
@@ -117,13 +116,13 @@ namespace DUI
                     } else if (sItem == _T("fade")) {
                         uFade = (BYTE)_tcstoul(sValue.GetData(), &pstr, 10);
                     } else if (sItem == _T("hole")) {
-                        bHole = (_tcsicmp(sValue.GetData(), _T("true")) == 0);
+                        bHole = (_tcsicmp(sValue.GetData(), _T("TRUE")) == 0);
                     } else if (sItem == _T("xtiled")) {
-                        bTiledX = (_tcsicmp(sValue.GetData(), _T("true")) == 0);
+                        bTiledX = (_tcsicmp(sValue.GetData(), _T("TRUE")) == 0);
                     } else if (sItem == _T("ytiled")) {
-                        bTiledY = (_tcsicmp(sValue.GetData(), _T("true")) == 0);
+                        bTiledY = (_tcsicmp(sValue.GetData(), _T("TRUE")) == 0);
                     } else if (sItem == _T("hsl")) {
-                        bHSL = (_tcsicmp(sValue.GetData(), _T("true")) == 0);
+                        bHSL = (_tcsicmp(sValue.GetData(), _T("TRUE")) == 0);
                     } else if (sItem == _T("iconsize")) {
                         szIcon.cx = _tcstol(sValue.GetData(), &pstr, 10);
                         ASSERT(pstr);
@@ -155,10 +154,10 @@ namespace DUI
         memset(&rcCorner, 0, sizeof(RECT));
         dwMask = 0;
         uFade = 255;
-        bHole = false;
-        bTiledX = false;
-        bTiledY = false;
-        bHSL = false;
+        bHole = FALSE;
+        bTiledX = FALSE;
+        bTiledY = FALSE;
+        bHSL = FALSE;
         szIcon.cx = szIcon.cy = 0;
         sIconAlign.Empty();
     }
@@ -379,15 +378,15 @@ namespace DUI
         BOOL bHole, BOOL bTiledX, BOOL bTiledY, HINSTANCE instance = NULL)
     {
         if (sImageName.IsEmpty()) {
-            return false;
+            return FALSE;
         }
         const TIMAGEINFO_UI* data = NULL;
         if (sImageResType.IsEmpty()) {
-            data = pManager->GetImageEx((LPCTSTR)sImageName, NULL, dwMask, false, instance);
+            data = pManager->GetImageEx((LPCTSTR)sImageName, NULL, dwMask, FALSE, instance);
         } else {
-            data = pManager->GetImageEx((LPCTSTR)sImageName, (LPCTSTR)sImageResType, dwMask, false, instance);
+            data = pManager->GetImageEx((LPCTSTR)sImageName, (LPCTSTR)sImageResType, dwMask, FALSE, instance);
         }
-        if (!data) return false;
+        if (!data) return FALSE;
 
         if (rcBmpPart.left == 0 && rcBmpPart.right == 0 && rcBmpPart.top == 0 && rcBmpPart.bottom == 0) {
             rcBmpPart.right = data->nX;
@@ -397,12 +396,12 @@ namespace DUI
         if (rcBmpPart.bottom > data->nY) rcBmpPart.bottom = data->nY;
 
         RECT rcTemp;
-        if (!::IntersectRect(&rcTemp, &rcItem, &rc)) return true;
-        if (!::IntersectRect(&rcTemp, &rcItem, &rcPaint)) return true;
+        if (!::IntersectRect(&rcTemp, &rcItem, &rc)) return TRUE;
+        if (!::IntersectRect(&rcTemp, &rcItem, &rcPaint)) return TRUE;
 
-        CRenderUI::DrawImage(hDC, data->hBitmap, rcItem, rcPaint, rcBmpPart, rcCorner, pManager->IsLayered()?true:data->bAlpha, bFade, bHole, bTiledX, bTiledY);
+        CRenderUI::DrawImage(hDC, data->hBitmap, rcItem, rcPaint, rcBmpPart, rcCorner, pManager->IsLayered()?TRUE:data->bAlpha, bFade, bHole, bTiledX, bTiledY);
 
-        return true;
+        return TRUE;
     }
 
     DWORD CRenderUI::AdjustColor(DWORD dwColor, short H, short S, short L)
@@ -465,7 +464,7 @@ namespace DUI
                     int i = 0;
                     CStringUI key = bitmap.m_lpstr;
                     key.Replace(_T("\\"), _T("/"));
-                    if (FindZipItem(hz, key, true, &i, &ze) != 0) break;
+                    if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) break;
                     dwSize = ze.unc_size;
                     if (dwSize == 0) break;
                     pData = new BYTE[dwSize];
@@ -473,10 +472,14 @@ namespace DUI
                     if (res != 0x00000000 && res != 0x00000600) {
                         delete[] pData;
                         pData = NULL;
-                        if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
+                        if (!CManagerUI::IsCachedResourceZip()) {
+                            CloseZip(hz);
+                        }
                         break;
                     }
-                    if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
+                    if (!CManagerUI::IsCachedResourceZip()) {
+                        CloseZip(hz);
+                    }
                 }
             } else {
                 HINSTANCE dllinstance = NULL;
@@ -542,7 +545,7 @@ namespace DUI
         bmi.bmiHeader.biCompression = BI_RGB;
         bmi.bmiHeader.biSizeImage = x * y * 4;
 
-        BOOL bAlphaChannel = false;
+        BOOL bAlphaChannel = FALSE;
         LPBYTE pDest = NULL;
         HBITMAP hBitmap = ::CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, (void**)& pDest, NULL, 0);
         if (!hBitmap) {
@@ -555,7 +558,7 @@ namespace DUI
                 pDest[i * 4] = (BYTE)(DWORD(pImage[i * 4 + 2]) * pImage[i * 4 + 3] / 255);
                 pDest[i * 4 + 1] = (BYTE)(DWORD(pImage[i * 4 + 1]) * pImage[i * 4 + 3] / 255);
                 pDest[i * 4 + 2] = (BYTE)(DWORD(pImage[i * 4]) * pImage[i * 4 + 3] / 255);
-                bAlphaChannel = true;
+                bAlphaChannel = TRUE;
             } else {
                 pDest[i * 4] = pImage[i * 4 + 2];
                 pDest[i * 4 + 1] = pImage[i * 4 + 1];
@@ -567,7 +570,7 @@ namespace DUI
                 pDest[i * 4 + 1] = (BYTE)0;
                 pDest[i * 4 + 2] = (BYTE)0;
                 pDest[i * 4 + 3] = (BYTE)0;
-                bAlphaChannel = true;
+                bAlphaChannel = TRUE;
             }
         }
 
@@ -583,15 +586,15 @@ namespace DUI
         return data;
     }
 #ifdef USE_XIMAGE_EFFECT
-    static DWORD LoadImage2Memory(const STRINGorID & bitmap, LPCTSTR type, LPBYTE & pData)
+    static DWORD LoadImage2Memory(const TSTRID_UI & bitmap, LPCTSTR type, LPBYTE & pData)
     {
         assert(pData == NULL);
         pData = NULL;
         DWORD dwSize(0U);
         do {
             if (type == NULL) {
-                CDuiString sFile = CPaintManagerUI::GetResourcePath();
-                if (CPaintManagerUI::GetResourceZip().IsEmpty()) {
+                CStringUI sFile = CManagerUI::GetResourcePath();
+                if (CManagerUI::GetResourceZip().IsEmpty()) {
                     sFile += bitmap.m_lpstr;
                     HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                         FILE_ATTRIBUTE_NORMAL, NULL);
@@ -612,12 +615,12 @@ namespace DUI
                         break;
                     }
                 } else {
-                    sFile += CPaintManagerUI::GetResourceZip();
+                    sFile += CManagerUI::GetResourceZip();
                     HZIP hz = NULL;
-                    if (CPaintManagerUI::IsCachedResourceZip())
-                        hz = (HZIP)CPaintManagerUI::GetResourceZipHandle();
+                    if (CManagerUI::IsCachedResourceZip())
+                        hz = (HZIP)CManagerUI::GetResourceZipHandle();
                     else {
-                        CDuiString sFilePwd = CPaintManagerUI::GetResourceZipPwd();
+                        CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
                         char* pwd = w2a((wchar_t*)sFilePwd.GetData());
                         hz = OpenZip((void*)sFile.GetData(), pwd);
@@ -629,9 +632,9 @@ namespace DUI
                     if (hz == NULL) break;
                     ZIPENTRY ze;
                     int i = 0;
-                    CDuiString key = bitmap.m_lpstr;
+                    CStringUI key = bitmap.m_lpstr;
                     key.Replace(_T("\\"), _T("/"));
-                    if (FindZipItem(hz, key, true, &i, &ze) != 0) break;
+                    if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) break;
                     dwSize = ze.unc_size;
                     if (dwSize == 0) break;
                     pData = new BYTE[dwSize];
@@ -640,15 +643,15 @@ namespace DUI
                         delete[] pData;
                         pData = NULL;
                         dwSize = 0U;
-                        if (!CPaintManagerUI::IsCachedResourceZip())
+                        if (!CManagerUI::IsCachedResourceZip())
                             CloseZip(hz);
                         break;
                     }
-                    if (!CPaintManagerUI::IsCachedResourceZip())
+                    if (!CManagerUI::IsCachedResourceZip())
                         CloseZip(hz);
                 }
             } else {
-                HINSTANCE hDll = CPaintManagerUI::GetResourceDll();
+                HINSTANCE hDll = CManagerUI::GetResourceDll();
                 HRSRC hResource = ::FindResource(hDll, bitmap.m_lpstr, type);
                 if (hResource == NULL) break;
                 HGLOBAL hGlobal = ::LoadResource(hDll, hResource);
@@ -687,7 +690,7 @@ namespace DUI
         }
         return dwSize;
     }
-    CxImage* CRenderUI::LoadGifImageX(STRINGorID bitmap, LPCTSTR type, DWORD mask)
+    CxImage* CRenderUI::LoadGifImageX(TSTRID_UI bitmap, LPCTSTR type, DWORD mask)
     {
         //write by wangji
         LPBYTE pData = NULL;
@@ -723,9 +726,13 @@ namespace DUI
                 sFile += sImageName;
                 HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                     FILE_ATTRIBUTE_NORMAL, NULL);
-                if (hFile == INVALID_HANDLE_VALUE) break;
+                if (hFile == INVALID_HANDLE_VALUE) {
+                    break;
+                }
                 dwSize = ::GetFileSize(hFile, NULL);
-                if (dwSize == 0) break;
+                if (dwSize == 0) {
+                    break;
+                }
 
                 DWORD dwRead = 0;
                 pData = new BYTE[dwSize];
@@ -740,35 +747,45 @@ namespace DUI
             } else {
                 sFile += CManagerUI::GetResourceZip();
                 HZIP hz = NULL;
-                if (CManagerUI::IsCachedResourceZip())
+                if (CManagerUI::IsCachedResourceZip()) {
                     hz = (HZIP)CManagerUI::GetResourceZipHandle();
-                else {
+                } else {
                     CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
                     char* pwd = w2a((wchar_t*)sFilePwd.GetData());
                     hz = OpenZip(sFile.GetData(), pwd);
-                    if (pwd) delete[] pwd;
+                    if (pwd) {
+                        delete[] pwd;
+                    }
 #else
                     hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
 #endif
                 }
-                if (hz == NULL) break;
+                if (hz == NULL) {
+                    break;
+                }
                 ZIPENTRY ze;
                 int i = 0;
                 CStringUI key = sImageName;
                 key.Replace(_T("\\"), _T("/"));
-                if (FindZipItem(hz, key, true, &i, &ze) != 0) break;
+                if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) {
+                    break;
+                }
                 dwSize = ze.unc_size;
                 if (dwSize == 0) break;
                 pData = new BYTE[dwSize];
                 int res = UnzipItem(hz, i, pData, dwSize);
-                if (res != 0x00000000 && res != 0x00000600) {
+                if ((res != 0x00000000) && (res != 0x00000600)) {
                     delete[] pData;
                     pData = NULL;
-                    if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
+                    if (!CManagerUI::IsCachedResourceZip()) {
+                        CloseZip(hz);
+                    }
                     break;
                 }
-                if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
+                if (!CManagerUI::IsCachedResourceZip()) {
+                    CloseZip(hz);
+                }
             }
 
         } while (0);
@@ -841,7 +858,7 @@ namespace DUI
     BOOL CRenderUI::DrawIconImageString(HDC hDC, CManagerUI * pManager, const RECT & rc, const RECT & rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify)
     {
         if ((pManager == NULL) || (hDC == NULL))
-            return false;
+            return FALSE;
 
         RECT rcDest = rc;
         const TDRAWINFO_UI * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
@@ -852,7 +869,7 @@ namespace DUI
         BOOL bRet = DUI::DrawImage(hDC, pManager, rc, rcPaint, pDrawInfo->sImageName, pDrawInfo->sResType, rcDest,
             pDrawInfo->rcSource, pDrawInfo->rcCorner, pDrawInfo->dwMask, pDrawInfo->uFade, pDrawInfo->bHole, pDrawInfo->bTiledX, pDrawInfo->bTiledY);
 
-        return true;
+        return TRUE;
     }
 
     BOOL CRenderUI::MakeFitIconDest(const RECT & rcControl, const CSizeUI & szIcon, const CStringUI & sAlign, RECT & rcDest)
@@ -886,7 +903,7 @@ namespace DUI
         if (rcDest.bottom > rcControl.bottom)
             rcDest.bottom = rcControl.bottom;
 
-        return true;
+        return TRUE;
     }
 
     TIMAGEINFO_UI * CRenderUI::LoadImage(LPCTSTR pStrImage, LPCTSTR type, DWORD mask, HINSTANCE instance)
@@ -895,13 +912,13 @@ namespace DUI
 
         CStringUI sStrPath = pStrImage;
         if (type == NULL) {
-            sStrPath = CResourceManagerUI::GetInstance()->GetImagePath(pStrImage);
+            sStrPath = CResourceUI::GetInstance()->GetImagePath(pStrImage);
             if (sStrPath.IsEmpty())
                 sStrPath = pStrImage;
             else {
-                /*if (CResourceManager::GetInstance()->GetScale() != 100) {
-                    CDuiString sScale;
-                    sScale.Format(_T("@%d."), CResourceManager::GetInstance()->GetScale());
+                /*if (CResourceUI::GetInstance()->GetScale() != 100) {
+                    CStringUI sScale;
+                    sScale.Format(_T("@%d."), CResourceUI::GetInstance()->GetScale());
                     sStrPath.Replace(_T("."), sScale);
                     }*/
             }
@@ -1357,7 +1374,7 @@ namespace DUI
 
     BOOL CRenderUI::DrawImageInfo(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, const TDRAWINFO_UI * pDrawInfo, HINSTANCE instance)
     {
-        if (pManager == NULL || hDC == NULL || pDrawInfo == NULL) return false;
+        if (pManager == NULL || hDC == NULL || pDrawInfo == NULL) return FALSE;
         RECT rcDest = rcItem;
         if (pDrawInfo->rcDest.left != 0 || pDrawInfo->rcDest.top != 0 ||
             pDrawInfo->rcDest.right != 0 || pDrawInfo->rcDest.bottom != 0) {
@@ -1376,7 +1393,7 @@ namespace DUI
 
     BOOL CRenderUI::DrawImageString(HDC hDC, CManagerUI * pManager, const RECT & rcItem, const RECT & rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify, HINSTANCE instance)
     {
-        if ((pManager == NULL) || (hDC == NULL)) return false;
+        if ((pManager == NULL) || (hDC == NULL)) return FALSE;
         const TDRAWINFO_UI * pDrawInfo = pManager->GetDrawInfo(pStrImage, pStrModify);
         return DrawImageInfo(hDC, pManager, rcItem, rcPaint, pDrawInfo, instance);
     }
@@ -1582,7 +1599,7 @@ namespace DUI
             (float)(width),
             Gdiplus::Color(dwPenColor),
             float(nSize),
-            false,
+            FALSE,
             Gdiplus::Color(dwPenColor));
 #endif
     }
@@ -1745,9 +1762,9 @@ namespace DUI
 
         BOOL bDraw = (uStyle & DT_CALCRECT) == 0;
 
-        CStdPtrArray aFontArray(10);
-        CStdPtrArray aColorArray(10);
-        CStdPtrArray aPIndentArray(10);
+        CPtrArrayUI aFontArray(10);
+        CPtrArrayUI aColorArray(10);
+        CPtrArrayUI aPIndentArray(10);
 
         RECT rcClip = {0};
         ::GetClipBox(hDC, &rcClip);
@@ -1790,13 +1807,13 @@ namespace DUI
             }
         }
 
-        BOOL bHoverLink = false;
+        BOOL bHoverLink = FALSE;
         CStringUI sHoverLink;
         POINT ptMouse = pManager->GetMousePos();
         for (int i = 0; !bHoverLink && i < nLinkRects; i++) {
             if (::PtInRect(prcLinks + i, ptMouse)) {
                 sHoverLink = *(CStringUI*)(sLinks + i);
-                bHoverLink = true;
+                bHoverLink = TRUE;
             }
         }
 
@@ -1806,26 +1823,26 @@ namespace DUI
         int cyMinHeight = 0;
         int cxMaxWidth = 0;
         POINT ptLinkStart = {0};
-        BOOL bLineEnd = false;
-        BOOL bInRaw = false;
-        BOOL bInLink = false;
-        BOOL bInSelected = false;
+        BOOL bLineEnd = FALSE;
+        BOOL bInRaw = FALSE;
+        BOOL bInLink = FALSE;
+        BOOL bInSelected = FALSE;
         int iLineLinkIndex = 0;
 
         // 排版习惯是图文底部对齐，所以每行绘制都要分两步，先计算高度，再绘制
-        CStdPtrArray aLineFontArray;
-        CStdPtrArray aLineColorArray;
-        CStdPtrArray aLinePIndentArray;
+        CPtrArrayUI aLineFontArray;
+        CPtrArrayUI aLineColorArray;
+        CPtrArrayUI aLinePIndentArray;
         LPCTSTR pstrLineBegin = pstrText;
-        BOOL bLineInRaw = false;
-        BOOL bLineInLink = false;
-        BOOL bLineInSelected = false;
+        BOOL bLineInRaw = FALSE;
+        BOOL bLineInLink = FALSE;
+        BOOL bLineInSelected = FALSE;
         int cyLineHeight = 0;
-        BOOL bLineDraw = false; // 行的第二阶段：绘制
+        BOOL bLineDraw = FALSE; // 行的第二阶段：绘制
         while (*pstrText != _T('\0')) {
             if (pt.x >= rc.right || *pstrText == _T('\n') || bLineEnd) {
                 if (*pstrText == _T('\n')) pstrText++;
-                if (bLineEnd) bLineEnd = false;
+                if (bLineEnd) bLineEnd = FALSE;
                 if (!bLineDraw) {
                     if (bInLink && iLinkIndex < nLinkRects) {
                         ::SetRect(&prcLinks[iLinkIndex++], ptLinkStart.x, ptLinkStart.y, MIN(pt.x, rc.right), pt.y + cyLine);
@@ -1887,9 +1904,9 @@ namespace DUI
                         ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
                         TFONTINFO_UI * pFontInfo = pDefFontInfo;
                         if (aFontArray.GetSize() > 0) pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
-                        if (pFontInfo->bUnderline == false) {
-                            HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, true, pFontInfo->bItalic);
-                            if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, true, pFontInfo->bItalic);
+                        if (pFontInfo->bUnderline == FALSE) {
+                            HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, TRUE, pFontInfo->bItalic);
+                            if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, TRUE, pFontInfo->bItalic);
                             pFontInfo = pManager->GetFontInfo(hFont);
                             aFontArray.Add(pFontInfo);
                             pTm = &pFontInfo->tm;
@@ -1897,16 +1914,16 @@ namespace DUI
                             cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                         }
                         ptLinkStart = pt;
-                        bInLink = true;
+                        bInLink = TRUE;
                     } break;
                     case _T('b'): // Bold
                     {
                         pstrText++;
                         TFONTINFO_UI* pFontInfo = pDefFontInfo;
                         if (aFontArray.GetSize() > 0) pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
-                        if (pFontInfo->bBold == false) {
-                            HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, true, pFontInfo->bUnderline, pFontInfo->bItalic);
-                            if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, true, pFontInfo->bUnderline, pFontInfo->bItalic);
+                        if (pFontInfo->bBold == FALSE) {
+                            HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, TRUE, pFontInfo->bUnderline, pFontInfo->bItalic);
+                            if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, TRUE, pFontInfo->bUnderline, pFontInfo->bItalic);
                             pFontInfo = pManager->GetFontInfo(hFont);
                             aFontArray.Add(pFontInfo);
                             pTm = &pFontInfo->tm;
@@ -1940,9 +1957,9 @@ namespace DUI
                             CStringUI sFontName;
                             int iFontSize = 10;
                             CStringUI sFontAttr;
-                            BOOL bBold = false;
-                            BOOL bUnderline = false;
-                            BOOL bItalic = false;
+                            BOOL bBold = FALSE;
+                            BOOL bUnderline = FALSE;
+                            BOOL bItalic = FALSE;
                             while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('}') && *pstrText != _T(' ')) {
                                 pstrTemp = ::CharNext(pstrText);
                                 while (pstrText < pstrTemp) {
@@ -1963,9 +1980,9 @@ namespace DUI
                                 }
                             }
                             sFontAttr.MakeLower();
-                            if (sFontAttr.Find(_T("bold")) >= 0) bBold = true;
-                            if (sFontAttr.Find(_T("underline")) >= 0) bUnderline = true;
-                            if (sFontAttr.Find(_T("italic")) >= 0) bItalic = true;
+                            if (sFontAttr.Find(_T("bold")) >= 0) bBold = TRUE;
+                            if (sFontAttr.Find(_T("underline")) >= 0) bUnderline = TRUE;
+                            if (sFontAttr.Find(_T("italic")) >= 0) bItalic = TRUE;
                             HFONT hFont = pManager->GetFont(sFontName, iFontSize, bBold, bUnderline, bItalic);
                             if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, sFontName, iFontSize, bBold, bUnderline, bItalic);
                             TFONTINFO_UI * pFontInfo = pManager->GetFontInfo(hFont);
@@ -1996,9 +2013,9 @@ namespace DUI
                             pstrNextStart = NULL;
                             TFONTINFO_UI* pFontInfo = pDefFontInfo;
                             if (aFontArray.GetSize() > 0) pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
-                            if (pFontInfo->bItalic == false) {
-                                HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, pFontInfo->bUnderline, true);
-                                if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, pFontInfo->bUnderline, true);
+                            if (pFontInfo->bItalic == FALSE) {
+                                HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, pFontInfo->bUnderline, TRUE);
+                                if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, pFontInfo->bUnderline, TRUE);
                                 pFontInfo = pManager->GetFontInfo(hFont);
                                 aFontArray.Add(pFontInfo);
                                 pTm = &pFontInfo->tm;
@@ -2065,7 +2082,7 @@ namespace DUI
                                 if (iImageListNum > 1) iWidth /= iImageListNum;
 
                                 if (pt.x + iWidth > rc.right && pt.x > rc.left && (uStyle & DT_SINGLELINE) == 0) {
-                                    bLineEnd = true;
+                                    bLineEnd = TRUE;
                                 } else {
                                     pstrNextStart = NULL;
                                     if (bDraw && bLineDraw) {
@@ -2095,12 +2112,12 @@ namespace DUI
                     {
                         pstrText++;
                         if ((uStyle & DT_SINGLELINE) != 0) break;
-                        bLineEnd = true;
+                        bLineEnd = TRUE;
                     } break;
                     case _T('p'): // Paragraph
                     {
                         pstrText++;
-                        if (pt.x > rc.left) bLineEnd = true;
+                        if (pt.x > rc.left) bLineEnd = TRUE;
                         while (*pstrText > _T('\0') && *pstrText <= _T(' '))
                             pstrText = ::CharNext(pstrText);
                         int cyLineExtra = (int)_tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
@@ -2110,7 +2127,7 @@ namespace DUI
                     case _T('r'): // Raw Text
                     {
                         pstrText++;
-                        bInRaw = true;
+                        bInRaw = TRUE;
                     } break;
                     case _T('s'): // Selected text background color
                     {
@@ -2128,9 +2145,9 @@ namespace DUI
                         pstrText++;
                         TFONTINFO_UI* pFontInfo = pDefFontInfo;
                         if (aFontArray.GetSize() > 0) pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
-                        if (pFontInfo->bUnderline == false) {
-                            HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, true, pFontInfo->bItalic);
-                            if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, true, pFontInfo->bItalic);
+                        if (pFontInfo->bUnderline == FALSE) {
+                            HFONT hFont = pManager->GetFont(pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, TRUE, pFontInfo->bItalic);
+                            if (hFont == NULL) hFont = pManager->AddFont(g_iFontID, pFontInfo->sFontName, pFontInfo->iSize, pFontInfo->bBold, TRUE, pFontInfo->bItalic);
                             pFontInfo = pManager->GetFontInfo(hFont);
                             aFontArray.Add(pFontInfo);
                             pTm = &pFontInfo->tm;
@@ -2175,7 +2192,7 @@ namespace DUI
                     } break;
                     case _T('p'):
                         pstrText++;
-                        if (pt.x > rc.left) bLineEnd = true;
+                        if (pt.x > rc.left) bLineEnd = TRUE;
                         aPIndentArray.Remove(aPIndentArray.GetSize() - 1);
                         cyLine = MAX(cyLine, pTm->tmHeight + pTm->tmExternalLeading + (int)aPIndentArray.GetAt(aPIndentArray.GetSize() - 1));
                         break;
@@ -2198,7 +2215,7 @@ namespace DUI
                         DWORD clrColor = dwTextColor;
                         if (aColorArray.GetSize() > 0) clrColor = (int)aColorArray.GetAt(aColorArray.GetSize() - 1);
                         ::SetTextColor(hDC, RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor)));
-                        bInLink = false;
+                        bInLink = FALSE;
                     }
                     case _T('b'):
                     case _T('f'):
@@ -2208,7 +2225,7 @@ namespace DUI
                         aFontArray.Remove(aFontArray.GetSize() - 1);
                         TFONTINFO_UI * pFontInfo = (TFONTINFO_UI*)aFontArray.GetAt(aFontArray.GetSize() - 1);
                         if (pFontInfo == NULL) pFontInfo = pDefFontInfo;
-                        if (pTm->tmItalic && pFontInfo->bItalic == false) {
+                        if (pTm->tmItalic && pFontInfo->bItalic == FALSE) {
                             ABC abc;
                             ::GetCharABCWidths(hDC, _T(' '), _T(' '), &abc);
                             pt.x += abc.abcC / 2; // 简单修正一下斜体混排的问题, 正确做法应该是http://support.microsoft.com/kb/244798/en-us
@@ -2266,7 +2283,7 @@ namespace DUI
                     if (bInRaw) {
                         if ((*p == _T('<') || *p == _T('{')) && p[1] == _T('/') && p[2] == _T('r') && (p[3] == _T('>') || p[3] == _T('}'))) {
                             p += 4;
-                            bInRaw = false;
+                            bInRaw = FALSE;
                             break;
                         }
                     } else {
@@ -2299,7 +2316,7 @@ namespace DUI
                                 cchSize -= (int)(p - pstrPrev);
                             pt.x = rc.right;
                         }
-                        bLineEnd = true;
+                        bLineEnd = TRUE;
                         cxMaxWidth = MAX(cxMaxWidth, pt.x);
                         break;
                     }
@@ -2330,7 +2347,7 @@ namespace DUI
                 pstrText += cchSize;
             }
 
-            if (pt.x >= rc.right || *pstrText == _T('\n') || *pstrText == _T('\0')) bLineEnd = true;
+            if (pt.x >= rc.right || *pstrText == _T('\n') || *pstrText == _T('\0')) bLineEnd = TRUE;
             if (bDraw && bLineEnd) {
                 if (!bLineDraw) {
                     aFontArray.Resize(aLineFontArray.GetSize());
@@ -2390,13 +2407,13 @@ namespace DUI
         int cx = rc.right - rc.left;
         int cy = rc.bottom - rc.top;
 
-        BOOL bUseOffscreenBitmap = true;
+        BOOL bUseOffscreenBitmap = TRUE;
         HDC hPaintDC = ::CreateCompatibleDC(pManager->GetPaintDC());
         ASSERT(hPaintDC);
         HBITMAP hPaintBitmap = NULL;
         //if (pStopControl == NULL && !pManager->IsLayered()) hPaintBitmap = pManager->Get();
         if (hPaintBitmap == NULL) {
-            bUseOffscreenBitmap = false;
+            bUseOffscreenBitmap = FALSE;
             hPaintBitmap = ::CreateCompatibleBitmap(pManager->GetPaintDC(), rc.right, rc.bottom);
             ASSERT(hPaintBitmap);
         }
@@ -2528,10 +2545,10 @@ namespace DUI
 
     void CRenderUI::AdjustImage(BOOL bUseHSL, TIMAGEINFO_UI * imageInfo, short H, short S, short L)
     {
-        if (imageInfo == NULL || imageInfo->bUseHSL == false || imageInfo->hBitmap == NULL ||
+        if (imageInfo == NULL || imageInfo->bUseHSL == FALSE || imageInfo->hBitmap == NULL ||
             imageInfo->pBits == NULL || imageInfo->pSrcBits == NULL)
             return;
-        if (bUseHSL == false || (H == 180 && S == 100 && L == 100)) {
+        if (bUseHSL == FALSE || (H == 180 && S == 100 && L == 100)) {
             ::CopyMemory(imageInfo->pBits, imageInfo->pSrcBits, imageInfo->nX * imageInfo->nY * 4);
             return;
         }

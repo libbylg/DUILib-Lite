@@ -72,12 +72,12 @@ namespace DUI
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CStdPtrArray
+    class DUILIB_API CPtrArrayUI
     {
     public:
-        CStdPtrArray(int iPreallocSize = 0);
-        CStdPtrArray(const CStdPtrArray& src);
-        ~CStdPtrArray();
+        CPtrArrayUI(int iPreallocSize = 0);
+        CPtrArrayUI(const CPtrArrayUI& src);
+        ~CPtrArrayUI();
 
         void Empty();
         void Resize(int iSize);
@@ -103,11 +103,11 @@ namespace DUI
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CStdValArray
+    class DUILIB_API CValueArrayUI
     {
     public:
-        CStdValArray(int iElementSize, int iPreallocSize = 0);
-        ~CStdValArray();
+        CValueArrayUI(int iElementSize, int iPreallocSize = 0);
+        ~CValueArrayUI();
 
         void Empty();
         BOOL IsEmpty() const;
@@ -160,8 +160,8 @@ namespace DUI
         const CStringUI& CStringUI::operator=(LPCSTR lpStr);
         const CStringUI& CStringUI::operator+=(LPCSTR lpStr);
 #else
-        const CDuiString& CDuiString::operator=(LPCWSTR lpwStr);
-        const CDuiString& CDuiString::operator+=(LPCWSTR lpwStr);
+        const CStringUI& CStringUI::operator=(LPCWSTR lpwStr);
+        const CStringUI& CStringUI::operator+=(LPCWSTR lpwStr);
 #endif
         CStringUI operator+(const CStringUI& src) const;
         CStringUI operator+(LPCTSTR pstr) const;
@@ -218,22 +218,15 @@ namespace DUI
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    struct TITEM_UI
-    {
-        CStringUI Key;
-        LPVOID Data;
-        struct TITEM_UI* pPrev;
-        struct TITEM_UI* pNext;
-    };
 
-    class DUILIB_API CStdStringPtrMap
+    class DUILIB_API CStringMapUI
     {
     public:
-        CStdStringPtrMap(int nSize = 83);
-        ~CStdStringPtrMap();
+        CStringMapUI(int nSize = 83);
+        ~CStringMapUI();
 
         void Resize(int nSize = 83);
-        LPVOID Find(LPCTSTR key, BOOL optimize = true) const;
+        LPVOID Find(LPCTSTR key, BOOL optimize = TRUE) const;
         BOOL Insert(LPCTSTR key, LPVOID pData);
         LPVOID Set(LPCTSTR key, LPVOID pData);
         BOOL Remove(LPCTSTR key);
@@ -243,6 +236,13 @@ namespace DUI
         LPCTSTR operator[] (int nIndex) const;
 
     protected:
+        struct TITEM_UI
+        {
+            CStringUI Key;
+            LPVOID Data;
+            struct TITEM_UI* pPrev;
+            struct TITEM_UI* pNext;
+        };
         TITEM_UI** m_aT;
         int m_nBuckets;
         int m_nCount;
@@ -251,11 +251,11 @@ namespace DUI
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CWaitCursor
+    class DUILIB_API CWaitCursorUI
     {
     public:
-        CWaitCursor();
-        ~CWaitCursor();
+        CWaitCursorUI();
+        ~CWaitCursorUI();
 
     protected:
         HCURSOR m_hOrigCursor;
@@ -264,39 +264,39 @@ namespace DUI
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class CDuiVariant : public VARIANT
+    class CVariantUI : public VARIANT
     {
     public:
-        CDuiVariant()
+        CVariantUI()
         {
             VariantInit(this);
         }
-        CDuiVariant(int i)
+        CVariantUI(int i)
         {
             VariantInit(this);
             this->vt = VT_I4;
             this->intVal = i;
         }
-        CDuiVariant(float f)
+        CVariantUI(float f)
         {
             VariantInit(this);
             this->vt = VT_R4;
             this->fltVal = f;
         }
-        CDuiVariant(LPOLESTR s)
+        CVariantUI(LPOLESTR s)
         {
             VariantInit(this);
             this->vt = VT_BSTR;
             this->bstrVal = s;
         }
-        CDuiVariant(IDispatch* disp)
+        CVariantUI(IDispatch* disp)
         {
             VariantInit(this);
             this->vt = VT_DISPATCH;
             this->pdispVal = disp;
         }
 
-        ~CDuiVariant()
+        ~CVariantUI()
         {
             VariantClear(this);
         }
@@ -334,8 +334,8 @@ namespace DUI
 
     ///////////////////////////////////////////////////////////////////////////////////////
     ////
-    //struct TImageInfo;
-    //class CPaintManagerUI;
+    //struct TIMAGEINFO_UI;
+    //class CManagerUI;
     //class DUILIB_API CImageString
     //{
     //public:
@@ -344,15 +344,15 @@ namespace DUI
     //	const CImageString& operator=(const CImageString&);
     //	virtual ~CImageString();
 
-    //	const CDuiString& GetAttributeString() const;
+    //	const CStringUI& GetAttributeString() const;
     //	void SetAttributeString(LPCTSTR pStrImageAttri);
     //	void ModifyAttribute(LPCTSTR pStrModify);
-    //	BOOL LoadImage(CPaintManagerUI* pManager);
+    //	BOOL LoadImage(CManagerUI* pManager);
     //	BOOL IsLoadSuccess();
 
     //	RECT GetDest() const;
     //	void SetDest(const RECT &rcDest);
-    //	const TImageInfo* GetImageInfo() const;
+    //	const TIMAGEINFO_UI* GeTIMAGEINFO_UI() const;
 
     //private:
     //	void Clone(const CImageString&);
@@ -360,12 +360,12 @@ namespace DUI
     //	void ParseAttribute(LPCTSTR pStrImageAttri);
 
     //protected:
-    //	friend class CRenderEngine;
-    //	CDuiString	m_sImageAttribute;
+    //	friend class CRenderUI;
+    //	CStringUI	m_sImageAttribute;
 
-    //	CDuiString	m_sImage;
-    //	CDuiString	m_sResType;
-    //	TImageInfo	*m_imageInfo;
+    //	CStringUI	m_sImage;
+    //	CStringUI	m_sResType;
+    //	TIMAGEINFO_UI	*m_imageInfo;
     //	BOOL		m_bLoadSuccess;
 
     //	RECT	m_rcDest;

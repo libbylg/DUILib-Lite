@@ -155,12 +155,12 @@ unsigned int FormatZipMessage(ZRESULT code, TCHAR* buf, unsigned int len);
 // unsigned int ziplen=SizeofResource(hInstance,hrsrc);
 // HZIP hz = OpenZip(zipbuf, ziplen, 0);
 //   - unzip to a membuffer -
-// ZIPENTRY ze; int i; FindZipItem(hz,"file.dat",true,&i,&ze);
+// ZIPENTRY ze; int i; FindZipItem(hz,"file.dat",TRUE,&i,&ze);
 // char *ibuf = new char[ze.unc_size];
 // UnzipItem(hz,i, ibuf, ze.unc_size);
 // delete[] ibuf;
 //   - unzip to a fixed membuff -
-// ZIPENTRY ze; int i; FindZipItem(hz,"file.dat",true,&i,&ze);
+// ZIPENTRY ze; int i; FindZipItem(hz,"file.dat",TRUE,&i,&ze);
 // char ibuf[1024]; ZRESULT zr=ZR_MORE; unsigned long totsize=0;
 // while (zr==ZR_MORE)
 // { zr = UnzipItem(hz,i, ibuf,1024);
@@ -169,7 +169,7 @@ unsigned int FormatZipMessage(ZRESULT code, TCHAR* buf, unsigned int len);
 // }
 //   - unzip to a pipe -
 // HANDLE hwrite; HANDLE hthread=CreateWavReaderThread(&hwrite);
-// int i; ZIPENTRY ze; FindZipItem(hz,"sound.wav",true,&i,&ze);
+// int i; ZIPENTRY ze; FindZipItem(hz,"sound.wav",TRUE,&i,&ze);
 // UnzipItemHandle(hz,i, hwrite);
 // CloseHandle(hwrite);
 // WaitForSingleObject(hthread,INFINITE);

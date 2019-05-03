@@ -1,7 +1,7 @@
 #ifndef __UIROTATE_H__
 #define __UIROTATE_H__
 
-#pragma once
+#include "Control/UILabel.h"
 
 namespace DUI
 {
@@ -20,7 +20,7 @@ namespace DUI
 		LPVOID GetInterface(LPCTSTR pstrName);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 		void SetBkImage(LPCTSTR pStrImage);	
-		virtual void DoEvent(TEventUI& event);
+		virtual void DoEvent(struct TEVENT_UI& event);
 		virtual void PaintBkImage(HDC hDC);	
 
 	private:

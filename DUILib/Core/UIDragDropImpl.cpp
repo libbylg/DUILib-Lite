@@ -289,7 +289,7 @@ namespace DUI
         if (fEscapePressed)
             return DRAGDROP_S_CANCEL;
         if (!(grfKeyState & (MK_LBUTTON | MK_RBUTTON))) {
-            m_bDropped = true;
+            m_bDropped = TRUE;
             return DRAGDROP_S_DROP;
         }
 
@@ -412,7 +412,7 @@ namespace DUI
     // CIDropTarget Class
     //////////////////////////////////////////////////////////////////////
     CIDropTarget::CIDropTarget(HWND hTargetWnd) : m_hTargetWnd(hTargetWnd),
-        m_cRefCount(0), m_bAllowDrop(false),
+        m_cRefCount(0), m_bAllowDrop(FALSE),
         m_pDropTargetHelper(NULL), m_pSupportedFrmt(NULL)
     {
         if (FAILED(CoCreateInstance(CLSID_DragDropHelper, NULL, CLSCTX_INPROC_SERVER,
@@ -460,7 +460,7 @@ namespace DUI
 
         if (!m_bAllowDrop) {
             *pdwEffect = DROPEFFECT_NONE;
-            return false;
+            return FALSE;
         }
         //CTRL+SHIFT  -- DROPEFFECT_LINK
         //CTRL        -- DROPEFFECT_COPY
@@ -485,7 +485,7 @@ namespace DUI
                 * pdwEffect = DROPEFFECT_NONE;
         }
 
-        return (DROPEFFECT_NONE == *pdwEffect)?false:true;
+        return (DROPEFFECT_NONE == *pdwEffect)?FALSE:TRUE;
     }
 
     HRESULT STDMETHODCALLTYPE CIDropTarget::DragEnter(
@@ -508,7 +508,7 @@ namespace DUI
         //pEnum->Release();
         m_pSupportedFrmt = NULL;
         for (int i = 0; i < (int)m_formatetc.size(); ++i) {
-            m_bAllowDrop = (pDataObj->QueryGetData(&m_formatetc[i]) == S_OK)?true:false;
+            m_bAllowDrop = (pDataObj->QueryGetData(&m_formatetc[i]) == S_OK)?TRUE:FALSE;
             if (m_bAllowDrop) {
                 m_pSupportedFrmt = &m_formatetc[i];
                 break;
@@ -538,7 +538,7 @@ namespace DUI
         if (m_pDropTargetHelper)
             m_pDropTargetHelper->DragLeave();
 
-        m_bAllowDrop = false;
+        m_bAllowDrop = FALSE;
         m_pSupportedFrmt = NULL;
         return S_OK;
     }
@@ -564,7 +564,7 @@ namespace DUI
                 }
             }
         }
-        m_bAllowDrop = false;
+        m_bAllowDrop = FALSE;
         *pdwEffect = DROPEFFECT_NONE;
         m_pSupportedFrmt = NULL;
         return S_OK;

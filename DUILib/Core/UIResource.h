@@ -1,7 +1,7 @@
-#ifndef __UIRESOURCEMANAGER_H__
-#define __UIRESOURCEMANAGER_H__
+#ifndef __UIRESOURCE_H__
+#define __UIRESOURCE_H__
 
-#include "Utils/Utils.h"
+#include "Core/UIDefine.h"
 #include "Core/UIMarkup.h"
 
 namespace DUI
@@ -13,16 +13,16 @@ namespace DUI
         virtual LPCTSTR QueryControlText(LPCTSTR lpstrId, LPCTSTR lpstrType) = 0;
     };
 
-    class DUILIB_API CResourceManagerUI
+    class DUILIB_API CResourceUI
     {
     private:
-        CResourceManagerUI(void);
-        ~CResourceManagerUI(void);
+        CResourceUI(void);
+        ~CResourceUI(void);
 
     public:
-        static CResourceManagerUI* GetInstance()
+        static CResourceUI* GetInstance()
         {
-            static CResourceManagerUI* p = new CResourceManagerUI;
+            static CResourceUI* p = new CResourceUI;
             return p;
         };
         void Release(void) { delete this; }
@@ -46,15 +46,15 @@ namespace DUI
         void ResetTextMap();
 
     private:
-        CStdStringPtrMap m_mTextResourceHashMap;
+        CStringMapUI m_mTextResourceHashMap;
         IQueryControlTextUI* m_pQuerypInterface;
-        CStdStringPtrMap m_mImageHashMap;
-        CStdStringPtrMap m_mXmlHashMap;
+        CStringMapUI m_mImageHashMap;
+        CStringMapUI m_mXmlHashMap;
         CMarkupUI m_xml;
         CStringUI m_sLauguage;
-        CStdStringPtrMap m_mTextHashMap;
+        CStringMapUI m_mTextHashMap;
     };
 
 } // namespace DUI
 
-#endif // __UIRESOURCEMANAGER_H__
+#endif // __UIRESOURCE_H__

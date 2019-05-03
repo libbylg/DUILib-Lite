@@ -51,10 +51,10 @@ namespace DUI
         void RemoveAll();
 
         void DoEvent(TEVENT_UI& event);
-        void SetVisible(BOOL bVisible = true);
-        void SetInternVisible(BOOL bVisible = true);
+        void SetVisible(BOOL bVisible = TRUE);
+        void SetInternVisible(BOOL bVisible = TRUE);
         void SetEnabled(BOOL bEnabled);
-        void SetMouseEnabled(BOOL bEnable = true);
+        void SetMouseEnabled(BOOL bEnable = TRUE);
 
         virtual RECT GetInset() const;
         virtual void SetInset(RECT rcInset); // 设置内边距，相当于设置客户区
@@ -69,18 +69,18 @@ namespace DUI
         virtual BOOL IsDelayedDestroy() const;
         virtual void SetDelayedDestroy(BOOL bDelayed);
         virtual BOOL IsMouseChildEnabled() const;
-        virtual void SetMouseChildEnabled(BOOL bEnable = true);
+        virtual void SetMouseChildEnabled(BOOL bEnable = TRUE);
 
-        virtual int FindSelectable(int iIndex, BOOL bForward = true) const;
+        virtual int FindSelectable(int iIndex, BOOL bForward = TRUE) const;
 
         RECT GetClientPos() const;
-        void SetPos(RECT rc, BOOL bNeedInvalidate = true);
-        void Move(SIZE szOffset, BOOL bNeedInvalidate = true);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
+        void Move(SIZE szOffset, BOOL bNeedInvalidate = TRUE);
         BOOL DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl);
 
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
-        void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = true);
+        void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = TRUE);
         CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
 
         BOOL SetSubControlText(LPCTSTR pstrSubControlName, LPCTSTR pstrText);
@@ -96,7 +96,7 @@ namespace DUI
 
         virtual SIZE GetScrollPos() const;
         virtual SIZE GetScrollRange() const;
-        virtual void SetScrollPos(SIZE szPos, BOOL bMsg = true);
+        virtual void SetScrollPos(SIZE szPos, BOOL bMsg = TRUE);
         virtual void SetScrollStepSize(int nSize);
         virtual int GetScrollStepSize() const;
         virtual void LineUp();
@@ -111,7 +111,7 @@ namespace DUI
         virtual void PageRight();
         virtual void HomeLeft();
         virtual void EndRight();
-        virtual void EnableScrollBar(BOOL bEnableVertical = true, BOOL bEnableHorizontal = false);
+        virtual void EnableScrollBar(BOOL bEnableVertical = TRUE, BOOL bEnableHorizontal = FALSE);
         virtual CScrollBarUI* GetVerticalScrollBar() const;
         virtual CScrollBarUI* GetHorizontalScrollBar() const;
 
@@ -120,7 +120,7 @@ namespace DUI
         virtual void ProcessScrollBar(RECT rc, int cxRequired, int cyRequired);
 
     protected:
-        CStdPtrArray m_items;
+        CPtrArrayUI m_items;
         RECT m_rcInset;
         int m_iChildPadding;
         UINT m_iChildAlign;

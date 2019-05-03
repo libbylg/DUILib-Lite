@@ -1,10 +1,15 @@
 #include "Control/UIDialogBuilder.h"
-#include "Core/UIResourceManager.h"
+#include "Control/UITreeView.h"
+#include "Control/UIFactory.h"
+
+#include "Core/UIResource.h"
 #include "Core/UIManager.h"
 #include "Core/UIContainer.h"
+#include "Core/UIWindow.h"
 
 namespace DUI
 {
+    class CFactoruUI;
 
     CDialogBuilderUI::CDialogBuilderUI() : m_pCallback(NULL), m_pstrtype(NULL)
     {
@@ -17,7 +22,7 @@ namespace DUI
         //资源ID为0-65535，两个字节；字符串指针为4个字节
         //字符串以<开头认为是XML字符串，否则认为是XML文件
         if (HIWORD(xml.m_lpstr) != NULL && *(xml.m_lpstr) != _T('<')) {
-            LPCTSTR xmlpath = CResourceManagerUI::GetInstance()->GetXmlPath(xml.m_lpstr);
+            LPCTSTR xmlpath = CResourceUI::GetInstance()->GetXmlPath(xml.m_lpstr);
             if (xmlpath != NULL) {
                 xml = xmlpath;
             }
@@ -84,7 +89,7 @@ namespace DUI
                             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
                             mask = _tcstoul(pstrValue, &pstr, 16);
                         } else if (_tcsicmp(pstrName, _T("shared")) == 0) {
-                            shared = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            shared = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         }
                     }
                     if (pImageName) pManager->AddImage(pImageName, pImageResType, mask, FALSE, shared);
@@ -108,15 +113,15 @@ namespace DUI
                         } else if (_tcsicmp(pstrName, _T("size")) == 0) {
                             size = _tcstol(pstrValue, &pstr, 10);
                         } else if (_tcsicmp(pstrName, _T("bold")) == 0) {
-                            bold = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            bold = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("underline")) == 0) {
-                            underline = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            underline = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("italic")) == 0) {
-                            italic = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            italic = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("default")) == 0) {
-                            defaultfont = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            defaultfont = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("shared")) == 0) {
-                            shared = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            shared = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         }
                     }
                     if (id >= 0) {
@@ -136,7 +141,7 @@ namespace DUI
                         } else if (_tcsicmp(pstrName, _T("value")) == 0) {
                             pControlValue = pstrValue;
                         } else if (_tcsicmp(pstrName, _T("shared")) == 0) {
-                            shared = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            shared = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         }
                     }
                     if (pControlName) {
@@ -155,7 +160,7 @@ namespace DUI
                         } else if (_tcsicmp(pstrName, _T("value")) == 0) {
                             pStyle = pstrValue;
                         } else if (_tcsicmp(pstrName, _T("shared")) == 0) {
-                            shared = (_tcsicmp(pstrValue, _T("true")) == 0);
+                            shared = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         }
                     }
                     if (pName) {
@@ -221,18 +226,18 @@ namespace DUI
                             int cy = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);
                             pManager->SetMaxInfo(cx, cy);
                         } else if (_tcsicmp(pstrName, _T("showdirty")) == 0) {
-                            pManager->SetShowUpdateRect(_tcsicmp(pstrValue, _T("true")) == 0);
+                            pManager->SetShowUpdateRect(_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("opacity")) == 0 || _tcsicmp(pstrName, _T("alpha")) == 0) {
                             pManager->SetOpacity(_ttoi(pstrValue));
                         } else if (_tcscmp(pstrName, _T("layeredopacity")) == 0) {
                             pManager->SetLayeredOpacity(_ttoi(pstrValue));
                         } else if (_tcscmp(pstrName, _T("layered")) == 0 || _tcscmp(pstrName, _T("bktrans")) == 0) {
-                            pManager->SetLayered(_tcsicmp(pstrValue, _T("true")) == 0);
+                            pManager->SetLayered(_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcscmp(pstrName, _T("layeredimage")) == 0) {
-                            pManager->SetLayered(true);
+                            pManager->SetLayered(TRUE);
                             pManager->SetLayeredImage(pstrValue);
                         } else if (_tcscmp(pstrName, _T("noactivate")) == 0) {
-                            pManager->SetNoActivate(_tcsicmp(pstrValue, _T("true")) == 0);
+                            pManager->SetNoActivate(_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("disabledfontcolor")) == 0) {
                             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
                             LPTSTR pstr = NULL;
@@ -285,9 +290,9 @@ namespace DUI
                         } else if (_tcsicmp(pstrName, _T("shadowimage")) == 0) {
                             pManager->GetShadow()->SetImage(pstrValue);
                         } else if (_tcsicmp(pstrName, _T("showshadow")) == 0) {
-                            pManager->GetShadow()->ShowShadow(_tcsicmp(pstrValue, _T("true")) == 0);
+                            pManager->GetShadow()->ShowShadow(_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("gdiplustext")) == 0) {
-                            pManager->SetUseGdiplusText(_tcsicmp(pstrValue, _T("true")) == 0);
+                            pManager->SetUseGdiplusText(_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("textrenderinghint")) == 0) {
                             pManager->SetGdiplusTextRenderingHint(_ttoi(pstrValue));
                         } else if (_tcsicmp(pstrName, _T("tooltiphovertime")) == 0) {
@@ -349,11 +354,12 @@ namespace DUI
             } else {
                 CStringUI strClass;
                 strClass.Format(_T("C%sUI"), pstrClass);
-                pControl = dynamic_cast<CControlUI*>(CControlFactoryUI::GetInstance()->CreateControl(strClass));
+                CFactoryUI* pFactory = CFactoryUI::GetInstance();
+                pControl = dynamic_cast<CControlUI*>(pFactory->CreateControl(strClass));
 
                 // 检查插件
                 if (pControl == NULL) {
-                    CStdPtrArray* pPlugins = CManagerUI::GetPlugins();
+                    CPtrArrayUI* pPlugins = CManagerUI::GetPlugins();
                     LPCREATECONTROL_UI lpCreateControl = NULL;
                     for (int i = 0; i < pPlugins->GetSize(); ++i) {
                         lpCreateControl = (LPCREATECONTROL_UI)pPlugins->GetAt(i);
@@ -427,7 +433,7 @@ namespace DUI
             // Init default attributes
             if (pManager) {
                 if (pTreeView != NULL) {
-                    pControl->SetManager(pManager, pTreeView, true);
+                    pControl->SetManager(pManager, pTreeView, TRUE);
                 } else {
                     pControl->SetManager(pManager, NULL, FALSE);
                 }

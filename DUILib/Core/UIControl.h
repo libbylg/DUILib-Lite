@@ -77,7 +77,7 @@ public:\
 
         virtual BOOL Activate();
         virtual CManagerUI* GetManager() const;
-        virtual void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = true);
+        virtual void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = TRUE);
         virtual CControlUI* GetParent() const;
         void setInstance(HINSTANCE instance = NULL) { m_instance = instance; };
 
@@ -143,8 +143,8 @@ public:\
         virtual RECT GetRelativePos() const; // 相对(父控件)位置
         virtual RECT GetClientPos() const; // 客户区域（除去scrollbar和inset）
         virtual const RECT& GetPos() const;
-        virtual void SetPos(RECT rc, BOOL bNeedInvalidate = true);
-        virtual void Move(SIZE szOffset, BOOL bNeedInvalidate = true);
+        virtual void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
+        virtual void Move(SIZE szOffset, BOOL bNeedInvalidate = TRUE);
         virtual int GetWidth() const;
         virtual int GetHeight() const;
         virtual int GetX() const;
@@ -152,7 +152,7 @@ public:\
         virtual RECT GetPadding() const;
         virtual void SetPadding(RECT rcPadding); // 设置外边距，由上层窗口绘制
         virtual SIZE GetFixedXY() const;         // 实际大小位置使用GetPos获取，这里得到的是预设的参考值
-        virtual void SetFixedXY(SIZE szXY);      // 仅float为true时有效
+        virtual void SetFixedXY(SIZE szXY);      // 仅float为TRUE时有效
         virtual int GetFixedWidth() const;       // 实际大小位置使用GetPos获取，这里得到的是预设的参考值
         virtual void SetFixedWidth(int cx);      // 预设的参考值
         virtual int GetFixedHeight() const;      // 实际大小位置使用GetPos获取，这里得到的是预设的参考值
@@ -195,18 +195,18 @@ public:\
 
         // 一些重要的属性
         virtual BOOL IsVisible() const;
-        virtual void SetVisible(BOOL bVisible = true);
-        virtual void SetInternVisible(BOOL bVisible = true); // 仅供内部调用，有些UI拥有窗口句柄，需要重写此函数
+        virtual void SetVisible(BOOL bVisible = TRUE);
+        virtual void SetInternVisible(BOOL bVisible = TRUE); // 仅供内部调用，有些UI拥有窗口句柄，需要重写此函数
         virtual BOOL IsEnabled() const;
-        virtual void SetEnabled(BOOL bEnable = true);
+        virtual void SetEnabled(BOOL bEnable = TRUE);
         virtual BOOL IsMouseEnabled() const;
-        virtual void SetMouseEnabled(BOOL bEnable = true);
+        virtual void SetMouseEnabled(BOOL bEnable = TRUE);
         virtual BOOL IsKeyboardEnabled() const;
-        virtual void SetKeyboardEnabled(BOOL bEnable = true);
+        virtual void SetKeyboardEnabled(BOOL bEnable = TRUE);
         virtual BOOL IsFocused() const;
         virtual void SetFocus();
         virtual BOOL IsFloat() const;
-        virtual void SetFloat(BOOL bFloat = true);
+        virtual void SetFloat(BOOL bFloat = TRUE);
 
         virtual CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
 
@@ -308,7 +308,7 @@ public:\
         RECT m_rcBorderSize;
         HINSTANCE m_instance;
 
-        CStdStringPtrMap m_mCustomAttrHash;
+        CStringMapUI m_mCustomAttrHash;
     };
 
 } // namespace DUI

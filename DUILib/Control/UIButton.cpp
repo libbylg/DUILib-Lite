@@ -105,7 +105,7 @@ namespace DUI
             m_pManager->SendNotify(this, UIMSG_CLICK);
             BindTriggerTabSel();
         }
-        return true;
+        return TRUE;
     }
 
     void CButtonUI::SetEnabled(BOOL bEnable)

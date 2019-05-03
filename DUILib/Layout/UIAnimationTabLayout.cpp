@@ -29,7 +29,7 @@ namespace DUI
     BOOL CAnimationTabLayoutUI::SelectItem(int iIndex)
     {
         if (iIndex < 0 || iIndex >= m_items.GetSize()) return FALSE;
-        if (iIndex == m_iCurSel) return true;
+        if (iIndex == m_iCurSel) return TRUE;
         if (iIndex > m_iCurSel) m_nPositiveDirection = -1;
         if (iIndex < m_iCurSel) m_nPositiveDirection = 1;
 
@@ -37,7 +37,7 @@ namespace DUI
         m_iCurSel = iIndex;
         for (int it = 0; it < m_items.GetSize(); it++) {
             if (it == iIndex) {
-                GetItemAt(it)->SetVisible(true);
+                GetItemAt(it)->SetVisible(TRUE);
                 GetItemAt(it)->SetFocus();
                 m_bControlVisibleFlag = FALSE;
                 m_pCurrentControl = static_cast<CControlUI*>(m_items[it]);
@@ -53,7 +53,7 @@ namespace DUI
             m_pManager->SetNextTabControl();
             m_pManager->SendNotify(this, _T("tabselect"), m_iCurSel, iOldSel);
         }
-        return true;
+        return TRUE;
     }
 
     void CAnimationTabLayoutUI::AnimationSwitch()
@@ -91,8 +91,8 @@ namespace DUI
     void CAnimationTabLayoutUI::OnAnimationStep(INT nTotalFrame, INT nCurFrame, INT nAnimationID)
     {
         if (!m_bControlVisibleFlag) {
-            m_bControlVisibleFlag = true;
-            m_pCurrentControl->SetVisible(true);
+            m_bControlVisibleFlag = TRUE;
+            m_pCurrentControl->SetVisible(TRUE);
         }
 
         int iStepLen = 0;
@@ -124,7 +124,7 @@ namespace DUI
 
     void CAnimationTabLayoutUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
     {
-        if (_tcsicmp(pstrName, _T("animation_direction")) == 0 && _tcsicmp(pstrValue, _T("vertical")) == 0) m_bIsVerticalDirection = true; // pstrValue = "vertical" or "horizontal"
+        if (_tcsicmp(pstrName, _T("animation_direction")) == 0 && _tcsicmp(pstrValue, _T("vertical")) == 0) m_bIsVerticalDirection = TRUE; // pstrValue = "vertical" or "horizontal"
         return CTabLayoutUI::SetAttribute(pstrName, pstrValue);
     }
 } // namespace DUI

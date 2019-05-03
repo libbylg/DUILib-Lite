@@ -1,7 +1,7 @@
 #include "Core/UIControl.h"
 #include "Core/UIManager.h"
 #include "Core/UIRender.h"
-#include "Core/UIResourceManager.h"
+#include "Core/UIResource.h"
 
 namespace DUI
 {
@@ -10,20 +10,20 @@ namespace DUI
         CControlUI::CControlUI()
         : m_pManager(NULL),
         m_pParent(NULL),
-        m_bUpdateNeeded(true),
-        m_bMenuUsed(false),
-        m_bVisible(true),
-        m_bInternVisible(true),
-        m_bFocused(false),
-        m_bEnabled(true),
-        m_bMouseEnabled(true),
-        m_bKeyboardEnabled(true),
-        m_bFloat(false),
+        m_bUpdateNeeded(TRUE),
+        m_bMenuUsed(FALSE),
+        m_bVisible(TRUE),
+        m_bInternVisible(TRUE),
+        m_bFocused(FALSE),
+        m_bEnabled(TRUE),
+        m_bMouseEnabled(TRUE),
+        m_bKeyboardEnabled(TRUE),
+        m_bFloat(FALSE),
         m_uFloatAlign(0),
-        m_bSetPos(false),
-        m_bDragEnabled(false),
-        m_bDropEnabled(false),
-        m_bResourceText(false),
+        m_bSetPos(FALSE),
+        m_bDragEnabled(FALSE),
+        m_bDropEnabled(FALSE),
+        m_bResourceText(FALSE),
         m_chShortcut('\0'),
         m_pTag(NULL),
         m_dwBackColor(0),
@@ -32,7 +32,7 @@ namespace DUI
         m_dwForeColor(0),
         m_dwBorderColor(0),
         m_dwFocusBorderColor(0),
-        m_bColorHSL(false),
+        m_bColorHSL(FALSE),
         m_nBorderSize(0),
         m_nBorderStyle(PS_SOLID),
         m_nTooltipWidth(300),
@@ -87,9 +87,9 @@ namespace DUI
 
     BOOL CControlUI::Activate()
     {
-        if (!IsVisible()) return false;
-        if (!IsEnabled()) return false;
-        return true;
+        if (!IsVisible()) return FALSE;
+        if (!IsEnabled()) return FALSE;
+        return TRUE;
     }
 
     CManagerUI* CControlUI::GetManager() const
@@ -111,7 +111,7 @@ namespace DUI
 
     BOOL CControlUI::SetTimer(UINT nTimerID, UINT nElapse)
     {
-        if (m_pManager == NULL) return false;
+        if (m_pManager == NULL) return FALSE;
 
         return m_pManager->SetTimer(this, nTimerID, nElapse);
     }
@@ -126,7 +126,7 @@ namespace DUI
     CStringUI CControlUI::GetText() const
     {
         if (!IsResourceText()) return m_sText;
-        return CResourceManagerUI::GetInstance()->GetText(m_sText);
+        return CResourceUI::GetInstance()->GetText(m_sText);
     }
 
     void CControlUI::SetText(LPCTSTR pstrText)
@@ -373,12 +373,12 @@ namespace DUI
         if (m_pManager == NULL) return;
 
         if (!m_bSetPos) {
-            m_bSetPos = true;
+            m_bSetPos = TRUE;
             if (OnSize) OnSize(this);
-            m_bSetPos = false;
+            m_bSetPos = FALSE;
         }
 
-        m_bUpdateNeeded = false;
+        m_bUpdateNeeded = FALSE;
 
         if (bNeedInvalidate && IsVisible()) {
             invalidateRc.Join(m_rcItem);
@@ -574,7 +574,7 @@ namespace DUI
     CStringUI CControlUI::GetToolTip() const
     {
         if (!IsResourceText()) return m_sToolTip;
-        return CResourceManagerUI::GetInstance()->GetText(m_sToolTip);
+        return CResourceUI::GetInstance()->GetText(m_sToolTip);
     }
 
     void CControlUI::SetToolTip(LPCTSTR pstrText)
@@ -658,7 +658,7 @@ namespace DUI
 
         BOOL v = IsVisible();
         m_bVisible = bVisible;
-        if (m_bFocused) m_bFocused = false;
+        if (m_bFocused) m_bFocused = FALSE;
         if (!bVisible && m_pManager && m_pManager->GetFocus() == this) {
             m_pManager->SetFocus(NULL);
         }
@@ -768,7 +768,7 @@ namespace DUI
     void CControlUI::NeedUpdate()
     {
         if (!IsVisible()) return;
-        m_bUpdateNeeded = true;
+        m_bUpdateNeeded = TRUE;
         Invalidate();
 
         if (m_pManager != NULL) m_pManager->NeedUpdate();
@@ -823,12 +823,12 @@ namespace DUI
         }
 
         if (event.Type == UIEVENT_SETFOCUS) {
-            m_bFocused = true;
+            m_bFocused = TRUE;
             Invalidate();
             return;
         }
         if (event.Type == UIEVENT_KILLFOCUS) {
-            m_bFocused = false;
+            m_bFocused = FALSE;
             Invalidate();
             return;
         }
@@ -849,7 +849,7 @@ namespace DUI
     void CControlUI::SetVirtualWnd(LPCTSTR pstrValue)
     {
         m_sVirtualWnd = pstrValue;
-        m_pManager->UsedVirtualWnd(true);
+        m_pManager->UsedVirtualWnd(TRUE);
     }
 
     CStringUI CControlUI::GetVirtualWnd() const
@@ -892,7 +892,7 @@ namespace DUI
     {
         if (pstrName == NULL || pstrName[0] == _T('\0')) return NULL;
         CStringUI * pCostomAttr = static_cast<CStringUI*>(m_mCustomAttrHash.Find(pstrName));
-        if (!pCostomAttr) return false;
+        if (!pCostomAttr) return FALSE;
 
         delete pCostomAttr;
         return m_mCustomAttrHash.Remove(pstrName);
@@ -942,7 +942,7 @@ namespace DUI
             CStringUI nValue = pstrValue;
             // 动态计算相对比例
             if (nValue.Find(',') < 0) {
-                SetFloat(_tcsicmp(pstrValue, _T("true")) == 0);
+                SetFloat(_tcsicmp(pstrValue, _T("TRUE")) == 0);
             } else {
                 TPERCENTINFO_UI piFloatPercent = {0};
                 LPTSTR pstr = NULL;
@@ -955,7 +955,7 @@ namespace DUI
                 piFloatPercent.bottom = _tcstod(pstr + 1, &pstr);
                 ASSERT(pstr);
                 SetFloatPercent(piFloatPercent);
-                SetFloat(true);
+                SetFloat(TRUE);
             }
         } else if (_tcsicmp(pstrName, _T("floatalign")) == 0) {
             UINT uAlign = GetFloatAlign();
@@ -1048,7 +1048,7 @@ namespace DUI
             DWORD clrColor = _tcstoul(pstrValue, &pstr, 16);
             SetFocusBorderColor(clrColor);
         } else if (_tcsicmp(pstrName, _T("colorhsl")) == 0)
-            SetColorHSL(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetColorHSL(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("bordersize")) == 0) {
             CStringUI nValue = pstrValue;
             if (nValue.Find(',') < 0) {
@@ -1105,11 +1105,11 @@ namespace DUI
         else if (_tcsicmp(pstrName, _T("name")) == 0)
             SetName(pstrValue);
         else if (_tcsicmp(pstrName, _T("drag")) == 0)
-            SetDragEnable(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetDragEnable(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("drop")) == 0)
-            SetDropEnable(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetDropEnable(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("resourcetext")) == 0)
-            SetResourceText(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetResourceText(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("text")) == 0)
             SetText(pstrValue);
         else if (_tcsicmp(pstrName, _T("tooltip")) == 0)
@@ -1117,19 +1117,19 @@ namespace DUI
         else if (_tcsicmp(pstrName, _T("userdata")) == 0)
             SetUserData(pstrValue);
         else if (_tcsicmp(pstrName, _T("enabled")) == 0)
-            SetEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetEnabled(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("mouse")) == 0)
-            SetMouseEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetMouseEnabled(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("keyboard")) == 0)
-            SetKeyboardEnabled(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetKeyboardEnabled(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("visible")) == 0)
-            SetVisible(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetVisible(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("float")) == 0)
-            SetFloat(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetFloat(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("shortcut")) == 0)
             SetShortcut(pstrValue[0]);
         else if (_tcsicmp(pstrName, _T("menu")) == 0)
-            SetContextMenuUsed(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetContextMenuUsed(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("cursor")) == 0 && pstrValue) {
             if (_tcsicmp(pstrValue, _T("arrow")) == 0)
                 SetCursor(UICURSOR_ARROW);
@@ -1217,10 +1217,10 @@ namespace DUI
 
     BOOL CControlUI::Paint(HDC hDC, const RECT & rcPaint, CControlUI * pStopControl)
     {
-        if (pStopControl == this) return false;
-        if (!::IntersectRect(&m_rcPaint, &rcPaint, &m_rcItem)) return true;
-        if (!DoPaint(hDC, m_rcPaint, pStopControl)) return false;
-        return true;
+        if (pStopControl == this) return FALSE;
+        if (!::IntersectRect(&m_rcPaint, &rcPaint, &m_rcItem)) return TRUE;
+        if (!DoPaint(hDC, m_rcPaint, pStopControl)) return FALSE;
+        return TRUE;
     }
 
     BOOL CControlUI::DoPaint(HDC hDC, const RECT & rcPaint, CControlUI * pStopControl)
@@ -1255,7 +1255,7 @@ namespace DUI
             PaintText(hDC);
             PaintBorder(hDC);
         }
-        return true;
+        return TRUE;
     }
 
     void CControlUI::PaintBkColor(HDC hDC)

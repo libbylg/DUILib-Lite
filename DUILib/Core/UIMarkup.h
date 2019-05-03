@@ -1,7 +1,7 @@
 #ifndef __UIMARKUP_H__
 #define __UIMARKUP_H__
 
-#include "Core/UIDefine.h"
+#include "Utils/Utils.h"
 
 namespace DUI
 {
@@ -30,7 +30,7 @@ namespace DUI
         void Release();
         BOOL IsValid() const;
 
-        void SetPreserveWhitespace(BOOL bPreserve = true);
+        void SetPreserveWhitespace(BOOL bPreserve = TRUE);
         void GetLastErrorMessage(LPTSTR pstrMessage, SIZE_T cchMax) const;
         void GetLastErrorLocation(LPTSTR pstrSource, SIZE_T cchMax) const;
 

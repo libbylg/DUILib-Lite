@@ -75,7 +75,7 @@ namespace DUI
     void CLabelUI::SetFont(int index)
     {
         m_iFont = index;
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
         Invalidate();
     }
 
@@ -92,7 +92,7 @@ namespace DUI
     void CLabelUI::SetTextPadding(RECT rc)
     {
         m_rcTextPadding = rc;
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
         Invalidate();
     }
 
@@ -106,7 +106,7 @@ namespace DUI
         if (m_bShowHtml == bShowHtml) return;
 
         m_bShowHtml = bShowHtml;
-        m_bNeedEstimateSize = true;
+        m_bNeedEstimateSize = TRUE;
         Invalidate();
     }
 
@@ -120,7 +120,7 @@ namespace DUI
         }
 
         if ((szAvailable.cx != m_szAvailableLast.cx || szAvailable.cy != m_szAvailableLast.cy)) {
-            m_bNeedEstimateSize = true;
+            m_bNeedEstimateSize = TRUE;
         }
 
         if (m_bNeedEstimateSize) {
@@ -171,7 +171,7 @@ namespace DUI
     void CLabelUI::DoEvent(TEVENT_UI & event)
     {
         if (event.Type == UIEVENT_SETFOCUS) {
-            m_bFocused = true;
+            m_bFocused = TRUE;
             return;
         }
         if (event.Type == UIEVENT_KILLFOCUS) {
@@ -210,12 +210,12 @@ namespace DUI
                 m_uTextStyle |= (DT_BOTTOM | DT_SINGLELINE);
             }
         } else if (_tcsicmp(pstrName, _T("endellipsis")) == 0) {
-            if (_tcsicmp(pstrValue, _T("true")) == 0)
+            if (_tcsicmp(pstrValue, _T("TRUE")) == 0)
                 m_uTextStyle |= DT_END_ELLIPSIS;
             else
                 m_uTextStyle &= ~DT_END_ELLIPSIS;
         } else if (_tcsicmp(pstrName, _T("wordbreak")) == 0) {
-            if (_tcsicmp(pstrValue, _T("true")) == 0) {
+            if (_tcsicmp(pstrValue, _T("TRUE")) == 0) {
                 m_uTextStyle &= ~DT_SINGLELINE;
                 m_uTextStyle |= DT_WORDBREAK | DT_EDITCONTROL;
             } else {
@@ -223,7 +223,7 @@ namespace DUI
                 m_uTextStyle |= DT_SINGLELINE;
             }
         } else if (_tcsicmp(pstrName, _T("noprefix")) == 0) {
-            if (_tcsicmp(pstrValue, _T("true")) == 0) {
+            if (_tcsicmp(pstrValue, _T("TRUE")) == 0) {
                 m_uTextStyle |= DT_NOPREFIX;
             } else {
                 m_uTextStyle = m_uTextStyle & ~DT_NOPREFIX;
@@ -253,11 +253,11 @@ namespace DUI
             ASSERT(pstr);
             SetTextPadding(rcTextPadding);
         } else if (_tcsicmp(pstrName, _T("showhtml")) == 0)
-            SetShowHtml(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetShowHtml(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("autocalcwidth")) == 0) {
-            SetAutoCalcWidth(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetAutoCalcWidth(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         } else if (_tcsicmp(pstrName, _T("autocalcheight")) == 0) {
-            SetAutoCalcHeight(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetAutoCalcHeight(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         } else
             CControlUI::SetAttribute(pstrName, pstrValue);
     }

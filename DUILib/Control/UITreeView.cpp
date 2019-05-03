@@ -1,10 +1,15 @@
+#include "Control/UITreeView.h"
+#include "Control/UICheckBox.h"
+#include "Control/UIOption.h"
+#include "Control/UILabel.h"
+#include "Layout/UIHorizontalLayout.h"
+#include "Core/UIManager.h"
+#include "Core/UIWindow.h"
 
-#include "UITreeView.h"
-
-#pragma warning( disable: 4251 )
+//#pragma warning( disable: 4251 )
 namespace DUI
 {
-	IMPLEMENT_CONTROL_UI(CTreeNodeUI)
+    UI_IMPLEMENT_CONTROL(CTreeNodeUI)
 
 	//************************************
 	// 函数名称: CTreeNodeUI
@@ -92,7 +97,7 @@ namespace DUI
 	//************************************
 	// 函数名称: DoEvent
 	// 返回类型: void
-	// 参数信息: TEventUI & event
+	// 参数信息: struct TEVENT_UI & event
 	// 函数说明:
 	//************************************
 	void CTreeNodeUI::DoEvent( TEVENT_UI& event )
@@ -191,7 +196,7 @@ namespace DUI
 	// 参数信息: BOOL bSelect
 	// 函数说明: 
 	//************************************
-	BOOL CTreeNodeUI::Select( BOOL bSelect /*= true*/ )
+	BOOL CTreeNodeUI::Select( BOOL bSelect /*= TRUE*/ )
 	{
 		BOOL nRet = CListContainerElementUI::Select(bSelect);
 		if(m_bSelected)
@@ -304,7 +309,7 @@ namespace DUI
 
 	//************************************
 	// 函数名称: GetItemText
-	// 返回类型: DUILIB::CDuiString
+	// 返回类型: DUILIB::CStringUI
 	// 函数说明: 
 	//************************************
 	CStringUI CTreeNodeUI::GetItemText()
@@ -501,10 +506,10 @@ namespace DUI
 
 	//************************************
 	// 函数名称: GetTreeNodes
-	// 返回类型: DUILIB::CStdPtrArray
+	// 返回类型: DUILIB::CPtrArrayUI
 	// 函数说明: 
 	//************************************
-	CStdPtrArray CTreeNodeUI::GetTreeNodes()
+	CPtrArrayUI CTreeNodeUI::GetTreeNodes()
 	{
 		return mTreeNodes;
 	}
@@ -726,7 +731,7 @@ namespace DUI
 	/*****************************************************************************/
 	/*****************************************************************************/
 	/*****************************************************************************/
-	IMPLEMENT_CONTROL_UI(CTreeViewUI)
+    UI_IMPLEMENT_CONTROL(CTreeViewUI)
 	
 	//************************************
 	// 函数名称: CTreeViewUI
@@ -809,7 +814,7 @@ namespace DUI
 		}
 
 		pControl->SetTreeView(this);
-		return true;
+		return TRUE;
 	}
 
 	//************************************
@@ -917,7 +922,7 @@ namespace DUI
 	//************************************
 	// 函数名称: Notify
 	// 返回类型: void
-	// 参数信息: TNotifyUI & msg
+	// 参数信息: struct TNOTIFY_UI & msg
 	// 函数说明: 
 	//************************************
 	void CTreeViewUI::Notify( TNOTIFY_UI& msg )

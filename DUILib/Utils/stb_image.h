@@ -328,7 +328,7 @@ distribute, and modify this file as you see fit.
 // On x86, SSE2 will automatically be used when available based on a run-time
 // test; if not, the generic C versions are used as a fall-back. On ARM targets,
 // the typical path is to have separate builds for NEON and non-NEON devices
-// (at least this is true for iOS and Android). Therefore, the NEON support is
+// (at least this is TRUE for iOS and Android). Therefore, the NEON support is
 // toggled by a build flag: define STBI_NEON to get NEON loops.
 //
 // The output of the JPEG decoder is slightly different from versions where
@@ -1227,7 +1227,7 @@ stbi_inline static int stbi__at_eof(stbi__context * s)
 {
     if (s->io.read) {
         if (!(s->io.eof)(s->io_user_data)) return 0;
-        // if feof() is true, check if buffer = end
+        // if feof() is TRUE, check if buffer = end
         // special case: we've only got the special 0 character at the end
         if (s->read_from_callbacks == 0) return 1;
     }

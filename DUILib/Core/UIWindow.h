@@ -66,7 +66,7 @@ namespace DUI
         BOOL LoopDispatch(TNOTIFY_UI& msg);
         UI_DECLARE_MESSAGE_MAP()
     private:
-        CStdStringPtrMap m_VirtualWndMap;
+        CStringMapUI m_VirtualWndMap;
     };
 
     class DUILIB_API CWindowUI
@@ -85,7 +85,7 @@ namespace DUI
         HWND CreateDuiWindow(HWND hwndParent, LPCTSTR pstrWindowName, DWORD dwStyle = 0, DWORD dwExStyle = 0);
         HWND Subclass(HWND hWnd);
         void Unsubclass();
-        void ShowWindow(BOOL bShow = true, BOOL bTakeFocus = true);
+        void ShowWindow(BOOL bShow = TRUE, BOOL bTakeFocus = TRUE);
         UINT ShowModal();
         void Close(UINT nRet = IDOK);
         void CenterWindow();	// 居中，支持扩展屏幕

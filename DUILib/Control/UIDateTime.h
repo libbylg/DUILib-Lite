@@ -1,7 +1,7 @@
 #ifndef __UIDATETIME_H__
 #define __UIDATETIME_H__
 
-#pragma once
+#include "Control/UILabel.h"
 
 namespace DUI
 {
@@ -25,7 +25,7 @@ namespace DUI
 
 		void UpdateText();
 
-		void DoEvent(struct TEventUI& event);
+		void DoEvent(struct TEVENT_UI& event);
 
 	protected:
 		SYSTEMTIME m_sysTime;

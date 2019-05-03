@@ -1,10 +1,12 @@
 #ifndef __UIOPTION_H__
 #define __UIOPTION_H__
 
-#pragma once
+#include "Control/UIButton.h"
 
 namespace DUI
 {
+    class CManagerUI;
+
 	class DUILIB_API COptionUI : public CButtonUI
 	{
 		UI_DECLARE_CONTROL(COptionUI)
@@ -15,10 +17,10 @@ namespace DUI
 		LPCTSTR GetClass() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
 
-		void SetManager(CPaintManagerUI* pManager, CControlUI* pParent, BOOL bInit = true);
+		void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = TRUE);
 
 		BOOL Activate();
-		void SetEnabled(BOOL bEnable = true);
+		void SetEnabled(BOOL bEnable = TRUE);
 
 		LPCTSTR GetSelectedImage();
 		void SetSelectedImage(LPCTSTR pStrImage);
@@ -49,7 +51,7 @@ namespace DUI
 		LPCTSTR GetGroup() const;
 		void SetGroup(LPCTSTR pStrGroupName = NULL);
 		BOOL IsSelected() const;
-		virtual void Selected(BOOL bSelected, BOOL bMsg = true);
+		virtual void Selected(BOOL bSelected, BOOL bMsg = TRUE);
 
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
@@ -60,44 +62,23 @@ namespace DUI
 
 	protected:
 		BOOL			m_bSelected;
-		CDuiString		m_sGroupName;
+		CStringUI		m_sGroupName;
 
 		int				m_iSelectedFont;
 
 		DWORD			m_dwSelectedBkColor;
 		DWORD			m_dwSelectedTextColor;
 
-		CDuiString		m_sSelectedImage;
-		CDuiString		m_sSelectedHotImage;
-		CDuiString		m_sSelectedPushedImage;
-		CDuiString		m_sSelectedForeImage;
+		CStringUI		m_sSelectedImage;
+		CStringUI		m_sSelectedHotImage;
+		CStringUI		m_sSelectedPushedImage;
+		CStringUI		m_sSelectedForeImage;
 
 		int m_nSelectedStateCount;
-		CDuiString m_sSelectedStateImage;
+		CStringUI m_sSelectedStateImage;
 	};
 
-	class DUILIB_API CCheckBoxUI : public COptionUI
-	{
-		UI_DECLARE_CONTROL(CCheckBoxUI)
-	public:
-		CCheckBoxUI();
 
-	public:
-		virtual LPCTSTR GetClass() const;
-		virtual LPVOID GetInterface(LPCTSTR pstrName);
-
-		void SetCheck(BOOL bCheck);
-		BOOL GetCheck() const;
-
-	public:
-		virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-		void SetAutoCheck(BOOL bEnable);
-		virtual void DoEvent(TEventUI& event);
-		virtual void Selected(BOOL bSelected, BOOL bMsg = true);
-
-	protected:
-		BOOL m_bAutoCheck; 
-	};
 } // namespace DUI
 
 #endif // __UIOPTION_H__

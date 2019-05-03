@@ -12,14 +12,6 @@ namespace DUI
 #define UITIMERID_CARET	    0x1999
 
 
-    // 列表类型
-    enum LISTTYPE_UI
-    {
-        UILIST_NORMAL = 0,
-        UILIST_COMBO,
-        UILIST_TREE,
-        UIISLT_MENU,
-    };
 
 
     // 鼠标光标定义
@@ -44,7 +36,7 @@ namespace DUI
     {
         UISIG_end = 0, // [marks end of message map]
         UISIG_lwl,     // LRESULT (WPARAM, LPARAM)
-        UISIG_vn,      // void (TNotifyUI)
+        UISIG_vn,      // void (struct TNOTIFY_UI)
     };
 
 
@@ -105,6 +97,96 @@ namespace DUI
 #define UIMSG_LISTHEADITEMCHECKED   (_T("listheaditemchecked"))
 #define UIMSG_LISTPAGECHANGED       (_T("listpagechanged"))
 
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  资源类型
+    enum RESTYPE_UI
+    {
+        UIRES_FILE = 1,		// 来自磁盘文件
+        UIRES_ZIP,			// 来自磁盘zip压缩包
+        UIRES_RESOURCE,		// 来自资源
+        UIRES_ZIPRESOURCE,	// 来自资源的zip压缩包
+    };
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  事件类型
+    enum EVENTTYPE_UI
+    {
+        UIEVENT__FIRST = 1,
+        UIEVENT__KEYBEGIN,
+        UIEVENT_KEYDOWN,
+        UIEVENT_KEYUP,
+        UIEVENT_CHAR,
+        UIEVENT_SYSKEY,
+        UIEVENT__KEYEND,
+        UIEVENT__MOUSEBEGIN,
+        UIEVENT_MOUSEMOVE,
+        UIEVENT_MOUSELEAVE,
+        UIEVENT_MOUSEENTER,
+        UIEVENT_MOUSEHOVER,
+        UIEVENT_BUTTONDOWN,
+        UIEVENT_BUTTONUP,
+        UIEVENT_RBUTTONDOWN,
+        UIEVENT_RBUTTONUP,
+        UIEVENT_MBUTTONDOWN,
+        UIEVENT_MBUTTONUP,
+        UIEVENT_DBLCLICK,
+        UIEVENT_CONTEXTMENU,
+        UIEVENT_SCROLLWHEEL,
+        UIEVENT__MOUSEEND,
+        UIEVENT_KILLFOCUS,
+        UIEVENT_SETFOCUS,
+        UIEVENT_WINDOWSIZE,
+        UIEVENT_SETCURSOR,
+        UIEVENT_TIMER,
+        UIEVENT__LAST,
+    };
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+    // 内部保留的消息
+    enum MSGTYPE_UI
+    {
+        UIMSG_TRAYICON = WM_USER + 1,// 托盘消息
+        UIMSG_SET_DPI,				 // DPI
+        WM_MENUCLICK,				 // 菜单消息
+        UIMSG_USER = WM_USER + 100,	 // 程序自定义消息
+    };
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Flags for FindControl()
+    enum FINDFLAG_UI
+    {
+        UIFIND_ALL = 0x00000000,
+        UIFIND_VISIBLE = 0x00000001,
+        UIFIND_ENABLED = 0x00000002,
+        UIFIND_HITTEST = 0x00000004,
+        UIFIND_UPDATETEST = 0x00000008,
+        UIFIND_TOP_FIRST = 0x00000010,
+        UIFIND_ME_FIRST = 0x80000000,
+    };
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Flags used for controlling the paint
+    enum STATEFLAG_UI
+    {
+        UISTATE_FOCUSED = 0x00000001,
+        UISTATE_SELECTED = 0x00000002,
+        UISTATE_DISABLED = 0x00000004,
+        UISTATE_HOT = 0x00000008,
+        UISTATE_PUSHED = 0x00000010,
+        UISTATE_READONLY = 0x00000020,
+        UISTATE_CAPTURED = 0x00000040,
+    };
+
+
     //////////////////////////////////////////////////////////////////////////
 
     class CNotifyPumpUI;
@@ -112,7 +194,16 @@ namespace DUI
     typedef void (CNotifyPumpUI::* PMSG_UI)(TNOTIFY_UI& msg);  //指针类型
 
 
-    struct TMSGMAPENTRY_UI;
+    //  定义一个结构体，来存放消息信息
+    struct TMSGMAPENTRY_UI
+    {
+        CStringUI sMsgType;          // DUI消息类型
+        CStringUI sCtrlName;         // 控件名称
+        UINT      nSig;              // 标记函数指针类型
+        PMSG_UI   pfn;               // 指向函数的指针
+    };
+
+
     struct TMSGMAP_UI
     {
 #ifndef DUILIB_STATIC
@@ -123,14 +214,6 @@ namespace DUI
         const TMSGMAPENTRY_UI* lpEntries;
     };
 
-    //结构定义
-    struct TMSGMAPENTRY_UI //定义一个结构体，来存放消息信息
-    {
-        CStringUI sMsgType;          // DUI消息类型
-        CStringUI sCtrlName;         // 控件名称
-        UINT      nSig;              // 标记函数指针类型
-        PMSG_UI   pfn;               // 指向函数的指针
-    };
 
     //定义
 #ifndef DUILIB_STATIC
@@ -177,7 +260,7 @@ protected:                                                                  \
 #endif
 
 
-    //子类声明开始
+    //  子类声明开始
 #ifndef DUILIB_STATIC
 #define UI_BEGIN_MESSAGE_MAP(theClass, baseClass)                           \
 	const TMSGMAP_UI* PASCAL theClass::_GetBaseMessageMap()                 \
@@ -195,53 +278,53 @@ protected:                                                                  \
 	{ return &theClass::messageMap; }                                       \
 	UILIB_COMDAT const TMSGMAP_UI theClass::messageMap =                    \
 	{ &baseClass::messageMap, &theClass::_messageEntries[0] };              \
-	UILIB_COMDAT const TMSGMAPENTRY_UI theClass::_messageEntries[] =       \
+	UILIB_COMDAT const TMSGMAPENTRY_UI theClass::_messageEntries[] =        \
 	{                                                                       \
 
 #endif
 
 
-    //声明结束
+    //  声明结束
 #define UI_END_MESSAGE_MAP()                                                \
 	{ _T(""), _T(""), UISIG_end, (PMSG_UI)0 }                               \
 	};                                                                      \
 
 
-    //定义消息类型--执行函数宏
+    //  定义消息类型--执行函数宏
 #define UI_ON_MSGTYPE(msgtype, memberFxn)                                   \
 	{ msgtype, _T(""), UISIG_vn, (PMSG_UI)&memberFxn},                      \
 
 
-    //定义消息类型--控件名称--执行函数宏
+    //  定义消息类型--控件名称--执行函数宏
 #define UI_ON_MSGTYPE_CTRNAME(msgtype,ctrname,memberFxn)                    \
 	{ msgtype, ctrname, UISIG_vn, (PMSG_UI)&memberFxn },                    \
 
 
-    //定义click消息的控件名称--执行函数宏
+    //  定义click消息的控件名称--执行函数宏
 #define UI_ON_CLICK_CTRNAME(ctrname,memberFxn)                              \
-	{ UIMSG_CLICK, ctrname, UISIG_vn, (PMSG_UI)&memberFxn },            \
+	{ UIMSG_CLICK, ctrname, UISIG_vn, (PMSG_UI)&memberFxn },                \
 
 
-    //定义selectchanged消息的控件名称--执行函数宏
+    //  定义selectchanged消息的控件名称--执行函数宏
 #define UI_ON_SELECTCHANGED_CTRNAME(ctrname,memberFxn)                      \
-	{ UIMSG_SELECTCHANGED,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },       \
+	{ UIMSG_SELECTCHANGED,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },           \
 
 
-    //定义killfocus消息的控件名称--执行函数宏
+    //  定义killfocus消息的控件名称--执行函数宏
 #define UI_ON_KILLFOCUS_CTRNAME(ctrname,memberFxn)                          \
-	{ UIMSG_KILLFOCUS,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },           \
+	{ UIMSG_KILLFOCUS,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },               \
 
 
-    //定义menu消息的控件名称--执行函数宏
+    //  定义menu消息的控件名称--执行函数宏
 #define UI_ON_MENU_CTRNAME(ctrname,memberFxn)                               \
-	{ UIMSG_MENU,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },                \
+	{ UIMSG_MENU,ctrname,UISIG_vn,(PMSG_UI)&memberFxn },                    \
 
 
-    //定义与控件名称无关的消息宏
+    //  定义与控件名称无关的消息宏
 
-    //定义timer消息--执行函数宏
+    //  定义timer消息--执行函数宏
 #define UI_ON_TIMER()                                                       \
-	{ UIMSG_TIMER, _T(""), UISIG_vn,(PMSG_UI)&OnTimer },                \
+	{ UIMSG_TIMER, _T(""), UISIG_vn,(PMSG_UI)&OnTimer },                    \
 
 
     ///
@@ -251,59 +334,59 @@ protected:                                                                  \
     //////////////BEGIN控件名称宏定义//////////////////////////////////////////////////
     ///
 
-#define  UICONTROL_EDIT                            (_T("Edit"))
-#define  UICONTROL_LIST                            (_T("List"))
-#define  UICONTROL_TEXT                            (_T("Text"))
+#define UICONTROL_EDIT                          (_T("Edit"))
+#define UICONTROL_LIST                          (_T("List"))
+#define UICONTROL_TEXT                          (_T("Text"))
 
-#define  UICONTROL_COMBO                           (_T("Combo"))
-#define  UICONTROL_LABEL                           (_T("Label"))
-#define  UICONTROL_FLASH							 (_T("Flash"))
+#define UICONTROL_COMBO                         (_T("Combo"))
+#define UICONTROL_LABEL                         (_T("Label"))
+#define UICONTROL_FLASH                         (_T("Flash"))
 
-#define  UICONTROL_BUTTON                          (_T("Button"))
-#define  UICONTROL_OPTION                          (_T("Option"))
-#define  UICONTROL_SLIDER                          (_T("Slider"))
+#define UICONTROL_BUTTON                        (_T("Button"))
+#define UICONTROL_OPTION                        (_T("Option"))
+#define UICONTROL_SLIDER                        (_T("Slider"))
 
-#define  UICONTROL_CONTROL                         (_T("Control"))
-#define  UICONTROL_ACTIVEX                         (_T("ActiveX"))
-#define  UICONTROL_GIFANIM                         (_T("GifAnim"))
+#define UICONTROL_CONTROL                       (_T("Control"))
+#define UICONTROL_ACTIVEX                       (_T("ActiveX"))
+#define UICONTROL_GIFANIM                       (_T("GifAnim"))
 
-#define  UICONTROL_LISTITEM                        (_T("ListItem"))
-#define  UICONTROL_PROGRESS                        (_T("Progress"))
-#define  UICONTROL_RICHEDIT                        (_T("RichEdit"))
-#define  UICONTROL_CHECKBOX                        (_T("CheckBox"))
-#define  UICONTROL_COMBOBOX                        (_T("ComboBox"))
-#define  UICONTROL_DATETIME                        (_T("DateTime"))
-#define  UICONTROL_TREEVIEW                        (_T("TreeView"))
-#define  UICONTROL_TREENODE                        (_T("TreeNode"))
+#define UICONTROL_LISTITEM                      (_T("ListItem"))
+#define UICONTROL_PROGRESS                      (_T("Progress"))
+#define UICONTROL_RICHEDIT                      (_T("RichEdit"))
+#define UICONTROL_CHECKBOX                      (_T("CheckBox"))
+#define UICONTROL_COMBOBOX                      (_T("ComboBox"))
+#define UICONTROL_DATETIME                      (_T("DateTime"))
+#define UICONTROL_TREEVIEW                      (_T("TreeView"))
+#define UICONTROL_TREENODE                      (_T("TreeNode"))
 
-#define  UICONTROL_CONTAINER                       (_T("Container"))
-#define  UICONTROL_TABLAYOUT                       (_T("TabLayout"))
-#define  UICONTROL_SCROLLBAR                       (_T("ScrollBar"))
-#define  UICONTROL_IPADDRESS                       (_T("IPAddress"))
+#define UICONTROL_CONTAINER                     (_T("Container"))
+#define UICONTROL_TABLAYOUT                     (_T("TabLayout"))
+#define UICONTROL_SCROLLBAR                     (_T("ScrollBar"))
+#define UICONTROL_IPADDRESS                     (_T("IPAddress"))
 
-#define  UICONTROL_LISTHEADER                      (_T("ListHeader"))
-#define  UICONTROL_LISTFOOTER                      (_T("ListFooter"))
-#define  UICONTROL_TILELAYOUT                      (_T("TileLayout"))
-#define  UICONTROL_WEBBROWSER                      (_T("WebBrowser"))
+#define UICONTROL_LISTHEADER                    (_T("ListHeader"))
+#define UICONTROL_LISTFOOTER                    (_T("ListFooter"))
+#define UICONTROL_TILELAYOUT                    (_T("TileLayout"))
+#define UICONTROL_WEBBROWSER                    (_T("WebBrowser"))
 
-#define  UICONTROL_CHILDLAYOUT                     (_T("ChildLayout"))
-#define  UICONTROL_LISTELEMENT                     (_T("ListElement"))
+#define UICONTROL_CHILDLAYOUT                   (_T("ChildLayout"))
+#define UICONTROL_LISTELEMENT                   (_T("ListElement"))
 
-#define  UICONTROL_VERTICALLAYOUT                  (_T("VerticalLayout"))
-#define  UICONTROL_LISTHEADERITEM                  (_T("ListHeaderItem"))
+#define UICONTROL_VERTICALLAYOUT                (_T("VerticalLayout"))
+#define UICONTROL_LISTHEADERITEM                (_T("ListHeaderItem"))
 
-#define  UICONTROL_LISTTEXTELEMENT                 (_T("ListTextElement"))
+#define UICONTROL_LISTTEXTELEMENT               (_T("ListTextElement"))
 
-#define  UICONTROL_HORIZONTALLAYOUT                (_T("HorizontalLayout"))
-#define  UICONTROL_LISTLABELELEMENT                (_T("ListLabelElement"))
+#define UICONTROL_HORIZONTALLAYOUT              (_T("HorizontalLayout"))
+#define UICONTROL_LISTLABELELEMENT              (_T("ListLabelElement"))
 
-#define  UICONTROL_ANIMATIONTABLAYOUT				 (_T("AnimationTabLayout"))
+#define  UICONTROL_ANIMATIONTABLAYOUT           (_T("AnimationTabLayout"))
 
-#define  UICONTROL_LISTCONTAINERELEMENT            (_T("ListContainerElement"))
+#define  UICONTROL_LISTCONTAINERELEMENT         (_T("ListContainerElement"))
 
-#define  UICONTROL_TEXTSCROLL						 (_T("TextScroll"))
+#define  UICONTROL_TEXTSCROLL                   (_T("TextScroll"))
 
-#define  UICONTROL_COLORPALETTE					 (_T("ColorPalette"))
+#define  UICONTROL_COLORPALETTE                 (_T("ColorPalette"))
     ///
     //////////////END控件名称宏定义//////////////////////////////////////////////////
 

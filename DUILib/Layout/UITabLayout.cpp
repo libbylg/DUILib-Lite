@@ -63,7 +63,7 @@ namespace DUI
         if (m_iCurSel == index) {
             if (GetCount() > 0) {
                 m_iCurSel = 0;
-                GetItemAt(m_iCurSel)->SetVisible(true);
+                GetItemAt(m_iCurSel)->SetVisible(TRUE);
             } else
                 m_iCurSel = -1;
             NeedParentUpdate();
@@ -89,13 +89,13 @@ namespace DUI
     BOOL CTabLayoutUI::SelectItem(int iIndex)
     {
         if (iIndex < 0 || iIndex >= m_items.GetSize()) return FALSE;
-        if (iIndex == m_iCurSel) return true;
+        if (iIndex == m_iCurSel) return TRUE;
 
         int iOldSel = m_iCurSel;
         m_iCurSel = iIndex;
         for (int it = 0; it < m_items.GetSize(); it++) {
             if (it == iIndex) {
-                GetItemAt(it)->SetVisible(true);
+                GetItemAt(it)->SetVisible(TRUE);
                 GetItemAt(it)->SetFocus();
                 SetPos(m_rcItem);
             } else
@@ -107,7 +107,7 @@ namespace DUI
             m_pManager->SetNextTabControl();
             m_pManager->SendNotify(this, UIMSG_TABSELECT, m_iCurSel, iOldSel);
         }
-        return true;
+        return TRUE;
     }
 
     BOOL CTabLayoutUI::SelectItem(CControlUI * pControl)

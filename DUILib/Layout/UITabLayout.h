@@ -22,7 +22,7 @@ namespace DUI
         virtual BOOL SelectItem(int iIndex);
         virtual BOOL SelectItem(CControlUI* pControl);
 
-        void SetPos(RECT rc, BOOL bNeedInvalidate = true);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
 
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 

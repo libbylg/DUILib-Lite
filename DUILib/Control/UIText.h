@@ -1,13 +1,14 @@
 #ifndef __UITEXT_H__
 #define __UITEXT_H__
 
-#pragma once
+#include "Control/UILabel.h"
 
 namespace DUI
 {
 	class DUILIB_API CTextUI : public CLabelUI
 	{
 		UI_DECLARE_CONTROL(CTextUI)
+
 	public:
 		CTextUI();
 		~CTextUI();
@@ -16,9 +17,9 @@ namespace DUI
 		UINT GetControlFlags() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
 
-		CDuiString* GetLinkContent(int iIndex);
+		CStringUI* GetLinkContent(int iIndex);
 
-		void DoEvent(TEventUI& event);
+		void DoEvent(struct TEVENT_UI& event);
 		SIZE EstimateSize(SIZE szAvailable);
 
 		void PaintText(HDC hDC);
@@ -27,7 +28,7 @@ namespace DUI
 		enum { MAX_LINK = 8 };
 		int m_nLinks;
 		RECT m_rcLinks[MAX_LINK];
-		CDuiString m_sLinks[MAX_LINK];
+		CStringUI m_sLinks[MAX_LINK];
 		int m_nHoverLink;
 	};
 

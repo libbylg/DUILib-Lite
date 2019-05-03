@@ -1,29 +1,29 @@
 #ifndef __UICOMBOBOX_H__
 #define __UICOMBOBOX_H__
 
-#pragma once
+#include "Control/UICombo.h"
 
 namespace DUI
 {
-	/// 扩展下拉列表框
-	/// 增加arrowimage属性,一张图片平均分成5份,Normal/Hot/Pushed/Focused/Disabled(必须有source属性)
-	/// <Default name="ComboBox" value="arrowimage=&quot;file='sys_combo_btn.png' source='0,0,16,16'&quot; "/>
-	class DUILIB_API CComboBoxUI : public CComboUI
-	{
-		UI_DECLARE_CONTROL(CComboBoxUI)
-	public:
-		CComboBoxUI();
-		LPCTSTR GetClass() const;
+    /// 扩展下拉列表框
+    /// 增加arrowimage属性,一张图片平均分成5份,Normal/Hot/Pushed/Focused/Disabled(必须有source属性)
+    /// <Default name="ComboBox" value="arrowimage=&quot;file='sys_combo_btn.png' source='0,0,16,16'&quot; "/>
+    class DUILIB_API CComboBoxUI : public CComboUI
+    {
+        UI_DECLARE_CONTROL(CComboBoxUI)
+    public:
+        CComboBoxUI();
+        LPCTSTR GetClass() const;
 
-		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+        void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
-		void PaintText(HDC hDC);
-		void PaintStatusImage(HDC hDC);
+        void PaintText(HDC hDC);
+        void PaintStatusImage(HDC hDC);
 
-	protected:
-		CDuiString m_sArrowImage;
-		int        m_nArrowWidth;
-	};
+    protected:
+        CStringUI m_sArrowImage;
+        int        m_nArrowWidth;
+    };
 }
 
 #endif // __UICOMBOBOX_H__

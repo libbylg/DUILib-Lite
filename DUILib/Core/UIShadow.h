@@ -1,7 +1,7 @@
 #ifndef __UISHADOW_H__
 #define __UISHADOW_H__
 
-#include "Utils/Utils.h"
+#include "Core/UIDefine.h"
 
 namespace DUI
 {
@@ -36,7 +36,7 @@ namespace DUI
         // 把自己的阴影样式复制到传入参数
         BOOL CopyShadow(CShadowUI* pShadow);
 
-        //	创建阴影窗体，由CPaintManagerUI自动调用,除非自己要单独创建阴影
+        //	创建阴影窗体，由CManagerUI自动调用,除非自己要单独创建阴影
         void Create(CManagerUI* pPaintManager);
     protected:
 
@@ -66,15 +66,15 @@ namespace DUI
     protected:
         enum SHADOWSTATUS_UI
         {
-            UISS_ENABLED = 1,				// Shadow is enabled, if not, the following one is always false
+            UISS_ENABLED = 1,				// Shadow is enabled, if not, the following one is always FALSE
             UISS_VISABLE = 1 << 1,		// Shadow window is visible
-            UISS_PARENTVISIBLE = 1 << 2	// Parent window is visible, if not, the above one is always false
+            UISS_PARENTVISIBLE = 1 << 2	// Parent window is visible, if not, the above one is always FALSE
         };
 
 
         static BOOL s_bHasInit;
 
-        CManagerUI* m_pManager;		// 父窗体的CPaintManagerUI，用来获取素材资源和父窗体句柄
+        CManagerUI* m_pManager;		// 父窗体的CManagerUI，用来获取素材资源和父窗体句柄
         HWND			 m_hWnd;			// 阴影窗体的句柄
         LONG_PTR		 m_OriParentProc;	// 子类化父窗体
         BYTE			 m_Status;
@@ -94,7 +94,7 @@ namespace DUI
         // Restore last parent window size, used to determine the update strategy when parent window is resized
         LPARAM m_WndSize;
 
-        // Set this to true if the shadow should not be update until next WM_PAINT is received
+        // Set this to TRUE if the shadow should not be update until next WM_PAINT is received
         BOOL m_bUpdate;
 
         COLORREF m_Color;	// Color of shadow

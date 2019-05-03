@@ -1,10 +1,12 @@
+#include "Control/UIRing.h"
+#include "Core/UIManager.h"
 
-#include "UIRing.h"
 
 namespace DUI
 {
 	UI_IMPLEMENT_CONTROL(CRingUI)
 
+    ////
 	CRingUI::CRingUI() : m_fCurAngle(0.0f), m_pBkimage(NULL)
 	{
 	}
@@ -61,7 +63,7 @@ namespace DUI
 		}
 	}
 
-	void CRingUI::DoEvent( TEventUI& event )
+	void CRingUI::DoEvent( struct TEVENT_UI& event )
 	{
 		if( event.Type == UIEVENT_TIMER && event.wParam == RING_TIMERID ) {
 			if(m_fCurAngle > 359) {
@@ -77,7 +79,7 @@ namespace DUI
 
 	void CRingUI::InitImage()
 	{
-		m_pBkimage = CRenderEngine::GdiplusLoadImage(GetBkImage());
+		m_pBkimage = CRenderUI::GdiplusLoadImage(GetBkImage());
 		if ( NULL == m_pBkimage ) return;
 		if(m_pManager) m_pManager->SetTimer(this, RING_TIMERID, 100);
 	}

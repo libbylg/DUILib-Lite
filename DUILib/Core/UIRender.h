@@ -2,7 +2,6 @@
 #define __UIRENDER_H__
 
 #include "Core/UIDefine.h"
-#include "Utils/Utils.h"
 
 #ifdef USE_XIMAGE_EFFECT
 class CxImage;
@@ -66,7 +65,7 @@ namespace DUI
         static void AdjustImage(BOOL bUseHSL, TIMAGEINFO_UI* imageInfo, short H, short S, short L);
         static TIMAGEINFO_UI* LoadImage(TSTRID_UI bitmap, LPCTSTR type = NULL, DWORD mask = 0, HINSTANCE instance = NULL);
 #ifdef USE_XIMAGE_EFFECT
-        static CxImage* LoadGifImageX(STRINGorID bitmap, LPCTSTR type = NULL, DWORD mask = 0);
+        static CxImage* LoadGifImageX(TSTRID_UI bitmap, LPCTSTR type = NULL, DWORD mask = 0);
 #endif
         static void FreeImage(TIMAGEINFO_UI* bitmap, BOOL bDelete = TRUE);
         static TIMAGEINFO_UI* LoadImage(LPCTSTR pStrImage, LPCTSTR type = NULL, DWORD mask = 0, HINSTANCE instance = NULL);
@@ -84,7 +83,7 @@ namespace DUI
 
         static void DrawImage(HDC hDC, HBITMAP hBitmap, const RECT& rc, const RECT& rcPaint, \
             const RECT& rcBmpPart, const RECT& rcCorners, BOOL bAlpha, BYTE uFade = 255,
-            BOOL hole = false, BOOL xtiled = false, BOOL ytiled = false);
+            BOOL hole = FALSE, BOOL xtiled = FALSE, BOOL ytiled = FALSE);
 
         static BOOL DrawImageInfo(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, const TDRAWINFO_UI* pDrawInfo, HINSTANCE instance = NULL);
         static BOOL DrawImageString(HDC hDC, CManagerUI* pManager, const RECT& rcItem, const RECT& rcPaint, LPCTSTR pStrImage, LPCTSTR pStrModify = NULL, HINSTANCE instance = NULL);

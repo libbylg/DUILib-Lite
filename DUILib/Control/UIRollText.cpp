@@ -1,5 +1,5 @@
-
-#include "UIRollText.h"
+#include "Control/UIRollText.h"
+#include "Core/UIManager.h"
 
 namespace DUI
 {
@@ -71,7 +71,7 @@ namespace DUI
 		m_nText_W_H = 0;			//文本变化重新计算
 	}
 
-	void CRollTextUI::DoEvent(TEventUI& event)
+	void CRollTextUI::DoEvent(struct TEVENT_UI& event)
 	{
 		if (event.Type == UIEVENT_TIMER && event.wParam == ROLLTEXT_ROLL_END)
 		{
@@ -91,10 +91,10 @@ namespace DUI
 		if( m_dwTextColor == 0 ) m_dwTextColor = m_pManager->GetDefaultFontColor();
 		if( m_dwDisabledTextColor == 0 ) m_dwDisabledTextColor = m_pManager->GetDefaultDisabledColor();
 		DWORD dwTextColor = IsEnabled() ? m_dwTextColor : m_dwDisabledTextColor;
-		CDuiString sText = GetText();
+		CStringUI sText = GetText();
 		if( sText.IsEmpty() ) return;
 		RECT rcTextPadding = GetTextPadding();
-		CDuiRect  rcClient;
+		CRectUI  rcClient;
 		rcClient = m_rcItem;
 		rcClient.left += rcTextPadding.left;
 		rcClient.right -= rcTextPadding.right;
@@ -142,9 +142,9 @@ namespace DUI
 
 		if( m_bShowHtml ) {
 			int nLinks = 0;
-			CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, sText, dwTextColor, NULL, NULL, nLinks, m_iFont, uTextStyle);
+			CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, dwTextColor, NULL, NULL, nLinks, m_iFont, uTextStyle);
 		} else {
-			CRenderEngine::DrawText(hDC, m_pManager, rc, sText, dwTextColor, m_iFont, uTextStyle);
+			CRenderUI::DrawText(hDC, m_pManager, rc, sText, dwTextColor, m_iFont, uTextStyle);
 		}
 
 		if(m_nText_W_H == 0)

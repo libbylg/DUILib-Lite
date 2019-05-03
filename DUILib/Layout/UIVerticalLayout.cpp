@@ -4,9 +4,9 @@
 
 namespace DUI
 {
-    UI_IMPLEMENT_CONTROL(CVerticalLayoutUI)
+    UI_IMPLEMENT_CONTROL(CVerticalLayoutUI);
 
-        CVerticalLayoutUI::CVerticalLayoutUI() : m_iSepHeight(0), m_uButtonState(0), m_bImmMode(FALSE)
+    CVerticalLayoutUI::CVerticalLayoutUI() : m_iSepHeight(0), m_uButtonState(0), m_bImmMode(FALSE)
     {
         ptLastMouse.x = ptLastMouse.y = 0;
         ::ZeroMemory(&m_rcNewPos, sizeof(m_rcNewPos));
@@ -189,7 +189,7 @@ namespace DUI
     void CVerticalLayoutUI::DoPostPaint(HDC hDC, const RECT & rcPaint)
     {
         if ((m_uButtonState & UISTATE_CAPTURED) != 0 && !m_bImmMode) {
-            RECT rcSeparator = GetThumbRect(true);
+            RECT rcSeparator = GetThumbRect(TRUE);
             CRenderUI::DrawColor(hDC, rcSeparator, 0xAA000000);
         }
     }
@@ -222,7 +222,7 @@ namespace DUI
     void CVerticalLayoutUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
     {
         if (_tcsicmp(pstrName, _T("sepheight")) == 0) SetSepHeight(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("sepimm")) == 0) SetSepImmMode(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("sepimm")) == 0) SetSepImmMode(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else CContainerUI::SetAttribute(pstrName, pstrValue);
     }
 
@@ -279,7 +279,7 @@ namespace DUI
                         }
                     }
 
-                    CRectUI rcInvalidate = GetThumbRect(true);
+                    CRectUI rcInvalidate = GetThumbRect(TRUE);
                     m_rcNewPos = rc;
                     m_cxyFixed.cy = GetManager()->GetDPIObj()->Scale(m_rcNewPos.bottom - m_rcNewPos.top);
 
@@ -287,7 +287,7 @@ namespace DUI
                         m_rcItem = m_rcNewPos;
                         NeedParentUpdate();
                     } else {
-                        rcInvalidate.Join(GetThumbRect(true));
+                        rcInvalidate.Join(GetThumbRect(TRUE));
                         rcInvalidate.Join(GetThumbRect(FALSE));
                         if (m_pManager) m_pManager->Invalidate(rcInvalidate);
                     }

@@ -1,10 +1,8 @@
 #ifndef UITreeView_h__
 #define UITreeView_h__
 
-#include <vector>
-using namespace std;
-
-#pragma once
+#include "Control/UIList.h"
+#include "Core/UIManager.h"
 
 namespace DUI
 {
@@ -15,7 +13,7 @@ namespace DUI
 
 	class DUILIB_API CTreeNodeUI : public CListContainerElementUI
 	{
-		DECLARE_CONTROL_UI(CTreeNodeUI)
+        UI_DECLARE_CONTROL(CTreeNodeUI)
 	public:
 		CTreeNodeUI(CTreeNodeUI* _ParentNode = NULL);
 		~CTreeNodeUI(void);
@@ -25,8 +23,8 @@ namespace DUI
 		LPVOID GetInterface(LPCTSTR pstrName);
 		void DoEvent(TEVENT_UI& event);
 		void Invalidate();
-		BOOL Select(BOOL bSelect = true);
-		BOOL SelectMulti(BOOL bSelect = true);
+		BOOL Select(BOOL bSelect = TRUE);
+		BOOL SelectMulti(BOOL bSelect = TRUE);
 
 		BOOL Add(CControlUI* _pTreeNodeUI);
 		BOOL AddAt(CControlUI* pControl, int iIndex);
@@ -62,7 +60,7 @@ namespace DUI
 		DWORD GetSelItemHotTextColor() const;
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
-		CStdPtrArray GetTreeNodes();
+		CPtrArrayUI GetTreeNodes();
 		int			 GetTreeIndex();
 		int			 GetNodeIndex();
 
@@ -93,12 +91,12 @@ namespace DUI
 		CCheckBoxUI*			pCheckBox;
 		COptionUI*				pItemButton;
 		CTreeNodeUI*			pParentTreeNode;
-		CStdPtrArray			mTreeNodes;
+		CPtrArrayUI			mTreeNodes;
 	};
 
-	class DUILIB_API CTreeViewUI : public CListUI,public INotifyUI
+	class DUILIB_API CTreeViewUI : public CListUI, public INotifyUI
 	{
-		DECLARE_CONTROL_UI(CTreeViewUI)
+        UI_DECLARE_CONTROL(CTreeViewUI)
 	public:
 		CTreeViewUI(void);
 		~CTreeViewUI(void);

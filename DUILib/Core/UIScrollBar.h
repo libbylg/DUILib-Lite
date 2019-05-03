@@ -1,8 +1,6 @@
 #ifndef __UISCROLLBAR_H__
 #define __UISCROLLBAR_H__
 
-#include "Utils/Utils.h"
-#include "Core/UIDefine.h"
 #include "Core/UIControl.h"
 
 namespace DUI
@@ -21,12 +19,12 @@ namespace DUI
         CContainerUI* GetOwner() const;
         void SetOwner(CContainerUI* pOwner);
 
-        void SetVisible(BOOL bVisible = true);
-        void SetEnabled(BOOL bEnable = true);
+        void SetVisible(BOOL bVisible = TRUE);
+        void SetEnabled(BOOL bEnable = TRUE);
         void SetFocus();
 
         BOOL IsHorizontal();
-        void SetHorizontal(BOOL bHorizontal = true);
+        void SetHorizontal(BOOL bHorizontal = TRUE);
         int GetScrollRange() const;
         void SetScrollRange(int nRange);
         int GetScrollPos() const;
@@ -83,7 +81,7 @@ namespace DUI
         LPCTSTR GetBkDisabledImage();
         void SetBkDisabledImage(LPCTSTR pStrImage);
 
-        void SetPos(RECT rc, BOOL bNeedInvalidate = true);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
         void DoEvent(TEVENT_UI& event);
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 

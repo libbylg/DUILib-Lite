@@ -123,18 +123,18 @@ namespace DUI
     {
         if (m_VirtualWndMap.Find(strName) == NULL) {
             m_VirtualWndMap.Insert(strName.GetData(), (LPVOID)pObject);
-            return true;
+            return TRUE;
         }
-        return false;
+        return FALSE;
     }
 
     BOOL CNotifyPumpUI::RemoveVirtualWnd(CStringUI strName)
     {
         if (m_VirtualWndMap.Find(strName) != NULL) {
             m_VirtualWndMap.Remove(strName);
-            return true;
+            return TRUE;
         }
-        return false;
+        return FALSE;
     }
 
     BOOL CNotifyPumpUI::LoopDispatch(TNOTIFY_UI & msg)
@@ -157,13 +157,13 @@ namespace DUI
                 goto LDispatch;
             }
         }
-        return false;
+        return FALSE;
 
     LDispatch:
         union TMSGMAPFUNC_UI mmf;
         mmf.pfn = lpEntry->pfn;
 
-        BOOL bRet = false;
+        BOOL bRet = FALSE;
         int nSig;
         nSig = lpEntry->nSig;
         switch (nSig) {
@@ -172,11 +172,11 @@ namespace DUI
                 break;
             case UISIG_lwl:
                 (this->*mmf.pfn_Notify_lwl)(msg.wParam, msg.lParam);
-                bRet = true;
+                bRet = TRUE;
                 break;
             case UISIG_vn:
                 (this->*mmf.pfn_Notify_vn)(msg);
-                bRet = true;
+                bRet = TRUE;
                 break;
         }
         return bRet;
@@ -189,7 +189,7 @@ namespace DUI
             for (int i = 0; i < m_VirtualWndMap.GetSize(); i++) {
                 if (LPCTSTR key = m_VirtualWndMap.GetAt(i)) {
                     if (_tcsicmp(key, msg.sVirtualWnd.GetData()) == 0) {
-                        CNotifyPumpUI* pObject = static_cast<CNotifyPumpUI*>(m_VirtualWndMap.Find(key, false));
+                        CNotifyPumpUI* pObject = static_cast<CNotifyPumpUI*>(m_VirtualWndMap.Find(key, FALSE));
                         if (pObject && pObject->LoopDispatch(msg))
                             return;
                     }
@@ -204,7 +204,7 @@ namespace DUI
 
     //////////////////////////////////////////////////////////////////////////
     ///
-    CWindowUI::CWindowUI() : m_hWnd(NULL), m_OldWndProc(::DefWindowProc), m_bSubclassed(false)
+    CWindowUI::CWindowUI() : m_hWnd(NULL), m_OldWndProc(::DefWindowProc), m_bSubclassed(FALSE)
     {
     }
 
@@ -253,7 +253,7 @@ namespace DUI
         ASSERT(m_hWnd == NULL);
         m_OldWndProc = SubclassWindow(hWnd, __WndProc);
         if (m_OldWndProc == NULL) return NULL;
-        m_bSubclassed = true;
+        m_bSubclassed = TRUE;
         m_hWnd = hWnd;
         ::SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LPARAM>(this));
         return m_hWnd;
@@ -266,10 +266,10 @@ namespace DUI
         if (!m_bSubclassed) return;
         SubclassWindow(m_hWnd, m_OldWndProc);
         m_OldWndProc = ::DefWindowProc;
-        m_bSubclassed = false;
+        m_bSubclassed = FALSE;
     }
 
-    void CWindowUI::ShowWindow(BOOL bShow /*= true*/, BOOL bTakeFocus /*= false*/)
+    void CWindowUI::ShowWindow(BOOL bShow /*= TRUE*/, BOOL bTakeFocus /*= FALSE*/)
     {
         ASSERT(::IsWindow(m_hWnd));
         if (!::IsWindow(m_hWnd)) return;

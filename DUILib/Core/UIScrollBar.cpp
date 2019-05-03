@@ -1,6 +1,5 @@
 #include "Core/UIScrollBar.h"
 #include "Core/UIContainer.h"
-#include "Core/UIDefine.h"
 #include "Core/UIManager.h"
 #include "Core/UIRender.h"
 
@@ -8,9 +7,9 @@ namespace DUI
 {
     UI_IMPLEMENT_CONTROL(CScrollBarUI)
 
-        CScrollBarUI::CScrollBarUI() : m_bHorizontal(false), m_nRange(0), m_nScrollPos(0), m_nLineSize(8),
+        CScrollBarUI::CScrollBarUI() : m_bHorizontal(FALSE), m_nRange(0), m_nScrollPos(0), m_nLineSize(8),
         m_pOwner(NULL), m_nLastScrollPos(0), m_nLastScrollOffset(0), m_nScrollRepeatDelay(0), m_uButton1State(0),
-        m_uButton2State(0), m_uThumbState(0), m_bShowButton1(true), m_bShowButton2(true)
+        m_uButton2State(0), m_uThumbState(0), m_bShowButton1(TRUE), m_bShowButton2(TRUE)
     {
         m_cxyFixed.cx = DEFAULT_SCROLLBAR_SIZE;
         ptLastMouse.x = ptLastMouse.y = 0;
@@ -46,7 +45,7 @@ namespace DUI
 
         BOOL v = IsVisible();
         m_bVisible = bVisible;
-        if (m_bFocused) m_bFocused = false;
+        if (m_bFocused) m_bFocused = FALSE;
     }
 
     void CScrollBarUI::SetEnabled(BOOL bEnable)
@@ -793,7 +792,7 @@ namespace DUI
         else if (_tcsicmp(pstrName, _T("bkdisabledimage")) == 0)
             SetBkDisabledImage(pstrValue);
         else if (_tcsicmp(pstrName, _T("hor")) == 0)
-            SetHorizontal(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetHorizontal(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("linesize")) == 0)
             SetLineSize(_ttoi(pstrValue));
         else if (_tcsicmp(pstrName, _T("range")) == 0)
@@ -801,9 +800,9 @@ namespace DUI
         else if (_tcsicmp(pstrName, _T("value")) == 0)
             SetScrollPos(_ttoi(pstrValue));
         else if (_tcsicmp(pstrName, _T("showbutton1")) == 0)
-            SetShowButton1(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetShowButton1(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else if (_tcsicmp(pstrName, _T("showbutton2")) == 0)
-            SetShowButton2(_tcsicmp(pstrValue, _T("true")) == 0);
+            SetShowButton2(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else
             CControlUI::SetAttribute(pstrName, pstrValue);
     }
@@ -818,7 +817,7 @@ namespace DUI
         PaintThumb(hDC);
         PaintRail(hDC);
         PaintBorder(hDC);
-        return true;
+        return TRUE;
     }
 
     void CScrollBarUI::PaintBk(HDC hDC)

@@ -1,21 +1,20 @@
-#include "Core/UIResourceManager.h"
+#include "Core/UIResource.h"
 #include "Core/UIManager.h"
-#include "Utils/Utils.h"
 
 namespace DUI
 {
 
-    CResourceManagerUI::CResourceManagerUI(void)
+    CResourceUI::CResourceUI(void)
     {
         m_pQuerypInterface = NULL;
     }
 
-    CResourceManagerUI::~CResourceManagerUI(void)
+    CResourceUI::~CResourceUI(void)
     {
         ResetResourceMap();
     }
 
-    BOOL CResourceManagerUI::LoadResource(TSTRID_UI xml, LPCTSTR type)
+    BOOL CResourceUI::LoadResource(TSTRID_UI xml, LPCTSTR type)
     {
         if (HIWORD(xml.m_lpstr) != NULL) {
             if (*(xml.m_lpstr) == _T('<')) {
@@ -41,7 +40,7 @@ namespace DUI
         return LoadResource(m_xml.GetRoot());
     }
 
-    BOOL CResourceManagerUI::LoadResource(CMarkupNodeUI Root)
+    BOOL CResourceUI::LoadResource(CMarkupNodeUI Root)
     {
         if (!Root.IsValid()) return FALSE;
 
@@ -99,19 +98,19 @@ namespace DUI
         return TRUE;
     }
 
-    LPCTSTR CResourceManagerUI::GetImagePath(LPCTSTR lpstrId)
+    LPCTSTR CResourceUI::GetImagePath(LPCTSTR lpstrId)
     {
         CStringUI* lpStr = static_cast<CStringUI*>(m_mImageHashMap.Find(lpstrId));
         return lpStr == NULL?NULL:lpStr->GetData();
     }
 
-    LPCTSTR CResourceManagerUI::GetXmlPath(LPCTSTR lpstrId)
+    LPCTSTR CResourceUI::GetXmlPath(LPCTSTR lpstrId)
     {
         CStringUI* lpStr = static_cast<CStringUI*>(m_mXmlHashMap.Find(lpstrId));
         return lpStr == NULL?NULL:lpStr->GetData();
     }
 
-    void CResourceManagerUI::ResetResourceMap()
+    void CResourceUI::ResetResourceMap()
     {
         CStringUI* lpStr;
         for (int i = 0; i < m_mImageHashMap.GetSize(); i++) {
@@ -137,7 +136,7 @@ namespace DUI
         }
     }
 
-    BOOL CResourceManagerUI::LoadLanguage(LPCTSTR pstrXml)
+    BOOL CResourceUI::LoadLanguage(LPCTSTR pstrXml)
     {
         CMarkupUI xml;
         if (*(pstrXml) == _T('<')) {
@@ -187,7 +186,7 @@ namespace DUI
         return TRUE;
     }
 
-    CStringUI CResourceManagerUI::GetText(LPCTSTR lpstrId, LPCTSTR lpstrType)
+    CStringUI CResourceUI::GetText(LPCTSTR lpstrId, LPCTSTR lpstrType)
     {
         if (lpstrId == NULL) return _T("");
 
@@ -199,7 +198,7 @@ namespace DUI
         return lpstrFind == NULL?lpstrId:*lpstrFind;
     }
 
-    void CResourceManagerUI::ReloadText()
+    void CResourceUI::ReloadText()
     {
         if (m_pQuerypInterface == NULL) return;
         //ÖØÔØÎÄ×ÖÃèÊö
@@ -215,7 +214,7 @@ namespace DUI
             }
         }
     }
-    void CResourceManagerUI::ResetTextMap()
+    void CResourceUI::ResetTextMap()
     {
         CStringUI* lpStr;
         for (int i = 0; i < m_mTextResourceHashMap.GetSize(); i++) {

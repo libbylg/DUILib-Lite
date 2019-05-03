@@ -1,15 +1,13 @@
 #include "Core/UIShadow.h"
 #include "Core/UIManager.h"
-#include "Core/UIRender.h"
 
 namespace DUI
 {
-
     const TCHAR* strWndClassName = _T("PerryShadowWnd");
     BOOL CShadowUI::s_bHasInit = FALSE;
 
     CShadowUI::CShadowUI(void)
-        : m_hWnd((HWND)NULL), m_OriParentProc(NULL), m_Status(0), m_nDarkness(150), m_nSharpness(5), m_nSize(0), m_nxOffset(0), m_nyOffset(0), m_Color(RGB(0, 0, 0)), m_WndSize(0), m_bUpdate(false), m_bIsImageMode(false), m_bIsShowShadow(false), m_bIsDisableShadow(false)
+        : m_hWnd((HWND)NULL), m_OriParentProc(NULL), m_Status(0), m_nDarkness(150), m_nSharpness(5), m_nSize(0), m_nxOffset(0), m_nyOffset(0), m_Color(RGB(0, 0, 0)), m_WndSize(0), m_bUpdate(FALSE), m_bIsImageMode(FALSE), m_bIsShowShadow(FALSE), m_bIsDisableShadow(FALSE)
     {
         ::ZeroMemory(&m_rcShadowCorner, sizeof(RECT));
     }
@@ -21,7 +19,7 @@ namespace DUI
     BOOL CShadowUI::Initialize(HINSTANCE hInstance)
     {
         if (s_bHasInit)
-            return false;
+            return FALSE;
 
         // Register window class for shadow window
         WNDCLASSEX wcex;
@@ -43,8 +41,8 @@ namespace DUI
 
         RegisterClassEx(&wcex);
 
-        s_bHasInit = true;
-        return true;
+        s_bHasInit = TRUE;
+        return TRUE;
     }
 
     void CShadowUI::Create(CManagerUI * pPaintManager)
@@ -126,7 +124,7 @@ namespace DUI
 
                 if (pWndPos->flags & SWP_SHOWWINDOW) {
                     if (pThis->m_Status & UISS_ENABLED && !(pThis->m_Status & UISS_PARENTVISIBLE)) {
-                        pThis->m_bUpdate = true;
+                        pThis->m_bUpdate = TRUE;
                         ::ShowWindow(pThis->m_hWnd, SW_SHOWNOACTIVATE);
                         pThis->m_Status |= UISS_VISABLE | UISS_PARENTVISIBLE;
                     }
@@ -161,7 +159,7 @@ namespace DUI
                         // the window region would never be updated until WM_PAINT was sent.
                         // So do not Update() until next WM_PAINT is received in this case
                         if (LOWORD(lParam) > LOWORD(pThis->m_WndSize) || HIWORD(lParam) > HIWORD(pThis->m_WndSize))
-                            pThis->m_bUpdate = true;
+                            pThis->m_bUpdate = TRUE;
                         else
                             pThis->Update(hwnd);
                         if (!(pThis->m_Status & UISS_VISABLE)) {
@@ -176,7 +174,7 @@ namespace DUI
             case WM_PAINT: {
                 if (pThis->m_bUpdate) {
                     pThis->Update(hwnd);
-                    pThis->m_bUpdate = false;
+                    pThis->m_bUpdate = FALSE;
                 }
                 //return hr;
                 break;
@@ -198,7 +196,7 @@ namespace DUI
                         pThis->m_Status &= ~(UISS_VISABLE | UISS_PARENTVISIBLE);
                     } else if (!(pThis->m_Status & UISS_PARENTVISIBLE)) {
                         //pThis->Update(hwnd);
-                        pThis->m_bUpdate = true;
+                        pThis->m_bUpdate = TRUE;
                         ::ShowWindow(pThis->m_hWnd, SW_SHOWNOACTIVATE);
                         pThis->m_Status |= UISS_VISABLE | UISS_PARENTVISIBLE;
                     }
@@ -285,7 +283,7 @@ namespace DUI
             rcBmpPart.right = data->nX;
             rcBmpPart.bottom = data->nY;
             RECT corner = m_rcShadowCorner;
-            CRenderUI::DrawImage(hMemDC, data->hBitmap, rcPaint, rcPaint, rcBmpPart, corner, data->bAlpha, 0xFF, true, false, false);
+            CRenderUI::DrawImage(hMemDC, data->hBitmap, rcPaint, rcPaint, rcBmpPart, corner, data->bAlpha, 0xFF, TRUE, FALSE, FALSE);
         } else {
             ZeroMemory(pvBits, bmi.bmiHeader.biSizeImage);
             MakeShadow((UINT32*)pvBits, hParent, &WndRect);
@@ -548,47 +546,47 @@ namespace DUI
     BOOL CShadowUI::SetSize(int NewSize)
     {
         if (NewSize > 35 || NewSize < -35)
-            return false;
+            return FALSE;
 
         m_nSize = (signed char)NewSize;
         if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
     BOOL CShadowUI::SetSharpness(unsigned int NewSharpness)
     {
         if (NewSharpness > 35)
-            return false;
+            return FALSE;
 
         m_nSharpness = (unsigned char)NewSharpness;
         if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
     BOOL CShadowUI::SetDarkness(unsigned int NewDarkness)
     {
         if (NewDarkness > 255)
-            return false;
+            return FALSE;
 
         m_nDarkness = (unsigned char)NewDarkness;
         if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
     BOOL CShadowUI::SetPosition(int NewXOffset, int NewYOffset)
     {
         if (NewXOffset > 35 || NewXOffset < -35 ||
             NewYOffset > 35 || NewYOffset < -35)
-            return false;
+            return FALSE;
 
         m_nxOffset = (signed char)NewXOffset;
         m_nyOffset = (signed char)NewYOffset;
         if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
     BOOL CShadowUI::SetColor(COLORREF NewColor)
@@ -596,32 +594,32 @@ namespace DUI
         m_Color = NewColor;
         if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
-        return true;
+        return TRUE;
     }
 
     BOOL CShadowUI::SetImage(LPCTSTR szImage)
     {
         if (szImage == NULL)
-            return false;
+            return FALSE;
 
-        m_bIsImageMode = true;
+        m_bIsImageMode = TRUE;
         m_sShadowImage = szImage;
         if (m_hWnd != NULL && (UISS_VISABLE & m_Status))
             Update(GetParent(m_hWnd));
 
-        return true;
+        return TRUE;
     }
 
     BOOL CShadowUI::SetShadowCorner(RECT rcCorner)
     {
-        if (rcCorner.left < 0 || rcCorner.top < 0 || rcCorner.right < 0 || rcCorner.bottom < 0) return false;
+        if (rcCorner.left < 0 || rcCorner.top < 0 || rcCorner.right < 0 || rcCorner.bottom < 0) return FALSE;
 
         m_rcShadowCorner = rcCorner;
         if (m_hWnd != NULL && (UISS_VISABLE & m_Status)) {
             Update(GetParent(m_hWnd));
         }
 
-        return true;
+        return TRUE;
     }
 
     BOOL CShadowUI::CopyShadow(CShadowUI * pShadow)
@@ -639,6 +637,6 @@ namespace DUI
         }
 
         pShadow->ShowShadow(m_bIsShowShadow);
-        return true;
+        return TRUE;
     }
 } //namespace DUI

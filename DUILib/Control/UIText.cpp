@@ -1,10 +1,12 @@
+#include "Control/UIText.h"
+#include "Core/UIManager.h"
 
-#include "UIText.h"
 
 namespace DUI
 {
 	UI_IMPLEMENT_CONTROL(CTextUI)
 
+    ////
 	CTextUI::CTextUI() : m_nLinks(0), m_nHoverLink(-1)
 	{
 		m_uTextStyle = DT_WORDBREAK;
@@ -34,13 +36,13 @@ namespace DUI
 		else return 0;
 	}
 
-	CDuiString* CTextUI::GetLinkContent(int iIndex)
+	CStringUI* CTextUI::GetLinkContent(int iIndex)
 	{
 		if( iIndex >= 0 && iIndex < m_nLinks ) return &m_sLinks[iIndex];
 		return NULL;
 	}
 
-	void CTextUI::DoEvent(TEventUI& event)
+	void CTextUI::DoEvent(struct TEVENT_UI& event)
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pParent != NULL ) m_pParent->DoEvent(event);
@@ -107,7 +109,7 @@ namespace DUI
 
 	SIZE CTextUI::EstimateSize(SIZE szAvailable)
 	{
-		CDuiString sText = GetText();
+		CStringUI sText = GetText();
 		RECT m_rcTextPadding = GetTextPadding();
 
 		RECT rcText = { 0, 0, m_bAutoCalcWidth ? 9999 : GetManager()->GetDPIObj()->Scale(m_cxyFixed.cx), 9999 };
@@ -116,10 +118,10 @@ namespace DUI
 
 		if( m_bShowHtml ) {   
 			int nLinks = 0;
-			CRenderEngine::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, sText, m_dwTextColor, NULL, NULL, nLinks, m_iFont, DT_CALCRECT | m_uTextStyle);
+			CRenderUI::DrawHtmlText(m_pManager->GetPaintDC(), m_pManager, rcText, sText, m_dwTextColor, NULL, NULL, nLinks, m_iFont, DT_CALCRECT | m_uTextStyle);
 		}
 		else {
-			CRenderEngine::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, sText, m_dwTextColor, m_iFont, DT_CALCRECT | m_uTextStyle);
+			CRenderUI::DrawText(m_pManager->GetPaintDC(), m_pManager, rcText, sText, m_dwTextColor, m_iFont, DT_CALCRECT | m_uTextStyle);
 		}
 		SIZE cXY = {rcText.right - rcText.left + m_rcTextPadding.left + m_rcTextPadding.right,
 			rcText.bottom - rcText.top + m_rcTextPadding.top + m_rcTextPadding.bottom};
@@ -134,7 +136,7 @@ namespace DUI
 
 	void CTextUI::PaintText(HDC hDC)
 	{
-		CDuiString sText = GetText();
+		CStringUI sText = GetText();
 		if( sText.IsEmpty() ) {
 			m_nLinks = 0;
 			return;
@@ -151,18 +153,18 @@ namespace DUI
 		rc.bottom -= m_rcTextPadding.bottom;
 		if( IsEnabled() ) {
 			if( m_bShowHtml )
-				CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, sText, m_dwTextColor, \
+				CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, m_dwTextColor, \
 				m_rcLinks, m_sLinks, m_nLinks, m_iFont, m_uTextStyle);
 			else
-				CRenderEngine::DrawText(hDC, m_pManager, rc, sText, m_dwTextColor, \
+				CRenderUI::DrawText(hDC, m_pManager, rc, sText, m_dwTextColor, \
 				m_iFont, m_uTextStyle);
 		}
 		else {
 			if( m_bShowHtml )
-				CRenderEngine::DrawHtmlText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor, \
+				CRenderUI::DrawHtmlText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor, \
 				m_rcLinks, m_sLinks, m_nLinks, m_iFont, m_uTextStyle);
 			else
-				CRenderEngine::DrawText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor, \
+				CRenderUI::DrawText(hDC, m_pManager, rc, sText, m_dwDisabledTextColor, \
 				m_iFont, m_uTextStyle);
 		}
 	}

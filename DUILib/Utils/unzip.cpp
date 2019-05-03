@@ -95,11 +95,11 @@ void zfree(void *buf)
   OutputDebugString(c);
   char *p = ((char*)buf)-16;
   unsigned int len = *((unsigned int*)p);
-  BOOL blown=false;
+  BOOL blown=FALSE;
   for (int i=0; i<16; i++)
   { char lo = p[i];
     char hi = p[len+31-i];
-    if (hi!=i || (lo!=i && i>4)) blown=true;
+    if (hi!=i || (lo!=i && i>4)) blown=TRUE;
   }
   if (blown)
   { OutputDebugString("BLOWN!!!");
@@ -635,7 +635,7 @@ struct inflate_blocks_state
                 * codes;
         } decode; // if CODES, current state
     } sub;        // submode
-    uInt last;    // true if this block is the last block
+    uInt last;    // TRUE if this block is the last block
 
     // mode independent information
     uInt bitk;           // bits in bit buffer
@@ -2400,17 +2400,17 @@ LUFILE* lufopen(void* z, unsigned int len, DWORD flags, ZRESULT * err)
     }
     //
     HANDLE h = 0;
-    BOOL canseek = false;
+    BOOL canseek = FALSE;
     *err = ZR_OK;
-    BOOL mustclosehandle = false;
+    BOOL mustclosehandle = FALSE;
     if (flags == ZIP_HANDLE || flags == ZIP_FILENAME) {
         if (flags == ZIP_HANDLE) {
             HANDLE hf = z;
             h = hf;
-            mustclosehandle = false;
+            mustclosehandle = FALSE;
 #ifdef DuplicateHandle
             BOOL res = DuplicateHandle(GetCurrentProcess(), hf, GetCurrentProcess(), &h, 0, FALSE, DUPLICATE_SAME_ACCESS);
-            if (!res) mustclosehandle = true;
+            if (!res) mustclosehandle = TRUE;
 #endif
         } else {
             h = CreateFile((const TCHAR*)z, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -2418,7 +2418,7 @@ LUFILE* lufopen(void* z, unsigned int len, DWORD flags, ZRESULT * err)
                 *err = ZR_NOFILE;
                 return NULL;
             }
-            mustclosehandle = true;
+            mustclosehandle = TRUE;
         }
         // test if we can seek on it. We can't use GetFileType(h)==FILE_TYPE_DISK since it's not on CE.
         DWORD res = SetFilePointer(h, 0, 0, FILE_CURRENT);
@@ -2426,17 +2426,17 @@ LUFILE* lufopen(void* z, unsigned int len, DWORD flags, ZRESULT * err)
     }
     LUFILE * lf = new LUFILE;
     if (flags == ZIP_HANDLE || flags == ZIP_FILENAME) {
-        lf->is_handle = true;
+        lf->is_handle = TRUE;
         lf->mustclosehandle = mustclosehandle;
         lf->canseek = canseek;
         lf->h = h;
-        lf->herr = false;
+        lf->herr = FALSE;
         lf->initial_offset = 0;
         if (canseek) lf->initial_offset = SetFilePointer(h, 0, NULL, FILE_CURRENT);
     } else {
-        lf->is_handle = false;
-        lf->canseek = true;
-        lf->mustclosehandle = false;
+        lf->is_handle = FALSE;
+        lf->canseek = TRUE;
+        lf->mustclosehandle = FALSE;
         lf->buf = z;
         lf->len = len;
         lf->pos = 0;
@@ -2503,7 +2503,7 @@ size_t lufread(void* ptr, size_t size, size_t n, LUFILE * stream)
     if (stream->is_handle) {
         DWORD red;
         BOOL res = ReadFile(stream->h, ptr, toread, &red, NULL);
-        if (!res) stream->herr = true;
+        if (!res) stream->herr = TRUE;
         return red / size;
     }
     if (stream->pos + toread > stream->len) toread = stream->len - stream->pos;
@@ -3259,7 +3259,7 @@ int unzReadCurrentFile(unzFile file, voidp buf, unsigned len, BOOL * reached_eof
 {
     int err = UNZ_OK;
     uInt iRead = 0;
-    if (reached_eof != 0) * reached_eof = false;
+    if (reached_eof != 0) * reached_eof = FALSE;
 
     unz_s * s = (unz_s*)file;
     if (s == NULL) return UNZ_PARAMERROR;
@@ -3281,7 +3281,7 @@ int unzReadCurrentFile(unzFile file, voidp buf, unsigned len, BOOL * reached_eof
             uInt uReadThis = UNZ_BUFSIZE;
             if (pfile_in_zip_read_info->rest_read_compressed < uReadThis) uReadThis = (uInt)pfile_in_zip_read_info->rest_read_compressed;
             if (uReadThis == 0) {
-                if (reached_eof != 0) * reached_eof = true;
+                if (reached_eof != 0) * reached_eof = TRUE;
                 return UNZ_EOF;
             }
             if (lufseek(pfile_in_zip_read_info->file, pfile_in_zip_read_info->pos_in_zipfile + pfile_in_zip_read_info->byte_before_the_zipfile, SEEK_SET) != 0) return UNZ_ERRNO;
@@ -3329,7 +3329,7 @@ int unzReadCurrentFile(unzFile file, voidp buf, unsigned len, BOOL * reached_eof
             pfile_in_zip_read_info->stream.total_out += uDoCopy;
             iRead += uDoCopy;
             if (pfile_in_zip_read_info->rest_read_uncompressed == 0) {
-                if (reached_eof != 0) * reached_eof = true;
+                if (reached_eof != 0) * reached_eof = TRUE;
             }
         } else {
             uLong uTotalOutBefore, uTotalOutAfter;
@@ -3347,7 +3347,7 @@ int unzReadCurrentFile(unzFile file, voidp buf, unsigned len, BOOL * reached_eof
             pfile_in_zip_read_info->rest_read_uncompressed -= uOutThis;
             iRead += (uInt)(uTotalOutAfter - uTotalOutBefore);
             if (err == Z_STREAM_END || pfile_in_zip_read_info->rest_read_uncompressed == 0) {
-                if (reached_eof != 0) * reached_eof = true;
+                if (reached_eof != 0) * reached_eof = TRUE;
                 return iRead;
             }
             if (err != Z_OK) break;
@@ -3695,7 +3695,7 @@ ZRESULT TUnzip::Get(int index, ZIPENTRY * ze)
     BOOL readonly = (a & 0x00800000) == 0;
     //BOOL readable=  (a&0x01000000)!=0; // unused
     //BOOL executable=(a&0x00400000)!=0; // unused
-    BOOL hidden = false, system = false, archive = true;
+    BOOL hidden = FALSE, system = FALSE, archive = TRUE;
     // but in normal hostmodes these are overridden by the lower half...
     int host = ufi.version >> 8;
     if (host == 0 || host == 7 || host == 11 || host == 14) {
@@ -4141,7 +4141,7 @@ ZRESULT CloseZipU(HZIP hz)
 
 BOOL IsZipHandleU(HZIP hz)
 {
-    if (hz == 0) return false;
+    if (hz == 0) return FALSE;
     TUnzipHandleData * han = (TUnzipHandleData*)hz;
     return (han->flag == 1);
 }

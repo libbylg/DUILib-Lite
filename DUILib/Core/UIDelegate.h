@@ -87,7 +87,7 @@ namespace DUI
         void Clear();
 
     protected:
-        CStdPtrArray m_aDelegates;
+        CPtrArrayUI m_aDelegates;
     };
 
 } // namespace DUI

@@ -45,7 +45,8 @@ source 		"${PROJECT_ROOT}/PROJECT"	&&	\
 source 		"${MODULE_ROOT}/MODULE"
 RESULT=$?
 if [ ${RESULT} -ne 0 ]; then
-	echo	"Load"
+	echo	"Load envs failed. errno=${RESULT}"
+	exit	4
 fi
 
 
@@ -57,9 +58,23 @@ mkdir	-p	"${SELFDIR}/Pkg/include"
 mkdir	-p	"${SELFDIR}/Pkg/lib"
 
 
-#	重新生活层出包目录下的东西
+#	生成 HEADER 文件
+files=$(find "${SELFDIR}/DUILib" -name '*.h')
+for file in ${files} ; do
+	dir=$(dirname "${file#${SELFDIR}/DUILib/}")
+	cd 			"${SELFDIR}/Pkg/include" 	&& \
+	mkdir -p 	"${dir}"					&& \
+	cp			"${file}"	"${dir}"
+	RESULT=$?
+	if [ ${RESULT} -ne 0 ]; then
+		echo	"Copy file '${file}' failed. errno=${RESULT}"
+		exit	5
+	fi
+done
+
+
+#	重新生成出包目录下的东西
 cd		"${SELFDIR}" 												&& \
-find 	"DUILib" -name '*.h' -exec cp {} ${SELFDIR}/Pkg/include/ \;	&& \
 cp	 	"${SELFDIR}/Bin"/*		"${SELFDIR}/Pkg/lib"				&& \
 cp	 	"${SELFDIR}/Lib"/*.lib	"${SELFDIR}/Pkg/lib"				&& \
 cd		"${SELFDIR}/Pkg"											&& \
@@ -70,7 +85,7 @@ rm	-rf	"${SELFDIR}/Pkg"
 RESULT=$?
 if [ ${RESULT} -ne 0 ]; then
 	echo	"Create package for '${MODULE_NAME}' failed. errno=${RESULT}"
-	exit	4
+	exit	6
 fi
 echo	"Create package for '${MODULE_NAME}' success."
 

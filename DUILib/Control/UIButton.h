@@ -17,7 +17,7 @@ namespace DUI
         UINT GetControlFlags() const;
 
         BOOL Activate();
-        void SetEnabled(BOOL bEnable = true);
+        void SetEnabled(BOOL bEnable = TRUE);
         void DoEvent(TEVENT_UI& event);
 
         virtual LPCTSTR GetNormalImage();

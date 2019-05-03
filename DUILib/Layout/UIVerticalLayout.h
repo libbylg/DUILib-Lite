@@ -22,7 +22,7 @@ namespace DUI
         void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
         void DoEvent(TEVENT_UI& event);
 
-        void SetPos(RECT rc, BOOL bNeedInvalidate = true);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
         void DoPostPaint(HDC hDC, const RECT& rcPaint);
 
         RECT GetThumbRect(BOOL bUseNew = FALSE) const;

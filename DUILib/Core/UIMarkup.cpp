@@ -30,7 +30,7 @@ namespace DUI
 
     BOOL CMarkupNodeUI::HasSiblings() const
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         ULONG iPos = m_pOwner->m_pElements[m_iPos].iNext;
         return iPos > 0;
     }
@@ -58,7 +58,7 @@ namespace DUI
 
     BOOL CMarkupNodeUI::HasChildren() const
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         return m_pOwner->m_pElements[m_iPos].iChild != 0;
     }
 
@@ -115,24 +115,24 @@ namespace DUI
 
     BOOL CMarkupNodeUI::GetAttributeValue(int iIndex, LPTSTR pstrValue, SIZE_T cchMax)
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         if (m_nAttributes == 0) _MapAttributes();
-        if (iIndex < 0 || iIndex >= m_nAttributes) return false;
+        if (iIndex < 0 || iIndex >= m_nAttributes) return FALSE;
         _tcsncpy(pstrValue, m_pOwner->m_pstrXML + m_aAttributes[iIndex].iValue, cchMax);
-        return true;
+        return TRUE;
     }
 
     BOOL CMarkupNodeUI::GetAttributeValue(LPCTSTR pstrName, LPTSTR pstrValue, SIZE_T cchMax)
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         if (m_nAttributes == 0) _MapAttributes();
         for (int i = 0; i < m_nAttributes; i++) {
             if (_tcsicmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0) {
                 _tcsncpy(pstrValue, m_pOwner->m_pstrXML + m_aAttributes[i].iValue, cchMax);
-                return true;
+                return TRUE;
             }
         }
-        return false;
+        return FALSE;
     }
 
     int CMarkupNodeUI::GetAttributeCount()
@@ -144,19 +144,19 @@ namespace DUI
 
     BOOL CMarkupNodeUI::HasAttributes()
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         if (m_nAttributes == 0) _MapAttributes();
         return m_nAttributes > 0;
     }
 
     BOOL CMarkupNodeUI::HasAttribute(LPCTSTR pstrName)
     {
-        if (m_pOwner == NULL) return false;
+        if (m_pOwner == NULL) return FALSE;
         if (m_nAttributes == 0) _MapAttributes();
         for (int i = 0; i < m_nAttributes; i++) {
-            if (_tcsicmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0) return true;
+            if (_tcsicmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0) return TRUE;
         }
-        return false;
+        return FALSE;
     }
 
     void CMarkupNodeUI::_MapAttributes()
@@ -188,7 +188,7 @@ namespace DUI
         m_pstrXML = NULL;
         m_pElements = NULL;
         m_nElements = 0;
-        m_bPreserveWhitespace = true;
+        m_bPreserveWhitespace = TRUE;
         if (pstrXML != NULL) Load(pstrXML);
     }
 
@@ -321,13 +321,21 @@ namespace DUI
         if (CManagerUI::GetResourceZip().IsEmpty()) {
             sFile += pstrFilename;
             HANDLE hFile = ::CreateFile(sFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-            if (hFile == INVALID_HANDLE_VALUE) return _Failed(_T("Error opening file"));
+            if (hFile == INVALID_HANDLE_VALUE) {
+                return _Failed(_T("Error opening file"));
+            }
+
             DWORD dwSize = ::GetFileSize(hFile, NULL);
-            if (dwSize == 0) return _Failed(_T("File is empty"));
-            if (dwSize > 4096 * 1024) return _Failed(_T("File too large"));
+            if (dwSize == 0) {
+                return _Failed(_T("File is empty"));
+            }
+
+            if (dwSize > 4096 * 1024) {
+                return _Failed(_T("File too large"));
+            }
 
             DWORD dwRead = 0;
-            BYTE * pByte = new BYTE[dwSize];
+            BYTE* pByte = new BYTE[dwSize];
             ::ReadFile(hFile, pByte, dwSize, &dwRead, NULL);
             ::CloseHandle(hFile);
             if (dwRead != dwSize) {
@@ -357,12 +365,14 @@ namespace DUI
                 hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
 #endif
             }
-            if (hz == NULL) return _Failed(_T("Error opening zip file"));
+            if (hz == NULL) {
+                return _Failed(_T("Error opening zip file"));
+            }
             ZIPENTRY ze;
             int i = 0;
             CStringUI key = pstrFilename;
             key.Replace(_T("\\"), _T("/"));
-            if (FindZipItem(hz, key, true, &i, &ze) != 0) return _Failed(_T("Could not find ziped file"));
+            if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) return _Failed(_T("Could not find ziped file"));
             DWORD dwSize = ze.unc_size;
             if (dwSize == 0) return _Failed(_T("File is empty"));
             if (dwSize > 4096 * 1024) return _Failed(_T("File too large"));
@@ -420,10 +430,10 @@ namespace DUI
         _SkipWhitespace(pstrText);
         ULONG iPrevious = 0;
         for (;;) {
-            if (*pstrText == _T('\0') && iParent <= 1) return true;
+            if (*pstrText == _T('\0') && iParent <= 1) return TRUE;
             _SkipWhitespace(pstrText);
             if (*pstrText != _T('<')) return _Failed(_T("Expected start tag"), pstrText);
-            if (pstrText[1] == _T('/')) return true;
+            if (pstrText[1] == _T('/')) return TRUE;
             *pstrText++ = _T('\0');
             _SkipWhitespace(pstrText);
             // Skip comment or processing directive
@@ -454,7 +464,7 @@ namespace DUI
             LPTSTR pstrNameEnd = pstrText;
             if (*pstrText == _T('\0')) return _Failed(_T("Error parsing element name"), pstrText);
             // Parse attributes
-            if (!_ParseAttributes(pstrText)) return false;
+            if (!_ParseAttributes(pstrText)) return FALSE;
             _SkipWhitespace(pstrText);
             if (pstrText[0] == _T('/') && pstrText[1] == _T('>')) {
                 pEl->iData = pstrText - m_pstrXML;
@@ -465,12 +475,12 @@ namespace DUI
                 // Parse node data
                 pEl->iData = ++pstrText - m_pstrXML;
                 LPTSTR pstrDest = pstrText;
-                if (!_ParseData(pstrText, pstrDest, _T('<'))) return false;
+                if (!_ParseData(pstrText, pstrDest, _T('<'))) return FALSE;
                 // Determine type of next element
-                if (*pstrText == _T('\0') && iParent <= 1) return true;
+                if (*pstrText == _T('\0') && iParent <= 1) return TRUE;
                 if (*pstrText != _T('<')) return _Failed(_T("Expected end-tag start"), pstrText);
                 if (pstrText[0] == _T('<') && pstrText[1] != _T('/')) {
-                    if (!_Parse(pstrText, iPos)) return false;
+                    if (!_Parse(pstrText, iPos)) return FALSE;
                 }
                 if (pstrText[0] == _T('<') && pstrText[1] == _T('/')) {
                     *pstrDest = _T('\0');
@@ -529,8 +539,8 @@ namespace DUI
     {
         // ÎÞÊôÐÔ
         LPTSTR pstrIdentifier = pstrText;
-        if (*pstrIdentifier == _T('/') && *++pstrIdentifier == _T('>')) return true;
-        if (*pstrText == _T('>')) return true;
+        if (*pstrIdentifier == _T('/') && *++pstrIdentifier == _T('>')) return TRUE;
+        if (*pstrText == _T('>')) return TRUE;
         *pstrText++ = _T('\0');
         _SkipWhitespace(pstrText);
         while (*pstrText != _T('\0') && *pstrText != _T('>') && *pstrText != _T('/')) {
@@ -543,14 +553,14 @@ namespace DUI
             _SkipWhitespace(pstrText);
             if (*pstrText++ != _T('\"')) return _Failed(_T("Expected attribute value"), pstrText);
             LPTSTR pstrDest = pstrText;
-            if (!_ParseData(pstrText, pstrDest, _T('\"'))) return false;
+            if (!_ParseData(pstrText, pstrDest, _T('\"'))) return FALSE;
             if (*pstrText == _T('\0')) return _Failed(_T("Error while parsing attribute string"), pstrText);
             *pstrDest = _T('\0');
             if (pstrText != pstrDest) * pstrText = _T(' ');
             pstrText++;
             _SkipWhitespace(pstrText);
         }
-        return true;
+        return TRUE;
     }
 
     BOOL CMarkupUI::_ParseData(LPTSTR & pstrText, LPTSTR & pstrDest, char cEnd)
@@ -579,7 +589,7 @@ namespace DUI
         LPTSTR pstrFill = pstrDest + 1;
         while (pstrFill < pstrText)
             * pstrFill++ = _T(' ');
-        return true;
+        return TRUE;
     }
 
     void CMarkupUI::_ParseMetaChar(LPTSTR & pstrText, LPTSTR & pstrDest)
@@ -611,7 +621,7 @@ namespace DUI
         if (pstrLocation != NULL) TRACE(pstrLocation);
         _tcsncpy(m_szErrorMsg, pstrError, (sizeof(m_szErrorMsg) / sizeof(m_szErrorMsg[0])) - 1);
         _tcsncpy(m_szErrorXML, pstrLocation != NULL?pstrLocation:_T(""), lengthof(m_szErrorXML) - 1);
-        return false; // Always return 'false'
+        return FALSE; // Always return 'FALSE'
     }
 
 } // namespace DUI

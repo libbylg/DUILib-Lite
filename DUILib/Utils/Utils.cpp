@@ -154,31 +154,31 @@ namespace DUI
     //
     //
 
-    CStdPtrArray::CStdPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
+    CPtrArrayUI::CPtrArrayUI(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
     {
         ASSERT(iPreallocSize >= 0);
         if (iPreallocSize > 0) m_ppVoid = static_cast<LPVOID*>(malloc(iPreallocSize * sizeof(LPVOID)));
     }
 
-    CStdPtrArray::CStdPtrArray(const CStdPtrArray & src) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(0)
+    CPtrArrayUI::CPtrArrayUI(const CPtrArrayUI & src) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(0)
     {
         for (int i = 0; i < src.GetSize(); i++)
             Add(src.GetAt(i));
     }
 
-    CStdPtrArray::~CStdPtrArray()
+    CPtrArrayUI::~CPtrArrayUI()
     {
         if (m_ppVoid != NULL) free(m_ppVoid);
     }
 
-    void CStdPtrArray::Empty()
+    void CPtrArrayUI::Empty()
     {
         if (m_ppVoid != NULL) free(m_ppVoid);
         m_ppVoid = NULL;
         m_nCount = m_nAllocated = 0;
     }
 
-    void CStdPtrArray::Resize(int iSize)
+    void CPtrArrayUI::Resize(int iSize)
     {
         Empty();
         m_ppVoid = static_cast<LPVOID*>(malloc(iSize * sizeof(LPVOID)));
@@ -187,12 +187,12 @@ namespace DUI
         m_nCount = iSize;
     }
 
-    BOOL CStdPtrArray::IsEmpty() const
+    BOOL CPtrArrayUI::IsEmpty() const
     {
         return m_nCount == 0;
     }
 
-    BOOL CStdPtrArray::Add(LPVOID pData)
+    BOOL CPtrArrayUI::Add(LPVOID pData)
     {
         if (++m_nCount >= m_nAllocated) {
             int nAllocated = m_nAllocated * 2;
@@ -203,17 +203,17 @@ namespace DUI
                 m_ppVoid = ppVoid;
             } else {
                 --m_nCount;
-                return false;
+                return FALSE;
             }
         }
         m_ppVoid[m_nCount - 1] = pData;
         return true;
     }
 
-    BOOL CStdPtrArray::InsertAt(int iIndex, LPVOID pData)
+    BOOL CPtrArrayUI::InsertAt(int iIndex, LPVOID pData)
     {
         if (iIndex == m_nCount) return Add(pData);
-        if (iIndex < 0 || iIndex > m_nCount) return false;
+        if (iIndex < 0 || iIndex > m_nCount) return FALSE;
         if (++m_nCount >= m_nAllocated) {
             int nAllocated = m_nAllocated * 2;
             if (nAllocated == 0) nAllocated = 11;
@@ -223,7 +223,7 @@ namespace DUI
                 m_ppVoid = ppVoid;
             } else {
                 --m_nCount;
-                return false;
+                return FALSE;
             }
         }
         memmove(&m_ppVoid[iIndex + 1], &m_ppVoid[iIndex], (m_nCount - iIndex - 1) * sizeof(LPVOID));
@@ -231,44 +231,44 @@ namespace DUI
         return true;
     }
 
-    BOOL CStdPtrArray::SetAt(int iIndex, LPVOID pData)
+    BOOL CPtrArrayUI::SetAt(int iIndex, LPVOID pData)
     {
-        if (iIndex < 0 || iIndex >= m_nCount) return false;
+        if (iIndex < 0 || iIndex >= m_nCount) return FALSE;
         m_ppVoid[iIndex] = pData;
         return true;
     }
 
-    BOOL CStdPtrArray::Remove(int iIndex)
+    BOOL CPtrArrayUI::Remove(int iIndex)
     {
-        if (iIndex < 0 || iIndex >= m_nCount) return false;
+        if (iIndex < 0 || iIndex >= m_nCount) return FALSE;
         if (iIndex < --m_nCount) ::CopyMemory(m_ppVoid + iIndex, m_ppVoid + iIndex + 1, (m_nCount - iIndex) * sizeof(LPVOID));
         return true;
     }
 
-    int CStdPtrArray::Find(LPVOID pData) const
+    int CPtrArrayUI::Find(LPVOID pData) const
     {
         for (int i = 0; i < m_nCount; i++)
             if (m_ppVoid[i] == pData) return i;
         return -1;
     }
 
-    int CStdPtrArray::GetSize() const
+    int CPtrArrayUI::GetSize() const
     {
         return m_nCount;
     }
 
-    LPVOID* CStdPtrArray::GetData()
+    LPVOID* CPtrArrayUI::GetData()
     {
         return m_ppVoid;
     }
 
-    LPVOID CStdPtrArray::GetAt(int iIndex) const
+    LPVOID CPtrArrayUI::GetAt(int iIndex) const
     {
         if (iIndex < 0 || iIndex >= m_nCount) return NULL;
         return m_ppVoid[iIndex];
     }
 
-    LPVOID CStdPtrArray::operator[](int iIndex) const
+    LPVOID CPtrArrayUI::operator[](int iIndex) const
     {
         ASSERT(iIndex >= 0 && iIndex < m_nCount);
         return m_ppVoid[iIndex];
@@ -278,7 +278,7 @@ namespace DUI
     //
     //
 
-    CStdValArray::CStdValArray(int iElementSize, int iPreallocSize /*= 0*/) : m_pVoid(NULL),
+    CValueArrayUI::CValueArrayUI(int iElementSize, int iPreallocSize /*= 0*/) : m_pVoid(NULL),
         m_nCount(0),
         m_iElementSize(iElementSize),
         m_nAllocated(iPreallocSize)
@@ -288,22 +288,22 @@ namespace DUI
         if (iPreallocSize > 0) m_pVoid = static_cast<LPBYTE>(malloc(iPreallocSize * m_iElementSize));
     }
 
-    CStdValArray::~CStdValArray()
+    CValueArrayUI::~CValueArrayUI()
     {
         if (m_pVoid != NULL) free(m_pVoid);
     }
 
-    void CStdValArray::Empty()
+    void CValueArrayUI::Empty()
     {
         m_nCount = 0; // NOTE: We keep the memory in place
     }
 
-    BOOL CStdValArray::IsEmpty() const
+    BOOL CValueArrayUI::IsEmpty() const
     {
         return m_nCount == 0;
     }
 
-    BOOL CStdValArray::Add(LPCVOID pData)
+    BOOL CValueArrayUI::Add(LPCVOID pData)
     {
         if (++m_nCount >= m_nAllocated) {
             int nAllocated = m_nAllocated * 2;
@@ -314,37 +314,37 @@ namespace DUI
                 m_pVoid = pVoid;
             } else {
                 --m_nCount;
-                return false;
+                return FALSE;
             }
         }
         ::CopyMemory(m_pVoid + ((m_nCount - 1) * m_iElementSize), pData, m_iElementSize);
         return true;
     }
 
-    BOOL CStdValArray::Remove(int iIndex)
+    BOOL CValueArrayUI::Remove(int iIndex)
     {
-        if (iIndex < 0 || iIndex >= m_nCount) return false;
+        if (iIndex < 0 || iIndex >= m_nCount) return FALSE;
         if (iIndex < --m_nCount) ::CopyMemory(m_pVoid + (iIndex * m_iElementSize), m_pVoid + ((iIndex + 1) * m_iElementSize), (m_nCount - iIndex) * m_iElementSize);
         return true;
     }
 
-    int CStdValArray::GetSize() const
+    int CValueArrayUI::GetSize() const
     {
         return m_nCount;
     }
 
-    LPVOID CStdValArray::GetData()
+    LPVOID CValueArrayUI::GetData()
     {
         return static_cast<LPVOID>(m_pVoid);
     }
 
-    LPVOID CStdValArray::GetAt(int iIndex) const
+    LPVOID CValueArrayUI::GetAt(int iIndex) const
     {
         if (iIndex < 0 || iIndex >= m_nCount) return NULL;
         return m_pVoid + (iIndex * m_iElementSize);
     }
 
-    LPVOID CStdValArray::operator[](int iIndex) const
+    LPVOID CValueArrayUI::operator[](int iIndex) const
     {
         ASSERT(iIndex >= 0 && iIndex < m_nCount);
         return m_pVoid + (iIndex * m_iElementSize);
@@ -506,7 +506,7 @@ namespace DUI
 
 #else
 
-    const CDuiString& CDuiString::operator=(LPCWSTR lpwStr)
+    const CStringUI& CStringUI::operator=(LPCWSTR lpwStr)
     {
         if (lpwStr) {
             ASSERT(!::IsBadStringPtrW(lpwStr, -1));
@@ -521,7 +521,7 @@ namespace DUI
         return *this;
     }
 
-    const CDuiString& CDuiString::operator+=(LPCWSTR lpwStr)
+    const CStringUI& CStringUI::operator+=(LPCWSTR lpwStr)
     {
         if (lpwStr) {
             ASSERT(!::IsBadStringPtrW(lpwStr, -1));
@@ -775,7 +775,7 @@ namespace DUI
         return HashKey((LPCTSTR)Key);
     };
 
-    CStdStringPtrMap::CStdStringPtrMap(int nSize) : m_nCount(0)
+    CStringMapUI::CStringMapUI(int nSize) : m_nCount(0)
     {
         if (nSize < 16) nSize = 16;
         m_nBuckets = nSize;
@@ -783,7 +783,7 @@ namespace DUI
         memset(m_aT, 0, nSize * sizeof(TITEM_UI*));
     }
 
-    CStdStringPtrMap::~CStdStringPtrMap()
+    CStringMapUI::~CStringMapUI()
     {
         if (m_aT) {
             int len = m_nBuckets;
@@ -800,12 +800,12 @@ namespace DUI
         }
     }
 
-    void CStdStringPtrMap::RemoveAll()
+    void CStringMapUI::RemoveAll()
     {
         this->Resize(m_nBuckets);
     }
 
-    void CStdStringPtrMap::Resize(int nSize)
+    void CStringMapUI::Resize(int nSize)
     {
         if (m_aT) {
             int len = m_nBuckets;
@@ -830,7 +830,7 @@ namespace DUI
         m_nCount = 0;
     }
 
-    LPVOID CStdStringPtrMap::Find(LPCTSTR key, BOOL optimize) const
+    LPVOID CStringMapUI::Find(LPCTSTR key, BOOL optimize) const
     {
         if (m_nBuckets == 0 || GetSize() == 0) return NULL;
 
@@ -855,10 +855,10 @@ namespace DUI
         return NULL;
     }
 
-    BOOL CStdStringPtrMap::Insert(LPCTSTR key, LPVOID pData)
+    BOOL CStringMapUI::Insert(LPCTSTR key, LPVOID pData)
     {
-        if (m_nBuckets == 0) return false;
-        if (Find(key)) return false;
+        if (m_nBuckets == 0) return FALSE;
+        if (Find(key)) return FALSE;
 
         // Add first in bucket
         UINT slot = HashKey(key) % m_nBuckets;
@@ -874,7 +874,7 @@ namespace DUI
         return true;
     }
 
-    LPVOID CStdStringPtrMap::Set(LPCTSTR key, LPVOID pData)
+    LPVOID CStringMapUI::Set(LPCTSTR key, LPVOID pData)
     {
         if (m_nBuckets == 0) return pData;
 
@@ -894,9 +894,9 @@ namespace DUI
         return NULL;
     }
 
-    BOOL CStdStringPtrMap::Remove(LPCTSTR key)
+    BOOL CStringMapUI::Remove(LPCTSTR key)
     {
-        if (m_nBuckets == 0 || GetSize() == 0) return false;
+        if (m_nBuckets == 0 || GetSize() == 0) return FALSE;
 
         UINT slot = HashKey(key) % m_nBuckets;
         TITEM_UI * *ppItem = &m_aT[slot];
@@ -913,10 +913,10 @@ namespace DUI
             ppItem = &((*ppItem)->pNext);
         }
 
-        return false;
+        return FALSE;
     }
 
-    int CStdStringPtrMap::GetSize() const
+    int CStringMapUI::GetSize() const
     {
 #if 0 //def _DEBUG
         int nCount = 0;
@@ -929,9 +929,9 @@ namespace DUI
         return m_nCount;
     }
 
-    LPCTSTR CStdStringPtrMap::GetAt(int iIndex) const
+    LPCTSTR CStringMapUI::GetAt(int iIndex) const
     {
-        if (m_nBuckets == 0 || GetSize() == 0) return false;
+        if (m_nBuckets == 0 || GetSize() == 0) return FALSE;
 
         int pos = 0;
         int len = m_nBuckets;
@@ -946,7 +946,7 @@ namespace DUI
         return NULL;
     }
 
-    LPCTSTR CStdStringPtrMap::operator[](int nIndex) const
+    LPCTSTR CStringMapUI::operator[](int nIndex) const
     {
         return GetAt(nIndex);
     }
@@ -955,12 +955,12 @@ namespace DUI
     //
     //
 
-    CWaitCursor::CWaitCursor()
+    CWaitCursorUI::CWaitCursorUI()
     {
         m_hOrigCursor = ::SetCursor(::LoadCursor(NULL, IDC_WAIT));
     }
 
-    CWaitCursor::~CWaitCursor()
+    CWaitCursorUI::~CWaitCursorUI()
     {
         ::SetCursor(m_hOrigCursor);
     }
@@ -1008,7 +1008,7 @@ namespace DUI
 
     //}
 
-    //const CDuiString& CImageString::GetAttributeString() const
+    //const CStringUI& CImageString::GetAttributeString() const
     //{
     //	return m_sImageAttribute;
     //}
@@ -1021,7 +1021,7 @@ namespace DUI
     //	m_sImage = m_sImageAttribute;
     //}
 
-    //BOOL CImageString::LoadImage(CPaintManagerUI* pManager)
+    //BOOL CImageString::LoadImage(CManagerUI* pManager)
     //{
     //	m_imageInfo = NULL;
     //	m_bLoadSuccess = true;
@@ -1030,13 +1030,13 @@ namespace DUI
     //	ZeroMemory(&m_rcCorner, sizeof(RECT));
     //	m_bFade = 0xFF;
     //	m_dwMask = 0;
-    //	m_bHole = false;
-    //	m_bTiledX = false;
-    //	m_bTiledY = false;
+    //	m_bHole = FALSE;
+    //	m_bTiledX = FALSE;
+    //	m_bTiledY = FALSE;
     //	ParseAttribute(m_sImageAttribute,*pManager->GetDPIObj());
-    //	if (!m_bLoadSuccess) return false;
+    //	if (!m_bLoadSuccess) return FALSE;
 
-    //	const TImageInfo* data = NULL;
+    //	const TIMAGEINFO_UI* data = NULL;
     //	if (m_sResType.IsEmpty())
     //	{
     //		data = pManager->GetImageEx((LPCTSTR)m_sImage, NULL, m_dwMask);
@@ -1047,8 +1047,8 @@ namespace DUI
     //	}
     //	if (data == NULL)
     //	{
-    //		m_bLoadSuccess = false;
-    //		return false;
+    //		m_bLoadSuccess = FALSE;
+    //		return FALSE;
     //	}
     //	else
     //	{
@@ -1062,7 +1062,7 @@ namespace DUI
     //	}
     //	if (m_rcSource.right > data->nX) m_rcSource.right = data->nX;
     //	if (m_rcSource.bottom > data->nY) m_rcSource.bottom = data->nY;
-    //	m_imageInfo = const_cast<TImageInfo*>(data);
+    //	m_imageInfo = const_cast<TIMAGEINFO_UI*>(data);
 
     //	return true;
     //}
@@ -1089,9 +1089,9 @@ namespace DUI
     //	ZeroMemory(&m_rcCorner, sizeof(RECT));
     //	m_bFade = 0xFF;
     //	m_dwMask = 0;
-    //	m_bHole = false;
-    //	m_bTiledX = false;
-    //	m_bTiledY = false;
+    //	m_bHole = FALSE;
+    //	m_bTiledX = FALSE;
+    //	m_bTiledY = FALSE;
     //}
 
     //void CImageString::ParseAttribute(LPCTSTR pStrImage)
@@ -1101,9 +1101,9 @@ namespace DUI
 
     //	// 1¡¢aaa.jpg
     //	// 2¡¢file='aaa.jpg' res='' restype='0' dest='0,0,0,0' source='0,0,0,0' corner='0,0,0,0'
-    //	// mask='#FF0000' fade='255' hole='false' xtiled='false' ytiled='false'
-    //	CDuiString sItem;
-    //	CDuiString sValue;
+    //	// mask='#FF0000' fade='255' hole='FALSE' xtiled='FALSE' ytiled='FALSE'
+    //	CStringUI sItem;
+    //	CStringUI sValue;
     //	LPTSTR pstr = NULL;
 
     //	while (*pStrImage != _T('\0'))
@@ -1209,7 +1209,7 @@ namespace DUI
     //	return m_rcDest;
     //}
 
-    //const TImageInfo* CImageString::GetImageInfo() const
+    //const TIMAGEINFO_UI* CImageString::GeTIMAGEINFO_UI() const
     //{
     //	return m_imageInfo;
     //}

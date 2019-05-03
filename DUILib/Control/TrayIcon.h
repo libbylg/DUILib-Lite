@@ -18,7 +18,7 @@ namespace DUI
         void DeleteTrayIcon();
         BOOL SetTooltipText(LPCTSTR _ToolTipText);
         BOOL SetTooltipText(UINT _IDResource);
-        CDuiString GetTooltipText() const;
+        CStringUI GetTooltipText() const;
 
         BOOL SetIcon(HICON _Hicon);
         BOOL SetIcon(LPCTSTR _IconFile);

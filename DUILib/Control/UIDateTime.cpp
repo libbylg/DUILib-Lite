@@ -1,5 +1,7 @@
+#include "Control/UIDateTime.h"
+#include "Core/UIWindow.h"
+#include "Core/UIManager.h"
 
-#include "UIDateTime.h"
 
 namespace DUI
 {
@@ -9,7 +11,7 @@ namespace DUI
 #define DT_DELETE 2
 #define DT_KEEP   3
 
-	class CDateTimeWnd : public CWindowWnd
+	class CDateTimeWnd : public CWindowUI
 	{
 	public:
 		CDateTimeWnd();
@@ -55,12 +57,12 @@ namespace DUI
 		::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
 		::SetFocus(m_hWnd);
 
-		m_bInit = true;    
+		m_bInit = TRUE;    
 	}
 
 	RECT CDateTimeWnd::CalPos()
 	{
-		CDuiRect rcPos = m_pOwner->GetPos();
+		CRectUI rcPos = m_pOwner->GetPos();
 
 		CControlUI* pParent = m_pOwner;
 		RECT rcParent;
@@ -124,7 +126,7 @@ namespace DUI
 					m_pOwner->UpdateText();
 				}
 				else if(pHeader->code == DTN_DROPDOWN) {
-					m_bDropOpen = true;
+					m_bDropOpen = TRUE;
 
 				}
 				else if(pHeader->code == DTN_CLOSEUP) {
@@ -151,7 +153,7 @@ namespace DUI
 			bHandled = FALSE;
 		}
 		else bHandled = FALSE;
-		if( !bHandled ) return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+		if( !bHandled ) return CWindowUI::HandleMessage(uMsg, wParam, lParam);
 		return lRes;
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -210,13 +212,13 @@ namespace DUI
 			SetText(_T(""));
 		}
 		else if (m_nDTUpdateFlag == DT_UPDATE) {
-			CDuiString sText;
+			CStringUI sText;
 			sText.SmallFormat(_T("%4d-%02d-%02d"), m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay, m_sysTime.wHour, m_sysTime.wMinute);
 			SetText(sText);
 		}
 	}
 
-	void CDateTimeUI::DoEvent(struct TEventUI& event)
+	void CDateTimeUI::DoEvent(struct TEVENT_UI& event)
 	{
 		if( !IsMouseEnabled() && event.Type > UIEVENT__MOUSEBEGIN && event.Type < UIEVENT__MOUSEEND ) {
 			if( m_pParent != NULL ) m_pParent->DoEvent(event);

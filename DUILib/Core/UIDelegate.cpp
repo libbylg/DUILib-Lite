@@ -87,9 +87,9 @@ namespace DUI
     {
         for (int i = 0; i < m_aDelegates.GetSize(); i++) {
             CDelegateBase* pObject = static_cast<CDelegateBase*>(m_aDelegates[i]);
-            if (pObject && !(*pObject)(param)) return false;
+            if (pObject && !(*pObject)(param)) return FALSE;
         }
-        return true;
+        return TRUE;
     }
     void CEventSource::Clear()
     {

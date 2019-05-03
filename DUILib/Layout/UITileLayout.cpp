@@ -2,11 +2,9 @@
 
 namespace DUI
 {
-    UI_IMPLEMENT_CONTROL(CTileLayoutUI)
+    UI_IMPLEMENT_CONTROL(CTileLayoutUI);
 
-
-
-        CTileLayoutUI::CTileLayoutUI() : m_nColumns(1)
+    CTileLayoutUI::CTileLayoutUI() : m_nColumns(1)
     {
         m_szItem.cx = m_szItem.cy = 0;
     }

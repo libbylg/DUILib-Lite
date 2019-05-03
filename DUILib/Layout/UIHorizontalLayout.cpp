@@ -187,7 +187,7 @@ namespace DUI
     void CHorizontalLayoutUI::DoPostPaint(HDC hDC, const RECT & rcPaint)
     {
         if ((m_uButtonState & UISTATE_CAPTURED) != 0 && !m_bImmMode) {
-            RECT rcSeparator = GetThumbRect(true);
+            RECT rcSeparator = GetThumbRect(TRUE);
             CRenderUI::DrawColor(hDC, rcSeparator, 0xAA000000);
         }
     }
@@ -220,7 +220,7 @@ namespace DUI
     void CHorizontalLayoutUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
     {
         if (_tcsicmp(pstrName, _T("sepwidth")) == 0) SetSepWidth(_ttoi(pstrValue));
-        else if (_tcsicmp(pstrName, _T("sepimm")) == 0) SetSepImmMode(_tcsicmp(pstrValue, _T("true")) == 0);
+        else if (_tcsicmp(pstrName, _T("sepimm")) == 0) SetSepImmMode(_tcsicmp(pstrValue, _T("TRUE")) == 0);
         else CContainerUI::SetAttribute(pstrName, pstrValue);
     }
 
@@ -277,7 +277,7 @@ namespace DUI
                         }
                     }
 
-                    CRectUI rcInvalidate = GetThumbRect(true);
+                    CRectUI rcInvalidate = GetThumbRect(TRUE);
                     m_rcNewPos = rc;
                     m_cxyFixed.cx = m_rcNewPos.right - m_rcNewPos.left;
 
@@ -285,7 +285,7 @@ namespace DUI
                         m_rcItem = m_rcNewPos;
                         NeedParentUpdate();
                     } else {
-                        rcInvalidate.Join(GetThumbRect(true));
+                        rcInvalidate.Join(GetThumbRect(TRUE));
                         rcInvalidate.Join(GetThumbRect(FALSE));
                         if (m_pManager) m_pManager->Invalidate(rcInvalidate);
                     }

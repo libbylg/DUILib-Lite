@@ -1,7 +1,7 @@
 #ifndef __UISLIDER_H__
 #define __UISLIDER_H__
 
-#pragma once
+#include "Control/UIProgress.h"
 
 namespace DUI
 {
@@ -15,7 +15,7 @@ namespace DUI
 		UINT GetControlFlags() const;
 		LPVOID GetInterface(LPCTSTR pstrName);
 
-		void SetEnabled(BOOL bEnable = true);
+		void SetEnabled(BOOL bEnable = TRUE);
 
 		int GetChangeStep();
 		void SetChangeStep(int step);
@@ -28,7 +28,7 @@ namespace DUI
 		LPCTSTR GetThumbPushedImage() const;
 		void SetThumbPushedImage(LPCTSTR pStrImage);
 
-		void DoEvent(TEventUI& event);
+		void DoEvent(struct TEVENT_UI& event);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 		void PaintForeImage(HDC hDC);
 
@@ -38,14 +38,14 @@ namespace DUI
 	protected:
 		SIZE m_szThumb;
 		UINT m_uButtonState;
-		int m_nStep;
+		int  m_nStep;
 
-		CDuiString m_sThumbImage;
-		CDuiString m_sThumbHotImage;
-		CDuiString m_sThumbPushedImage;
+		CStringUI m_sThumbImage;
+		CStringUI m_sThumbHotImage;
+		CStringUI m_sThumbPushedImage;
 
-		CDuiString m_sImageModify;
-		BOOL	   m_bSendMove;
+		CStringUI m_sImageModify;
+		BOOL      m_bSendMove;
 	};
 }
 

@@ -47,7 +47,7 @@ namespace DUI
     public:
         BOOL m_bDropped;
 
-        CIDropSource::CIDropSource() :m_cRefCount(0), m_bDropped(false) {}
+        CIDropSource::CIDropSource() :m_cRefCount(0), m_bDropped(FALSE) {}
         //IUnknown
         virtual HRESULT STDMETHODCALLTYPE QueryInterface(
             /* [in] */ REFIID riid,
@@ -170,7 +170,7 @@ namespace DUI
         void AddSuportedFormat(FORMATETC& ftetc) { m_formatetc.push_back(ftetc); }
         void SetTargetWnd(HWND hWnd) { m_hTargetWnd = hWnd; }
 
-        //return values: true - release the medium. false - don't release the medium 
+        //return values: TRUE - release the medium. FALSE - don't release the medium 
         virtual BOOL OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD* pdwEffect) = 0;
 
         virtual HRESULT STDMETHODCALLTYPE QueryInterface(

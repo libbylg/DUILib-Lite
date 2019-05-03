@@ -14,7 +14,7 @@ namespace DUI
         LPCTSTR GetClass() const;
         LPVOID GetInterface(LPCTSTR pstrName);
 
-        void SetPos(RECT rc, BOOL bNeedInvalidate = true);
+        void SetPos(RECT rc, BOOL bNeedInvalidate = TRUE);
 
         SIZE GetItemSize() const;
         void SetItemSize(SIZE szItem);

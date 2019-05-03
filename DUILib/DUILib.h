@@ -71,6 +71,7 @@
 #pragma comment( lib, "GdiPlus.lib" )
 #pragma comment( lib, "Imm32.lib" )
 #pragma comment( lib, "winmm.lib" )
+#pragma comment( lib, "ws2_32.lib" )
 #ifdef _DEBUG
 #pragma comment(lib, "shlwapi.lib")
 #endif
