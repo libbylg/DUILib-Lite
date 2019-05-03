@@ -1,7 +1,7 @@
 #ifndef __UIANIMATION_H__
 #define __UIANIMATION_H__
 
-#include "Utils/Utils.h"
+#include "Core/UIDefine.h"
 
 namespace DUI
 {
