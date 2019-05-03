@@ -1,8 +1,6 @@
 #include "Control/UIMenu.h"
 #include "Control/UIDialogBuilder.h"
 
-#include "Core/UIManager.h"
-
 namespace DUI
 {
 
@@ -137,9 +135,9 @@ namespace DUI
     UI_IMPLEMENT_CONTROL(CMenuUI)
 
 
-    /////////////////////////////////////////////////////////////////////////////////////
-    ////
-    CMenuUI::CMenuUI() :
+        /////////////////////////////////////////////////////////////////////////////////////
+        ////
+        CMenuUI::CMenuUI() :
         m_pWindow(NULL)
     {
         if (GetHeader() != NULL)
@@ -725,6 +723,7 @@ namespace DUI
     //
     UI_IMPLEMENT_CONTROL(CMenuElementUI)
 
+        ///
         CMenuElementUI::CMenuElementUI() :
         m_pWindow(NULL),
         m_bDrawLine(FALSE),
@@ -1172,8 +1171,9 @@ namespace DUI
 
     void CMenuElementUI::SetIcon(LPCTSTR strIcon)
     {
-        if (strIcon != _T(""))
+        if (strIcon != _T("")) {
             m_strIcon = strIcon;
+        }
     }
 
     void CMenuElementUI::SetIconSize(LONG cx, LONG cy)

@@ -1,6 +1,5 @@
 #include "Control/UIHotKey.h"
 #include "Core/UIWindow.h"
-#include "Core/UIManager.h"
 
 namespace DUI
 {
@@ -289,7 +288,9 @@ namespace DUI
         }
 
         if (event.Type == UIEVENT_SETCURSOR && IsEnabled()) {
+#pragma warning(disable:4302)
             ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_IBEAM)));
+#pragma warning(default:4302)
             return;
         }
         if (event.Type == UIEVENT_WINDOWSIZE) {

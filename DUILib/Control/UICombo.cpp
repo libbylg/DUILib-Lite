@@ -1,6 +1,6 @@
 #include "Control/UICombo.h"
 #include "Core/UIWindow.h"
-#include "Core/UIManager.h"
+#include "Core/UIScrollBar.h"
 
 namespace DUI
 {

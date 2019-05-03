@@ -1,6 +1,5 @@
 #include "Control/UIProgress.h"
 #include "Core/UIRender.h"
-#include "Core/UIManager.h"
 
 namespace DUI
 {

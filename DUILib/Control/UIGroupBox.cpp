@@ -1,6 +1,4 @@
-
 #include "Control/UIGroupBox.h"
-#include "Core/UIManager.h"
 
 namespace DUI
 {

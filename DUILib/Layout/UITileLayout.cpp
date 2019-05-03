@@ -1,4 +1,5 @@
-#include "UITileLayout.h"
+#include "Layout/UITileLayout.h"
+#include "Core/UIScrollBar.h"
 
 namespace DUI
 {

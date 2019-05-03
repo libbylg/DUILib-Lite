@@ -1,4 +1,3 @@
-
 #include "Control/UIFadeButton.h"
 
 namespace DUI

@@ -1,11 +1,11 @@
-
 #include "Control/UIComboBox.h"
 
 namespace DUI
 {
     UI_IMPLEMENT_CONTROL(CComboBoxUI)
 
-        CComboBoxUI::CComboBoxUI()
+    ////
+    CComboBoxUI::CComboBoxUI()
     {
         m_nArrowWidth = 0;
     }

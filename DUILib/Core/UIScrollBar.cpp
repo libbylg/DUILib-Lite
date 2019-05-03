@@ -1,6 +1,5 @@
 #include "Core/UIScrollBar.h"
 #include "Core/UIContainer.h"
-#include "Core/UIManager.h"
 #include "Core/UIRender.h"
 
 namespace DUI

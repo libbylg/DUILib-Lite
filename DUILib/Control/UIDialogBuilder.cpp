@@ -3,7 +3,6 @@
 #include "Control/UIFactory.h"
 
 #include "Core/UIResource.h"
-#include "Core/UIManager.h"
 #include "Core/UIContainer.h"
 #include "Core/UIWindow.h"
 
@@ -69,7 +68,7 @@ namespace DUI
             int nAttributes = 0;
             LPCTSTR pstrName = NULL;
             LPCTSTR pstrValue = NULL;
-            LPTSTR pstr = NULL;
+            LPTSTR ptstr = NULL;
             for (CMarkupNodeUI node = root.GetChild(); node.IsValid(); node = node.GetSibling()) {
                 pstrClass = node.GetName();
                 if (_tcsicmp(pstrClass, _T("Image")) == 0) {
@@ -87,7 +86,7 @@ namespace DUI
                             pImageResType = pstrValue;
                         } else if (_tcsicmp(pstrName, _T("mask")) == 0) {
                             if (*pstrValue == _T('#')) pstrValue = ::CharNext(pstrValue);
-                            mask = _tcstoul(pstrValue, &pstr, 16);
+                            mask = _tcstoul(pstrValue, &ptstr, 16);
                         } else if (_tcsicmp(pstrName, _T("shared")) == 0) {
                             shared = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         }
@@ -107,11 +106,11 @@ namespace DUI
                         pstrName = node.GetAttributeName(i);
                         pstrValue = node.GetAttributeValue(i);
                         if (_tcsicmp(pstrName, _T("id")) == 0) {
-                            id = _tcstol(pstrValue, &pstr, 10);
+                            id = _tcstol(pstrValue, &ptstr, 10);
                         } else if (_tcsicmp(pstrName, _T("name")) == 0) {
                             pFontName = pstrValue;
                         } else if (_tcsicmp(pstrName, _T("size")) == 0) {
-                            size = _tcstol(pstrValue, &pstr, 10);
+                            size = _tcstol(pstrValue, &ptstr, 10);
                         } else if (_tcsicmp(pstrName, _T("bold")) == 0) {
                             bold = (_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("underline")) == 0) {
@@ -185,8 +184,8 @@ namespace DUI
             pstrClass = root.GetName();
             if (_tcsicmp(pstrClass, _T("Window")) == 0) {
                 if (pManager->GetPaintWindow()) {
-                    int nAttributes = root.GetAttributeCount();
-                    for (int i = 0; i < nAttributes; i++) {
+                    int nAttributesCount = root.GetAttributeCount();
+                    for (int i = 0; i < nAttributesCount; i++) {
                         pstrName = root.GetAttributeName(i);
                         pstrValue = root.GetAttributeValue(i);
                         if (_tcsicmp(pstrName, _T("size")) == 0) {
@@ -228,9 +227,9 @@ namespace DUI
                         } else if (_tcsicmp(pstrName, _T("showdirty")) == 0) {
                             pManager->SetShowUpdateRect(_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcsicmp(pstrName, _T("opacity")) == 0 || _tcsicmp(pstrName, _T("alpha")) == 0) {
-                            pManager->SetOpacity(_ttoi(pstrValue));
+                            pManager->SetOpacity((BYTE)_ttoi(pstrValue));
                         } else if (_tcscmp(pstrName, _T("layeredopacity")) == 0) {
-                            pManager->SetLayeredOpacity(_ttoi(pstrValue));
+                            pManager->SetLayeredOpacity((BYTE)_ttoi(pstrValue));
                         } else if (_tcscmp(pstrName, _T("layered")) == 0 || _tcscmp(pstrName, _T("bktrans")) == 0) {
                             pManager->SetLayered(_tcsicmp(pstrValue, _T("TRUE")) == 0);
                         } else if (_tcscmp(pstrName, _T("layeredimage")) == 0) {
@@ -320,7 +319,7 @@ namespace DUI
         return m_xml.GetLastErrorLocation(pstrSource, cchMax);
     }
 
-    CControlUI* CDialogBuilderUI::_Parse(CMarkupNodeUI* pRoot, CControlUI * pParent, CManagerUI * pManager)
+    CControlUI* CDialogBuilderUI::_Parse(CMarkupNodeUI * pRoot, CControlUI * pParent, CManagerUI * pManager)
     {
         IContainerUI* pContainer = NULL;
         CControlUI* pReturn = NULL;

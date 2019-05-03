@@ -11,7 +11,7 @@ namespace DUI
     class DUILIB_API IAnimationUI
     {
     public:
-        virtual ~IAnimationUI() { NULL; }
+        virtual ~IAnimationUI();
 
         virtual BOOL StartAnimation(int nElapse, int nTotalFrame, int nAnimationID = 0, BOOL bLoop = FALSE) = 0;
         virtual void StopAnimation(int nAnimationID = 0) = 0;

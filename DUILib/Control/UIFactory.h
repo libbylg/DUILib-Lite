@@ -8,8 +8,8 @@ namespace DUI
 
     class DUILIB_API CFactoryUI
     {
-    typedef CControlUI* (*PCREATECLASS_UI)();
-    typedef std::map<CStringUI, PCREATECLASS_UI> MAP_CTREATECLASS_UI;
+        typedef CControlUI* (*PCREATECLASS_UI)();
+        typedef std::map<CStringUI, PCREATECLASS_UI> MAP_CTREATECLASS_UI;
 
     public:
         CControlUI* CreateControl(CStringUI strClassName);

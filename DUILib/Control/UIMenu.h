@@ -3,7 +3,6 @@
 
 #include "Control/UIList.h"
 #include "Core/UIWindow.h"
-#include "Core/UIManager.h"
 
 namespace DUI
 {

@@ -1,6 +1,5 @@
 #include "Control/UILabel.h"
 #include "Core/UIContainer.h"
-#include "Core/UIManager.h"
 #include "Core/UIRender.h"
 
 namespace DUI

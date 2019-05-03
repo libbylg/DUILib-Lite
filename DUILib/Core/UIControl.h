@@ -3,6 +3,7 @@
 
 #include "Core/UIDefine.h"
 #include "Core/UIDelegate.h"
+#include "Core/UIManager.h"
 
 namespace DUI
 {
@@ -79,7 +80,7 @@ public:\
         virtual CManagerUI* GetManager() const;
         virtual void SetManager(CManagerUI* pManager, CControlUI* pParent, BOOL bInit = TRUE);
         virtual CControlUI* GetParent() const;
-        void setInstance(HINSTANCE instance = NULL) { m_instance = instance; };
+        void setInstance(HINSTANCE instance = NULL);
 
         // 定时器
         BOOL SetTimer(UINT nTimerID, UINT nElapse);
@@ -169,6 +170,7 @@ public:\
         virtual void SetFloatPercent(TPERCENTINFO_UI piFloatPercent);
         virtual void SetFloatAlign(UINT uAlign);
         virtual UINT GetFloatAlign() const;
+
         // 鼠标提示
         virtual CStringUI GetToolTip() const;
         virtual void SetToolTip(LPCTSTR pstrText);

@@ -5,7 +5,6 @@
 
 namespace DUI
 {
-
     class DUILIB_API CDelegateBase
     {
     public:
@@ -29,10 +28,20 @@ namespace DUI
     class CDelegateStatic : public CDelegateBase
     {
         typedef BOOL(*Fn)(void*);
+
     public:
-        CDelegateStatic(Fn pFn) : CDelegateBase(NULL, pFn) {}
-        CDelegateStatic(const CDelegateStatic& rhs) : CDelegateBase(rhs) {}
-        virtual CDelegateBase* Copy() const { return new CDelegateStatic(*this); }
+        CDelegateStatic(Fn pFn) : CDelegateBase(NULL, pFn)
+        {
+        }
+
+        CDelegateStatic(const CDelegateStatic& rhs) : CDelegateBase(rhs)
+        {
+        }
+
+        virtual CDelegateBase* Copy() const
+        {
+            return new CDelegateStatic(*this);
+        }
 
     protected:
         virtual BOOL Invoke(void* param)

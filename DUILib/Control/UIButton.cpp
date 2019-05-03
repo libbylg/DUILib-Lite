@@ -1,5 +1,4 @@
 #include "Control/UIButton.h"
-#include "Core/UIManager.h"
 #include "Layout/UITabLayout.h"
 
 namespace DUI

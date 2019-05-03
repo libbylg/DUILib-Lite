@@ -1,15 +1,19 @@
 #include "Control/UIAnimation.h"
 #include "Core/UIControl.h"
-#include "Core/UIManager.h"
 
 
 namespace DUI
 {
 
+
     struct CAnimationUI::Imp
     {
         std::vector<CAnimationDataUI*> m_arAnimations;
     };
+
+    IAnimationUI::~IAnimationUI()
+    {
+    }
 
     CAnimationUI::CAnimationUI(CControlUI* pOwner) :m_pImp(new CAnimationUI::Imp())
     {

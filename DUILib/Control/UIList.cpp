@@ -1,17 +1,16 @@
 #include "Control/UIList.h"
-#include "Core/UIManager.h"
 #include "Core/UIResource.h"
-
+#include "Core/UIScrollBar.h"
 
 namespace DUI
 {
 
     UI_IMPLEMENT_CONTROL(CListUI)
 
-    /////////////////////////////////////////////////////////////////////////////////////
-    //
-    //
-    CListUI::CListUI() : m_pCallback(NULL), m_bScrollSelect(FALSE), m_iCurSel(-1), m_iExpandedItem(-1), m_bMultiSel(FALSE)
+        /////////////////////////////////////////////////////////////////////////////////////
+        //
+        //
+        CListUI::CListUI() : m_pCallback(NULL), m_bScrollSelect(FALSE), m_iCurSel(-1), m_iExpandedItem(-1), m_bMultiSel(FALSE)
     {
         m_bFixedScrollbar = FALSE;
         m_pList = new CListBodyUI(this);
@@ -1191,10 +1190,10 @@ namespace DUI
                 if (!pControl->IsVisible()) continue;
                 if (pControl->IsFloat()) continue;
 
-                RECT rcPos = pControl->GetPos();
-                rcPos.left -= cx;
-                rcPos.right -= cx;
-                pControl->SetPos(rcPos);
+                RECT rectPos = pControl->GetPos();
+                rectPos.left -= cx;
+                rectPos.right -= cx;
+                pControl->SetPos(rectPos);
                 pInfo->rcColumn[i] = pControl->GetPos();
             }
             if (!pHeader->IsVisible()) {
@@ -1818,7 +1817,9 @@ namespace DUI
             else
                 rcSeparator.right += 4;
             if (IsEnabled() && m_bDragable && ::PtInRect(&rcSeparator, event.ptMouse)) {
+#pragma warning(disable:4302)
                 ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE)));
+#pragma warning(default:4302)
                 return;
             }
         }
@@ -1995,7 +1996,7 @@ namespace DUI
                 CControlUI* pParent = GetParent();
                 RECT rcTemp;
                 RECT rcParent;
-                while (pParent = pParent->GetParent()) {
+                while (NULL != (pParent = pParent->GetParent())) {
                     rcTemp = invalidateRc;
                     rcParent = pParent->GetPos();
                     if (!::IntersectRect(&invalidateRc, &rcTemp, &rcParent)) {
@@ -2388,7 +2389,9 @@ namespace DUI
         if (event.Type == UIEVENT_SETCURSOR) {
             for (int i = 0; i < m_nLinks; i++) {
                 if (::PtInRect(&m_rcLinks[i], event.ptMouse)) {
+#pragma warning(disable:4302)
                     ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND)));
+#pragma warning(default:4302)
                     return;
                 }
             }
@@ -2458,26 +2461,33 @@ namespace DUI
         m_nLinks = 0;
         int nLinks = lengthof(m_rcLinks);
         for (int i = 0; i < pInfo->nColumns; i++) {
-            RECT rcItem = {pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom};
-            rcItem.left += pInfo->rcTextPadding.left;
-            rcItem.right -= pInfo->rcTextPadding.right;
-            rcItem.top += pInfo->rcTextPadding.top;
-            rcItem.bottom -= pInfo->rcTextPadding.bottom;
+            RECT rectItem = {
+                pInfo->rcColumn[i].left,
+                m_rcItem.top,
+                pInfo->rcColumn[i].right,
+                m_rcItem.bottom,
+            };
+            rectItem.left += pInfo->rcTextPadding.left;
+            rectItem.right -= pInfo->rcTextPadding.right;
+            rectItem.top += pInfo->rcTextPadding.top;
+            rectItem.bottom -= pInfo->rcTextPadding.bottom;
 
             CStringUI strText;
             if (pCallback) strText = pCallback->GetItemText(this, m_iIndex, i);
             else strText.Assign(GetText(i));
 
-            if (pInfo->bShowHtml)
-                CRenderUI::DrawHtmlText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
+            if (pInfo->bShowHtml) {
+                CRenderUI::DrawHtmlText(hDC, m_pManager, rectItem, strText.GetData(), iTextColor, \
                     & m_rcLinks[m_nLinks], &m_sLinks[m_nLinks], nLinks, pInfo->nFont, pInfo->uTextStyle);
-            else
-                CRenderUI::DrawText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
+            } else {
+                CRenderUI::DrawText(hDC, m_pManager, rectItem, strText.GetData(), iTextColor, \
                     pInfo->nFont, pInfo->uTextStyle);
+            }
 
             m_nLinks += nLinks;
             nLinks = lengthof(m_rcLinks) - m_nLinks;
         }
+
         for (int i = m_nLinks; i < lengthof(m_rcLinks); i++) {
             ::ZeroMemory(m_rcLinks + i, sizeof(RECT));
             ((CStringUI*)(m_sLinks + i))->Empty();
@@ -2577,7 +2587,7 @@ namespace DUI
                 CControlUI* pParent = GetParent();
                 RECT rcTemp;
                 RECT rcParent;
-                while (pParent = pParent->GetParent()) {
+                while (NULL != (pParent = pParent->GetParent())) {
                     rcTemp = invalidateRc;
                     rcParent = pParent->GetPos();
                     if (!::IntersectRect(&invalidateRc, &rcTemp, &rcParent)) {
@@ -2829,7 +2839,7 @@ namespace DUI
         if (uListType != UILIST_NORMAL && uListType != UILIST_TREE) {
             return;
         }
-        CListUI * pList = static_cast<CListUI*>(m_pOwner);
+        CListUI* pList = static_cast<CListUI*>(m_pOwner);
         if (uListType == UILIST_TREE) {
             pList = static_cast<CListUI*>(pList->CControlUI::GetInterface(_T("List")));
             if (pList == NULL) {

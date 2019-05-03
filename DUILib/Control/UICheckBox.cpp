@@ -1,5 +1,4 @@
 #include "Control/UICheckBox.h"
-#include "Core/UIManager.h"
 
 namespace DUI
 {

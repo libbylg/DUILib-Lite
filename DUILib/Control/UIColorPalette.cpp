@@ -1,5 +1,4 @@
 #include "Control/UIColorPalette.h"
-#include "Core/UIManager.h"
 
 namespace DUI
 {
@@ -43,27 +42,39 @@ namespace DUI
 
         L = (fMax + fMin) / 2.0f;
 
-        if (fDelta == 0)                     //This is a gray, no chroma...
-        {
+        //  This is a gray, no chroma...
+        if (fDelta == 0) {
             H = 0.0f;                          //HSL results from 0 to 1
             S = 0.0f;
-        } else                                   //Chromatic data...
-        {
+        } else {
+            //  Chromatic data...
             float del_R, del_G, del_B;
 
-            if (L < 0.5) S = fDelta / (fMax + fMin);
-            else           S = fDelta / (2.0f - fMax - fMin);
+            if (L < 0.5) {
+                S = fDelta / (fMax + fMin);
+            } else {
+                S = fDelta / (2.0f - fMax - fMin);
+            }
 
             del_R = (((fMax - R) / 6.0f) + (fDelta / 2.0f)) / fDelta;
             del_G = (((fMax - G) / 6.0f) + (fDelta / 2.0f)) / fDelta;
             del_B = (((fMax - B) / 6.0f) + (fDelta / 2.0f)) / fDelta;
 
-            if (R == fMax) H = del_B - del_G;
-            else if (G == fMax) H = (1.0f / 3.0f) + del_R - del_B;
-            else if (B == fMax) H = (2.0f / 3.0f) + del_G - del_R;
+            if (R == fMax) {
+                H = del_B - del_G;
+            } else if (G == fMax) {
+                H = (1.0f / 3.0f) + del_R - del_B;
+            } else if (B == fMax) {
+                H = (2.0f / 3.0f) + del_G - del_R;
+            }
 
-            if (H < 0.0f) H += 1.0f;
-            if (H > 1.0f)  H -= 1.0f;
+            if (H < 0.0f) {
+                H += 1.0f;
+            }
+
+            if (H > 1.0f) {
+                H -= 1.0f;
+            }
         }
 
         *pHue = H;
@@ -82,12 +93,15 @@ namespace DUI
         BYTE R, G, B;
         float var_1, var_2;
 
-        if (S == 0)                       //HSL from 0 to 1
-        {
+        //HSL from 0 to 1
+        if (S == 0) {
             R = G = B = (BYTE)(L * 255.0f);   //RGB results from 0 to 255
         } else {
-            if (L < 0.5) var_2 = L * (1.0f + S);
-            else           var_2 = (L + S) - (S * L);
+            if (L < 0.5) {
+                var_2 = L * (1.0f + S);
+            } else {
+                var_2 = (L + S) - (S * L);
+            }
 
             var_1 = 2.0f * L - var_2;
 
@@ -110,9 +124,10 @@ namespace DUI
 
     ///////////////////////////////////////////////////////////////////////
     //
-    //
+    //  
     UI_IMPLEMENT_CONTROL(CColorPaletteUI)
 
+        ////
         CColorPaletteUI::CColorPaletteUI()
         : m_uButtonState(0)
         , m_bIsInBar(FALSE)
@@ -131,7 +146,9 @@ namespace DUI
 
     CColorPaletteUI::~CColorPaletteUI()
     {
-        if (m_pBits) free(m_pBits);
+        if (m_pBits) {
+            free(m_pBits);
+        }
 
         if (m_hMemBitmap) {
             ::DeleteObject(m_hMemBitmap);
@@ -164,7 +181,9 @@ namespace DUI
 
     LPVOID CColorPaletteUI::GetInterface(LPCTSTR pstrName)
     {
-        if (_tcscmp(pstrName, UICONTROL_COLORPALETTE) == 0) return static_cast<CColorPaletteUI*>(this);
+        if (_tcscmp(pstrName, UICONTROL_COLORPALETTE) == 0) {
+            return static_cast<CColorPaletteUI*>(this);
+        }
         return CControlUI::GetInterface(pstrName);
     }
 

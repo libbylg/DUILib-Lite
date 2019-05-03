@@ -22,7 +22,7 @@ namespace DUI
 
     protected:
         CStringUI m_sArrowImage;
-        int        m_nArrowWidth;
+        int       m_nArrowWidth;
     };
 }
 

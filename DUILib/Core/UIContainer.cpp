@@ -5,13 +5,9 @@
 
 namespace DUI
 {
+    UI_IMPLEMENT_CONTROL(CContainerUI);
 
-    /////////////////////////////////////////////////////////////////////////////////////
-    //
-    //
-    UI_IMPLEMENT_CONTROL(CContainerUI)
-
-        CContainerUI::CContainerUI()
+    CContainerUI::CContainerUI()
         : m_iChildPadding(0),
         m_iChildAlign(DT_LEFT),
         m_iChildVAlign(DT_TOP),

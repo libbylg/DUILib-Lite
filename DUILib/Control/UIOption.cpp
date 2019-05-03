@@ -1,12 +1,14 @@
 #include "Control/UIOption.h"
-#include "Core/UIManager.h"
 
 namespace DUI
 {
     UI_IMPLEMENT_CONTROL(COptionUI)
 
-        ////
-        COptionUI::COptionUI() : m_bSelected(FALSE), m_iSelectedFont(-1), m_dwSelectedTextColor(0), m_dwSelectedBkColor(0), m_nSelectedStateCount(0)
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///
+    COptionUI::COptionUI() : m_bSelected(FALSE), m_iSelectedFont(-1), m_dwSelectedTextColor(0), m_dwSelectedBkColor(0), m_nSelectedStateCount(0)
     {
     }
 

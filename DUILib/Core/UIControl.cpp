@@ -129,6 +129,11 @@ namespace DUI
         return CResourceUI::GetInstance()->GetText(m_sText);
     }
 
+    void CControlUI::setInstance(HINSTANCE instance)
+    {
+        m_instance = instance;
+    };
+
     void CControlUI::SetText(LPCTSTR pstrText)
     {
         if (m_sText == pstrText) return;

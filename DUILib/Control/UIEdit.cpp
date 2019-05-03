@@ -296,7 +296,9 @@ namespace DUI
         }
 
         if (event.Type == UIEVENT_SETCURSOR && IsEnabled()) {
+#pragma warning(disable:4302)
             ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_IBEAM)));
+#pragma warning(default:4302)
             return;
         }
         if (event.Type == UIEVENT_WINDOWSIZE) {
