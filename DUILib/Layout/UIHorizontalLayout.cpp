@@ -1,5 +1,6 @@
 #include "Layout/UIHorizontalLayout.h"
 #include "Core/UIManager.h"
+#include "Core/UIScrollBar.h"
 
 namespace DUI
 {

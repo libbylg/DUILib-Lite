@@ -1,5 +1,6 @@
 #include "Control/UIMenu.h"
 #include "Control/UIDialogBuilder.h"
+#include "Core/UIScrollBar.h"
 
 namespace DUI
 {

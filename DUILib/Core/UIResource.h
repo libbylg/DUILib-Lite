@@ -13,6 +13,8 @@ namespace DUI
         virtual LPCTSTR QueryControlText(LPCTSTR lpstrId, LPCTSTR lpstrType) = 0;
     };
 
+    //typedef BOOL(*PHANDLERESOURCE_UI)(void* ctx, BYTE* pByte, DWORD dwSize);
+
     class DUILIB_API CResourceUI
     {
     private:
@@ -20,16 +22,14 @@ namespace DUI
         ~CResourceUI(void);
 
     public:
-        static CResourceUI* GetInstance()
-        {
-            static CResourceUI* p = new CResourceUI;
-            return p;
-        };
+        //static BOOL LoadResource(LPCTSTR pstrFilename, void* ctx, PHANDLERESOURCE_UI handle);
+        static CResourceUI* GetInstance();
         void Release(void) { delete this; }
 
     public:
         BOOL LoadResource(TSTRID_UI xml, LPCTSTR type = NULL);
         BOOL LoadResource(CMarkupNodeUI Root);
+        
         void ResetResourceMap();
         LPCTSTR GetImagePath(LPCTSTR lpstrId);
         LPCTSTR GetXmlPath(LPCTSTR lpstrId);

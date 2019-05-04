@@ -34,7 +34,9 @@ namespace DUI
         float G = (float)(GetGValue(clr) / 255.0f);
         float B = (float)(GetBValue(clr) / 255.0f);
 
-        float H, S, L;
+        float H = 0;
+        float S = 0;
+        float L = 0;
 
         float fMin = min(R, min(G, B));		//Min. value of RGB
         float fMax = max(R, max(G, B));		//Max. value of RGB
@@ -124,11 +126,10 @@ namespace DUI
 
     ///////////////////////////////////////////////////////////////////////
     //
-    //  
-    UI_IMPLEMENT_CONTROL(CColorPaletteUI)
 
-        ////
-        CColorPaletteUI::CColorPaletteUI()
+    UI_IMPLEMENT_CONTROL(CColorPaletteUI);
+
+    CColorPaletteUI::CColorPaletteUI()
         : m_uButtonState(0)
         , m_bIsInBar(FALSE)
         , m_bIsInPallet(FALSE)

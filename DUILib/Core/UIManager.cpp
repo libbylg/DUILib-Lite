@@ -3836,4 +3836,49 @@ namespace DUI
         }
         return true; //let base free the medium
     }
+
+
+
+
+    CFileReaderUI::CFileReaderUI(const CStringUI& sFileName);
+    {
+
+    }
+
+    BOOL CFileReaderUI::Open(void* ctx);
+    {
+
+    }
+
+    int  CFileReaderUI::Read(BYTE* pData, DWORD* dwSize);
+    {
+
+    }
+
+    void CFileReaderUI::Close()
+    {
+
+    }
+
+    CZipFileReaderUI::CZipFileReaderUI(const CStringUI& sFileName)
+    {
+
+    }
+
+    BOOL CZipFileReaderUI::Open(void* ctx)
+    {
+
+    }
+
+    int  CZipFileReaderUI::Read(BYTE* pData, DWORD* dwSize)
+    {
+
+    }
+
+    void CZipFileReaderUI::Close()
+    {
+
+    }
+
+
 } // namespace DUI

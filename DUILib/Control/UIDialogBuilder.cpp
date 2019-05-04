@@ -15,6 +15,19 @@ namespace DUI
         m_instance = NULL;
     }
 
+    struct TLoadFromFileContextUI
+    {
+        CMarkupUI* xml;
+        int        encoding;
+    };
+
+    static BOOL LoadResource(void* ctx, BYTE* pData, DWORD dwSize)
+    {
+        struct TLoadFromFileContextUI* loadCtx = (struct TLoadFromFileContextUI*)ctx;
+        return loadCtx->xml->LoadFromMemory(pData, dwSize, loadCtx->encoding);
+    }
+
+
     CControlUI* CDialogBuilderUI::Create(TSTRID_UI xml, LPCTSTR type, IDialogBuilderCallback* pCallback,
         CManagerUI* pManager, CControlUI* pParent)
     {
@@ -29,9 +42,18 @@ namespace DUI
 
         if (HIWORD(xml.m_lpstr) != NULL) {
             if (*(xml.m_lpstr) == _T('<')) {
-                if (!m_xml.Load(xml.m_lpstr)) return NULL;
+                if (!m_xml.LoadFromString(xml.m_lpstr)) {
+                    return NULL;
+                }
             } else {
-                if (!m_xml.LoadFromFile(xml.m_lpstr)) return NULL;
+                TLoadFromFileContextUI ctx = {
+                    &m_xml,
+                    UIXMLFILE_ENCODING_UTF8,
+                };
+                
+                if (!CResourceUI::LoadResource(xml.m_lpstr, &ctx, LoadResource)) {
+                    return NULL;
+                }
             }
         } else {
             HINSTANCE dll_instence = NULL;
@@ -49,7 +71,7 @@ namespace DUI
             }
 
             m_pCallback = pCallback;
-            if (!m_xml.LoadFromMem((BYTE*)::LockResource(hGlobal), ::SizeofResource(dll_instence, hResource))) return NULL;
+            if (!m_xml.LoadFromMemory((BYTE*)::LockResource(hGlobal), ::SizeofResource(dll_instence, hResource))) return NULL;
             ::FreeResource(hResource);
             m_pstrtype = type;
         }
@@ -462,4 +484,4 @@ namespace DUI
         return pReturn;
     }
 
-} // namespace DUI
+}   // namespace DUI

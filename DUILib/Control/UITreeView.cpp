@@ -3,6 +3,7 @@
 #include "Control/UIOption.h"
 #include "Control/UILabel.h"
 #include "Core/UIWindow.h"
+#include "Core/UIScrollBar.h"
 
 //#pragma warning( disable: 4251 )
 namespace DUI

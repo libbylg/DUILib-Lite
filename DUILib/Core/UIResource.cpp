@@ -1,8 +1,14 @@
 #include "Core/UIResource.h"
 #include "Core/UIManager.h"
+#include "Utils/unzip.h"
 
 namespace DUI
 {
+    CResourceUI* CResourceUI::GetInstance()
+    {
+        static CResourceUI* p = new CResourceUI;
+        return p;
+    };
 
     CResourceUI::CResourceUI(void)
     {
@@ -14,24 +20,30 @@ namespace DUI
         ResetResourceMap();
     }
 
+
     BOOL CResourceUI::LoadResource(TSTRID_UI xml, LPCTSTR type)
     {
         if (HIWORD(xml.m_lpstr) != NULL) {
             if (*(xml.m_lpstr) == _T('<')) {
-                if (!m_xml.Load(xml.m_lpstr)) return NULL;
+                if (!m_xml.LoadFromString(xml.m_lpstr)) {
+                    return NULL;
+                }
             } else {
-                if (!m_xml.LoadFromFile(xml.m_lpstr)) return NULL;
+                if (!m_xml.LoadFromFile(xml.m_lpstr)) {
+                    return NULL;
+                }
             }
         } else {
             HRSRC hResource = ::FindResource(CManagerUI::GetResourceDll(), xml.m_lpstr, type);
-            if (hResource == NULL) return NULL;
+            if (hResource == NULL) {
+                return NULL;
+            }
             HGLOBAL hGlobal = ::LoadResource(CManagerUI::GetResourceDll(), hResource);
             if (hGlobal == NULL) {
                 FreeResource(hResource);
                 return NULL;
             }
-
-            if (!m_xml.LoadFromMem((BYTE*) ::LockResource(hGlobal), ::SizeofResource(CManagerUI::GetResourceDll(), hResource))) {
+            if (!m_xml.LoadFromMemory((BYTE*) ::LockResource(hGlobal), ::SizeofResource(CManagerUI::GetResourceDll(), hResource))) {
                 return NULL;
             }
             ::FreeResource(hResource);
@@ -40,9 +52,101 @@ namespace DUI
         return LoadResource(m_xml.GetRoot());
     }
 
+    BOOL CResourceUI::LoadResource(LPCTSTR pstrFilename, void* ctx, PHANDLERESOURCE_UI handle)
+    {
+        //Release();
+        CStringUI sFile = CManagerUI::GetResourcePath();
+        if (CManagerUI::GetResourceZip().IsEmpty()) {
+            sFile += pstrFilename;
+            HANDLE hFile = ::CreateFile(sFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            if (hFile == INVALID_HANDLE_VALUE) {
+                return FALSE;// _Failed(_T("Error opening file"));
+            }
+
+            DWORD dwSize = ::GetFileSize(hFile, NULL);
+            if (dwSize == 0) {
+                return FALSE;//_Failed(_T("File is empty"));
+            }
+
+            if (dwSize > 4096 * 1024) {
+                return FALSE;//_Failed(_T("File too large"));
+            }
+
+            DWORD dwRead = 0;
+            BYTE* pByte = new BYTE[dwSize];
+            ::ReadFile(hFile, pByte, dwSize, &dwRead, NULL);
+            ::CloseHandle(hFile);
+            if (dwRead != dwSize) {
+                delete[] pByte;
+                pByte = NULL;
+                //Release();
+                return FALSE;//_Failed(_T("Could not read file"));
+            }
+
+            BOOL ret = handle(ctx, pByte, dwSize);
+
+            //BOOL ret = xml.LoadFromMemory(pByte, dwSize, encoding);
+            delete[] pByte;
+            pByte = NULL;
+
+            return ret;
+        } else {
+            sFile += CManagerUI::GetResourceZip();
+            HZIP hz = NULL;
+            if (CManagerUI::IsCachedResourceZip()) {
+                hz = (HZIP)CManagerUI::GetResourceZipHandle();
+            } else {
+                CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
+#ifdef UNICODE
+                char* pwd = w2a((wchar_t*)sFilePwd.GetData());
+                hz = OpenZip(sFile.GetData(), pwd);
+                if (pwd) delete[] pwd;
+#else
+                hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
+#endif
+            }
+            if (hz == NULL) {
+                return FALSE;// _Failed(_T("Error opening zip file"));
+            }
+            ZIPENTRY ze;
+            int i = 0;
+            CStringUI key = pstrFilename;
+            key.Replace(_T("\\"), _T("/"));
+            if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) {
+                return FALSE;// _Failed(_T("Could not find ziped file"));
+            }
+            DWORD dwSize = ze.unc_size;
+            if (dwSize == 0) {
+                return FALSE;//_Failed(_T("File is empty"));
+            }
+            if (dwSize > 4096 * 1024) {
+                return FALSE;//_Failed(_T("File too large"));
+            }
+            BYTE * pByte = new BYTE[dwSize];
+            int res = UnzipItem(hz, i, pByte, dwSize);
+            if (res != 0x00000000 && res != 0x00000600) {
+                delete[] pByte;
+                if (!CManagerUI::IsCachedResourceZip()) {
+                    CloseZip(hz);
+                }
+                return FALSE;//_Failed(_T("Could not unzip file"));
+            }
+            if (!CManagerUI::IsCachedResourceZip()) {
+                CloseZip(hz);
+            }
+            //BOOL ret = xml.LoadFromMemory(pByte, dwSize, encoding);
+            BOOL ret = handle(ctx, pByte, dwSize);
+            delete[] pByte;
+            pByte = NULL;
+            return ret;
+        }
+    }
+
     BOOL CResourceUI::LoadResource(CMarkupNodeUI Root)
     {
-        if (!Root.IsValid()) return FALSE;
+        if (!Root.IsValid()) {
+            return FALSE;
+        }
 
         LPCTSTR pstrClass = NULL;
         int nAttributes = 0;
@@ -56,9 +160,9 @@ namespace DUI
         for (CMarkupNodeUI node = Root.GetChild(); node.IsValid(); node = node.GetSibling()) {
             pstrClass = node.GetName();
             CMarkupNodeUI ChildNode = node.GetChild();
-            if (ChildNode.IsValid())
+            if (ChildNode.IsValid()) {
                 LoadResource(node);
-            else if ((_tcsicmp(pstrClass, _T("Image")) == 0) && node.HasAttributes()) {
+            } else if ((_tcsicmp(pstrClass, _T("Image")) == 0) && node.HasAttributes()) {
                 //加载图片资源
                 nAttributes = node.GetAttributeCount();
                 for (int i = 0; i < nAttributes; i++) {
@@ -71,9 +175,13 @@ namespace DUI
                         pstrPath = pstrValue;
                     }
                 }
-                if (pstrId == NULL || pstrPath == NULL) continue;
+                if (pstrId == NULL || pstrPath == NULL) {
+                    continue;
+                }
                 CStringUI * pstrFind = static_cast<CStringUI*>(m_mImageHashMap.Find(pstrId));
-                if (pstrFind != NULL) continue;
+                if (pstrFind != NULL) {
+                    continue;
+                }
                 m_mImageHashMap.Insert(pstrId, (LPVOID) new CStringUI(pstrPath));
             } else if (_tcsicmp(pstrClass, _T("Xml")) == 0 && node.HasAttributes()) {
                 //加载XML配置文件
@@ -92,8 +200,7 @@ namespace DUI
                 CStringUI * pstrFind = static_cast<CStringUI*>(m_mXmlHashMap.Find(pstrId));
                 if (pstrFind != NULL) continue;
                 m_mXmlHashMap.Insert(pstrId, (LPVOID) new CStringUI(pstrPath));
-            } else
-                continue;
+            }
         }
         return TRUE;
     }
@@ -140,7 +247,7 @@ namespace DUI
     {
         CMarkupUI xml;
         if (*(pstrXml) == _T('<')) {
-            if (!xml.Load(pstrXml)) return FALSE;
+            if (!xml.LoadFromString(pstrXml)) return FALSE;
         } else {
             if (!xml.LoadFromFile(pstrXml)) return FALSE;
         }

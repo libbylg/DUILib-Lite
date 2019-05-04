@@ -64,7 +64,7 @@ namespace DUI
 
         CControlUI* pParent = m_pOwner;
         RECT rcParent;
-        while (pParent = pParent->GetParent()) {
+        while (NULL != (pParent = pParent->GetParent())) {
             if (!pParent->IsVisible()) {
                 rcPos.left = rcPos.top = rcPos.right = rcPos.bottom = 0;
                 break;

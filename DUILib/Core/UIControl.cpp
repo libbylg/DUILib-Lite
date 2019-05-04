@@ -125,7 +125,9 @@ namespace DUI
 
     CStringUI CControlUI::GetText() const
     {
-        if (!IsResourceText()) return m_sText;
+        if (!IsResourceText()) {
+            return m_sText;
+        }
         return CResourceUI::GetInstance()->GetText(m_sText);
     }
 

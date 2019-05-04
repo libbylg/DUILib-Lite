@@ -44,7 +44,7 @@ namespace DUI
     protected:
         DWORD m_dwTextColor;
         DWORD m_dwDisabledTextColor;
-        int m_iFont;
+        int   m_iFont;
         UINT m_uTextStyle;
         RECT m_rcTextPadding;
         BOOL m_bShowHtml;

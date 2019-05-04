@@ -1,6 +1,7 @@
 #include "Layout/UIVerticalLayout.h"
 #include "Core/UIManager.h"
 #include "Core/UIRender.h"
+#include "Core/UIScrollBar.h"
 
 namespace DUI
 {

@@ -1,5 +1,5 @@
 #include "Core/UIMarkup.h"
-#include "Core/UIManager.h"
+//#include "Core/UIManager.h"
 #include "Utils/unzip.h"
 
 #ifndef TRACE
@@ -189,7 +189,7 @@ namespace DUI
         m_pElements = NULL;
         m_nElements = 0;
         m_bPreserveWhitespace = TRUE;
-        if (pstrXML != NULL) Load(pstrXML);
+        if (pstrXML != NULL) LoadFromString(pstrXML);
     }
 
     CMarkupUI::~CMarkupUI()
@@ -207,18 +207,20 @@ namespace DUI
         m_bPreserveWhitespace = bPreserve;
     }
 
-    BOOL CMarkupUI::Load(LPCTSTR pstrXML)
+    BOOL CMarkupUI::LoadFromString(LPCTSTR pstrXML)
     {
         Release();
         SIZE_T cchLen = _tcslen(pstrXML) + 1;
         m_pstrXML = static_cast<LPTSTR>(malloc(cchLen * sizeof(TCHAR)));
         ::CopyMemory(m_pstrXML, pstrXML, cchLen * sizeof(TCHAR));
         BOOL bRes = _Parse();
-        if (!bRes) Release();
+        if (!bRes) {
+            Release();
+        }
         return bRes;
     }
 
-    BOOL CMarkupUI::LoadFromMem(BYTE * pByte, DWORD dwSize, int encoding)
+    BOOL CMarkupUI::LoadFromMemory(BYTE * pByte, DWORD dwSize, int encoding)
     {
 #ifdef _UNICODE
         if (encoding == UIXMLFILE_ENCODING_UTF8) {
@@ -314,82 +316,147 @@ namespace DUI
         return bRes;
     }
 
-    BOOL CMarkupUI::LoadFromFile(LPCTSTR pstrFilename, int encoding)
+    BOOL CMarkupUI::LoadFromReader(IReaderUI* reader, void* ctx, int encoding)
     {
-        Release();
-        CStringUI sFile = CManagerUI::GetResourcePath();
-        if (CManagerUI::GetResourceZip().IsEmpty()) {
-            sFile += pstrFilename;
-            HANDLE hFile = ::CreateFile(sFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-            if (hFile == INVALID_HANDLE_VALUE) {
-                return _Failed(_T("Error opening file"));
-            }
-
-            DWORD dwSize = ::GetFileSize(hFile, NULL);
-            if (dwSize == 0) {
-                return _Failed(_T("File is empty"));
-            }
-
-            if (dwSize > 4096 * 1024) {
-                return _Failed(_T("File too large"));
-            }
-
-            DWORD dwRead = 0;
-            BYTE* pByte = new BYTE[dwSize];
-            ::ReadFile(hFile, pByte, dwSize, &dwRead, NULL);
-            ::CloseHandle(hFile);
-            if (dwRead != dwSize) {
-                delete[] pByte;
-                pByte = NULL;
-                Release();
-                return _Failed(_T("Could not read file"));
-            }
-
-            BOOL ret = LoadFromMem(pByte, dwSize, encoding);
-            delete[] pByte;
-            pByte = NULL;
-
-            return ret;
-        } else {
-            sFile += CManagerUI::GetResourceZip();
-            HZIP hz = NULL;
-            if (CManagerUI::IsCachedResourceZip())
-                hz = (HZIP)CManagerUI::GetResourceZipHandle();
-            else {
-                CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
-#ifdef UNICODE
-                char* pwd = w2a((wchar_t*)sFilePwd.GetData());
-                hz = OpenZip(sFile.GetData(), pwd);
-                if (pwd) delete[] pwd;
-#else
-                hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
-#endif
-            }
-            if (hz == NULL) {
-                return _Failed(_T("Error opening zip file"));
-            }
-            ZIPENTRY ze;
-            int i = 0;
-            CStringUI key = pstrFilename;
-            key.Replace(_T("\\"), _T("/"));
-            if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) return _Failed(_T("Could not find ziped file"));
-            DWORD dwSize = ze.unc_size;
-            if (dwSize == 0) return _Failed(_T("File is empty"));
-            if (dwSize > 4096 * 1024) return _Failed(_T("File too large"));
-            BYTE * pByte = new BYTE[dwSize];
-            int res = UnzipItem(hz, i, pByte, dwSize);
-            if (res != 0x00000000 && res != 0x00000600) {
-                delete[] pByte;
-                if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
-                return _Failed(_T("Could not unzip file"));
-            }
-            if (!CManagerUI::IsCachedResourceZip()) CloseZip(hz);
-            BOOL ret = LoadFromMem(pByte, dwSize, encoding);
-            delete[] pByte;
-            pByte = NULL;
-            return ret;
+        BOOL bOpenOK = reader->Open(ctx);
+        if (FALSE == bOpenOK) {
+            return bOpenOK;
         }
+
+        DWORD dwCap  = 4 * 1024;
+        BYTE* pData = new BYTE[4 * 1024];
+        DWORD dwLen  = 0;
+        BOOL  bResult = FALSE;
+
+        while (1) {
+            DWORD dwReadLen = dwCap - dwLen;
+            int ret = reader->Read(pData + dwLen, &dwReadLen);
+            if (-1 == ret) {
+                //  如果读取出错
+                bResult = FALSE;
+                goto    END;
+            }
+
+            dwLen += dwReadLen;
+
+            if (0 == ret) {
+                //  如果读取过程正常
+                if ((dwCap - dwLen) < 32) {
+                    //  如果缓冲区不够，那么自动扩容
+                    BYTE* pNewData = new BYTE[dwCap + 4 * 1024];
+                    ::CopyMemory(pNewData, pData, dwLen);
+                    dwCap += 4 * 1024;
+                    delete[] pData;
+                    pData = pNewData;
+                }
+                continue;
+            } else {
+                //  如果读取结束
+                break;
+            }
+        }
+
+        //  从文件载入
+        bResult = LoadFromMemory(pData, dwLen, encoding);
+
+    END:
+        delete[] pData;
+        pData = NULL;
+        reader->Close();
+
+        return bResult;
+
     }
+
+//    BOOL CMarkupUI::LoadFromFile(LPCTSTR pstrFilename, int encoding, DWORD dwFlags)
+//    {
+//        Release();
+//        CStringUI sFile = CManagerUI::GetResourcePath();
+//        if (CManagerUI::GetResourceZip().IsEmpty()) {
+//            sFile += pstrFilename;
+//            HANDLE hFile = ::CreateFile(sFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+//            if (hFile == INVALID_HANDLE_VALUE) {
+//                return _Failed(_T("Error opening file"));
+//            }
+//
+//            DWORD dwSize = ::GetFileSize(hFile, NULL);
+//            if (dwSize == 0) {
+//                return _Failed(_T("File is empty"));
+//            }
+//
+//            if (dwSize > 4096 * 1024) {
+//                return _Failed(_T("File too large"));
+//            }
+//
+//            DWORD dwRead = 0;
+//            BYTE* pByte = new BYTE[dwSize];
+//            ::ReadFile(hFile, pByte, dwSize, &dwRead, NULL);
+//            ::CloseHandle(hFile);
+//            if (dwRead != dwSize) {
+//                delete[] pByte;
+//                pByte = NULL;
+//                Release();
+//                return _Failed(_T("Could not read file"));
+//            }
+//
+//            BOOL ret = LoadFromMemory(pByte, dwSize, encoding);
+//            delete[] pByte;
+//            pByte = NULL;
+//
+//            return ret;
+//        } else {
+//            sFile += CManagerUI::GetResourceZip();
+//            HZIP hz = NULL;
+//            if (CManagerUI::IsCachedResourceZip()) {
+//                hz = (HZIP)CManagerUI::GetResourceZipHandle();
+//            } else {
+//                CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
+//#ifdef UNICODE
+//                char* pwd = w2a((wchar_t*)sFilePwd.GetData());
+//                hz = OpenZip(sFile.GetData(), pwd);
+//                if (pwd) {
+//                    delete[] pwd;
+//                }
+//#else
+//                hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
+//#endif
+//            }
+//
+//            if (hz == NULL) {
+//                return _Failed(_T("Error opening zip file"));
+//            }
+//            ZIPENTRY ze;
+//            int i = 0;
+//            CStringUI key = pstrFilename;
+//            key.Replace(_T("\\"), _T("/"));
+//            if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) {
+//                return _Failed(_T("Could not find ziped file"));
+//            }
+//            DWORD dwSize = ze.unc_size;
+//            if (dwSize == 0) {
+//                return _Failed(_T("File is empty"));
+//            }
+//            if (dwSize > 4096 * 1024) {
+//                return _Failed(_T("File too large"));
+//            }
+//            BYTE * pByte = new BYTE[dwSize];
+//            int res = UnzipItem(hz, i, pByte, dwSize);
+//            if (res != 0x00000000 && res != 0x00000600) {
+//                delete[] pByte;
+//                if (!CManagerUI::IsCachedResourceZip()) {
+//                    CloseZip(hz);
+//                }
+//                return _Failed(_T("Could not unzip file"));
+//            }
+//            if (!CManagerUI::IsCachedResourceZip()) {
+//                CloseZip(hz);
+//            }
+//            BOOL ret = LoadFromMemory(pByte, dwSize, encoding);
+//            delete[] pByte;
+//            pByte = NULL;
+//            return ret;
+//        }
+//    }
 
     void CMarkupUI::Release()
     {

@@ -16,6 +16,12 @@ namespace DUI
     class CMarkupUI;
     class CMarkupNodeUI;
 
+    struct DUILIB_API IReaderUI
+    {
+        virtual BOOL Open(void* ctx) = 0;
+        virtual int  Read(BYTE* pData, DWORD* dwSize) = 0;  //  0：正常；-1：异常；1：结束
+        virtual void Close() = 0;
+    };
 
     class DUILIB_API CMarkupUI
     {
@@ -24,9 +30,9 @@ namespace DUI
         CMarkupUI(LPCTSTR pstrXML = NULL);
         ~CMarkupUI();
 
-        BOOL Load(LPCTSTR pstrXML);
-        BOOL LoadFromMem(BYTE* pByte, DWORD dwSize, int encoding = UIXMLFILE_ENCODING_UTF8);
-        BOOL LoadFromFile(LPCTSTR pstrFilename, int encoding = UIXMLFILE_ENCODING_UTF8);
+        BOOL LoadFromString(LPCTSTR pstrXML);
+        BOOL LoadFromMemory(BYTE* pByte, DWORD dwSize, int encoding = UIXMLFILE_ENCODING_UTF8);
+        BOOL LoadFromReader(IReaderUI* reader, void* ctx, int encoding = UIXMLFILE_ENCODING_UTF8);
         void Release();
         BOOL IsValid() const;
 

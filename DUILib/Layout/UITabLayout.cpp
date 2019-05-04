@@ -1,5 +1,4 @@
 #include "Layout/UITabLayout.h"
-#include "Core/UIManager.h"
 
 namespace DUI
 {

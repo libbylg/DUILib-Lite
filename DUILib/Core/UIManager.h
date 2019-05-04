@@ -86,18 +86,38 @@ namespace DUI
     };
 
     // MessageFilter interface
-    class IMessageFilterUI
+    class DUILIB_API IMessageFilterUI
     {
     public:
         virtual LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) = 0;
     };
 
-    class ITranslateAcceleratorUI
+    class DUILIB_API ITranslateAcceleratorUI
     {
     public:
         virtual LRESULT TranslateAccelerator(MSG* pMsg) = 0;
     };
 
+    class DUILIB_API CFileReaderUI
+    {
+    private:
+        CStringUI m_sFileName;
+
+    public:
+        CFileReaderUI(const CStringUI& sFileName);
+        virtual BOOL Open(void* ctx);
+        virtual int  Read(BYTE* pData, DWORD* dwSize);
+        virtual void Close();
+    };
+
+    class DUILIB_API CZipFileReaderUI : public CFileReaderUI
+    {
+    public:
+        CZipFileReaderUI(const CStringUI& sFileName);
+        virtual BOOL Open(void* ctx);
+        virtual int  Read(BYTE* pData, DWORD* dwSize);
+        virtual void Close();
+    };
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
