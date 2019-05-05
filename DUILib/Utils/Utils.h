@@ -20,6 +20,24 @@ namespace DUI
         LPCTSTR m_lpstr;
     };
 
+    struct DUILIB_API TURI_UI
+    {
+        CStringUI   sSchema;
+        CStringUI   sLocation;
+        CStringUI   sFilePath;
+        TURI_UI(LPCTSTR uri);
+        CStringUI AsString();
+    };
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    struct DUILIB_API IReaderUI
+    {
+        virtual BOOL                Open(void* ctx) = 0;
+        virtual BOOL                Read(BYTE* pCache, DWORD dwCacheSize, DWORD* dwReadSize) = 0;  //  0：正常；-1：异常；1：结束
+        virtual void                Close() = 0;
+        virtual const CStringUI&    Error() = 0;
+    };
+
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
@@ -331,6 +349,40 @@ namespace DUI
         }
         return NULL;
     }
+
+
+    class DUILIB_API CFileReaderUI : public IReaderUI
+    {
+    protected:
+        CStringUI   m_sFileName;
+        CStringUI   m_sError;
+        HANDLE      m_hFile;
+
+    protected:
+        BOOL _Failed(LPCTSTR pstrError);
+
+    public:
+        CFileReaderUI(const CStringUI& sFileName);
+        ~CFileReaderUI();
+        virtual BOOL Open(void* ctx);
+        virtual BOOL Read(BYTE* pCache, DWORD dwCacheSize, DWORD* dwReadSize);
+        virtual void Close();
+        virtual const CStringUI& Error();
+    };
+
+    class DUILIB_API CZipFileReaderUI : public CFileReaderUI
+    {
+    protected:
+        CStringUI   m_sPassword;
+        BOOL        m_bAttached;
+    public:
+        CZipFileReaderUI(const CStringUI& sFileName);
+        CZipFileReaderUI(HANDLE hZipFile);
+        virtual BOOL Open(void* ctx);
+        virtual BOOL Read(BYTE* pCache, DWORD dwCacheSize, DWORD* dwReadSize);
+        virtual void Close();
+    };
+
 
     ///////////////////////////////////////////////////////////////////////////////////////
     ////

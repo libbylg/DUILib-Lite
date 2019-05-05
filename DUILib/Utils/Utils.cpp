@@ -1,5 +1,5 @@
-
-#include "Utils.h"
+#include "Utils/Utils.h"
+#include "Utils/unzip.h"
 
 namespace DUI
 {
@@ -1213,4 +1213,130 @@ namespace DUI
     //{
     //	return m_imageInfo;
     //}
+
+    TURI_UI::TURI_UI(LPCTSTR uri)
+    {
+
+    }
+
+    CStringUI TURI_UI::AsString()
+    {
+
+    }
+
+
+    CFileReaderUI::CFileReaderUI(const CStringUI& sFileURI)
+    {
+        this->m_sFileName = sFileURI;
+        this->m_hFile = INVALID_HANDLE_VALUE;
+    }
+
+    CFileReaderUI::~CFileReaderUI()
+    {
+        if (INVALID_HANDLE_VALUE != this->m_hFile) {
+            ::CloseHandle(this->m_hFile);
+            this->m_hFile = INVALID_HANDLE_VALUE;
+        }
+    }
+
+    BOOL CFileReaderUI::_Failed(LPCTSTR pstrError)
+    {
+        this->m_sError = ((NULL == pstrError)?_T(""):pstrError);
+        return FALSE; // Always return 'FALSE'
+    }
+
+    const CStringUI & CFileReaderUI::Error()
+    {
+        return m_sError;
+    }
+
+    BOOL CFileReaderUI::Open(void* ctx)
+    {
+        this->m_hFile = ::CreateFile(this->m_sFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (this->m_hFile == INVALID_HANDLE_VALUE) {
+            return _Failed(_T("Error opening file"));
+        }
+
+        return TRUE;
+    }
+
+    BOOL  CFileReaderUI::Read(BYTE * pCache, DWORD dwCacheSize, DWORD * pdwReadSize)
+    {
+        BOOL bResult = ::ReadFile(this->m_hFile, pCache, dwCacheSize, pdwReadSize, NULL);
+        if (FALSE != bResult) {
+            _Failed(_T("Could not read file"));
+            return -1;
+        }
+
+        return (bResult);
+    }
+
+    void CFileReaderUI::Close()
+    {
+        ::CloseHandle(this->m_hFile);
+        this->m_hFile = INVALID_HANDLE_VALUE;
+    }
+
+    CZipFileReaderUI::CZipFileReaderUI(const CStringUI& sFilePath)
+        : CFileReaderUI(sFilePath)
+    {
+        //  file://d:/xxx/yyy/zzz
+        //  zip://d:/xxx/yyy/zzz
+        m_sFileName = sFilePath;
+        m_sPassword = "";   // TODO
+        m_hFile = INVALID_HANDLE_VALUE;
+        m_bAttached = FALSE;
+    }
+
+    CZipFileReaderUI::CZipFileReaderUI(HANDLE hZipFile)
+        : CFileReaderUI(_T(""))
+    {
+        m_hFile = hZipFile;
+        m_bAttached = TRUE;
+    }
+
+    BOOL CZipFileReaderUI::Open(void* ctx)
+    {
+        if (INVALID_HANDLE_VALUE == m_hFile) {
+            m_hFile = OpenZip(m_sFileName.GetData(), m_sPassword.GetData());
+        }
+    
+        if (m_hFile == NULL) {
+            return _Failed(_T("Error opening zip file"));
+        }
+
+        ZIPENTRY ze;
+        int i = 0;
+        CDuiString key = pstrFilename;
+        key.Replace(_T("\\"), _T("/"));
+        if (FindZipItem(hz, key, true, &i, &ze) != 0) return _Failed(_T("Could not find ziped file"));
+        DWORD dwSize = ze.unc_size;
+        if (dwSize == 0) return _Failed(_T("File is empty"));
+        if (dwSize > 4096 * 1024) return _Failed(_T("File too large"));
+        BYTE * pByte = new BYTE[dwSize];
+        int res = UnzipItem(hz, i, pByte, dwSize);
+        if (res != 0x00000000 && res != 0x00000600) {
+            delete[] pByte;
+            if (!CPaintManagerUI::IsCachedResourceZip()) CloseZip(hz);
+            return _Failed(_T("Could not unzip file"));
+        }
+        if (!CPaintManagerUI::IsCachedResourceZip()) CloseZip(hz);
+        bool ret = LoadFromMem(pByte, dwSize, encoding);
+        delete[] pByte;
+        pByte = NULL;
+        return ret;
+    }
+
+    BOOL CZipFileReaderUI::Read(BYTE * pCache, DWORD dwCacheSize, DWORD * dwReadSize)
+    {
+
+    }
+
+    void CZipFileReaderUI::Close()
+    {
+
+    }
+
+
+
 } // namespace DUI

@@ -98,26 +98,7 @@ namespace DUI
         virtual LRESULT TranslateAccelerator(MSG* pMsg) = 0;
     };
 
-    class DUILIB_API CFileReaderUI
-    {
-    private:
-        CStringUI m_sFileName;
 
-    public:
-        CFileReaderUI(const CStringUI& sFileName);
-        virtual BOOL Open(void* ctx);
-        virtual int  Read(BYTE* pData, DWORD* dwSize);
-        virtual void Close();
-    };
-
-    class DUILIB_API CZipFileReaderUI : public CFileReaderUI
-    {
-    public:
-        CZipFileReaderUI(const CStringUI& sFileName);
-        virtual BOOL Open(void* ctx);
-        virtual int  Read(BYTE* pData, DWORD* dwSize);
-        virtual void Close();
-    };
 
     /////////////////////////////////////////////////////////////////////////////////////
     //

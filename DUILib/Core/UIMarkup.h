@@ -16,13 +16,6 @@ namespace DUI
     class CMarkupUI;
     class CMarkupNodeUI;
 
-    struct DUILIB_API IReaderUI
-    {
-        virtual BOOL Open(void* ctx) = 0;
-        virtual int  Read(BYTE* pData, DWORD* dwSize) = 0;  //  0：正常；-1：异常；1：结束
-        virtual void Close() = 0;
-    };
-
     class DUILIB_API CMarkupUI
     {
         friend class CMarkupNodeUI;
