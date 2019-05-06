@@ -330,7 +330,7 @@ namespace DUI
 
         while (1) {
             DWORD dwReadLen = dwCap - dwLen;
-            int ret = reader->Read(pData + dwLen, &dwReadLen);
+            int ret = reader->Read(pData + dwLen, dwReadLen, &dwReadLen);
             if (-1 == ret) {
                 //  如果读取出错
                 bResult = FALSE;

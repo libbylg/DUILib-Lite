@@ -21,24 +21,6 @@ namespace DUI
         LPCTSTR m_lpstr;
     };
 
-    struct DUILIB_API TURI_UI
-    {
-        CStringUI   sSchema;
-        CStringUI   sLocation;
-        CStringUI   sFilePath;
-        TURI_UI(LPCTSTR uri);
-        CStringUI AsString();
-    };
-
-    /////////////////////////////////////////////////////////////////////////////////////
-    struct DUILIB_API IReaderUI
-    {
-        virtual BOOL                Open(void* ctx) = 0;
-        virtual BOOL                Read(BYTE* pCache, DWORD dwCacheSize, DWORD* dwReadSize) = 0;  //  0：正常；-1：异常；1：结束
-        virtual void                Close() = 0;
-        virtual const CStringUI&    Error() = 0;
-    };
-
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
@@ -350,6 +332,26 @@ namespace DUI
         }
         return NULL;
     }
+
+    //struct DUILIB_API TURI_UI
+    //{
+    //    CStringUI   sSchema;
+    //    CStringUI   sLocation;
+    //    CStringUI   sFilePath;
+    //    TURI_UI(LPCTSTR uri);
+    //    CStringUI AsString();
+    //};
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    struct DUILIB_API IReaderUI
+    {
+        virtual BOOL                Open(void* ctx) = 0;
+        virtual BOOL                Read(BYTE* pCache, DWORD dwCacheSize, DWORD* dwReadSize) = 0;  //  0：正常；-1：异常；1：结束
+        virtual void                Close() = 0;
+        virtual const CStringUI& Error() = 0;
+    };
 
 
     class DUILIB_API CFileReaderUI : public IReaderUI

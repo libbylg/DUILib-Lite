@@ -1214,15 +1214,16 @@ namespace DUI
     //	return m_imageInfo;
     //}
 
-    TURI_UI::TURI_UI(LPCTSTR uri)
-    {
 
-    }
-
-    CStringUI TURI_UI::AsString()
-    {
-
-    }
+    //TURI_UI::TURI_UI(LPCTSTR uri)
+    //{
+    //
+    //}
+    //
+    //CStringUI TURI_UI::AsString()
+    //{
+    //
+    //}
 
 
     CFileReaderUI::CFileReaderUI(const CStringUI& sFileURI)
@@ -1360,8 +1361,10 @@ namespace DUI
     void CZipFileReaderUI::Close()
     {
         if (m_hFile != INVALID_HANDLE_VALUE) {
-            ::CloseZip((HZIP)m_hFile);
-            m_hFile = INVALID_HANDLE_VALUE;
+            if (!m_bAttached) {
+                ::CloseZip((HZIP)m_hFile);
+                m_hFile = INVALID_HANDLE_VALUE;
+            }
         }
     }
 

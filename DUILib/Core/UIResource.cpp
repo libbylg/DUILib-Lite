@@ -29,7 +29,9 @@ namespace DUI
                     return NULL;
                 }
             } else {
-                if (!m_xml.LoadFromFile(xml.m_lpstr)) {
+                CStringUI sFileName = xml.m_lpstr;
+                CFileReaderUI reader(sFileName);
+                if (!m_xml.LoadFromReader(&reader, NULL, UIXMLFILE_ENCODING_UTF8)) {
                     return NULL;
                 }
             }
@@ -52,95 +54,95 @@ namespace DUI
         return LoadResource(m_xml.GetRoot());
     }
 
-    BOOL CResourceUI::LoadResource(LPCTSTR pstrFilename, void* ctx, PHANDLERESOURCE_UI handle)
-    {
-        //Release();
-        CStringUI sFile = CManagerUI::GetResourcePath();
-        if (CManagerUI::GetResourceZip().IsEmpty()) {
-            sFile += pstrFilename;
-            HANDLE hFile = ::CreateFile(sFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-            if (hFile == INVALID_HANDLE_VALUE) {
-                return FALSE;// _Failed(_T("Error opening file"));
-            }
-
-            DWORD dwSize = ::GetFileSize(hFile, NULL);
-            if (dwSize == 0) {
-                return FALSE;//_Failed(_T("File is empty"));
-            }
-
-            if (dwSize > 4096 * 1024) {
-                return FALSE;//_Failed(_T("File too large"));
-            }
-
-            DWORD dwRead = 0;
-            BYTE* pByte = new BYTE[dwSize];
-            ::ReadFile(hFile, pByte, dwSize, &dwRead, NULL);
-            ::CloseHandle(hFile);
-            if (dwRead != dwSize) {
-                delete[] pByte;
-                pByte = NULL;
-                //Release();
-                return FALSE;//_Failed(_T("Could not read file"));
-            }
-
-            BOOL ret = handle(ctx, pByte, dwSize);
-
-            //BOOL ret = xml.LoadFromMemory(pByte, dwSize, encoding);
-            delete[] pByte;
-            pByte = NULL;
-
-            return ret;
-        } else {
-            sFile += CManagerUI::GetResourceZip();
-            HZIP hz = NULL;
-            if (CManagerUI::IsCachedResourceZip()) {
-                hz = (HZIP)CManagerUI::GetResourceZipHandle();
-            } else {
-                CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
-#ifdef UNICODE
-                char* pwd = w2a((wchar_t*)sFilePwd.GetData());
-                hz = OpenZip(sFile.GetData(), pwd);
-                if (pwd) delete[] pwd;
-#else
-                hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
-#endif
-            }
-            if (hz == NULL) {
-                return FALSE;// _Failed(_T("Error opening zip file"));
-            }
-            ZIPENTRY ze;
-            int i = 0;
-            CStringUI key = pstrFilename;
-            key.Replace(_T("\\"), _T("/"));
-            if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) {
-                return FALSE;// _Failed(_T("Could not find ziped file"));
-            }
-            DWORD dwSize = ze.unc_size;
-            if (dwSize == 0) {
-                return FALSE;//_Failed(_T("File is empty"));
-            }
-            if (dwSize > 4096 * 1024) {
-                return FALSE;//_Failed(_T("File too large"));
-            }
-            BYTE * pByte = new BYTE[dwSize];
-            int res = UnzipItem(hz, i, pByte, dwSize);
-            if (res != 0x00000000 && res != 0x00000600) {
-                delete[] pByte;
-                if (!CManagerUI::IsCachedResourceZip()) {
-                    CloseZip(hz);
-                }
-                return FALSE;//_Failed(_T("Could not unzip file"));
-            }
-            if (!CManagerUI::IsCachedResourceZip()) {
-                CloseZip(hz);
-            }
-            //BOOL ret = xml.LoadFromMemory(pByte, dwSize, encoding);
-            BOOL ret = handle(ctx, pByte, dwSize);
-            delete[] pByte;
-            pByte = NULL;
-            return ret;
-        }
-    }
+//    BOOL CResourceUI::LoadResource(LPCTSTR pstrFilename, void* ctx, PHANDLERESOURCE_UI handle)
+//    {
+//        //Release();
+//        CStringUI sFile = CManagerUI::GetResourcePath();
+//        if (CManagerUI::GetResourceZip().IsEmpty()) {
+//            sFile += pstrFilename;
+//            HANDLE hFile = ::CreateFile(sFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+//            if (hFile == INVALID_HANDLE_VALUE) {
+//                return FALSE;// _Failed(_T("Error opening file"));
+//            }
+//
+//            DWORD dwSize = ::GetFileSize(hFile, NULL);
+//            if (dwSize == 0) {
+//                return FALSE;//_Failed(_T("File is empty"));
+//            }
+//
+//            if (dwSize > 4096 * 1024) {
+//                return FALSE;//_Failed(_T("File too large"));
+//            }
+//
+//            DWORD dwRead = 0;
+//            BYTE* pByte = new BYTE[dwSize];
+//            ::ReadFile(hFile, pByte, dwSize, &dwRead, NULL);
+//            ::CloseHandle(hFile);
+//            if (dwRead != dwSize) {
+//                delete[] pByte;
+//                pByte = NULL;
+//                //Release();
+//                return FALSE;//_Failed(_T("Could not read file"));
+//            }
+//
+//            BOOL ret = handle(ctx, pByte, dwSize);
+//
+//            //BOOL ret = xml.LoadFromMemory(pByte, dwSize, encoding);
+//            delete[] pByte;
+//            pByte = NULL;
+//
+//            return ret;
+//        } else {
+//            sFile += CManagerUI::GetResourceZip();
+//            HZIP hz = NULL;
+//            if (CManagerUI::IsCachedResourceZip()) {
+//                hz = (HZIP)CManagerUI::GetResourceZipHandle();
+//            } else {
+//                CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
+//#ifdef UNICODE
+//                char* pwd = w2a((wchar_t*)sFilePwd.GetData());
+//                hz = OpenZip(sFile.GetData(), pwd);
+//                if (pwd) delete[] pwd;
+//#else
+//                hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
+//#endif
+//            }
+//            if (hz == NULL) {
+//                return FALSE;// _Failed(_T("Error opening zip file"));
+//            }
+//            ZIPENTRY ze;
+//            int i = 0;
+//            CStringUI key = pstrFilename;
+//            key.Replace(_T("\\"), _T("/"));
+//            if (FindZipItem(hz, key, TRUE, &i, &ze) != 0) {
+//                return FALSE;// _Failed(_T("Could not find ziped file"));
+//            }
+//            DWORD dwSize = ze.unc_size;
+//            if (dwSize == 0) {
+//                return FALSE;//_Failed(_T("File is empty"));
+//            }
+//            if (dwSize > 4096 * 1024) {
+//                return FALSE;//_Failed(_T("File too large"));
+//            }
+//            BYTE * pByte = new BYTE[dwSize];
+//            int res = UnzipItem(hz, i, pByte, dwSize);
+//            if (res != 0x00000000 && res != 0x00000600) {
+//                delete[] pByte;
+//                if (!CManagerUI::IsCachedResourceZip()) {
+//                    CloseZip(hz);
+//                }
+//                return FALSE;//_Failed(_T("Could not unzip file"));
+//            }
+//            if (!CManagerUI::IsCachedResourceZip()) {
+//                CloseZip(hz);
+//            }
+//            //BOOL ret = xml.LoadFromMemory(pByte, dwSize, encoding);
+//            BOOL ret = handle(ctx, pByte, dwSize);
+//            delete[] pByte;
+//            pByte = NULL;
+//            return ret;
+//        }
+//    }
 
     BOOL CResourceUI::LoadResource(CMarkupNodeUI Root)
     {
@@ -247,9 +249,15 @@ namespace DUI
     {
         CMarkupUI xml;
         if (*(pstrXml) == _T('<')) {
-            if (!xml.LoadFromString(pstrXml)) return FALSE;
+            if (!xml.LoadFromString(pstrXml)) {
+                return FALSE;
+            }
         } else {
-            if (!xml.LoadFromFile(pstrXml)) return FALSE;
+            CStringUI sFileName = pstrXml;
+            CFileReaderUI reader(sFileName);
+            if (!xml.LoadFromReader(&reader, NULL, UIXMLFILE_ENCODING_UTF8)) {
+                return FALSE;
+            }
         }
         CMarkupNodeUI Root = xml.GetRoot();
         if (!Root.IsValid()) return FALSE;

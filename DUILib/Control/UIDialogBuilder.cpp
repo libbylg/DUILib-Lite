@@ -15,17 +15,17 @@ namespace DUI
         m_instance = NULL;
     }
 
-    struct TLoadFromFileContextUI
-    {
-        CMarkupUI* xml;
-        int        encoding;
-    };
+    //struct TLoadFromFileContextUI
+    //{
+    //    CMarkupUI* xml;
+    //    int        encoding;
+    //};
 
-    static BOOL LoadResource(void* ctx, BYTE* pData, DWORD dwSize)
-    {
-        struct TLoadFromFileContextUI* loadCtx = (struct TLoadFromFileContextUI*)ctx;
-        return loadCtx->xml->LoadFromMemory(pData, dwSize, loadCtx->encoding);
-    }
+    //static BOOL LoadResource(void* ctx, BYTE* pData, DWORD dwSize)
+    //{
+    //    struct TLoadFromFileContextUI* loadCtx = (struct TLoadFromFileContextUI*)ctx;
+    //    return loadCtx->xml->LoadFromMemory(pData, dwSize, loadCtx->encoding);
+    //}
 
 
     CControlUI* CDialogBuilderUI::Create(TSTRID_UI xml, LPCTSTR type, IDialogBuilderCallback* pCallback,
@@ -46,12 +46,8 @@ namespace DUI
                     return NULL;
                 }
             } else {
-                TLoadFromFileContextUI ctx = {
-                    &m_xml,
-                    UIXMLFILE_ENCODING_UTF8,
-                };
-                
-                if (!CResourceUI::LoadResource(xml.m_lpstr, &ctx, LoadResource)) {
+                CFileReaderUI reader(xml.m_lpstr);
+                if (!m_xml.LoadFromReader(&reader, NULL, UIXMLFILE_ENCODING_UTF8)) {
                     return NULL;
                 }
             }
