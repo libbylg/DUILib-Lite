@@ -1,6 +1,6 @@
 #include "Control/UIDialogBuilder.h"
 #include "Control/UITreeView.h"
-#include "Control/UIFactory.h"
+//#include "Control/UIFactory.h"
 
 #include "Core/UIResource.h"
 #include "Core/UIContainer.h"
@@ -28,7 +28,7 @@ namespace DUI
     //}
 
 
-    CControlUI* CDialogBuilderUI::Create(TSTRID_UI xml, LPCTSTR type, IDialogBuilderCallback* pCallback,
+    CControlUI* CDialogBuilderUI::Create(TSTRID_UI xml, LPCTSTR type, IFactoryUI* pCallback,
         CManagerUI* pManager, CControlUI* pParent)
     {
         //资源ID为0-65535，两个字节；字符串指针为4个字节
@@ -75,7 +75,7 @@ namespace DUI
         return Create(pCallback, pManager, pParent);
     }
 
-    CControlUI* CDialogBuilderUI::Create(IDialogBuilderCallback* pCallback, CManagerUI* pManager, CControlUI* pParent)
+    CControlUI* CDialogBuilderUI::Create(IFactoryUI* pCallback, CManagerUI* pManager, CControlUI* pParent)
     {
         m_pCallback = pCallback;
         CMarkupNodeUI root = m_xml.GetRoot();
@@ -349,15 +349,20 @@ namespace DUI
             CControlUI * pControl = NULL;
             if (_tcsicmp(pstrClass, _T("Import")) == 0) continue;
             if (_tcsicmp(pstrClass, _T("Include")) == 0) {
-                if (!node.HasAttributes()) continue;
+                if (!node.HasAttributes()) {
+                    continue;
+                }
                 int count = 1;
                 LPTSTR pstr = NULL;
                 TCHAR szValue[500] = {0};
                 SIZE_T cchLen = lengthof(szValue) - 1;
-                if (node.GetAttributeValue(_T("count"), szValue, cchLen))
+                if (node.GetAttributeValue(_T("count"), szValue, cchLen)) {
                     count = _tcstol(szValue, &pstr, 10);
+                }
                 cchLen = lengthof(szValue) - 1;
-                if (!node.GetAttributeValue(_T("source"), szValue, cchLen)) continue;
+                if (!node.GetAttributeValue(_T("source"), szValue, cchLen)) {
+                    continue;
+                }
                 for (int i = 0; i < count; i++) {
                     CDialogBuilderUI builder;
                     if (m_pstrtype != NULL) { // 使用资源dll，从资源中读取
@@ -371,8 +376,7 @@ namespace DUI
             } else {
                 CStringUI strClass;
                 strClass.Format(_T("C%sUI"), pstrClass);
-                CFactoryUI* pFactory = CFactoryUI::GetInstance();
-                pControl = dynamic_cast<CControlUI*>(pFactory->CreateControl(strClass));
+                pControl = m_pCallback->CreateControl(pstrClass);
 
                 // 检查插件
                 if (pControl == NULL) {
@@ -386,6 +390,7 @@ namespace DUI
                         }
                     }
                 }
+
                 // 回掉创建
                 if (pControl == NULL && m_pCallback != NULL) {
                     pControl = m_pCallback->CreateControl(pstrClass);

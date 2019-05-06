@@ -9,7 +9,7 @@ namespace DUI
     //
 
     class CMenuElementUI;
-    class DUILIB_API CMenuWnd : public CWindowUI, public MenuReceiverImpl, public INotifyUI, public IDialogBuilderCallback
+    class DUILIB_API CMenuWnd : public CWindowUI, public MenuReceiverImpl, public INotifyUI, public IFactoryUI
     {
     public:
         static MenuObserverImpl& GetGlobalContextMenuObserver()

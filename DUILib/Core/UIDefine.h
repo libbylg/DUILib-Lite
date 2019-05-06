@@ -387,10 +387,17 @@ protected:                                                                  \
 #define  UICONTROL_TEXTSCROLL                   (_T("TextScroll"))
 
 #define  UICONTROL_COLORPALETTE                 (_T("ColorPalette"))
-    ///
-    //////////////END控件名称宏定义//////////////////////////////////////////////////
 
-    }// namespace DUI
+
+    //  称宏定义//////////////////////////////////////////////////
+    struct IFactoryUI
+    {
+        virtual CControlUI* CreateControl(LPCTSTR pstrClass) = 0;
+    };
+
+
+//////////////END控件名
+}// namespace DUI
 
 
 #endif//_UIDEFINE_H_

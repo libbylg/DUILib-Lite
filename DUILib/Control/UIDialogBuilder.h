@@ -10,20 +10,14 @@ namespace DUI
     class CManagerUI;
     class CRenderUI;
 
-    class IDialogBuilderCallback
-    {
-    public:
-        virtual CControlUI* CreateControl(LPCTSTR pstrClass) = 0;
-    };
-
 
     class DUILIB_API CDialogBuilderUI
     {
     public:
         CDialogBuilderUI();
-        CControlUI* Create(TSTRID_UI xml, LPCTSTR type = NULL, IDialogBuilderCallback* pCallback = NULL,
+        CControlUI* Create(TSTRID_UI xml, LPCTSTR type = NULL, IFactoryUI* pCallback = NULL,
             CManagerUI* pManager = NULL, CControlUI* pParent = NULL);
-        CControlUI* Create(IDialogBuilderCallback* pCallback = NULL, CManagerUI* pManager = NULL,
+        CControlUI* Create(IFactoryUI* pCallback = NULL, CManagerUI* pManager = NULL,
             CControlUI* pParent = NULL);
 
         CMarkupUI* GetMarkup();
@@ -35,7 +29,7 @@ namespace DUI
         CControlUI* _Parse(CMarkupNodeUI* parent, CControlUI* pParent = NULL, CManagerUI* pManager = NULL);
 
         CMarkupUI m_xml;
-        IDialogBuilderCallback* m_pCallback;
+        IFactoryUI* m_pCallback;
         LPCTSTR m_pstrtype;
         HINSTANCE m_instance;
     };
