@@ -1298,43 +1298,71 @@ namespace DUI
     BOOL CZipFileReaderUI::Open(void* ctx)
     {
         if (INVALID_HANDLE_VALUE == m_hFile) {
-            m_hFile = OpenZip(m_sFileName.GetData(), m_sPassword.GetData());
+            char* pwd = w2a((wchar_t*)m_sPassword.GetData());
+            if (NULL == pwd) {
+                return FALSE;
+            }
+            
+            m_hFile = OpenZip(m_sFileName.GetData(), pwd);
+            delete[] pwd;
+            if (m_hFile == INVALID_HANDLE_VALUE) {
+                return FALSE;
+            }
         }
     
         if (m_hFile == NULL) {
             return _Failed(_T("Error opening zip file"));
         }
 
-        ZIPENTRY ze;
-        int i = 0;
-        CDuiString key = pstrFilename;
-        key.Replace(_T("\\"), _T("/"));
-        if (FindZipItem(hz, key, true, &i, &ze) != 0) return _Failed(_T("Could not find ziped file"));
-        DWORD dwSize = ze.unc_size;
-        if (dwSize == 0) return _Failed(_T("File is empty"));
-        if (dwSize > 4096 * 1024) return _Failed(_T("File too large"));
-        BYTE * pByte = new BYTE[dwSize];
-        int res = UnzipItem(hz, i, pByte, dwSize);
-        if (res != 0x00000000 && res != 0x00000600) {
-            delete[] pByte;
-            if (!CPaintManagerUI::IsCachedResourceZip()) CloseZip(hz);
-            return _Failed(_T("Could not unzip file"));
-        }
-        if (!CPaintManagerUI::IsCachedResourceZip()) CloseZip(hz);
-        bool ret = LoadFromMem(pByte, dwSize, encoding);
-        delete[] pByte;
-        pByte = NULL;
-        return ret;
+        return TRUE;
     }
 
-    BOOL CZipFileReaderUI::Read(BYTE * pCache, DWORD dwCacheSize, DWORD * dwReadSize)
+    BOOL CZipFileReaderUI::Read(BYTE * pCache, DWORD dwCacheSize, DWORD * pdwReadSize)
     {
+        if (NULL == m_cCache) {
+            ZIPENTRY tEntry;
+            CStringUI key = m_sFileName;
+            key.Replace(_T("\\"), _T("/"));
+            int i = 0;
+            if (FindZipItem((HZIP)m_hFile, key, true, &i, &tEntry) != 0) {
+                return _Failed(_T("Could not find ziped file"));
+            }
 
+            DWORD dwSize = tEntry.unc_size;
+            if (dwSize == 0) {
+                return _Failed(_T("File is empty"));
+            }
+
+            BYTE* cCache = new BYTE[dwSize];
+            int res = UnzipItem((HZIP)m_hFile, i, cCache, dwSize);
+            if ((res != 0x00000000) && (res != 0x00000600)) {
+                delete[] cCache;
+                return _Failed(_T("Could not unzip file"));
+            }
+
+            m_dwLen = dwSize;
+            m_dwPos = 0;
+            m_cCache = cCache;
+        }
+
+        DWORD dwRemainLen = m_dwLen - m_dwPos;
+        DWORD dwCopyLen = dwRemainLen;
+        if (dwRemainLen > *pdwReadSize) {
+            dwCopyLen = *pdwReadSize;
+        }
+
+        ::CopyMemory(pCache, m_cCache, dwCopyLen);
+        *pdwReadSize = dwCopyLen;
+        m_dwPos += dwCopyLen;
+        return TRUE;
     }
 
     void CZipFileReaderUI::Close()
     {
-
+        if (m_hFile != INVALID_HANDLE_VALUE) {
+            ::CloseZip((HZIP)m_hFile);
+            m_hFile = INVALID_HANDLE_VALUE;
+        }
     }
 
 

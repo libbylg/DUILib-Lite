@@ -2,6 +2,7 @@
 #define __UTILS_H__
 
 #include "DUILIB.h"
+#include "unzip.h"
 
 namespace DUI
 {
@@ -375,6 +376,11 @@ namespace DUI
     protected:
         CStringUI   m_sPassword;
         BOOL        m_bAttached;
+
+        BYTE*       m_cCache;
+        DWORD       m_dwLen;
+        DWORD       m_dwPos;
+
     public:
         CZipFileReaderUI(const CStringUI& sFileName);
         CZipFileReaderUI(HANDLE hZipFile);
