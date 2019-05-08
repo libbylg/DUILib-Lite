@@ -8,6 +8,17 @@ namespace DUI
     //
     //
 
+    TSTRID_UI::TSTRID_UI(LPCTSTR lpString) : m_lpstr(lpString)
+    {
+    }
+    TSTRID_UI::TSTRID_UI(UINT nID) : m_lpstr(MAKEINTRESOURCE(nID))
+    {
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+    //
+
     CPointUI::CPointUI()
     {
         x = y = 0;

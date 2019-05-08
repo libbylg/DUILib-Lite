@@ -12,12 +12,8 @@ namespace DUI
     struct DUILIB_API TSTRID_UI
     {
     public:
-        TSTRID_UI(LPCTSTR lpString) : m_lpstr(lpString)
-        {
-        }
-        TSTRID_UI(UINT nID) : m_lpstr(MAKEINTRESOURCE(nID))
-        {
-        }
+        TSTRID_UI(LPCTSTR lpString);
+        TSTRID_UI(UINT nID);
         LPCTSTR m_lpstr;
     };
 

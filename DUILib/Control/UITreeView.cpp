@@ -169,7 +169,7 @@ namespace DUI
                 CControlUI* pParent = GetParent();
                 RECT rcTemp;
                 RECT rcParent;
-                while (pParent = pParent->GetParent()) {
+                while (NULL != (pParent = pParent->GetParent())) {
                     rcTemp = invalidateRc;
                     rcParent = pParent->GetPos();
                     if (!::IntersectRect(&invalidateRc, &rcTemp, &rcParent))
