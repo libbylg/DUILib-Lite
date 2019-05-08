@@ -5,15 +5,15 @@
 
 namespace DUI
 {
+    typedef CControlUI* (*PCREATECLASS_UI)();
 
-    class DUILIB_API CFactoryUI
+    class DUILIB_API CFactoryUI : public IFactoryUI
     {
-        typedef CControlUI* (*PCREATECLASS_UI)();
         typedef std::map<CStringUI, PCREATECLASS_UI> MAP_CTREATECLASS_UI;
 
     public:
-        CControlUI* CreateControl(CStringUI strClassName);
-        void RegistControl(CStringUI strClassName, PCREATECLASS_UI pFunc);
+        virtual CControlUI* CreateControl(LPCTSTR pstrClass);
+        void RegistControl(const CStringUI& strClassName, PCREATECLASS_UI pFunc);
         void Release();
 
         static CFactoryUI* GetInstance();

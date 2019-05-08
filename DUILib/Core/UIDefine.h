@@ -1,7 +1,7 @@
 #ifndef _UIDEFINE_H_
 #define _UIDEFINE_H_
 
-#include "DUILIB.h"
+#include "DUILib.h"
 #include "Utils/Utils.h"
 
 namespace DUI

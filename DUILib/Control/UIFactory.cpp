@@ -92,21 +92,23 @@ namespace DUI
     {
     }
 
-    CControlUI* CFactoryUI::CreateControl(CStringUI strClassName)
+    CControlUI* CFactoryUI::CreateControl(LPCTSTR pstrClass)
     {
-        strClassName.MakeLower();
-        MAP_CTREATECLASS_UI::iterator iter = m_mapControl.find(strClassName);
+        CStringUI sName = pstrClass;
+        sName.MakeLower();
+        MAP_CTREATECLASS_UI::iterator iter = m_mapControl.find(sName);
         if (iter == m_mapControl.end()) {
             return NULL;
-        } else {
-            return (CControlUI*)(iter->second());
         }
+        
+        return (CControlUI*)(iter->second());
     }
 
-    void CFactoryUI::RegistControl(CStringUI strClassName, PCREATECLASS_UI pFunc)
+    void CFactoryUI::RegistControl(const CStringUI& strClassName, PCREATECLASS_UI pFunc)
     {
-        strClassName.MakeLower();
-        m_mapControl.insert(MAP_CTREATECLASS_UI::value_type(strClassName, pFunc));
+        CStringUI sName = strClassName;
+        sName.MakeLower();
+        m_mapControl.insert(MAP_CTREATECLASS_UI::value_type(sName, pFunc));
     }
 
     CFactoryUI* CFactoryUI::GetInstance()

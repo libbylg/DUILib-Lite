@@ -177,8 +177,8 @@ namespace DUI
         static void SetResourcePath(LPCTSTR pStrPath);
         static void SetResourceZip(LPVOID pVoid, unsigned int len, LPCTSTR password = NULL);
         static void SetResourceZip(LPCTSTR pstrZip, BOOL bCachedResourceZip = FALSE, LPCTSTR password = NULL);
-        static void SetResourceType(int nType);
-        static int GetResourceType();
+        static void SetResourceType(RESTYPE_UI nType);
+        static RESTYPE_UI GetResourceType();
         static BOOL GetHSL(short* H, short* S, short* L);
         static void SetHSL(BOOL bUseHSL, short H, short S, short L); // H:0~360, S:0~200, L:0~200 
         static void ReloadSkin();
@@ -444,7 +444,7 @@ namespace DUI
         static CStringUI m_pStrResourceZipPwd;
         static HANDLE m_hResourceZip;
         static BOOL m_bCachedResourceZip;
-        static int m_nResType;
+        static RESTYPE_UI m_nResType;
         static TRESINFO_UI m_SharedResInfo;
         static BOOL m_bUseHSL;
         static short m_H;

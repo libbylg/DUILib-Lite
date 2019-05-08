@@ -78,7 +78,7 @@ namespace DUI
     CStringUI CManagerUI::m_pStrResourceZipPwd; //Garfield 20160325 ´øÃÜÂëzip°ü½âÃÜ
     HANDLE CManagerUI::m_hResourceZip = NULL;
     BOOL CManagerUI::m_bCachedResourceZip = true;
-    int CManagerUI::m_nResType = UIRES_FILE;
+    RESTYPE_UI CManagerUI::m_nResType = UIRES_FILE;
     TRESINFO_UI CManagerUI::m_SharedResInfo;
     HINSTANCE CManagerUI::m_hInstance = NULL;
     BOOL CManagerUI::m_bUseHSL = FALSE;
@@ -388,12 +388,12 @@ namespace DUI
         }
     }
 
-    void CManagerUI::SetResourceType(int nType)
+    void CManagerUI::SetResourceType(RESTYPE_UI nType)
     {
         m_nResType = nType;
     }
 
-    int CManagerUI::GetResourceType()
+    RESTYPE_UI CManagerUI::GetResourceType()
     {
         return m_nResType;
     }

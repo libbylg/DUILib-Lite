@@ -37,8 +37,8 @@ namespace DUI
 #define UITRACEMSG _T("")
 #endif
 
-    void    DUILIB_API UI__Trace(LPCTSTR pstrFormat, ...);
-    LPCTSTR DUILIB_API UI__TraceMsg(UINT uMsg);
+    extern void    DUILIB_API UI__Trace(LPCTSTR pstrFormat, ...);
+    extern LPCTSTR DUILIB_API UI__TraceMsg(UINT uMsg);
 
     /////////////////////////////////////////////////////////////////////////////////////
     //

@@ -11,7 +11,7 @@ namespace DUI
     //
     //
 
-    void DUILIB_API UI__Trace(LPCTSTR pstrFormat, ...)
+    extern void DUILIB_API UI__Trace(LPCTSTR pstrFormat, ...)
     {
 #ifdef _DEBUG
         TCHAR szBuffer[2048] = {0};
@@ -27,7 +27,7 @@ namespace DUI
 #endif
     }
 
-    LPCTSTR UI__TraceMsg(UINT uMsg)
+    extern LPCTSTR UI__TraceMsg(UINT uMsg)
     {
 #define MSGDEF(x) \
     if (uMsg == x) return _T(#x)
