@@ -240,7 +240,9 @@ namespace DUI
         RemoveAllTimers();
 
         m_sName.Empty();
-        if (pstrName != NULL) m_sName = pstrName;
+        if (pstrName != NULL) {
+            m_sName = pstrName;
+        }
 
         if (m_hWndPaint != hWnd) {
             m_hWndPaint = hWnd;
@@ -2947,9 +2949,14 @@ namespace DUI
         if (data->bUseHSL) {
             data->pSrcBits = new BYTE[data->nX * data->nY * 4];
             ::CopyMemory(data->pSrcBits, data->pBits, data->nX * data->nY * 4);
-        } else
+        } else {
             data->pSrcBits = NULL;
-        if (m_bUseHSL) CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
+        }
+
+        if (m_bUseHSL) {
+            CRenderUI::AdjustImage(true, data, m_H, m_S, m_L);
+        }
+
         if (data) {
             if (bShared || m_bForceUseSharedRes) {
                 TIMAGEINFO_UI* pOldImageInfo = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(bitmap));

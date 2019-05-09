@@ -349,24 +349,24 @@ namespace DUI
         void PostAsyncNotify();
 
     private:
-        CStringUI m_sName;
-        HWND m_hWndPaint;	//所附加的窗体的句柄
-        HDC m_hDcPaint;
-        HDC m_hDcOffscreen;
-        HDC m_hDcBackground;
-        HBITMAP m_hbmpOffscreen;
-        BYTE* m_pOffscreenBits;
-        HBITMAP m_hbmpBackground;
-        COLORREF* m_pBackgroundBits;
+        CStringUI   m_sName;
+        HWND        m_hWndPaint;	//所附加的窗体的句柄
+        HDC         m_hDcPaint;
+        HDC         m_hDcOffscreen;
+        HDC         m_hDcBackground;
+        HBITMAP     m_hbmpOffscreen;
+        BYTE*       m_pOffscreenBits;
+        HBITMAP     m_hbmpBackground;
+        COLORREF*   m_pBackgroundBits;
 
         // 提示信息
-        HWND m_hwndTooltip;
-        TOOLINFO m_ToolTip;
-        int m_iHoverTime;
-        BOOL m_bNoActivate;
-        BOOL m_bShowUpdateRect;
+        HWND        m_hwndTooltip;
+        TOOLINFO    m_ToolTip;
+        int         m_iHoverTime;
+        BOOL        m_bNoActivate;
+        BOOL        m_bShowUpdateRect;
 
-        //
+        // 
         CControlUI* m_pRoot;
         CControlUI* m_pFocus;
         CControlUI* m_pEventHover;
@@ -413,45 +413,41 @@ namespace DUI
         CPtrArrayUI m_aAsyncNotify;
         CPtrArrayUI m_aFoundControls;
         CPtrArrayUI m_aFonts;
-        CPtrArrayUI m_aNeedMouseLeaveNeeded;
-        CStringMapUI m_mNameHash;
-        CStringMapUI m_mWindowCustomAttrHash;
-        CStringMapUI m_mOptionGroup;
+        CPtrArrayUI     m_aNeedMouseLeaveNeeded;
+        CStringMapUI    m_mNameHash;
+        CStringMapUI    m_mWindowCustomAttrHash;
+        CStringMapUI    m_mOptionGroup;
 
-        BOOL m_bForceUseSharedRes;
-        TRESINFO_UI m_ResInfo;
+        BOOL            m_bForceUseSharedRes;
+        TRESINFO_UI     m_ResInfo;
 
-        // 窗口阴影
-        CShadowUI m_shadow;
-
-        // DPI管理器
-        CDPI* m_pDPI;
-        // 是否开启Gdiplus
-        BOOL m_bUseGdiplusText;
-        int m_trh;
-        ULONG_PTR m_gdiplusToken;
+        CShadowUI       m_shadow;     // 窗口阴影
+        CDPI*           m_pDPI;           // DPI管理器
+        BOOL            m_bUseGdiplusText; // 是否开启Gdiplus
+        int             m_trh;
+        ULONG_PTR       m_gdiplusToken;
         Gdiplus::GdiplusStartupInput* m_pGdiplusStartupInput;
 
         // 拖拽
         BOOL m_bDragMode;
         HBITMAP m_hDragBitmap;
 
-        //
-        static HINSTANCE m_hInstance;
-        static HINSTANCE m_hResourceInstance;
-        static CStringUI m_pStrResourcePath;
-        static CStringUI m_pStrResourceZip;
-        static CStringUI m_pStrResourceZipPwd;
-        static HANDLE m_hResourceZip;
-        static BOOL m_bCachedResourceZip;
-        static RESTYPE_UI m_nResType;
-        static TRESINFO_UI m_SharedResInfo;
-        static BOOL m_bUseHSL;
-        static short m_H;
-        static short m_S;
-        static short m_L;
-        static CPtrArrayUI m_aPreMessages;
-        static CPtrArrayUI m_aPlugins;
+        // 
+        static HINSTANCE    m_hInstance;
+        static HINSTANCE    m_hResourceInstance;
+        static CStringUI    m_pStrResourcePath;
+        static CStringUI    m_pStrResourceZip;
+        static CStringUI    m_pStrResourceZipPwd;
+        static HANDLE       m_hResourceZip;
+        static BOOL         m_bCachedResourceZip;
+        static RESTYPE_UI   m_nResType;
+        static TRESINFO_UI  m_SharedResInfo;
+        static BOOL         m_bUseHSL;
+        static SHORT        m_H;
+        static SHORT        m_S;
+        static SHORT        m_L;
+        static CPtrArrayUI  m_aPreMessages;
+        static CPtrArrayUI  m_aPlugins;
     };
 
 } // namespace DUI

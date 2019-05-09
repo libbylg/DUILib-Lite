@@ -59,7 +59,9 @@ namespace DUI
                 dll_instence = CManagerUI::GetResourceDll();
             }
             HRSRC hResource = ::FindResource(dll_instence, xml.m_lpstr, type);
-            if (hResource == NULL) return NULL;
+            if (hResource == NULL) {
+                return NULL;
+            }
             HGLOBAL hGlobal = ::LoadResource(dll_instence, hResource);
             if (hGlobal == NULL) {
                 FreeResource(hResource);
@@ -79,7 +81,9 @@ namespace DUI
     {
         m_pCallback = pCallback;
         CMarkupNodeUI root = m_xml.GetRoot();
-        if (!root.IsValid()) return NULL;
+        if (!root.IsValid()) {
+            return NULL;
+        }
 
         if (pManager) {
             LPCTSTR pstrClass = NULL;
@@ -344,10 +348,14 @@ namespace DUI
         for (CMarkupNodeUI node = pRoot->GetChild(); node.IsValid(); node = node.GetSibling()) {
             LPCTSTR pstrClass = node.GetName();
             if (_tcsicmp(pstrClass, _T("Image")) == 0 || _tcsicmp(pstrClass, _T("Font")) == 0 \
-                || _tcsicmp(pstrClass, _T("Default")) == 0 || _tcsicmp(pstrClass, _T("Style")) == 0) continue;
+                || _tcsicmp(pstrClass, _T("Default")) == 0 || _tcsicmp(pstrClass, _T("Style")) == 0) {
+                continue;
+            }
 
             CControlUI * pControl = NULL;
-            if (_tcsicmp(pstrClass, _T("Import")) == 0) continue;
+            if (_tcsicmp(pstrClass, _T("Import")) == 0) {
+                continue;
+            }
             if (_tcsicmp(pstrClass, _T("Include")) == 0) {
                 if (!node.HasAttributes()) {
                     continue;
@@ -386,7 +394,9 @@ namespace DUI
                         lpCreateControl = (LPCREATECONTROL_UI)pPlugins->GetAt(i);
                         if (lpCreateControl != NULL) {
                             pControl = lpCreateControl(pstrClass);
-                            if (pControl != NULL) break;
+                            if (pControl != NULL) {
+                                break;
+                            }
                         }
                     }
                 }
