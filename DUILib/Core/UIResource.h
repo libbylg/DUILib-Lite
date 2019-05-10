@@ -30,20 +30,20 @@ namespace DUI
         BOOL LoadResource(TSTRID_UI xml, LPCTSTR type = NULL);
         BOOL LoadResource(CMarkupNodeUI Root);
         
-        void ResetResourceMap();
+        void    ResetResourceMap();
         LPCTSTR GetImagePath(LPCTSTR lpstrId);
         LPCTSTR GetXmlPath(LPCTSTR lpstrId);
 
     public:
-        void SetLanguage(LPCTSTR pstrLanguage) { m_sLauguage = pstrLanguage; }
+        void    SetLanguage(LPCTSTR pstrLanguage) { m_sLauguage = pstrLanguage; }
         LPCTSTR GetLanguage() { return m_sLauguage; }
-        BOOL LoadLanguage(LPCTSTR pstrXml);
+        BOOL    LoadLanguage(LPCTSTR pstrXml);
 
     public:
-        void SetTextQueryInterface(IQueryControlTextUI* pInterface) { m_pQuerypInterface = pInterface; }
-        CStringUI GetText(LPCTSTR lpstrId, LPCTSTR lpstrType = NULL);
-        void ReloadText();
-        void ResetTextMap();
+        void        SetTextQueryInterface(IQueryControlTextUI* pInterface) { m_pQuerypInterface = pInterface; }
+        CStringUI   GetText(LPCTSTR lpstrId, LPCTSTR lpstrType = NULL);
+        void        ReloadText();
+        void        ResetTextMap();
 
     private:
         CStringMapUI m_mTextResourceHashMap;

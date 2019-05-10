@@ -280,24 +280,27 @@ namespace DUI
         BOOL IsPainting();
         void SetPainting(BOOL bIsPainting);
 
+        //  消息处理：自定义通知消息处理
         BOOL AddNotifier(INotifyUI* pControl);
         BOOL RemoveNotifier(INotifyUI* pControl);
         void SendNotify(TNOTIFY_UI& Msg, BOOL bAsync = FALSE);
         void SendNotify(CControlUI* pControl, LPCTSTR pstrMessage, WPARAM wParam = 0, LPARAM lParam = 0, BOOL bAsync = FALSE);
 
+        //  消息处理：消息预处理
         BOOL AddPreMessageFilter(IMessageFilterUI* pFilter);
         BOOL RemovePreMessageFilter(IMessageFilterUI* pFilter);
 
+        //  消息处理：常规消息处理器
         BOOL AddMessageFilter(IMessageFilterUI* pFilter);
         BOOL RemoveMessageFilter(IMessageFilterUI* pFilter);
 
-        int GetPostPaintCount() const;
+        int  GetPostPaintCount() const;
         BOOL IsPostPaint(CControlUI* pControl);
         BOOL AddPostPaint(CControlUI* pControl);
         BOOL RemovePostPaint(CControlUI* pControl);
         BOOL SetPostPaintIndex(CControlUI* pControl, int iIndex);
 
-        int GetNativeWindowCount() const;
+        int  GetNativeWindowCount() const;
         RECT GetNativeWindowRect(HWND hChildWnd);
         BOOL AddNativeWindow(CControlUI* pControl, HWND hChildWnd);
         BOOL RemoveNativeWindow(HWND hChildWnd);
@@ -310,6 +313,7 @@ namespace DUI
         BOOL RemoveTranslateAccelerator(ITranslateAcceleratorUI* pTranslateAccelerator);
         BOOL TranslateAccelerator(LPMSG pMsg);
 
+        //  控件管理
         CControlUI* GetRoot() const;
         CControlUI* FindControl(POINT pt) const;
         CControlUI* FindControl(LPCTSTR pstrName) const;
@@ -318,6 +322,7 @@ namespace DUI
         CControlUI* FindSubControlByClass(CControlUI* pParent, LPCTSTR pstrClass, int iIndex = 0);
         CPtrArrayUI* FindSubControlsByClass(CControlUI* pParent, LPCTSTR pstrClass);
 
+        //  全局消息循环，消息预处理，结束消息处理
         static void MessageLoop();
         static BOOL TranslateMessage(const LPMSG pMsg);
         static void Term();

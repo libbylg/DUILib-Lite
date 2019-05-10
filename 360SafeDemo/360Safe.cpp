@@ -16,7 +16,7 @@ public:
 	UINT GetClassStyle() const { return CS_DBLCLKS; };
 	void OnFinalMessage(HWND /*hWnd*/) { delete this; };
 
-	void Init() {
+	void OnCreated() {
 		m_pCloseBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("closebtn")));
 		m_pMaxBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("maxbtn")));
 		m_pRestoreBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("restorebtn")));
@@ -78,7 +78,7 @@ public:
 		m_pm.AttachDialog(pRoot);
 		m_pm.AddNotifier(this);
 
-		Init();
+		OnCreated();
 		return 0;
 	}
 
@@ -226,11 +226,17 @@ public:
 		case WM_SIZE:          lRes = OnSize(uMsg, wParam, lParam, bHandled); break;
 		case WM_GETMINMAXINFO: lRes = OnGetMinMaxInfo(uMsg, wParam, lParam, bHandled); break;
 		case WM_SYSCOMMAND:    lRes = OnSysCommand(uMsg, wParam, lParam, bHandled); break;
-		default:
-		bHandled = FALSE;
+		default:               bHandled = FALSE; break;
 		}
-		if( bHandled ) return lRes;
-		if( m_pm.MessageHandler(uMsg, wParam, lParam, lRes) ) return lRes;
+        
+        if (bHandled) {
+            return lRes;
+        }
+
+        if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) {
+            return lRes;
+        }
+
 		return CWindowUI::HandleMessage(uMsg, wParam, lParam);
 	}
 

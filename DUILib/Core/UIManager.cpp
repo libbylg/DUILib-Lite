@@ -3499,8 +3499,9 @@ namespace DUI
                 HWND hTempParent = hWndParent;
                 while (hTempParent) {
                     if (pMsg->hwnd == pT->GetPaintWindow() || hTempParent == pT->GetPaintWindow()) {
-                        if (pT->TranslateAccelerator(pMsg))
+                        if (pT->TranslateAccelerator(pMsg)) {
                             return true;
+                        }
 
                         pT->PreMessageHandler(pMsg->message, pMsg->wParam, pMsg->lParam, lRes);
                     }
