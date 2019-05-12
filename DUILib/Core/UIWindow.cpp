@@ -240,8 +240,12 @@ namespace DUI
 
     HWND CWindowUI::Create(HWND hwndParent, LPCTSTR pstrName, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
     {
-        if (GetSuperClassName() != NULL && !RegisterSuperclass()) return NULL;
-        if (GetSuperClassName() == NULL && !RegisterWindowClass()) return NULL;
+        if (GetSuperClassName() != NULL && !RegisterSuperclass()) {
+            return NULL;
+        }
+        if (GetSuperClassName() == NULL && !RegisterWindowClass()) {
+            return NULL;
+        }
         m_hWnd = ::CreateWindowEx(dwExStyle, GetWindowClassName(), pstrName, dwStyle, x, y, cx, cy, hwndParent, hMenu, CManagerUI::GetInstance(), this);
         ASSERT(m_hWnd != NULL);
         return m_hWnd;

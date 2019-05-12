@@ -189,7 +189,7 @@ namespace DUI
         TFONTINFO_UI*   GetFontInfo(HFONT hFont);
 
         const TIMAGEINFO_UI*    GetImage(LPCTSTR bitmap)const;
-        const TIMAGEINFO_UI*    GetImageEx(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, BOOL bUseHSL = FALSE, HINSTANCE instance = NULL)const;
+        const TIMAGEINFO_UI*    GetImageEx(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, BOOL bUseHSL = FALSE, HINSTANCE instance = NULL);
         const TIMAGEINFO_UI*    AddImage(LPCTSTR bitmap, LPCTSTR type = NULL, DWORD mask = 0, BOOL bUseHSL = FALSE, BOOL bShared = FALSE, HINSTANCE instance = NULL);
         const TIMAGEINFO_UI*    AddImage(LPCTSTR bitmap, HBITMAP hBitmap, int iWidth, int iHeight, BOOL bAlpha, BOOL bShared = FALSE);
         void                    RemoveImage(LPCTSTR bitmap, BOOL bShared = FALSE);
@@ -219,8 +219,8 @@ namespace DUI
         CStringMapUI&           GetStyles(BOOL bShared = FALSE);
         void                    RemoveAllStyle(BOOL bShared = FALSE);
 
-        const TIMAGEINFO_UI*    GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify = NULL) const;
-        TIMAGEINFO_UI*          GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify = NULL);
+        const TIMAGEINFO_UI*    GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify = NULL);
+        //TIMAGEINFO_UI*          GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify = NULL);
 
         // 初始化拖拽
         BOOL            InitDragDrop();
@@ -327,76 +327,78 @@ namespace DUI
         void        PostAsyncNotify();
 
     private:
-        CStringUI   m_sName;
-        HWND        m_hWndPaint;	//所附加的窗体的句柄
-        HDC         m_hDcPaint;
-        HDC         m_hDcOffscreen;
-        HDC         m_hDcBackground;
-        HBITMAP     m_hbmpOffscreen;
-        BYTE*       m_pOffscreenBits;
-        HBITMAP     m_hbmpBackground;
-        COLORREF*   m_pBackgroundBits;
+        CStringUI       m_sName;
+        HWND            m_hWndPaint;            //  所附加的窗体的句柄
+        HDC             m_hDcPaint;
+        HDC             m_hDcOffscreen;
+        HDC             m_hDcBackground;
+        HBITMAP         m_hbmpOffscreen;
+        BYTE*           m_pOffscreenBits;
+        HBITMAP         m_hbmpBackground;
+        COLORREF*       m_pBackgroundBits;
 
         // 提示信息
-        HWND        m_hwndTooltip;
-        TOOLINFO    m_ToolTip;
-        int         m_iHoverTime;
-        BOOL        m_bNoActivate;
-        BOOL        m_bShowUpdateRect;
+        HWND            m_hwndTooltip;
+        TOOLINFO        m_ToolTip;
+        int             m_iHoverTime;
+        BOOL            m_bNoActivate;
+        BOOL            m_bShowUpdateRect;
 
         // 
-        CControlUI* m_pRoot;
-        CControlUI* m_pFocus;
-        CControlUI* m_pEventHover;
-        CControlUI* m_pEventClick;
-        CControlUI* m_pEventKey;
-        CControlUI* m_pLastToolTip;
-        //
-        POINT m_ptLastMousePos;
-        SIZE m_szMinWindow;
-        SIZE m_szMaxWindow;
-        SIZE m_szInitWindowSize;
-        RECT m_rcSizeBox;
-        SIZE m_szRoundCorner;
-        RECT m_rcCaption;
-        UINT m_uTimerID;
-        BOOL m_bFirstLayout;
-        BOOL m_bUpdateNeeded;
-        BOOL m_bFocusNeeded;
-        BOOL m_bOffscreenPaint;
-
-        BYTE m_nOpacity;
-        BOOL m_bLayered;
-        RECT m_rcLayeredInset;
-        BOOL m_bLayeredChanged;
-        RECT m_rcLayeredUpdate;
-        TDRAWINFO_UI m_diLayered;
-
-        BOOL m_bMouseTracking;
-        BOOL m_bMouseCapture;
-        BOOL m_bIsPainting;
-        BOOL m_bUsedVirtualWnd;
-        BOOL m_bAsyncNotifyPosted;
+        CControlUI*     m_pRoot;
+        CControlUI*     m_pFocus;
+        CControlUI*     m_pEventHover;
+        CControlUI*     m_pEventClick;
+        CControlUI*     m_pEventKey;
+        CControlUI*     m_pLastToolTip;
 
         //
-        CPtrArrayUI m_aNotifiers;
-        CPtrArrayUI m_aTimers;
-        CPtrArrayUI m_aTranslateAccelerator;
-        CPtrArrayUI m_aPreMessageFilters;
-        CPtrArrayUI m_aMessageFilters;
-        CPtrArrayUI m_aPostPaintControls;
-        CPtrArrayUI m_aNativeWindow;
-        CPtrArrayUI m_aNativeWindowControl;
-        CPtrArrayUI m_aDelayedCleanup;
-        CPtrArrayUI m_aAsyncNotify;
-        CPtrArrayUI m_aFoundControls;
-        CPtrArrayUI m_aFonts;
+        POINT           m_ptLastMousePos;
+        SIZE            m_szMinWindow;
+        SIZE            m_szMaxWindow;
+        SIZE            m_szInitWindowSize;
+        RECT            m_rcSizeBox;
+        SIZE            m_szRoundCorner;
+        RECT            m_rcCaption;
+        UINT            m_uTimerID;
+        BOOL            m_bFirstLayout;
+        BOOL            m_bUpdateNeeded;
+        BOOL            m_bFocusNeeded;
+        BOOL            m_bOffscreenPaint;
+
+        BYTE            m_nOpacity;
+        BOOL            m_bLayered;
+        RECT            m_rcLayeredInset;
+        BOOL            m_bLayeredChanged;
+        RECT            m_rcLayeredUpdate;
+        TDRAWINFO_UI    m_diLayered;
+
+        //  
+        BOOL            m_bMouseTracking;
+        BOOL            m_bMouseCapture;
+        BOOL            m_bIsPainting;
+        BOOL            m_bUsedVirtualWnd;
+        BOOL            m_bAsyncNotifyPosted;
+
+        //
+        CPtrArrayUI     m_aNotifiers;
+        CPtrArrayUI     m_aTimers;
+        CPtrArrayUI     m_aTranslateAccelerator;
+        CPtrArrayUI     m_aPreMessageFilters;
+        CPtrArrayUI     m_aMessageFilters;
+        CPtrArrayUI     m_aPostPaintControls;
+        CPtrArrayUI     m_aNativeWindow;
+        CPtrArrayUI     m_aNativeWindowControl;
+        CPtrArrayUI     m_aDelayedCleanup;
+        CPtrArrayUI     m_aAsyncNotify;
+        CPtrArrayUI     m_aFoundControls;
+        CPtrArrayUI     m_aFonts;
         CPtrArrayUI     m_aNeedMouseLeaveNeeded;
         CStringMapUI    m_mNameHash;
         CStringMapUI    m_mWindowCustomAttrHash;
         CStringMapUI    m_mOptionGroup;
 
-        BOOL            m_bForceUseSharedRes;
+        BOOL            m_bForceUseSharedRes;   //  是否强制使用共享资源
         TRESINFO_UI     m_ResInfo;
 
         CShadowUI       m_shadow;     // 窗口阴影
@@ -425,7 +427,7 @@ namespace DUI
         static SHORT        m_S;
         static SHORT        m_L;
         static CPtrArrayUI  m_aPreMessages;
-        static CPtrArrayUI  m_aPlugins;
+        static CPtrArrayUI  m_aPlugins; //  从动态库中加载的，创建空间的工厂函数列表
     };
 
 } // namespace DUI

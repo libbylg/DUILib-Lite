@@ -227,6 +227,24 @@ namespace DUI
         return lpStr == NULL?NULL:lpStr->GetData();
     }
 
+    CStringUI   CResourceUI::ResolveResourcePath(LPCTSTR lpResName)
+    {
+        CStringUI sFile = CResourceUI::GetInstance()->GetResourcePath();
+        if (CResourceUI::GetInstance()->GetResourceZip().IsEmpty()) {
+            sFile += "/";
+            sFile += lpResName;
+            return sFile;
+        }
+        
+        sFile += CResourceUI::GetInstance()->GetResourceZip();
+        HZIP hz = NULL;
+        if (CResourceUI::GetInstance()->IsCachedResourceZip())
+            hz = (HZIP)CResourceUI::GetInstance()->GetResourceZipHandle();
+        else {
+            CStringUI sFilePwd = CResourceUI::GetInstance()->GetResourceZipPwd();
+        }
+    }
+
     void CResourceUI::ResetResourceMap()
     {
         CStringUI* lpStr;

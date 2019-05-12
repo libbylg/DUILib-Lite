@@ -19,7 +19,7 @@ namespace DUI
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CPointUI : public POINT
+    struct DUILIB_API CPointUI : public POINT
     {
         CPointUI();
         CPointUI(const POINT& src);
@@ -31,7 +31,7 @@ namespace DUI
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
-    class DUILIB_API CSizeUI : public SIZE
+    struct DUILIB_API CSizeUI : public SIZE
     {
         CSizeUI();
         CSizeUI(const SIZE& src);
@@ -345,7 +345,7 @@ namespace DUI
         virtual BOOL                Open(void* ctx) = 0;
         virtual BOOL                Read(BYTE* pCache, DWORD dwCacheSize, DWORD* dwReadSize) = 0;  //  0：正常；-1：异常；1：结束
         virtual void                Close() = 0;
-        virtual const CStringUI& Error() = 0;
+        virtual const CStringUI&    Error() = 0;
     };
 
 

@@ -15,10 +15,8 @@ namespace DUI
     {
     public:
         CDialogBuilderUI();
-        CControlUI* Create(TSTRID_UI xml, LPCTSTR type = NULL, IFactoryUI* pCallback = NULL,
-            CManagerUI* pManager = NULL, CControlUI* pParent = NULL);
-        CControlUI* Create(IFactoryUI* pCallback = NULL, CManagerUI* pManager = NULL,
-            CControlUI* pParent = NULL);
+        CControlUI* Create(TSTRID_UI xml, LPCTSTR type = NULL, IFactoryUI* pCallback = NULL, CManagerUI* pManager = NULL, CControlUI* pParent = NULL);
+        CControlUI* Create(IFactoryUI* pCallback = NULL, CManagerUI* pManager = NULL, CControlUI* pParent = NULL);
 
         CMarkupUI* GetMarkup();
 
@@ -28,10 +26,10 @@ namespace DUI
     private:
         CControlUI* _Parse(CMarkupNodeUI* parent, CControlUI* pParent = NULL, CManagerUI* pManager = NULL);
 
-        CMarkupUI m_xml;
+        CMarkupUI   m_xml;
         IFactoryUI* m_pCallback;
-        LPCTSTR m_pstrtype;
-        HINSTANCE m_instance;
+        LPCTSTR     m_pstrtype;
+        HINSTANCE   m_instance;
     };
 
 } // namespace DUI

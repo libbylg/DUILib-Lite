@@ -54,7 +54,22 @@ namespace DUI
         virtual LPCTSTR QueryControlText(LPCTSTR lpstrId, LPCTSTR lpstrType) = 0;
     };
 
-    //typedef BOOL(*PHANDLERESOURCE_UI)(void* ctx, BYTE* pByte, DWORD dwSize);
+
+    //  资源有下面几类：
+    //  本地某目录下的文件：目录，资源文件路径
+    //      file://<DIR>/<FILE>
+    //  本地某压缩包中的文件：目录，压缩包名，资源文件路径（相对于压缩包顶层目录）
+    //      zip://<PASSWORD>:<DIR>/<FILE>
+    //  本进程资源中的文件：资源文件路径
+    //      res://<TYPE>:<FILE>
+    //  直接的资源文本本生：
+    //      <xxx></xxx>
+    struct DUILIB_API TRESURI_UI
+    {
+        CStringUI   sSchema;
+        CStringUI   sSchema;
+        CStringUI   sType;
+    };
 
     class DUILIB_API CResourceUI
     {
@@ -71,9 +86,10 @@ namespace DUI
         BOOL LoadResource(TSTRID_UI xml, LPCTSTR type = NULL);
         BOOL LoadResource(CMarkupNodeUI Root);
         
-        void    ResetResourceMap();
-        LPCTSTR GetImagePath(LPCTSTR lpstrId);
-        LPCTSTR GetXmlPath(LPCTSTR lpstrId);
+        void        ResetResourceMap();
+        LPCTSTR     GetImagePath(LPCTSTR lpstrId);
+        LPCTSTR     GetXmlPath(LPCTSTR lpstrId);
+        CStringUI   ResolveResourcePath(LPCTSTR lpstrId);
 
     public:
         void    SetLanguage(LPCTSTR pstrLanguage) { m_sLauguage = pstrLanguage; }

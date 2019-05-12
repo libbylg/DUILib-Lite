@@ -23,7 +23,8 @@ public:
 		m_pMinBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("minbtn")));
 	}
 
-	void OnPrepare() {
+	void OnPrepare() 
+    {
 	}
 
 	void Notify(struct TNOTIFY_UI& msg)
@@ -259,10 +260,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
     CResourceUI::GetInstance()->SetResourceZip(_T("360SafeRes.zip"));
 
 	HRESULT Hr = ::CoInitialize(NULL);
-	if( FAILED(Hr) ) return 0;
+    if (FAILED(Hr)) {
+        return 0;
+    }
 
 	C360SafeFrameWnd* pFrame = new C360SafeFrameWnd();
-	if( pFrame == NULL ) return 0;
+    if (pFrame == NULL) {
+        return 0;
+    }
+
 	pFrame->Create(NULL, _T("360°²È«ÎÀÊ¿"), UI_WNDSTYLE_FRAME, 0L, 0, 0, 800, 572);
 	pFrame->CenterWindow();
 	::ShowWindow(*pFrame, SW_SHOW);

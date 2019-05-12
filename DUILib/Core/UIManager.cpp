@@ -386,7 +386,9 @@ namespace DUI
         if (hModule != NULL) {
             LPCREATECONTROL_UI lpCreateControl = (LPCREATECONTROL_UI)::GetProcAddress(hModule, "CreateControl");
             if (lpCreateControl != NULL) {
-                if (m_aPlugins.Find(lpCreateControl) >= 0) return true;
+                if (m_aPlugins.Find(lpCreateControl) >= 0) {
+                    return true;
+                }
                 m_aPlugins.Add(lpCreateControl);
                 return true;
             }
@@ -2800,7 +2802,7 @@ namespace DUI
         return data;
     }
 
-    const TIMAGEINFO_UI* CManagerUI::GetImageEx(LPCTSTR bitmap, LPCTSTR type, DWORD mask, BOOL bUseHSL, HINSTANCE instance) const
+    const TIMAGEINFO_UI* CManagerUI::GetImageEx(LPCTSTR bitmap, LPCTSTR type, DWORD mask, BOOL bUseHSL, HINSTANCE instance) 
     {
         const TIMAGEINFO_UI* data = GetImage(bitmap);
         if (!data) {
@@ -3519,7 +3521,7 @@ namespace DUI
         pStyles->RemoveAll();
     }
 
-    const TIMAGEINFO_UI* CManagerUI::GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify) const
+    const TIMAGEINFO_UI* CManagerUI::GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify)
     {
         CStringUI sImageName = pStrImage;
         CStringUI sImageResType = _T("");
