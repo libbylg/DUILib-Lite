@@ -2047,7 +2047,11 @@ namespace DUI
                 pControl = info1.pLast;
             }
         }
-        if (pControl != NULL) SetFocus(pControl);
+        
+        if (pControl != NULL) {
+            SetFocus(pControl);
+        }
+
         m_bFocusNeeded = FALSE;
         return true;
     }
@@ -2139,16 +2143,22 @@ namespace DUI
 
     BOOL CManagerUI::AddNativeWindow(CControlUI * pControl, HWND hChildWnd)
     {
-        if (pControl == NULL || hChildWnd == NULL) return FALSE;
+        if ((pControl == NULL) || (hChildWnd == NULL)) {
+            return FALSE;
+        }
 
         RECT rcChildWnd = GetNativeWindowRect(hChildWnd);
         Invalidate(rcChildWnd);
 
-        if (m_aNativeWindow.Find(hChildWnd) >= 0) return FALSE;
+        if (m_aNativeWindow.Find(hChildWnd) >= 0) {
+            return FALSE;
+        }
+
         if (m_aNativeWindow.Add(hChildWnd)) {
             m_aNativeWindowControl.Add(pControl);
             return true;
         }
+
         return FALSE;
     }
 
@@ -2263,8 +2273,9 @@ namespace DUI
     void CManagerUI::SetDefaultDisabledColor(DWORD dwColor, BOOL bShared)
     {
         if (bShared) {
-            if (m_ResInfo.m_dwDefaultDisabledColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultDisabledColor)
+            if (m_ResInfo.m_dwDefaultDisabledColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultDisabledColor) {
                 m_ResInfo.m_dwDefaultDisabledColor = dwColor;
+            }
             CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultDisabledColor = dwColor;
         } else {
             m_ResInfo.m_dwDefaultDisabledColor = dwColor;
@@ -2279,8 +2290,9 @@ namespace DUI
     void CManagerUI::SetDefaultFontColor(DWORD dwColor, BOOL bShared)
     {
         if (bShared) {
-            if (m_ResInfo.m_dwDefaultFontColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultFontColor)
+            if (m_ResInfo.m_dwDefaultFontColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultFontColor) {
                 m_ResInfo.m_dwDefaultFontColor = dwColor;
+            }
             CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultFontColor = dwColor;
         } else {
             m_ResInfo.m_dwDefaultFontColor = dwColor;
@@ -2295,8 +2307,9 @@ namespace DUI
     void CManagerUI::SetDefaultLinkFontColor(DWORD dwColor, BOOL bShared)
     {
         if (bShared) {
-            if (m_ResInfo.m_dwDefaultLinkFontColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultLinkFontColor)
+            if (m_ResInfo.m_dwDefaultLinkFontColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultLinkFontColor) {
                 m_ResInfo.m_dwDefaultLinkFontColor = dwColor;
+            }
             CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultLinkFontColor = dwColor;
         } else {
             m_ResInfo.m_dwDefaultLinkFontColor = dwColor;
@@ -2311,8 +2324,9 @@ namespace DUI
     void CManagerUI::SetDefaultLinkHoverFontColor(DWORD dwColor, BOOL bShared)
     {
         if (bShared) {
-            if (m_ResInfo.m_dwDefaultLinkHoverFontColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultLinkHoverFontColor)
+            if (m_ResInfo.m_dwDefaultLinkHoverFontColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultLinkHoverFontColor) {
                 m_ResInfo.m_dwDefaultLinkHoverFontColor = dwColor;
+            }
             CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultLinkHoverFontColor = dwColor;
         } else {
             m_ResInfo.m_dwDefaultLinkHoverFontColor = dwColor;
@@ -2327,8 +2341,9 @@ namespace DUI
     void CManagerUI::SetDefaultSelectedBkColor(DWORD dwColor, BOOL bShared)
     {
         if (bShared) {
-            if (m_ResInfo.m_dwDefaultSelectedBkColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultSelectedBkColor)
+            if (m_ResInfo.m_dwDefaultSelectedBkColor == CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultSelectedBkColor) {
                 m_ResInfo.m_dwDefaultSelectedBkColor = dwColor;
+            }
             CResourceUI::GetInstance()->GetSharedResInfo().m_dwDefaultSelectedBkColor = dwColor;
         } else {
             m_ResInfo.m_dwDefaultSelectedBkColor = dwColor;
@@ -2728,14 +2743,20 @@ namespace DUI
 
     TFONTINFO_UI* CManagerUI::GetFontInfo(int id)
     {
-        if (id < 0) return GetDefaultFontInfo();
+        if (id < 0) {
+            return GetDefaultFontInfo();
+        }
 
         TCHAR idBuffer[16];
         ::ZeroMemory(idBuffer, sizeof(idBuffer));
         _itot(id, idBuffer, 10);
         TFONTINFO_UI* pFontInfo = static_cast<TFONTINFO_UI*>(m_ResInfo.m_CustomFonts.Find(idBuffer));
-        if (!pFontInfo) pFontInfo = static_cast<TFONTINFO_UI*>(CResourceUI::GetInstance()->GetSharedResInfo().m_CustomFonts.Find(idBuffer));
-        if (!pFontInfo) pFontInfo = GetDefaultFontInfo();
+        if (!pFontInfo) {
+            pFontInfo = static_cast<TFONTINFO_UI*>(CResourceUI::GetInstance()->GetSharedResInfo().m_CustomFonts.Find(idBuffer));
+        }
+        if (!pFontInfo) {
+            pFontInfo = GetDefaultFontInfo();
+        }
         if (pFontInfo->tm.tmHeight == 0) {
             HFONT hOldFont = (HFONT)::SelectObject(m_hDcPaint, pFontInfo->hFont);
             ::GetTextMetrics(m_hDcPaint, &pFontInfo->tm);
@@ -2750,7 +2771,9 @@ namespace DUI
         for (int i = 0; i < m_ResInfo.m_CustomFonts.GetSize(); i++) {
             if (LPCTSTR key = m_ResInfo.m_CustomFonts.GetAt(i)) {
                 pFontInfo = static_cast<TFONTINFO_UI*>(m_ResInfo.m_CustomFonts.Find(key));
-                if (pFontInfo && pFontInfo->hFont == hFont) break;
+                if (pFontInfo && pFontInfo->hFont == hFont) {
+                    break;
+                }
             }
         }
         if (!pFontInfo) {
@@ -2770,14 +2793,14 @@ namespace DUI
         return pFontInfo;
     }
 
-    const TIMAGEINFO_UI* CManagerUI::GetImage(LPCTSTR bitmap)
+    const TIMAGEINFO_UI* CManagerUI::GetImage(LPCTSTR bitmap)const
     {
         TIMAGEINFO_UI* data = static_cast<TIMAGEINFO_UI*>(m_ResInfo.m_ImageHash.Find(bitmap));
         if (!data) data = static_cast<TIMAGEINFO_UI*>(CResourceUI::GetInstance()->GetSharedResInfo().m_ImageHash.Find(bitmap));
         return data;
     }
 
-    const TIMAGEINFO_UI* CManagerUI::GetImageEx(LPCTSTR bitmap, LPCTSTR type, DWORD mask, BOOL bUseHSL, HINSTANCE instance)
+    const TIMAGEINFO_UI* CManagerUI::GetImageEx(LPCTSTR bitmap, LPCTSTR type, DWORD mask, BOOL bUseHSL, HINSTANCE instance) const
     {
         const TIMAGEINFO_UI* data = GetImage(bitmap);
         if (!data) {
@@ -3460,36 +3483,43 @@ namespace DUI
 
     const CStringMapUI& CManagerUI::GetStyles(BOOL bShared) const
     {
-        if (bShared)
-            return CResourceUI::GetInstance()->GetSharedResInfo().m_StyleHash;
-        else
-            return m_ResInfo.m_StyleHash;
-    }
-
-    void CManagerUI::RemoveAllStyle(BOOL bShared)
-    {
         if (bShared) {
-            CStringUI* pStyle;
-            for (int i = 0; i < CResourceUI::GetInstance()->GetSharedResInfo().m_StyleHash.GetSize(); i++) {
-                if (LPCTSTR key = CResourceUI::GetInstance()->GetSharedResInfo().m_StyleHash.GetAt(i)) {
-                    pStyle = static_cast<CStringUI*>(CResourceUI::GetInstance()->GetSharedResInfo().m_StyleHash.Find(key));
-                    delete pStyle;
-                }
-            }
-            CResourceUI::GetInstance()->GetSharedResInfo().m_StyleHash.RemoveAll();
+            return CResourceUI::GetInstance()->GetSharedResInfo().m_StyleHash;
         } else {
-            CStringUI* pStyle;
-            for (int i = 0; i < m_ResInfo.m_StyleHash.GetSize(); i++) {
-                if (LPCTSTR key = m_ResInfo.m_StyleHash.GetAt(i)) {
-                    pStyle = static_cast<CStringUI*>(m_ResInfo.m_StyleHash.Find(key));
-                    delete pStyle;
-                }
-            }
-            m_ResInfo.m_StyleHash.RemoveAll();
+            return m_ResInfo.m_StyleHash;
         }
     }
 
-    const TIMAGEINFO_UI* CManagerUI::GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify)
+    CStringMapUI& CManagerUI::GetStyles(BOOL bShared)
+    {
+        if (bShared) {
+            return CResourceUI::GetInstance()->GetSharedResInfo().m_StyleHash;
+        } else {
+            return m_ResInfo.m_StyleHash;
+        }
+    }
+
+
+    void CManagerUI::RemoveAllStyle(BOOL bShared)
+    {
+        CStringMapUI* pStyles = NULL;
+        if (bShared) {
+            CStringUI* pStyle;
+            pStyles = &(CResourceUI::GetInstance()->GetSharedResInfo().m_StyleHash);
+        } else {
+            pStyles = &(m_ResInfo.m_StyleHash);
+        }
+
+        for (int i = 0; i < pStyles->GetSize(); i++) {
+            if (LPCTSTR key = pStyles->GetAt(i)) {
+                CStringUI* pStyleItem = static_cast<CStringUI*>(pStyles->Find(key));
+                delete pStyleItem;
+            }
+        }
+        pStyles->RemoveAll();
+    }
+
+    const TIMAGEINFO_UI* CManagerUI::GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify) const
     {
         CStringUI sImageName = pStrImage;
         CStringUI sImageResType = _T("");

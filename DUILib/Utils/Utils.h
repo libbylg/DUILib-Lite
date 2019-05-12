@@ -11,7 +11,6 @@ namespace DUI
 
     struct DUILIB_API TSTRID_UI
     {
-    public:
         TSTRID_UI(LPCTSTR lpString);
         TSTRID_UI(UINT nID);
         LPCTSTR m_lpstr;
@@ -22,7 +21,6 @@ namespace DUI
 
     class DUILIB_API CPointUI : public POINT
     {
-    public:
         CPointUI();
         CPointUI(const POINT& src);
         CPointUI(int x, int y);
@@ -35,7 +33,6 @@ namespace DUI
 
     class DUILIB_API CSizeUI : public SIZE
     {
-    public:
         CSizeUI();
         CSizeUI(const SIZE& src);
         CSizeUI(const RECT rc);
@@ -76,19 +73,19 @@ namespace DUI
         CPtrArrayUI(const CPtrArrayUI& src);
         ~CPtrArrayUI();
 
-        void Empty();
-        void Resize(int iSize);
-        BOOL IsEmpty() const;
-        int Find(LPVOID iIndex) const;
-        BOOL Add(LPVOID pData);
-        BOOL SetAt(int iIndex, LPVOID pData);
-        BOOL InsertAt(int iIndex, LPVOID pData);
-        BOOL Remove(int iIndex);
-        int GetSize() const;
+        void    Empty();
+        void    Resize(int iSize);
+        BOOL    IsEmpty() const;
+        int     Find(LPVOID iIndex) const;
+        BOOL    Add(LPVOID pData);
+        BOOL    SetAt(int iIndex, LPVOID pData);
+        BOOL    InsertAt(int iIndex, LPVOID pData);
+        BOOL    Remove(int iIndex);
+        int     GetSize() const;
         LPVOID* GetData();
 
-        LPVOID GetAt(int iIndex) const;
-        LPVOID operator[] (int nIndex) const;
+        LPVOID  GetAt(int iIndex) const;
+        LPVOID  operator[] (int nIndex) const;
 
     protected:
         LPVOID* m_ppVoid;
@@ -196,7 +193,7 @@ namespace DUI
 
     protected:
         LPTSTR m_pstr;
-        TCHAR m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
+        TCHAR   m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
     };
 
     static std::vector<CStringUI> StrSplit(CStringUI text, CStringUI sp)
@@ -212,6 +209,8 @@ namespace DUI
         vResults.push_back(text);
         return vResults;
     }
+
+
     /////////////////////////////////////////////////////////////////////////////////////
     //
 
