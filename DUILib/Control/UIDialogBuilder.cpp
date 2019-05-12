@@ -56,7 +56,7 @@ namespace DUI
             if (m_instance) {
                 dll_instence = m_instance;
             } else {
-                dll_instence = CManagerUI::GetResourceDll();
+                dll_instence = CResourceUI::GetInstance()->GetResourceDll();
             }
             HRSRC hResource = ::FindResource(dll_instence, xml.m_lpstr, type);
             if (hResource == NULL) {

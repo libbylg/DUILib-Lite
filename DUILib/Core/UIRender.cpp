@@ -425,8 +425,8 @@ namespace DUI
         DWORD dwSize = 0;
         do {
             if (type == NULL) {
-                CStringUI sFile = CManagerUI::GetResourcePath();
-                if (CManagerUI::GetResourceZip().IsEmpty()) {
+                CStringUI sFile = CResourceUI::GetInstance()->GetResourcePath();
+                if (CResourceUI::GetInstance()->GetResourceZip().IsEmpty()) {
                     sFile += bitmap.m_lpstr;
                     HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                         FILE_ATTRIBUTE_NORMAL, NULL);
@@ -445,11 +445,11 @@ namespace DUI
                         break;
                     }
                 } else {
-                    sFile += CManagerUI::GetResourceZip();
-                    CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
+                    sFile += CResourceUI::GetInstance()->GetResourceZip();
+                    CStringUI sFilePwd = CResourceUI::GetInstance()->GetResourceZipPwd();
                     HZIP hz = NULL;
-                    if (CManagerUI::IsCachedResourceZip())
-                        hz = (HZIP)CManagerUI::GetResourceZipHandle();
+                    if (CResourceUI::GetInstance()->IsCachedResourceZip())
+                        hz = (HZIP)CResourceUI::GetInstance()->GetResourceZipHandle();
                     else {
 #ifdef UNICODE
                         char* pwd = w2a((wchar_t*)sFilePwd.GetData());
@@ -472,12 +472,12 @@ namespace DUI
                     if (res != 0x00000000 && res != 0x00000600) {
                         delete[] pData;
                         pData = NULL;
-                        if (!CManagerUI::IsCachedResourceZip()) {
+                        if (!CResourceUI::GetInstance()->IsCachedResourceZip()) {
                             CloseZip(hz);
                         }
                         break;
                     }
-                    if (!CManagerUI::IsCachedResourceZip()) {
+                    if (!CResourceUI::GetInstance()->IsCachedResourceZip()) {
                         CloseZip(hz);
                     }
                 }
@@ -486,7 +486,7 @@ namespace DUI
                 if (instance) {
                     dllinstance = instance;
                 } else {
-                    dllinstance = CManagerUI::GetResourceDll();
+                    dllinstance = CResourceUI::GetInstance()->GetResourceDll();
                 }
                 HRSRC hResource = ::FindResource(dllinstance, bitmap.m_lpstr, type);
                 if (hResource == NULL) break;
@@ -721,8 +721,8 @@ namespace DUI
         DWORD dwSize = 0;
 
         do {
-            CStringUI sFile = CManagerUI::GetResourcePath();
-            if (CManagerUI::GetResourceZip().IsEmpty()) {
+            CStringUI sFile = CResourceUI::GetInstance()->GetResourcePath();
+            if (CResourceUI::GetInstance()->GetResourceZip().IsEmpty()) {
                 sFile += sImageName;
                 HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                     FILE_ATTRIBUTE_NORMAL, NULL);
@@ -745,12 +745,12 @@ namespace DUI
                     break;
                 }
             } else {
-                sFile += CManagerUI::GetResourceZip();
+                sFile += CResourceUI::GetInstance()->GetResourceZip();
                 HZIP hz = NULL;
-                if (CManagerUI::IsCachedResourceZip()) {
-                    hz = (HZIP)CManagerUI::GetResourceZipHandle();
+                if (CResourceUI::GetInstance()->IsCachedResourceZip()) {
+                    hz = (HZIP)CResourceUI::GetInstance()->GetResourceZipHandle();
                 } else {
-                    CStringUI sFilePwd = CManagerUI::GetResourceZipPwd();
+                    CStringUI sFilePwd = CResourceUI::GetInstance()->GetResourceZipPwd();
 #ifdef UNICODE
                     char* pwd = w2a((wchar_t*)sFilePwd.GetData());
                     hz = OpenZip(sFile.GetData(), pwd);
@@ -778,12 +778,12 @@ namespace DUI
                 if ((res != 0x00000000) && (res != 0x00000600)) {
                     delete[] pData;
                     pData = NULL;
-                    if (!CManagerUI::IsCachedResourceZip()) {
+                    if (!CResourceUI::GetInstance()->IsCachedResourceZip()) {
                         CloseZip(hz);
                     }
                     break;
                 }
-                if (!CManagerUI::IsCachedResourceZip()) {
+                if (!CResourceUI::GetInstance()->IsCachedResourceZip()) {
                     CloseZip(hz);
                 }
             }

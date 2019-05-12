@@ -7,6 +7,7 @@
 #include "Core/UIDefine.h"
 #include "Core/UIShadow.h"
 #include "Core/UIRender.h"
+#include "Core/UIResource.h"
 
 namespace DUI
 {
@@ -27,46 +28,6 @@ namespace DUI
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
-
-    struct DUILIB_API TFONTINFO_UI
-    {
-        HFONT hFont;
-        CStringUI sFontName;
-        int iSize;
-        BOOL bBold;
-        BOOL bUnderline;
-        BOOL bItalic;
-        TEXTMETRIC tm;
-    };
-
-    struct DUILIB_API TIMAGEINFO_UI
-    {
-        HBITMAP hBitmap;
-        LPBYTE pBits;
-        LPBYTE pSrcBits;
-        int nX;
-        int nY;
-        BOOL bAlpha;
-        BOOL bUseHSL;
-        CStringUI sResType;
-        DWORD dwMask;
-
-    };
-
-    struct DUILIB_API TRESINFO_UI
-    {
-        DWORD m_dwDefaultDisabledColor;
-        DWORD m_dwDefaultFontColor;
-        DWORD m_dwDefaultLinkFontColor;
-        DWORD m_dwDefaultLinkHoverFontColor;
-        DWORD m_dwDefaultSelectedBkColor;
-        TFONTINFO_UI m_DefaultFontInfo;
-        CStringMapUI m_CustomFonts;
-        CStringMapUI m_ImageHash;
-        CStringMapUI m_AttrHash;
-        CStringMapUI m_StyleHash;
-        CStringMapUI m_DrawInfoHash;
-    };
 
 
 
@@ -162,23 +123,26 @@ namespace DUI
         void SetGdiplusTextRenderingHint(int trh);
         int GetGdiplusTextRenderingHint() const;
 
-        static HINSTANCE GetInstance();
-        static CStringUI GetInstancePath();
-        static CStringUI GetCurrentPath();
-        static HINSTANCE GetResourceDll();
-        static const CStringUI& GetResourcePath();
-        static const CStringUI& GetResourceZip();
-        static const CStringUI& GetResourceZipPwd();
-        static BOOL IsCachedResourceZip();
-        static HANDLE GetResourceZipHandle();
-        static void SetInstance(HINSTANCE hInst);
-        static void SetCurrentPath(LPCTSTR pStrPath);
-        static void SetResourceDll(HINSTANCE hInst);
-        static void SetResourcePath(LPCTSTR pStrPath);
-        static void SetResourceZip(LPVOID pVoid, unsigned int len, LPCTSTR password = NULL);
-        static void SetResourceZip(LPCTSTR pstrZip, BOOL bCachedResourceZip = FALSE, LPCTSTR password = NULL);
-        static void SetResourceType(RESTYPE_UI nType);
-        static RESTYPE_UI GetResourceType();
+        static void         SetInstance(HINSTANCE hInst);
+        static HINSTANCE    GetInstance();
+        static CStringUI    GetInstancePath();
+        static void         SetCurrentPath(LPCTSTR pStrPath);
+        static CStringUI    GetCurrentPath();
+
+        //static HINSTANCE GetResourceDll();
+        //static const CStringUI& GetResourcePath();
+        //static const CStringUI& GetResourceZip();
+        //static const CStringUI& GetResourceZipPwd();
+        //static BOOL IsCachedResourceZip();
+        //static HANDLE GetResourceZipHandle();
+        //static void SetResourceDll(HINSTANCE hInst);
+        //static void SetResourcePath(LPCTSTR pStrPath);
+        //static void SetResourceZip(LPVOID pVoid, unsigned int len, LPCTSTR password = NULL);
+        //static void SetResourceZip(LPCTSTR pstrZip, BOOL bCachedResourceZip = FALSE, LPCTSTR password = NULL);
+        //static void SetResourceType(RESTYPE_UI nType);
+        //static RESTYPE_UI GetResourceType();
+
+
         static BOOL GetHSL(short* H, short* S, short* L);
         static void SetHSL(BOOL bUseHSL, short H, short S, short L); // H:0~360, S:0~200, L:0~200 
         static void ReloadSkin();
@@ -434,19 +398,19 @@ namespace DUI
         Gdiplus::GdiplusStartupInput* m_pGdiplusStartupInput;
 
         // мов╖
-        BOOL m_bDragMode;
+        BOOL    m_bDragMode;
         HBITMAP m_hDragBitmap;
 
         // 
         static HINSTANCE    m_hInstance;
-        static HINSTANCE    m_hResourceInstance;
-        static CStringUI    m_pStrResourcePath;
-        static CStringUI    m_pStrResourceZip;
-        static CStringUI    m_pStrResourceZipPwd;
-        static HANDLE       m_hResourceZip;
-        static BOOL         m_bCachedResourceZip;
-        static RESTYPE_UI   m_nResType;
-        static TRESINFO_UI  m_SharedResInfo;
+        //static HINSTANCE    m_hResourceInstance;
+        //static CStringUI    m_pStrResourcePath;
+        //static CStringUI    m_pStrResourceZip;
+        //static CStringUI    m_pStrResourceZipPwd;
+        //static HANDLE       m_hResourceZip;
+        //static BOOL         m_bCachedResourceZip;
+        //static RESTYPE_UI   m_nResType;
+        //static TRESINFO_UI  m_SharedResInfo;
         static BOOL         m_bUseHSL;
         static SHORT        m_H;
         static SHORT        m_S;

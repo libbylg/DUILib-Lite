@@ -13,6 +13,14 @@ namespace DUI
     CResourceUI::CResourceUI(void)
     {
         m_pQuerypInterface = NULL;
+        m_hResourceInstance = NULL;
+        m_pStrResourcePath;
+        m_pStrResourceZip;
+        m_pStrResourceZipPwd; //Garfield 20160325 带密码zip包解密
+        m_hResourceZip = NULL;
+        m_bCachedResourceZip = true;
+        m_nResType = UIRES_FILE;
+        m_SharedResInfo;
     }
 
     CResourceUI::~CResourceUI(void)
@@ -36,16 +44,16 @@ namespace DUI
                 }
             }
         } else {
-            HRSRC hResource = ::FindResource(CManagerUI::GetResourceDll(), xml.m_lpstr, type);
+            HRSRC hResource = ::FindResource(CResourceUI::GetResourceDll(), xml.m_lpstr, type);
             if (hResource == NULL) {
                 return NULL;
             }
-            HGLOBAL hGlobal = ::LoadResource(CManagerUI::GetResourceDll(), hResource);
+            HGLOBAL hGlobal = ::LoadResource(CResourceUI::GetResourceDll(), hResource);
             if (hGlobal == NULL) {
                 FreeResource(hResource);
                 return NULL;
             }
-            if (!m_xml.LoadFromMemory((BYTE*) ::LockResource(hGlobal), ::SizeofResource(CManagerUI::GetResourceDll(), hResource))) {
+            if (!m_xml.LoadFromMemory((BYTE*) ::LockResource(hGlobal), ::SizeofResource(CResourceUI::GetResourceDll(), hResource))) {
                 return NULL;
             }
             ::FreeResource(hResource);
@@ -338,6 +346,193 @@ namespace DUI
                 delete lpStr;
             }
         }
+    }
+
+
+    HINSTANCE CResourceUI::GetResourceDll()
+    {
+        if (m_hResourceInstance == NULL) {
+            return CManagerUI::GetInstance();
+        }
+        return m_hResourceInstance;
+    }
+
+    const CStringUI& CResourceUI::GetResourcePath()
+    {
+        return m_pStrResourcePath;
+    }
+
+    const CStringUI& CResourceUI::GetResourceZip()
+    {
+        return m_pStrResourceZip;
+    }
+
+    const CStringUI& CResourceUI::GetResourceZipPwd()
+    {
+        return m_pStrResourceZipPwd;
+    }
+
+    BOOL CResourceUI::IsCachedResourceZip()
+    {
+        return m_bCachedResourceZip;
+    }
+
+    HANDLE CResourceUI::GetResourceZipHandle()
+    {
+        return m_hResourceZip;
+    }
+
+    void CResourceUI::SetResourceDll(HINSTANCE hInst)
+    {
+        m_hResourceInstance = hInst;
+    }
+
+    void CResourceUI::SetResourcePath(LPCTSTR pStrPath)
+    {
+        m_pStrResourcePath = pStrPath;
+        if (m_pStrResourcePath.IsEmpty()) return;
+        TCHAR cEnd = m_pStrResourcePath.GetAt(m_pStrResourcePath.GetLength() - 1);
+        if (cEnd != _T('\\') && cEnd != _T('/')) m_pStrResourcePath += _T('\\');
+    }
+
+    void CResourceUI::SetResourceZip(LPVOID pVoid, unsigned int len, LPCTSTR password)
+    {
+        if (m_pStrResourceZip == _T("membuffer")) return;
+        if (m_bCachedResourceZip && m_hResourceZip != NULL) {
+            CloseZip((HZIP)m_hResourceZip);
+            m_hResourceZip = NULL;
+        }
+        m_pStrResourceZip = _T("membuffer");
+        m_bCachedResourceZip = true;
+        m_pStrResourceZipPwd = password; //Garfield 20160325 带密码zip包解密
+        if (m_bCachedResourceZip) {
+#ifdef UNICODE
+            char* pwd = w2a((wchar_t*)password);
+            m_hResourceZip = (HANDLE)OpenZip(pVoid, len, pwd);
+            if (pwd) {
+                delete[] pwd;
+                pwd = NULL;
+            }
+#else
+            m_hResourceZip = (HANDLE)OpenZip(pVoid, len, password);
+#endif
+        }
+    }
+
+    void CResourceUI::SetResourceZip(LPCTSTR pStrPath, BOOL bCachedResourceZip, LPCTSTR password)
+    {
+        if (m_pStrResourceZip == pStrPath && m_bCachedResourceZip == bCachedResourceZip) return;
+        if (m_bCachedResourceZip && m_hResourceZip != NULL) {
+            CloseZip((HZIP)m_hResourceZip);
+            m_hResourceZip = NULL;
+        }
+        m_pStrResourceZip = pStrPath;
+        m_bCachedResourceZip = bCachedResourceZip;
+        m_pStrResourceZipPwd = password;
+        if (m_bCachedResourceZip) {
+            CStringUI sFile = CResourceUI::GetResourcePath();
+            sFile += CResourceUI::GetResourceZip();
+#ifdef UNICODE
+            char* pwd = w2a((wchar_t*)password);
+            m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), pwd);
+            if (pwd) {
+                delete[] pwd;
+                pwd = NULL;
+            }
+#else
+            m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), password);
+#endif
+        }
+    }
+
+    void CResourceUI::SetResourceType(RESTYPE_UI nType)
+    {
+        m_nResType = nType;
+    }
+
+    RESTYPE_UI CResourceUI::GetResourceType()
+    {
+        return m_nResType;
+    }
+
+
+    void CResourceUI::Release()
+    {
+        // 清理共享资源
+        // 图片
+        TIMAGEINFO_UI* data;
+        for (int i = 0; i < m_SharedResInfo.m_ImageHash.GetSize(); i++) {
+            if (LPCTSTR key = m_SharedResInfo.m_ImageHash.GetAt(i)) {
+                data = static_cast<TIMAGEINFO_UI*>(m_SharedResInfo.m_ImageHash.Find(key, FALSE));
+                if (data) {
+                    CRenderUI::FreeImage(data);
+                    data = NULL;
+                }
+            }
+        }
+        m_SharedResInfo.m_ImageHash.RemoveAll();
+        // 字体
+        TFONTINFO_UI* pFontInfo;
+        for (int i = 0; i < m_SharedResInfo.m_CustomFonts.GetSize(); i++) {
+            if (LPCTSTR key = m_SharedResInfo.m_CustomFonts.GetAt(i)) {
+                pFontInfo = static_cast<TFONTINFO_UI*>(m_SharedResInfo.m_CustomFonts.Find(key, FALSE));
+                if (pFontInfo) {
+                    ::DeleteObject(pFontInfo->hFont);
+                    delete pFontInfo;
+                    pFontInfo = NULL;
+                }
+            }
+        }
+        m_SharedResInfo.m_CustomFonts.RemoveAll();
+        // 默认字体
+        if (m_SharedResInfo.m_DefaultFontInfo.hFont != NULL) {
+            ::DeleteObject(m_SharedResInfo.m_DefaultFontInfo.hFont);
+        }
+        // 样式
+        CStringUI* pStyle;
+        for (int i = 0; i < m_SharedResInfo.m_StyleHash.GetSize(); i++) {
+            if (LPCTSTR key = m_SharedResInfo.m_StyleHash.GetAt(i)) {
+                pStyle = static_cast<CStringUI*>(m_SharedResInfo.m_StyleHash.Find(key, FALSE));
+                if (pStyle) {
+                    delete pStyle;
+                    pStyle = NULL;
+                }
+            }
+        }
+        m_SharedResInfo.m_StyleHash.RemoveAll();
+
+        // 样式
+        CStringUI* pAttr;
+        for (int i = 0; i < m_SharedResInfo.m_AttrHash.GetSize(); i++) {
+            if (LPCTSTR key = m_SharedResInfo.m_AttrHash.GetAt(i)) {
+                pAttr = static_cast<CStringUI*>(m_SharedResInfo.m_AttrHash.Find(key, FALSE));
+                if (pAttr) {
+                    delete pAttr;
+                    pAttr = NULL;
+                }
+            }
+        }
+        m_SharedResInfo.m_AttrHash.RemoveAll();
+
+        // 关闭ZIP
+        if (m_bCachedResourceZip && m_hResourceZip != NULL) {
+            CloseZip((HZIP)m_hResourceZip);
+            m_hResourceZip = NULL;
+        }
+
+        //  对象自身销毁
+        delete this;
+    }
+
+
+    const TRESINFO_UI& CResourceUI::GetSharedResInfo()const
+    {
+        return m_SharedResInfo;
+    }
+
+    TRESINFO_UI& CResourceUI::GetSharedResInfo()
+    {
+        return m_SharedResInfo;
     }
 
 } // namespace DUI

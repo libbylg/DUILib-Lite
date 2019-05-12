@@ -255,8 +255,8 @@ private:
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
 	CManagerUI::SetInstance(hInstance);
-    CManagerUI::SetResourcePath(CManagerUI::GetInstancePath() + _T("skin"));
-    CManagerUI::SetResourceZip(_T("360SafeRes.zip"));
+    CResourceUI::GetInstance()->SetResourcePath(CManagerUI::GetInstancePath() + _T("skin"));
+    CResourceUI::GetInstance()->SetResourceZip(_T("360SafeRes.zip"));
 
 	HRESULT Hr = ::CoInitialize(NULL);
 	if( FAILED(Hr) ) return 0;
