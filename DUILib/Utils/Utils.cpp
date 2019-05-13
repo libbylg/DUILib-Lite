@@ -4,6 +4,59 @@
 namespace DUI
 {
 
+
+
+    TDATA_UI::TDATA_UI()
+    {
+        this->dwCap = sizeof(this->pData);
+        this->dwLen = 0;
+        this->pRef = this->pData;
+        this->pData[0] = 0;
+    }
+
+    TDATA_UI::~TDATA_UI()
+    {
+        if (this->pData != this->pRef) {
+            delete[] this->pData;
+        }
+    }
+
+    TDATA_UI::operator LPCVOID()  const
+    {
+        return this->pRef;
+    }
+
+    TDATA_UI::operator LPVOID()
+    {
+        return this->pRef;
+    }
+
+    void TDATA_UI::Clear()
+    {
+        this->dwLen = 0;
+    }
+
+    void TDATA_UI::Write(LPCVOID* pData, DWORD dwSize)
+    {
+        //  如果缓冲区不够，就重新分配新的缓冲区
+        if ((this->dwLen + dwSize) > this->dwCap) {
+            DWORD dwNewSize = this->dwLen + dwSize;
+            if (0 != dwNewSize % sizeof(this->pData)) {
+                dwNewSize = ((dwNewSize / sizeof(this->pData)) + 1) * sizeof(this->pData);
+            }
+            BYTE* pOldData = this->pRef;
+            BYTE* newData = new BYTE[dwNewSize];
+            ::CopyMemory(newData, this->pRef, this->dwLen);
+            this->pRef = newData;
+            this->dwCap = dwNewSize;
+            if (this->pData == this->pRef) {
+                delete[] pOldData;
+            }
+        }
+
+        ::CopyMemory(this->pRef, pData, dwSize);
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////
     //
     //

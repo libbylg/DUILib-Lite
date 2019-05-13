@@ -64,12 +64,6 @@ namespace DUI
     //      res://<TYPE>:<FILE>
     //  直接的资源文本本生：
     //      <xxx></xxx>
-    struct DUILIB_API TRESURI_UI
-    {
-        CStringUI   sSchema;
-        CStringUI   sSchema;
-        CStringUI   sType;
-    };
 
     class DUILIB_API CResourceUI
     {

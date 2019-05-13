@@ -6,6 +6,26 @@
 
 namespace DUI
 {
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+
+    struct DUILIB_API   TDATA_UI
+    {
+        DWORD   dwCap;
+        DWORD   dwLen;
+        BYTE*   pRef;
+        BYTE    pData[256];
+
+        TDATA_UI();
+        ~TDATA_UI();
+        operator LPCVOID()  const;
+        operator LPVOID();
+        void Clear();
+        void Write(LPCVOID* pData, DWORD dwSize);
+    };
+
     /////////////////////////////////////////////////////////////////////////////////////
     //
 

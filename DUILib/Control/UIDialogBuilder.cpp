@@ -28,8 +28,7 @@ namespace DUI
     //}
 
 
-    CControlUI* CDialogBuilderUI::Create(TSTRID_UI xml, LPCTSTR type, IFactoryUI* pCallback,
-        CManagerUI* pManager, CControlUI* pParent)
+    CControlUI* CDialogBuilderUI::Create(TSTRID_UI xml, LPCTSTR type, IFactoryUI* pCallback, CManagerUI* pManager, CControlUI* pParent)
     {
         //资源ID为0-65535，两个字节；字符串指针为4个字节
         //字符串以<开头认为是XML字符串，否则认为是XML文件
