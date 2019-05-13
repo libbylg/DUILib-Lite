@@ -59,11 +59,14 @@ namespace DUI
     //  本地某目录下的文件：目录，资源文件路径
     //      file://<DIR>/<FILE>
     //  本地某压缩包中的文件：目录，压缩包名，资源文件路径（相对于压缩包顶层目录）
-    //      zip://<PASSWORD>:<DIR>/<FILE>
+    //      zip://<ZIP-FILE>:<FILE>
     //  本进程资源中的文件：资源文件路径
-    //      res://<TYPE>:<FILE>
+    //      res://<TYPE>:<DLL-NAME>:<FILE>
+    //      res://<TYPE>:~:<FILE>
     //  直接的资源文本本生：
     //      <xxx></xxx>
+
+    typedef BOOL(*LPLOADRESOURCE_CALLBACK_UI)(void* ctx, int iType, BYTE* pData, DWORD* dwLen);
 
     class DUILIB_API CResourceUI
     {
@@ -79,6 +82,7 @@ namespace DUI
     public:
         BOOL LoadResource(TSTRID_UI xml, LPCTSTR type = NULL);
         BOOL LoadResource(CMarkupNodeUI Root);
+        BOOL LoadResource(TDATA_UI& tData, const CStringUI& sDesc, void* ctx = NULL, LPLOADRESOURCE_CALLBACK_UI pCallback=NULL);
         
         void        ResetResourceMap();
         LPCTSTR     GetImagePath(LPCTSTR lpstrId);
