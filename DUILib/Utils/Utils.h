@@ -7,6 +7,7 @@
 namespace DUI
 {
 
+    typedef BOOL(*LPPARAM_PROVIDER_UI)(void* ctx, int iType, void* pData);
 
     /////////////////////////////////////////////////////////////////////////////////////
     //
@@ -22,8 +23,9 @@ namespace DUI
         ~TDATA_UI();
         operator LPCVOID()  const;
         operator LPVOID();
-        void Clear();
-        void Write(LPCVOID* pData, DWORD dwSize);
+        void Clear(BOOL bErase = FALSE);
+        BOOL Write(LPCVOID* pData, DWORD dwSize);
+        BOOL Reserve(DWORD dwSize);
     };
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -155,33 +157,33 @@ namespace DUI
         CStringUI(LPCTSTR lpsz, int nLen = -1);
         ~CStringUI();
 
-        void Empty();
-        int GetLength() const;
-        BOOL IsEmpty() const;
-        TCHAR GetAt(int nIndex) const;
-        void Append(LPCTSTR pstr);
-        void Assign(LPCTSTR pstr, int nLength = -1);
-        LPCTSTR GetData() const;
+        void        Empty();
+        int         GetLength() const;
+        BOOL        IsEmpty() const;
+        TCHAR       GetAt(int nIndex) const;
+        void        Append(LPCTSTR pstr);
+        void        Assign(LPCTSTR pstr, int nLength = -1);
+        LPCTSTR     GetData() const;
 
-        void SetAt(int nIndex, TCHAR ch);
-        operator LPCTSTR() const;
+        void        SetAt(int nIndex, TCHAR ch);
+        operator    LPCTSTR() const;
 
-        TCHAR operator[] (int nIndex) const;
-        const CStringUI& operator=(const CStringUI& src);
-        const CStringUI& operator=(const TCHAR ch);
-        const CStringUI& operator=(LPCTSTR pstr);
+        TCHAR               operator[] (int nIndex) const;
+        const CStringUI&    operator=(const CStringUI& src);
+        const CStringUI&    operator=(const TCHAR ch);
+        const CStringUI&    operator=(LPCTSTR pstr);
 #ifdef _UNICODE
-        const CStringUI& CStringUI::operator=(LPCSTR lpStr);
-        const CStringUI& CStringUI::operator+=(LPCSTR lpStr);
+        const CStringUI&    operator=(LPCSTR lpStr);
+        const CStringUI&    operator+=(LPCSTR lpStr);
 #else
-        const CStringUI& CStringUI::operator=(LPCWSTR lpwStr);
-        const CStringUI& CStringUI::operator+=(LPCWSTR lpwStr);
+        const CStringUI&    operator=(LPCWSTR lpwStr);
+        const CStringUI&    operator+=(LPCWSTR lpwStr);
 #endif
-        CStringUI operator+(const CStringUI& src) const;
-        CStringUI operator+(LPCTSTR pstr) const;
-        const CStringUI& operator+=(const CStringUI& src);
-        const CStringUI& operator+=(LPCTSTR pstr);
-        const CStringUI& operator+=(const TCHAR ch);
+        CStringUI           operator+(const CStringUI& src) const;
+        CStringUI           operator+(LPCTSTR pstr) const;
+        const CStringUI&    operator+=(const CStringUI& src);
+        const CStringUI&    operator+=(LPCTSTR pstr);
+        const CStringUI&    operator+=(const TCHAR ch);
 
         BOOL operator == (LPCTSTR str) const;
         BOOL operator != (LPCTSTR str) const;
@@ -190,29 +192,31 @@ namespace DUI
         BOOL operator >= (LPCTSTR str) const;
         BOOL operator >  (LPCTSTR str) const;
 
-        int Compare(LPCTSTR pstr) const;
-        int CompareNoCase(LPCTSTR pstr) const;
+        int         Compare(LPCTSTR pstr) const;
+        int         CompareNoCase(LPCTSTR pstr) const;
 
-        void MakeUpper();
-        void MakeLower();
+        void        MakeUpper();
+        void        MakeLower();
 
-        CStringUI Left(int nLength) const;
-        CStringUI Mid(int iPos, int nLength = -1) const;
-        CStringUI Right(int nLength) const;
+        CStringUI   Left(int nLength) const;
+        CStringUI   Mid(int iPos, int nLength = -1) const;
+        CStringUI   Right(int nLength) const;
 
-        int Find(TCHAR ch, int iPos = 0) const;
-        int Find(LPCTSTR pstr, int iPos = 0) const;
-        int ReverseFind(TCHAR ch) const;
-        int Replace(LPCTSTR pstrFrom, LPCTSTR pstrTo);
+        int         Find(TCHAR ch, int iPos = 0) const;
+        int         Find(LPCTSTR pstr, int iPos = 0) const;
+        int         ReverseFind(TCHAR ch) const;
+        int         Replace(LPCTSTR pstrFrom, LPCTSTR pstrTo);
 
         int __cdecl Format(LPCTSTR pstrFormat, ...);
         int __cdecl SmallFormat(LPCTSTR pstrFormat, ...);
+
+        BOOL        HasPrefix(const CStringUI& prefix) const;
 
     protected:
         int __cdecl InnerFormat(LPCTSTR pstrFormat, va_list Args);
 
     protected:
-        LPTSTR m_pstr;
+        LPTSTR  m_pstr;
         TCHAR   m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
     };
 

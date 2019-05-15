@@ -31,30 +31,49 @@ namespace DUI
         return this->pRef;
     }
 
-    void TDATA_UI::Clear()
+    void TDATA_UI::Clear(BOOL bErase)
     {
+        if (bErase && this->pRef && this->dwLen) {
+            ::FillMemory(this->pRef, this->dwLen, '0');
+        }
+
         this->dwLen = 0;
     }
 
-    void TDATA_UI::Write(LPCVOID* pData, DWORD dwSize)
+    BOOL TDATA_UI::Write(LPCVOID* pData, DWORD dwSize)
     {
         //  如果缓冲区不够，就重新分配新的缓冲区
         if ((this->dwLen + dwSize) > this->dwCap) {
-            DWORD dwNewSize = this->dwLen + dwSize;
-            if (0 != dwNewSize % sizeof(this->pData)) {
-                dwNewSize = ((dwNewSize / sizeof(this->pData)) + 1) * sizeof(this->pData);
-            }
-            BYTE* pOldData = this->pRef;
-            BYTE* newData = new BYTE[dwNewSize];
-            ::CopyMemory(newData, this->pRef, this->dwLen);
-            this->pRef = newData;
-            this->dwCap = dwNewSize;
-            if (this->pData == this->pRef) {
-                delete[] pOldData;
+            if (FALSE == Reserve(dwSize)) {
+                return FALSE;
             }
         }
 
         ::CopyMemory(this->pRef, pData, dwSize);
+        return TRUE;
+    }
+
+    BOOL TDATA_UI::Reserve(DWORD dwSize)
+    {
+        DWORD dwNewSize = this->dwLen + dwSize;
+        if (0 != dwNewSize % sizeof(this->pData)) {
+            dwNewSize = ((dwNewSize / sizeof(this->pData)) + 1) * sizeof(this->pData);
+        }
+
+        BYTE* pOldData = this->pRef;
+        BYTE* newData = new BYTE[dwNewSize];
+        if (NULL == newData) {
+            return FALSE;
+        }
+
+        ::CopyMemory(newData, this->pRef, this->dwLen);
+        this->pRef = newData;
+        this->dwCap = dwNewSize;
+        if (this->pData == this->pRef) {
+            delete[] pOldData;
+        }
+
+        return TRUE;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -444,7 +463,9 @@ namespace DUI
 
     CStringUI::~CStringUI()
     {
-        if (m_pstr != m_szBuffer) free(m_pstr);
+        if (m_pstr != m_szBuffer) {
+            free(m_pstr);
+        }
     }
 
     int CStringUI::GetLength() const
@@ -819,6 +840,11 @@ namespace DUI
         return nLen;
 
 #endif
+    }
+
+    BOOL        CStringUI::HasPrefix(const CStringUI& prefix) const
+    {
+        return (0 == _tcsncmp(this->GetData(), (LPCTSTR)(prefix), prefix.GetLength()))?TRUE:FALSE;
     }
 
     /////////////////////////////////////////////////////////////////////////////

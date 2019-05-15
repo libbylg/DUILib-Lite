@@ -32,16 +32,16 @@ namespace DUI
 
 
 // 消息类型
-    enum SIGTYPE_UI
-    {
-        UISIG_end = 0, // [marks end of message map]
-        UISIG_lwl,     // LRESULT (WPARAM, LPARAM)
-        UISIG_vn,      // void (struct TNOTIFY_UI)
-    };
+enum SIGTYPE_UI
+{
+    UISIG_end = 0, // [marks end of message map]
+    UISIG_lwl,     // LRESULT (WPARAM, LPARAM)
+    UISIG_vn,      // void (struct TNOTIFY_UI)
+};
 
 
-    // 核心控件
-    class CControlUI;
+// 核心控件
+class CControlUI;
 
 
     //定义所有消息类型

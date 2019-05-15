@@ -69,88 +69,99 @@ namespace DUI
         TYPE_RES,
         TYPE_RAW
     };
-
-    BOOL CResourceUI::LoadResource(TDATA_UI& tData, const CStringUI& uri, void* ctx = NULL, LPLOADRESOURCE_CALLBACK_UI pCallback = NULL);
+//  资源有下面几类：
+//  本地某目录下的文件：目录，资源文件路径
+//      file://<DIR>/<FILE>
+//  本地某压缩包中的文件：目录，压缩包名，资源文件路径（相对于压缩包顶层目录）
+//      zip://<ZIP-FILE>@//<FILE>
+//  本进程资源中的文件：资源文件路径
+//      res://<DLL-NAME>@//<TYPE>/<FILE>
+//      res://~@//<TYPE>/<FILE>
+//  直接的资源文本本生：
+//      <xxx></xxx>
+    BOOL CResourceUI::LoadResource(TDATA_UI& tData, const CStringUI& uri, void* ctx, LPPARAM_PROVIDER_UI pProvider)
     {
         int iType = TYPE_RAW;
-
-
-
-        LPBYTE pData = NULL;
-        DWORD dwSize = 0;
-        do {
-            CStringUI sFile = CResourceUI::GetInstance()->GetResourcePath();
-            if (CResourceUI::GetInstance()->GetResourceZip().IsEmpty()) {
-                sFile += pstrPath;
-                HANDLE hFile = ::CreateFile(sFile.GetData(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-                    FILE_ATTRIBUTE_NORMAL, NULL);
-                if (hFile == INVALID_HANDLE_VALUE) break;
-                dwSize = ::GetFileSize(hFile, NULL);
-                if (dwSize == 0) break;
-
-                DWORD dwRead = 0;
-                pData = new BYTE[dwSize];
-                ::ReadFile(hFile, pData, dwSize, &dwRead, NULL);
-                ::CloseHandle(hFile);
-
-                if (dwRead != dwSize) {
-                    delete[] pData;
-                    pData = NULL;
-                    break;
-                }
-            } else {
-                sFile += CResourceUI::GetInstance()->GetResourceZip();
-                HZIP hz = NULL;
-                if (CResourceUI::GetInstance()->IsCachedResourceZip())
-                    hz = (HZIP)CResourceUI::GetInstance()->GetResourceZipHandle();
-                else {
-                    CStringUI sFilePwd = CResourceUI::GetInstance()->GetResourceZipPwd();
-#ifdef UNICODE
-                    char* pwd = w2a((wchar_t*)sFilePwd.GetData());
-                    hz = OpenZip(sFile.GetData(), pwd);
-                    if (pwd) delete[] pwd;
-#else
-                    hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
-#endif
-                }
-                if (hz == NULL) break;
-                ZIPENTRY ze;
-                int i = 0;
-                CStringUI key = pstrPath;
-                key.Replace(_T("\\"), _T("/"));
-                if (FindZipItem(hz, key, true, &i, &ze) != 0) break;
-                dwSize = ze.unc_size;
-                if (dwSize == 0) break;
-                pData = new BYTE[dwSize];
-                int res = UnzipItem(hz, i, pData, dwSize);
-                if (res != 0x00000000 && res != 0x00000600) {
-                    delete[] pData;
-                    pData = NULL;
-                    if (!CResourceUI::GetInstance()->IsCachedResourceZip()) CloseZip(hz);
-                    break;
-                }
-                if (!CResourceUI::GetInstance()->IsCachedResourceZip()) CloseZip(hz);
+        
+        //  从普通文件加载资源---- file://<DIR>/<FILE>
+        if (uri.HasPrefix(CStringUI(_T("file://")))) {
+            CStringUI sFilepath = uri.Mid(7, -1);
+            HANDLE hFile = ::CreateFile((LPCTSTR)sFilepath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            if (hFile == INVALID_HANDLE_VALUE) {
+                return FALSE;
             }
 
-        } while (0);
+            DWORD dwSize = ::GetFileSize(hFile, NULL);
+            if (dwSize == 0) {
+                ::CloseHandle(hFile);
+                return FALSE;
+            }
 
-        while (!pData) {
-            //读不到图片, 则直接去读取bitmap.m_lpstr指向的路径
-            HANDLE hFile = ::CreateFile(pstrPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-            if (hFile == INVALID_HANDLE_VALUE) break;
-            dwSize = ::GetFileSize(hFile, NULL);
-            if (dwSize == 0) break;
+            //  保留缓冲区
+            tData.Clear();
+            if (FALSE == tData.Reserve(dwSize)) {
+                ::CloseHandle(hFile);
+                return FALSE;
+            }
 
-            DWORD dwRead = 0;
-            pData = new BYTE[dwSize];
-            ::ReadFile(hFile, pData, dwSize, &dwRead, NULL);
+            //  从文件读取数据
+            DWORD dwReadLen = 0;
+            ::ReadFile(hFile, tData.pRef, dwSize, &dwReadLen, NULL);
             ::CloseHandle(hFile);
 
-            if (dwRead != dwSize) {
-                delete[] pData;
-                pData = NULL;
+            tData.dwLen = dwReadLen;
+
+            return (dwReadLen == dwSize)?TRUE:FALSE;
+        }
+        
+        //  从压缩文件加载资源---- zip://<ZIP-FILE>@//<FILE>
+        if (uri.HasPrefix(CStringUI(_T("zip://")))) {
+            int iPos = uri.Find(_T("@//"), 6);
+            if (iPos < 0) {
+                return FALSE;   //  uri 格式错误
             }
-            break;
+
+            CStringUI sFilePath = uri.Mid(6, iPos - 6);
+            CStringUI sResPath = uri.Mid(iPos, -1);
+
+            TDATA_UI tFilePwd;
+            if (NULL == pProvider) {
+                pProvider(ctx, UIPROVIDE_PASSWORD, &tFilePwd);
+            }
+
+            HZIP hz = OpenZip((LPCTSTR)sFilePath, (const char*)(tFilePwd.pRef));
+            if (hz == NULL) {
+                return FALSE;
+            }
+
+            ZIPENTRY ze = {0};
+            int i = 0;
+            if (FindZipItem(hz, (LPCTSTR)sResPath, TRUE, &i, &ze) != 0) {
+                CloseZip(hz);
+                return FALSE;
+            }
+
+            DWORD dwSize = ze.unc_size;
+            if (dwSize == 0) {
+                CloseZip(hz);
+                return FALSE;
+            }
+
+            tData.Reserve(dwSize);
+            int res = UnzipItem(hz, i, tData.pRef, dwSize);
+            if ((res != 0x00000000) && (res != 0x00000600)) {
+                CloseZip(hz);
+            }
+            
+            CloseZip(hz);
+            return TRUE;
+        }
+        
+        //  从二进制资源包加载资源有两种格式：
+        //      从指定的资源动态库加载资源----   res://<DLL-NAME>@//<TYPE>/<FILE>
+        //      从本进程的资源动态库加载资源---- res://~@//<TYPE>/<FILE>
+        if (uri.HasPrefix(CStringUI(_T("res://")))) {
+
         }
     }
 
