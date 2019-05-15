@@ -69,16 +69,18 @@ namespace DUI
         TYPE_RES,
         TYPE_RAW
     };
-//  资源有下面几类：
-//  本地某目录下的文件：目录，资源文件路径
-//      file://<DIR>/<FILE>
-//  本地某压缩包中的文件：目录，压缩包名，资源文件路径（相对于压缩包顶层目录）
-//      zip://<ZIP-FILE>@//<FILE>
-//  本进程资源中的文件：资源文件路径
-//      res://<DLL-NAME>@//<TYPE>/<FILE>
-//      res://~@//<TYPE>/<FILE>
-//  直接的资源文本本生：
-//      <xxx></xxx>
+
+
+    //  资源有下面几类：
+    //  本地某目录下的文件：目录，资源文件路径
+    //      file://<DIR>/<FILE>
+    //  本地某压缩包中的文件：目录，压缩包名，资源文件路径（相对于压缩包顶层目录）
+    //      zip://<ZIP-FILE>@//<FILE>
+    //  本进程资源中的文件：资源文件路径
+    //      res://<DLL-NAME>@//<TYPE>/<FILE>
+    //      res://~@//<TYPE>/<FILE>
+    //  直接的资源文本本生：
+    //      <xxx></xxx>
     BOOL CResourceUI::LoadResource(TDATA_UI& tData, const CStringUI& uri, void* ctx, LPPARAM_PROVIDER_UI pProvider)
     {
         int iType = TYPE_RAW;
@@ -153,15 +155,104 @@ namespace DUI
                 CloseZip(hz);
             }
             
+            tData.dwLen = dwSize;
+
             CloseZip(hz);
             return TRUE;
         }
         
         //  从二进制资源包加载资源有两种格式：
         //      从指定的资源动态库加载资源----   res://<DLL-NAME>@//<TYPE>/<FILE>
-        //      从本进程的资源动态库加载资源---- res://~@//<TYPE>/<FILE>
+        //      从本进程的资源动态库加载资源---- res://<TYPE>/<FILE>
         if (uri.HasPrefix(CStringUI(_T("res://")))) {
+            HMODULE hDllModule = CManagerUI::GetInstance();
+            int iPathPos = uri.Find(_T("@//", 6));
+            if (iPathPos > 0) {
+                CStringUI sDllFile = uri.Mid(6, iPathPos);
+                int iTypePos = uri.Find(_T('/'), iPathPos + 3);
+                if (iTypePos < 0) {
+                    return FALSE;
+                }
+                CStringUI sResType = uri.Mid(iPathPos + 3, iTypePos);
+                CStringUI sResName = uri.Mid(iTypePos + 1, -1);
 
+                //  加载指定的动态库
+                HMODULE hDllModule = LoadLibrary((LPCTSTR)sDllFile);
+                if (hDllModule == NULL) {
+                    return FALSE;
+                }
+
+                //  从动态库中查找资源
+                HRSRC hRes = ::FindResourceEx(hDllModule, (LPCTSTR)sResType, (LPCTSTR)sResName, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL));
+                if (hRes == NULL) {
+                    ::FreeLibrary(hDllModule);
+                    return FALSE;
+                }
+
+                HGLOBAL hGlobal = ::LoadResource(hDllModule, hRes);
+                if (hGlobal == NULL) {
+                    ::FreeLibrary(hDllModule);
+                    return FALSE;
+                }
+
+                DWORD dwSize = ::SizeofResource(hDllModule, hRes);
+                if (dwSize == 0) {
+                    ::FreeLibrary(hDllModule);
+                    return FALSE;
+                }
+
+                if (FALSE == tData.Reserve(dwSize)) {
+                    ::FreeLibrary(hDllModule);
+                    return FALSE;
+                }
+
+                ::CopyMemory(tData.pRef, (LPBYTE)::LockResource(hGlobal), dwSize);
+                ::FreeLibrary(hDllModule);
+
+                tData.dwLen = dwSize;
+                return TRUE;
+            } else {
+                CStringUI sDllFile = uri.Mid(6, iPathPos);
+                int iTypePos = uri.Find(_T('/'), iPathPos + 3);
+                if (iTypePos < 0) {
+                    return FALSE;
+                }
+                CStringUI sResType = uri.Mid(iPathPos + 3, iTypePos);
+                CStringUI sResName = uri.Mid(iTypePos + 1, -1);
+
+                //  加载指定的动态库
+                HMODULE hDllModule = CManagerUI::GetInstance();
+
+                //  从动态库中查找资源
+                HRSRC hRes = ::FindResourceEx(hDllModule, (LPCTSTR)sResType, (LPCTSTR)sResName, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL));
+                if (hRes == NULL) {
+                    ::FreeLibrary(hDllModule);
+                    return FALSE;
+                }
+
+                HGLOBAL hGlobal = ::LoadResource(hDllModule, hRes);
+                if (hGlobal == NULL) {
+                    ::FreeLibrary(hDllModule);
+                    return FALSE;
+                }
+
+                DWORD dwSize = ::SizeofResource(hDllModule, hRes);
+                if (dwSize == 0) {
+                    ::FreeLibrary(hDllModule);
+                    return FALSE;
+                }
+
+                if (FALSE == tData.Reserve(dwSize)) {
+                    ::FreeLibrary(hDllModule);
+                    return FALSE;
+                }
+
+                ::CopyMemory(tData.pRef, (LPBYTE)::LockResource(hGlobal), dwSize);
+
+                tData.dwLen = dwSize;
+                return TRUE;
+
+            }
         }
     }
 
