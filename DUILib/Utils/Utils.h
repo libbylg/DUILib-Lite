@@ -371,6 +371,7 @@ namespace DUI
         virtual void                Close() = 0;
         virtual const CStringUI&    Error() = 0;
     };
+    //DUILIB_EXTERN DUILIB_API IReaderUI*  CreateReader(const CStringUI& uri);
 
 
     class DUILIB_API CFileReaderUI : public IReaderUI

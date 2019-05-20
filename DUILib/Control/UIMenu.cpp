@@ -1172,7 +1172,7 @@ namespace DUI
 
     void CMenuElementUI::SetIcon(LPCTSTR strIcon)
     {
-        if (strIcon != _T("")) {
+        if (strIcon != CStringUI(_T(""))) {
             m_strIcon = strIcon;
         }
     }

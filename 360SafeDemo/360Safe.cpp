@@ -74,7 +74,7 @@ public:
 		m_pm.Init(m_hWnd);
 		CDialogBuilderUI builder;
 		CDialogBuilderCallbackEx cb;
-		CControlUI* pRoot = builder.Create(_T("skin.xml"), (UINT)0,  &cb, &m_pm);
+		CControlUI* pRoot = builder.Create(_T("file://F:/dev/github.com/libbylg/DUILib-Lite/Bin/Res/skin.xml"), (UINT)0,  &cb, &m_pm);
 		ASSERT(pRoot && "Failed to parse XML");
 		m_pm.AttachDialog(pRoot);
 		m_pm.AddNotifier(this);

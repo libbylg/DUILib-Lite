@@ -30,12 +30,25 @@ namespace DUI
 
     CControlUI* CDialogBuilderUI::Create(TSTRID_UI xml, LPCTSTR type, IFactoryUI* pCallback, CManagerUI* pManager, CControlUI* pParent)
     {
+        CResourceUI* pResource = CResourceUI::GetInstance();
+
         //资源ID为0-65535，两个字节；字符串指针为4个字节
         //字符串以<开头认为是XML字符串，否则认为是XML文件
         if (HIWORD(xml.m_lpstr) != NULL && *(xml.m_lpstr) != _T('<')) {
             LPCTSTR xmlpath = CResourceUI::GetInstance()->GetXmlPath(xml.m_lpstr);
             if (xmlpath != NULL) {
                 xml = xmlpath;
+            }
+
+            TDATA_UI tData;
+            BOOL bRet = pResource->LoadResource(tData, xml.m_lpstr, NULL, NULL);
+            if (FALSE == bRet) {
+                return NULL;
+            }
+
+            bRet = m_xml.LoadFromMemory(tData.pRef, tData.dwLen);
+            if (FALSE == bRet) {
+                return NULL;
             }
         }
 
@@ -44,35 +57,11 @@ namespace DUI
                 if (!m_xml.LoadFromString(xml.m_lpstr)) {
                     return NULL;
                 }
-            } else {
-                CFileReaderUI reader(xml.m_lpstr);
-                if (!m_xml.LoadFromReader(&reader, NULL, UIXMLFILE_ENCODING_UTF8)) {
-                    return NULL;
-                }
             }
-        } else {
-            HINSTANCE dll_instence = NULL;
-            if (m_instance) {
-                dll_instence = m_instance;
-            } else {
-                dll_instence = CResourceUI::GetInstance()->GetResourceDll();
-            }
-            HRSRC hResource = ::FindResource(dll_instence, xml.m_lpstr, type);
-            if (hResource == NULL) {
-                return NULL;
-            }
-            HGLOBAL hGlobal = ::LoadResource(dll_instence, hResource);
-            if (hGlobal == NULL) {
-                FreeResource(hResource);
-                return NULL;
-            }
-
-            m_pCallback = pCallback;
-            if (!m_xml.LoadFromMemory((BYTE*)::LockResource(hGlobal), ::SizeofResource(dll_instence, hResource))) return NULL;
-            ::FreeResource(hResource);
-            m_pstrtype = type;
         }
 
+        m_pCallback = pCallback;
+        m_pstrtype = type;
         return Create(pCallback, pManager, pParent);
     }
 
@@ -493,5 +482,12 @@ namespace DUI
         }
         return pReturn;
     }
+
+
+    //extern CControlUI* DUILIB_API UIBuildDialog(CMarkupUI& dom, IFactoryUI* pFactory, CManagerUI* pManager, CControlUI* pParent)
+    //{
+
+    //}
+
 
 }   // namespace DUI

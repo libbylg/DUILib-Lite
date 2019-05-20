@@ -29,6 +29,13 @@
 #define DUILIB_COMDAT __declspec(selectany)
 
 
+#ifdef __cplusplus
+#define DUILIB_EXTERN   extern
+#else
+#define DUILIB_EXTERN   extern
+#endif
+
+
 #pragma warning(disable:4505)
 #pragma warning(disable:4251)
 #pragma warning(disable:4189)

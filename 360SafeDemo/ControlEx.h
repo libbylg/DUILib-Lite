@@ -14,7 +14,7 @@ public:
 	ComputerExamineUI()
 	{
 		CDialogBuilderUI builder;
-		CContainerUI* pComputerExamine = static_cast<CContainerUI*>(builder.Create(_T("ComputerExamine.xml"), (UINT)0));
+		CContainerUI* pComputerExamine = static_cast<CContainerUI*>(builder.Create(TSTRID_UI(_T("ComputerExamine.xml")), NULL));
 		if( pComputerExamine ) {
 			this->Add(pComputerExamine);
 		}

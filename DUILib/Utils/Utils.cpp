@@ -17,7 +17,7 @@ namespace DUI
     TDATA_UI::~TDATA_UI()
     {
         if (this->pData != this->pRef) {
-            delete[] this->pData;
+            delete[] this->pRef;
         }
     }
 
@@ -1459,5 +1459,9 @@ namespace DUI
     }
 
 
+    //DUILIB_EXTERN IReaderUI* DUILIB_API CreateReader(const CStringUI& uri)
+    //{
+    //    return NULL;
+    //}
 
 } // namespace DUI
